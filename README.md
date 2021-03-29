@@ -8,13 +8,20 @@
 
 Server and Client App for the Apollofy Music Project.
 
-## Repo
+## Apps
 
-- [apollofy-music-project](https://github.com/assembler-school/apollofy-music-project.git)
+- [packages/web](packages/web/README.md)
+- [packages/api](packages/api/README.md)
 
 ## Getting Started
 
 See the `README.md` files in each one of the `packages/*`.
+
+## Monorepo
+
+This is a monorepo created with Yarn. The packages are `api` and `web`. Each on
+has its own scripts that can be executed either individually or from the root of
+the monorepo. See each `package.json` file to learn what scripts are available.
 
 ## License
 
