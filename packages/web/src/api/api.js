@@ -1,6 +1,8 @@
-import { request } from "./api-utils";
+import { makeRequest } from "./api-utils";
 
 function makeApi() {
+  const request = makeRequest();
+
   function signUp(headers) {
     return request({
       url: "/sign-up",
