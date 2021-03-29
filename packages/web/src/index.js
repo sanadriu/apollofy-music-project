@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { IntlProvider } from "react-intl";
 import reportWebVitals from "./reportWebVitals";
 
 import store, { persistor } from "./redux/store";
@@ -11,12 +12,32 @@ import store, { persistor } from "./redux/store";
 import App from "./App";
 import "./styles/tailwind.css";
 
+import messagesEN from "./translations/en.json";
+import messagesES from "./translations/es.json";
+import messagesCAT from "./translations/ca.json";
+
+const messages = {
+  en: messagesEN,
+  es: messagesES,
+  cat: messagesCAT,
+};
+
+const localeProp = navigator.language.split(/[-_]/)[0];
+const defaultLocale = "en";
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <App />
+          <IntlProvider
+            locale={localeProp}
+            key={localeProp}
+            defaultLocale={defaultLocale}
+            messages={messages[localeProp]}
+          >
+            <App />
+          </IntlProvider>
         </PersistGate>
       </Provider>
     </BrowserRouter>
