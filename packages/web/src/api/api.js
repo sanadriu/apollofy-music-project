@@ -1,8 +1,6 @@
 import { makeRequest } from "./api-utils";
 
-function makeApi() {
-  const request = makeRequest();
-
+function makeApi(request = makeRequest()) {
   function signUp(headers) {
     return request({
       url: "/sign-up",
@@ -25,4 +23,4 @@ function makeApi() {
   };
 }
 
-export default makeApi;
+export default makeApi();

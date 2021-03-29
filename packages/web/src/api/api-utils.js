@@ -8,7 +8,7 @@ export function createDefaultResponse() {
   };
 }
 
-export async function normalizeResponse(promise) {
+export async function normalizeResponse(promise = Promise.resolve) {
   const defaultResponse = createDefaultResponse();
   let networkResponse = null;
 
@@ -22,18 +22,19 @@ export async function normalizeResponse(promise) {
   return defaultResponse;
 }
 
-export function makeRequest(httpClient = axios) {
+export function makeRequest(
+  httpClient = axios,
+  baseURL = process.env.REACT_APP_API_BASE_URL,
+  baseHeaders = {
+    Accept: "application/json",
+  },
+) {
   return async function request({
     url = "/",
     requestMethod = "GET",
     body = {},
     headers = {},
   }) {
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
-    const baseHeaders = {
-      Accept: "application/json",
-    };
-
     return normalizeResponse(
       httpClient({
         url: baseURL + url,
