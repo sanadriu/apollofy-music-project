@@ -3,7 +3,7 @@ const normalizeDBQuery = require("../utils/normalizeDBQuery");
 
 class UserRepository {
   create(options) {
-    return db.User.create(options);
+    return normalizeDBQuery(db.User.create(options));
   }
 
   findOne(query) {
