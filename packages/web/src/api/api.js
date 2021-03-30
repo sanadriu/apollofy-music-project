@@ -26,6 +26,14 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function search(headers) {
+    return request({
+      url: "/search",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
   function getUserById(userID) {
     return request({
       url: `/users/${userID}`,
@@ -69,6 +77,7 @@ function makeApi(request = makeRequest()) {
     login: login,
     signUp: signUp,
     signOut: signOut,
+    search: search,
     getUserById: getUserById,
     getUsers: getUsers,
     getFollowingUsers: getFollowingUsers,
