@@ -40,12 +40,21 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function getFollowingUsers(headers) {
+    return request({
+      url: "/me/users/following",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
   return {
     login: login,
     signUp: signUp,
     signOut: signOut,
     getUserById: getUserById,
     getUsers: getUsers,
+    getFollowingUsers: getFollowingUsers,
   };
 }
 
