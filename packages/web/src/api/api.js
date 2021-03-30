@@ -1,15 +1,15 @@
 import { makeRequest } from "./api-utils";
 
 function makeApi(request = makeRequest()) {
-  function login(body) {
+  function login(headers) {
     return request({
       url: "/login",
       requestMethod: "POST",
-      body: body,
+      headers: headers,
     });
   }
 
-  function signUp({ body, headers = {} }) {
+  function signUp(headers) {
     return request({
       url: "/sign-up",
       requestMethod: "POST",
