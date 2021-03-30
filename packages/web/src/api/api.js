@@ -56,6 +56,14 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function getPopularUsers(headers) {
+    return request({
+      url: "/users/popular",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
   return {
     login: login,
     signUp: signUp,
@@ -64,6 +72,7 @@ function makeApi(request = makeRequest()) {
     getUsers: getUsers,
     getFollowingUsers: getFollowingUsers,
     getFollowersUsers: getFollowersUsers,
+    getPopularUsers: getPopularUsers,
   };
 }
 
