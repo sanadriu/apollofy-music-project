@@ -48,6 +48,14 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function getFollowersUsers(headers) {
+    return request({
+      url: "/me/users/followers",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
   return {
     login: login,
     signUp: signUp,
@@ -55,6 +63,7 @@ function makeApi(request = makeRequest()) {
     getUserById: getUserById,
     getUsers: getUsers,
     getFollowingUsers: getFollowingUsers,
+    getFollowersUsers: getFollowersUsers,
   };
 }
 
