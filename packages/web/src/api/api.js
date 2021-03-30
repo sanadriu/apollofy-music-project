@@ -25,10 +25,17 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function getUserById(userID) {
+    return request({
+      url: `/users/${userID}`,
+      requestMethod: "GET",
+    });
+  }
   return {
     login: login,
     signUp: signUp,
     signOut: signOut,
+    getUserById: getUserById,
   };
 }
 
