@@ -1,6 +1,14 @@
 import { makeRequest } from "./api-utils";
 
 function makeApi(request = makeRequest()) {
+  function login(headers) {
+    return request({
+      url: "/login",
+      requestMethod: "POST",
+      headers: headers,
+    });
+  }
+
   function signUp(headers) {
     return request({
       url: "/sign-up",
@@ -18,6 +26,7 @@ function makeApi(request = makeRequest()) {
   }
 
   return {
+    login: login,
     signUp: signUp,
     signOut: signOut,
   };
