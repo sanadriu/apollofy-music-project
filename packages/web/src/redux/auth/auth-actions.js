@@ -19,7 +19,7 @@ export function signUpWithGoogleRequest() {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
     try {
-      await auth.singInWithGoogle();
+      await auth.signInWithGoogle();
     } catch (error) {
       dispatch(signUpError(error.message));
     }
@@ -30,7 +30,7 @@ export function signUpWithEmailRequest(email, password) {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
     try {
-      await auth.singUpWithEmailAndPassword(email, password);
+      await auth.signUpWithEmailAndPassword(email, password);
     } catch (error) {
       dispatch(signUpError(error.message));
     }
@@ -41,7 +41,7 @@ export function signInWithEmailRequest(email, password) {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
     try {
-      await auth.singInWithEmailAndPassword(email, password);
+      await auth.signInWithEmailAndPassword(email, password);
     } catch (error) {
       dispatch(signUpError(error.message));
     }
@@ -57,7 +57,9 @@ export function syncSignIn() {
     }
 
     const response = await api.signUp({
-      Authorization: `Bearer ${token}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (response.errorMessage) {
