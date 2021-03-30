@@ -31,11 +31,21 @@ function makeApi(request = makeRequest()) {
       requestMethod: "GET",
     });
   }
+
+  function getUsers(headers) {
+    return request({
+      url: "/users",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
   return {
     login: login,
     signUp: signUp,
     signOut: signOut,
     getUserById: getUserById,
+    getUsers: getUsers,
   };
 }
 
