@@ -96,6 +96,14 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function getRecommendedTracks(headers) {
+    return request({
+      url: "/me/tracks/recommended",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
   return {
     login: login,
     signUp: signUp,
@@ -106,6 +114,10 @@ function makeApi(request = makeRequest()) {
     getFollowingUsers: getFollowingUsers,
     getFollowersUsers: getFollowersUsers,
     getPopularUsers: getPopularUsers,
+    getTrackById: getTrackById,
+    getTracks: getTracks,
+    getPopularTracks: getPopularTracks,
+    getRecommendedTracks: getRecommendedTracks,
   };
 }
 
