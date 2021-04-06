@@ -88,6 +88,14 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function getPopularTracks(headers) {
+    return request({
+      url: "/tracks/popular",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
   return {
     login: login,
     signUp: signUp,
