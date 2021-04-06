@@ -80,6 +80,14 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function getTracks(headers) {
+    return request({
+      url: "/tracks",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
   return {
     login: login,
     signUp: signUp,
