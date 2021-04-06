@@ -73,6 +73,13 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function getTrackById(trackID) {
+    return request({
+      url: `/tracks/${trackID}`,
+      requestMethod: "GET",
+    });
+  }
+
   return {
     login: login,
     signUp: signUp,
