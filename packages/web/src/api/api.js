@@ -73,6 +73,38 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function getPlaylists(headers) {
+    return request({
+      url: "/playlists/popular",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
+  function getOwnPlaylists(headers) {
+    return request({
+      url: "/me/playlists/",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
+  function getFollowingPlaylists(headers) {
+    return request({
+      url: "/me/playlists/following",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
+  function getPopularPlaylists(headers) {
+    return request({
+      url: "/playlists/popular",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
   function getTrackById(trackID) {
     return request({
       url: `/tracks/${trackID}`,
@@ -114,6 +146,10 @@ function makeApi(request = makeRequest()) {
     getFollowingUsers: getFollowingUsers,
     getFollowersUsers: getFollowersUsers,
     getPopularUsers: getPopularUsers,
+    getPlaylists: getPlaylists,
+    getOwnPlaylists: getOwnPlaylists,
+    getFollowingPlaylists: getFollowingPlaylists,
+    getPopularPlaylists: getPopularPlaylists,
     getTrackById: getTrackById,
     getTracks: getTracks,
     getPopularTracks: getPopularTracks,
