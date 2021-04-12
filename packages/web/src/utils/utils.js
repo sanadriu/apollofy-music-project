@@ -15,3 +15,10 @@ export const validateName = (value) => {
   return nameRegex.test(value) ? "" : "Invalid name!";
 };
 
+export const validateEmail = (email) => {
+  const emailRegex = RegExp(
+    /^([a-z\d.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
+  );
+  return emailRegex.test(email) ? "" : "Invalid email!";
+};
+
