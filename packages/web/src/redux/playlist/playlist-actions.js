@@ -82,7 +82,7 @@ export function createPlaylist({ name, thumbnail, publicAccessible }) {
     if (res.isSuccessful) {
       dispatch(playlistCreateSuccess(res.data));
     } else {
-      dispatch(playlistCreateError(res.error));
+      dispatch(playlistCreateError(res.errorMessage));
     }
   };
 }
@@ -96,7 +96,7 @@ export function updatePlaylist(playlist) {
     if (res.isSuccessful) {
       dispatch(playlistUpdateSuccess(res.data));
     } else {
-      dispatch(playlistUpdateError(res.error));
+      dispatch(playlistUpdateError(res.errorMessage));
     }
   };
 }
@@ -138,7 +138,7 @@ export function fetchOwnPlaylists() {
         }),
       );
     } else {
-      dispatch(fetchPlaylistError(res.error));
+      dispatch(fetchPlaylistError(res.errorMessage));
     }
   };
 }
@@ -158,7 +158,7 @@ export function fetchAllPlaylists(filters) {
         }),
       );
     } else {
-      dispatch(fetchPlaylistsError(res.error));
+      dispatch(fetchPlaylistsError(res.errorMessage));
     }
   };
 }
@@ -179,7 +179,7 @@ export function fetchFollowingPlaylists() {
         }),
       );
     } else {
-      dispatch(fetchPlaylistsError(res.error));
+      dispatch(fetchPlaylistsError(res.errorMessage));
     }
   };
 }
@@ -200,7 +200,7 @@ export function fetchPopularPlaylists() {
         }),
       );
     } else {
-      dispatch(fetchPlaylistsError(res.error));
+      dispatch(fetchPlaylistsError(res.errorMessage));
     }
   };
 }
@@ -214,7 +214,7 @@ export function fetchPlaylistById(playlistID) {
     if (res.isSuccessful) {
       dispatch(fetchPlaylistSuccess(res.data));
     } else {
-      dispatch(fetchPlaylistError(res.error));
+      dispatch(fetchPlaylistError(res.errorMessage));
     }
   };
 }
