@@ -22,3 +22,7 @@ export const validateEmail = (email) => {
   return emailRegex.test(email) ? "" : "Invalid email!";
 };
 
+export const validatePassword = (password) => {
+  const passRegex = RegExp(/^[#\w@_-]+$/i);
+  return passRegex.test(password) ? "" : "Invalid Password!";
+};
