@@ -10,3 +10,8 @@ export const makePrefix = (prefix) => {
   };
 };
 
+export const validateName = (value) => {
+  const nameRegex = RegExp(/^[a-zA-z\d_-]+$/i);
+  return nameRegex.test(value) ? "" : "Invalid name!";
+};
+
