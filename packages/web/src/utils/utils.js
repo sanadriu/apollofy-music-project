@@ -4,3 +4,9 @@ export const formatDuration = (duration) => {
   return `${durMins}:${durSecs}`;
 };
 
+export const makePrefix = (prefix) => {
+  return function getTestId(dataTestId) {
+    return `${prefix}-${dataTestId}`;
+  };
+};
+
