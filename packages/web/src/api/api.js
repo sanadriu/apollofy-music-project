@@ -34,6 +34,14 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function getGenres(headers) {
+    return request({
+      url: "/genres",
+      requestMethod: "GET",
+      headers: headers,
+    });
+  }
+
   function getUserById(userID) {
     return request({
       url: `/users/${userID}`,
@@ -141,6 +149,7 @@ function makeApi(request = makeRequest()) {
     signUp: signUp,
     signOut: signOut,
     search: search,
+    getGenres: getGenres,
     getUserById: getUserById,
     getUsers: getUsers,
     getFollowingUsers: getFollowingUsers,
