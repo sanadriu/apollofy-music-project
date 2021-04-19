@@ -113,6 +113,14 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function createTrack(body) {
+    return request({
+      url: "/tracks",
+      requestMethod: "POST",
+      body: body,
+    });
+  }
+
   function getTrackById(trackID) {
     return request({
       url: `/tracks/${trackID}`,
@@ -159,6 +167,7 @@ function makeApi(request = makeRequest()) {
     getOwnPlaylists: getOwnPlaylists,
     getFollowingPlaylists: getFollowingPlaylists,
     getPopularPlaylists: getPopularPlaylists,
+    createTrack: createTrack,
     getTrackById: getTrackById,
     getTracks: getTracks,
     getPopularTracks: getPopularTracks,
