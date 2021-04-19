@@ -1,5 +1,6 @@
 import * as UploaderTypes from "./uploader-types";
 import { getFileUrl, fileTypes } from "../../services/cloudinary";
+import api from "../../api";
 
 export const uploadSongRequest = () => ({
   type: UploaderTypes.UPLOAD_SONG_REQUEST,
@@ -41,17 +42,29 @@ export function uploadSong({
     getFileUrl({
       file: file,
       fileType: fileTypes.AUDIO,
+      title: name,
       onUploadProgress: onUploadProgress,
     })
       .then((res) => {
         // eslint-disable-next-line no-console
-        console.log(res.data.url);
-        dispatch(uploadSongSuccess(res.data.url));
+        console.log(res.data);
+        const songUrl = res.data.url;
+
+        const response = api.createTrack({
+          title: name,
+          url: songUrl,
+        });
+
+        if (response.errorMessage) {
+          return dispatch(uploadSongError(response.errorMessage));
+        }
+
+        return dispatch(uploadSongSuccess(response));
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err);
-        dispatch(uploadSongError(err));
+        return dispatch(uploadSongError(err));
       });
   };
 }
@@ -71,14 +84,23 @@ export function uploadImage({
       onUploadProgress: onUploadProgress,
     })
       .then((res) => {
-        // eslint-disable-next-line no-console
-        console.log(res.data.url);
-        dispatch(uploadImageSuccess(res.data.url));
+        const imageUrl = res.data.url;
+
+        const response = api.createTrack({
+          title: name,
+          url: imageUrl,
+        });
+
+        if (response.errorMessage) {
+          return dispatch(uploadImageError(response.errorMessage));
+        }
+
+        return dispatch(uploadImageSuccess(response));
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err);
-        dispatch(uploadImageError(err));
+        return dispatch(uploadImageError(err));
       });
   };
 }
