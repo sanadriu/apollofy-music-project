@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
-const { isEmail } = require("validator");
 
 const TrackSchema = Schema(
   {
@@ -11,10 +10,6 @@ const TrackSchema = Schema(
     },
     url: {
       type: String,
-      validate: {
-        validator: (value) => isEmail(value),
-        message: (props) => `The url ${props.value} is not valid`,
-      },
       required: false,
     },
     thumbnail: {
@@ -42,18 +37,33 @@ const TrackSchema = Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
     },
-    playlists: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "playlist",
-      },
-    ],
-    likedBy: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "user",
-      },
-    ],
+    artistId: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "user",
+        },
+      ],
+      default: [],
+    },
+    playlists: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "playlist",
+        },
+      ],
+      default: [],
+    },
+    likedBy: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "user",
+        },
+      ],
+      default: [],
+    },
   },
   {
     timestamps: true,
