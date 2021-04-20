@@ -113,11 +113,12 @@ function makeApi(request = makeRequest()) {
     });
   }
 
-  function createTrack(body) {
+  function createTrack({ body, headers = {} }) {
     return request({
       url: "/tracks",
       requestMethod: "POST",
       body: body,
+      headers: headers,
     });
   }
 
