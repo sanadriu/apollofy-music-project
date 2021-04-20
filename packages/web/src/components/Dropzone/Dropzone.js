@@ -26,9 +26,9 @@ function Dropzone({ fileType, onFileSelected }) {
           <p>Drag n drop some files here, or click to select files</p>
         </div>
       </section>
-      <aside>
-        <h4>Files</h4>
-        <ul>{files}</ul>
+      <aside className="my-2">
+        <h4 className="text-dark font-bold">Files</h4>
+        <ul className="text-dark">{files}</ul>
       </aside>
     </div>
   );
