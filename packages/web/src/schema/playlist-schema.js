@@ -1,13 +1,20 @@
 import { normalize, schema } from "normalizr";
 import { track } from "./track-schema";
 
-const owner = new schema.Entity("users");
+const playlist = new schema.Entity("playlists", {}, { idAttribute: "_id" });
 
-const playlist = new schema.Entity("playlists", {
-  owner: owner,
-  tracks: track,
-});
+const fullPlaylist = new schema.Entity(
+  "playlists",
+  {
+    tracks: [track],
+  },
+  { idAttribute: "_id" },
+);
 
 export function normalizePlaylists(playlists) {
   return normalize(playlists, [playlist]);
+}
+
+export function normalizeFullPlaylists(playlists) {
+  return normalize(playlists, [fullPlaylist]);
 }
