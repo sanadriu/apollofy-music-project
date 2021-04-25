@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable spaced-comment */
 import * as PlaylistType from "./playlist-types";
 
 export const PlaylistInitState = {
@@ -83,6 +85,9 @@ const PlaylistReducer = (state = PlaylistInitState, action) => {
     }
     case PlaylistType.FETCH_PLAYLISTS_SUCCESS: {
       const actionType = action.payload.type;
+      const newIds = { ...state.ids };
+      newIds[actionType] = [...state.ids[actionType], ...action.payload.ids];
+
       return {
         ...state,
         playlistsLoading: false,
@@ -92,10 +97,7 @@ const PlaylistReducer = (state = PlaylistInitState, action) => {
           ...state.byID,
           ...action.payload.byID,
         },
-        ids: {
-          ...state.ids,
-          actionType: [...state.ids[actionType], ...action.payload.ids],
-        },
+        ids: newIds,
       };
     }
     case PlaylistType.FETCH_PLAYLIST_REQUEST: {
