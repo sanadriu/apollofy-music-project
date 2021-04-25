@@ -1,4 +1,5 @@
 import { makeRequest } from "./api-utils";
+import { urlWithQuery } from "../utils/utils";
 
 function makeApi(request = makeRequest()) {
   function login(body) {
@@ -83,7 +84,7 @@ function makeApi(request = makeRequest()) {
 
   function getPlaylists(headers) {
     return request({
-      url: "/playlists/popular",
+      url: urlWithQuery("/playlists", "fullFetch", true),
       requestMethod: "GET",
       headers: headers,
     });
@@ -91,7 +92,7 @@ function makeApi(request = makeRequest()) {
 
   function getOwnPlaylists(headers) {
     return request({
-      url: "/me/playlists/",
+      url: "/me/playlists",
       requestMethod: "GET",
       headers: headers,
     });
