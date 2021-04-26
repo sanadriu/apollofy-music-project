@@ -75,8 +75,7 @@ export const fetchPlaylistSuccess = (playlist) => ({
   payload: playlist,
 });
 
-export function createPlaylist({ name, thumbnail, publicAccessible }) {
-export function createPlaylist({ title, type, publicAccessible }) {
+export function createPlaylist({ title, type, thumbnail, publicAccessible }) {
   return async function createThunk(dispatch) {
     dispatch(playlistCreateRequest());
 
@@ -91,6 +90,7 @@ export function createPlaylist({ title, type, publicAccessible }) {
         body: {
           title: title,
           type: type,
+          thumbnail: thumbnail,
           publicAccessible: publicAccessible,
         },
         headers: {
@@ -105,25 +105,6 @@ export function createPlaylist({ title, type, publicAccessible }) {
       return dispatch(playlistCreateSuccess(res.data));
     } catch (err) {
       return dispatch(playlistCreateError(err));
-    }
-  };
-}
-
-  return async function createPlaylistThunk(dispatch) {
-    dispatch(playlistCreateRequest());
-
-    const requestBody = {
-      name: name,
-      thumbnail: thumbnail,
-      publicAccessible: publicAccessible,
-    };
-
-    const res = await api.createPlaylist(requestBody);
-
-    if (res.isSuccessful) {
-      dispatch(playlistCreateSuccess(res.data));
-    } else {
-      dispatch(playlistCreateError(res.errorMessage));
     }
   };
 }
@@ -186,15 +167,14 @@ export function fetchOwnPlaylists() {
 
 export function fetchAllPlaylists() {
   return async function fetchPlaylistsThunk(dispatch) {
-    dispatch(fetchPlaylistsRequest());
+    dispatch(fetchPlaylistRequest());
 
     try {
       const userToken = await getCurrentUserToken();
 
-      // eslint-disable-next-line spaced-comment
-      /*if (!userToken) {
-        return dispatch(fetchPlaylistsError("User token null!"));
-      }*/
+      if (!userToken) {
+        return dispatch(signOutSuccess());
+      }
 
       const res = await api.getPlaylists({
         Authorization: `Bearer ${userToken}`,
@@ -204,22 +184,17 @@ export function fetchAllPlaylists() {
         return dispatch(fetchPlaylistsError(res.errorMessage));
       }
 
-      console.log("BEFORE NORMALIZATION");
-      console.log(res.data.data);
-      // eslint-disable-next-line spaced-comment
-      //const normalizedPlaylists = normalizePlaylists(res.data.data);
       const normalizedPlaylists = normalizeFullPlaylists(res.data.data);
-      console.log("NORMALIZED DATA!");
-      console.log(normalizedPlaylists);
 
       return dispatch(
         fetchPlaylistsSuccess({
-          byID: normalizedPlaylists.entities.playlists,
-          ids: normalizedPlaylists.result,
+          playlistByID: normalizedPlaylists.entities.playlists,
+          trackByID: normalizedPlaylists.entities.tracks,
+          playlistIds: normalizedPlaylists.result,
         }),
       );
     } catch (err) {
-      return dispatch(fetchPlaylistsError(err));
+      return dispatch(fetchPlaylistError(err));
     }
   };
 }
