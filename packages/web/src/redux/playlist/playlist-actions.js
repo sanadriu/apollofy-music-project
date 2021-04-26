@@ -1,7 +1,12 @@
+/* eslint-disable no-console */
 import * as PlaylistTypes from "./playlist-types";
 import { playlistTypes } from "./playlist-types";
 import api from "../../api";
-import { normalizePlaylists } from "../../schema/playlist-schema";
+import {
+  normalizePlaylists,
+  normalizeFullPlaylists,
+} from "../../schema/playlist-schema";
+import { getCurrentUserToken } from "../../services/auth";
 
 export const playlistCreateRequest = () => ({
   type: PlaylistTypes.CREATE_PLAYLIST_REQUEST,
@@ -143,22 +148,42 @@ export function fetchOwnPlaylists() {
   };
 }
 
-export function fetchAllPlaylists(filters) {
+export function fetchAllPlaylists() {
   return async function fetchPlaylistsThunk(dispatch) {
     dispatch(fetchPlaylistsRequest());
 
-    const res = await api.getPlaylists(filters);
+    try {
+      const userToken = await getCurrentUserToken();
 
-    if (res.isSuccessful) {
-      const normalizedPlaylists = normalizePlaylists(res.data);
-      dispatch(
+      // eslint-disable-next-line spaced-comment
+      /*if (!userToken) {
+        return dispatch(fetchPlaylistsError("User token null!"));
+      }*/
+
+      const res = await api.getPlaylists({
+        Authorization: `Bearer ${userToken}`,
+      });
+
+      if (res.errorMessage) {
+        return dispatch(fetchPlaylistsError(res.errorMessage));
+      }
+
+      console.log("BEFORE NORMALIZATION");
+      console.log(res.data.data);
+      // eslint-disable-next-line spaced-comment
+      //const normalizedPlaylists = normalizePlaylists(res.data.data);
+      const normalizedPlaylists = normalizeFullPlaylists(res.data.data);
+      console.log("NORMALIZED DATA!");
+      console.log(normalizedPlaylists);
+
+      return dispatch(
         fetchPlaylistsSuccess({
           byID: normalizedPlaylists.entities.playlists,
           ids: normalizedPlaylists.result,
         }),
       );
-    } else {
-      dispatch(fetchPlaylistsError(res.errorMessage));
+    } catch (err) {
+      return dispatch(fetchPlaylistsError(err));
     }
   };
 }
