@@ -2,7 +2,7 @@ import React from "react";
 import { node } from "prop-types";
 
 function HomeLayout({ children }) {
-  return <div className="flex flex-row w-full h-screen">{children}</div>;
+  return <div className="flex flex-col w-full h-screen">{children}</div>;
 }
 
 HomeLayout.propTypes = {

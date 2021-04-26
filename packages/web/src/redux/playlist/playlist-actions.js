@@ -1,7 +1,17 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 import * as PlaylistTypes from "./playlist-types";
 import { playlistTypes } from "./playlist-types";
+
+import { signOutSuccess } from "../auth/auth-actions";
+
 import api from "../../api";
-import { normalizePlaylists } from "../../schema/playlist-schema";
+import {
+  normalizePlaylists,
+  normalizeFullPlaylists,
+} from "../../schema/playlist-schema";
+
+import { getCurrentUserToken } from "../../services/auth";
 
 export const playlistCreateRequest = () => ({
   type: PlaylistTypes.CREATE_PLAYLIST_REQUEST,
@@ -42,13 +52,15 @@ export const fetchPlaylistsError = (message) => ({
 
 export const fetchPlaylistsSuccess = ({
   fetchType = playlistTypes.ALL,
-  byID,
-  ids,
+  playlistByID,
+  trackByID,
+  playlistIds,
 }) => ({
   type: PlaylistTypes.FETCH_PLAYLISTS_SUCCESS,
   payload: {
-    byID: byID,
-    ids: ids,
+    playlistByID: playlistByID,
+    trackByID: trackByID,
+    playlistIds: playlistIds,
     type: fetchType,
   },
 });
@@ -67,22 +79,36 @@ export const fetchPlaylistSuccess = (playlist) => ({
   payload: playlist,
 });
 
-export function createPlaylist({ name, thumbnail, publicAccessible }) {
-  return async function createPlaylistThunk(dispatch) {
+export function createPlaylist({ title, type, thumbnail, publicAccessible }) {
+  return async function createThunk(dispatch) {
     dispatch(playlistCreateRequest());
 
-    const requestBody = {
-      name: name,
-      thumbnail: thumbnail,
-      publicAccessible: publicAccessible,
-    };
+    try {
+      const userToken = await getCurrentUserToken();
 
-    const res = await api.createPlaylist(requestBody);
+      if (!userToken) {
+        return dispatch(signOutSuccess());
+      }
 
-    if (res.isSuccessful) {
-      dispatch(playlistCreateSuccess(res.data));
-    } else {
-      dispatch(playlistCreateError(res.errorMessage));
+      const res = await api.createPlaylist({
+        body: {
+          title: title,
+          type: type,
+          thumbnail: thumbnail,
+          publicAccessible: publicAccessible,
+        },
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
+      if (res.errorMessage) {
+        return dispatch(playlistCreateError(res.errorMessage));
+      }
+
+      return dispatch(playlistCreateSuccess(res.data));
+    } catch (err) {
+      return dispatch(playlistCreateError(err));
     }
   };
 }
@@ -143,22 +169,37 @@ export function fetchOwnPlaylists() {
   };
 }
 
-export function fetchAllPlaylists(filters) {
+export function fetchAllPlaylists() {
   return async function fetchPlaylistsThunk(dispatch) {
-    dispatch(fetchPlaylistsRequest());
+    dispatch(fetchPlaylistRequest());
 
-    const res = await api.getPlaylists(filters);
+    try {
+      const userToken = await getCurrentUserToken();
 
-    if (res.isSuccessful) {
-      const normalizedPlaylists = normalizePlaylists(res.data);
-      dispatch(
+      if (!userToken) {
+        console.log(userToken);
+        return dispatch(signOutSuccess());
+      }
+
+      const res = await api.getPlaylists({
+        Authorization: `Bearer ${userToken}`,
+      });
+
+      if (res.errorMessage) {
+        return dispatch(fetchPlaylistsError(res.errorMessage));
+      }
+
+      const normalizedData = normalizeFullPlaylists(res.data.data);
+
+      return dispatch(
         fetchPlaylistsSuccess({
-          byID: normalizedPlaylists.entities.playlists,
-          ids: normalizedPlaylists.result,
+          playlistByID: normalizedData.entities.playlists,
+          trackByID: normalizedData.entities.tracks,
+          playlistIds: normalizedData.result,
         }),
       );
-    } else {
-      dispatch(fetchPlaylistsError(res.errorMessage));
+    } catch (err) {
+      return dispatch(fetchPlaylistError(err));
     }
   };
 }

@@ -5,12 +5,7 @@ import { useDispatch } from "react-redux";
 import "./styles/App.scss";
 
 import * as ROUTES from "./routes";
-import Home from "./pages/Home";
-import SignUp from "./pages/SignUp";
-import Login from "./pages/Login";
-import ResetPassword from "./pages/ResetPassword";
-import UploadSong from "./pages/UploadSong";
-import UploadImage from "./pages/UploadImage";
+import * as PAGES from "./pages";
 
 import { onAuthStateChanged } from "./services/auth";
 import { syncSignIn, signOut } from "./redux/auth/auth-actions";
@@ -39,12 +34,27 @@ function App() {
   return (
     <div className="App__container">
       <Switch>
-        <Route path={ROUTES.SIGN_UP} component={SignUp} />
-        <Route path={ROUTES.LOGIN} component={Login} />
-        <Route path={ROUTES.UPLOAD_SONG} component={UploadSong} />
-        <Route path={ROUTES.UPLOAD_IMAGE} component={UploadImage} />
-        <Route path={ROUTES.RESET_PASSWORD} component={ResetPassword} />
-        <Route path={ROUTES.HOME} component={Home} exact />
+        <Route path={ROUTES.SIGN_UP} component={PAGES.SignUp} />
+        <Route path={ROUTES.LOGIN} component={PAGES.Login} />
+        <Route path={ROUTES.UPLOAD_SONG} component={PAGES.UploadSong} />
+        <Route path={ROUTES.UPLOAD_IMAGE} component={PAGES.UploadImage} />
+        <Route path={ROUTES.CREATE_PLAYLIST} component={PAGES.CreatePlaylist} />
+        <Route
+          path={ROUTES.WEB_PLAYER_PLAYLIST}
+          component={PAGES.WebPlayerPlaylist}
+        />
+        <Route
+          path={ROUTES.WEB_PLAYER_LIBRARY}
+          component={PAGES.WebPlayerLibrary}
+        />
+        <Route
+          path={ROUTES.WEB_PLAYER_SEARCH}
+          component={PAGES.WebPlayerSearch}
+        />
+        <Route path={ROUTES.WEB_PLAYER_HOME} component={PAGES.WebPlayerHome} />
+
+        <Route path={ROUTES.RESET_PASSWORD} component={PAGES.ResetPassword} />
+        <Route path={ROUTES.HOME} component={PAGES.Home} exact />
       </Switch>
     </div>
   );

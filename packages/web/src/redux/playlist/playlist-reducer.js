@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable spaced-comment */
 import * as PlaylistType from "./playlist-types";
 
 export const PlaylistInitState = {
@@ -11,8 +13,9 @@ export const PlaylistInitState = {
   playlistLoading: false,
   playlistLoadingError: null,
   playlistFetched: false,
-  byID: {},
-  ids: {
+  playlistByID: {},
+  trackByID: {},
+  playlistIds: {
     ALL: [],
     OWN: [],
     FOLLOWING: [],
@@ -83,19 +86,23 @@ const PlaylistReducer = (state = PlaylistInitState, action) => {
     }
     case PlaylistType.FETCH_PLAYLISTS_SUCCESS: {
       const actionType = action.payload.type;
+      const newIds = { ...state.playlistIds };
+      newIds[actionType] = [...action.payload.playlistIds];
+
       return {
         ...state,
         playlistsLoading: false,
         playlistsLoadingError: null,
         playlistsFetched: true,
-        byID: {
-          ...state.byID,
-          ...action.payload.byID,
+        playlistByID: {
+          ...state.playlistByID,
+          ...action.payload.playlistByID,
         },
-        ids: {
-          ...state.ids,
-          actionType: [...state.ids[actionType], ...action.payload.ids],
+        trackByID: {
+          ...state.trackByID,
+          ...action.payload.trackByID,
         },
+        playlistIds: newIds,
       };
     }
     case PlaylistType.FETCH_PLAYLIST_REQUEST: {
@@ -120,8 +127,8 @@ const PlaylistReducer = (state = PlaylistInitState, action) => {
         playlistLoading: false,
         playlistLoadingError: null,
         playlistFetched: true,
-        byID: {
-          ...state.byID,
+        playlistByID: {
+          ...state.playlistByID,
           [playlistID]: {
             ...action.payload.data,
           },
@@ -129,7 +136,7 @@ const PlaylistReducer = (state = PlaylistInitState, action) => {
       };
     }
     default: {
-      return state;
+      return { ...state };
     }
   }
 };

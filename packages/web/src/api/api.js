@@ -1,4 +1,5 @@
 import { makeRequest } from "./api-utils";
+import { urlWithQuery } from "../utils/utils";
 
 function makeApi(request = makeRequest()) {
   function login(body) {
@@ -81,9 +82,18 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function createPlaylist({ body, headers }) {
+    return request({
+      url: "/playlists",
+      requestMethod: "POST",
+      body: body,
+      headers: headers,
+    });
+  }
+
   function getPlaylists(headers) {
     return request({
-      url: "/playlists/popular",
+      url: urlWithQuery("/playlists", "fullFetch", true),
       requestMethod: "GET",
       headers: headers,
     });
@@ -91,7 +101,7 @@ function makeApi(request = makeRequest()) {
 
   function getOwnPlaylists(headers) {
     return request({
-      url: "/me/playlists/",
+      url: "/me/playlists",
       requestMethod: "GET",
       headers: headers,
     });
@@ -164,6 +174,7 @@ function makeApi(request = makeRequest()) {
     getFollowingUsers: getFollowingUsers,
     getFollowersUsers: getFollowersUsers,
     getPopularUsers: getPopularUsers,
+    createPlaylist: createPlaylist,
     getPlaylists: getPlaylists,
     getOwnPlaylists: getOwnPlaylists,
     getFollowingPlaylists: getFollowingPlaylists,

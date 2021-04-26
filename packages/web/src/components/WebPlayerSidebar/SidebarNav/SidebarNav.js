@@ -7,7 +7,7 @@ import Logo from "../../Logo/Logo";
 import NavHomeButton from "./NavHomeButton";
 import NavSearchButton from "./NavSearchButton";
 import NavLibraryButton from "./NavLibraryButton";
-import { ROUTES } from "../../../routes/routes";
+import * as ROUTES from "../../../routes";
 
 function SidebarNav() {
   return (

@@ -26,3 +26,7 @@ export const validatePassword = (password) => {
   const passRegex = RegExp(/^[#\w@_-]+$/i);
   return passRegex.test(password) ? "" : "Invalid Password!";
 };
+
+export const urlWithQuery = (url, key, value) => {
+  return `${url}?${key}=${value}`;
+};
