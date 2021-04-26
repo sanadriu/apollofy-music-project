@@ -14,7 +14,7 @@ export const PlaylistInitState = {
   playlistLoadingError: null,
   playlistFetched: false,
   playlistByID: {},
-  trackById: {},
+  trackByID: {},
   playlistIds: {
     ALL: [],
     OWN: [],
@@ -87,7 +87,7 @@ const PlaylistReducer = (state = PlaylistInitState, action) => {
     case PlaylistType.FETCH_PLAYLISTS_SUCCESS: {
       const actionType = action.payload.type;
       const newIds = { ...state.playlistIds };
-      newIds[actionType] = [...action.payload.ids];
+      newIds[actionType] = [...action.payload.playlistIds];
 
       return {
         ...state,

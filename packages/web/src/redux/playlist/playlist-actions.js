@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import * as PlaylistTypes from "./playlist-types";
 import { playlistTypes } from "./playlist-types";
@@ -9,6 +10,7 @@ import {
   normalizePlaylists,
   normalizeFullPlaylists,
 } from "../../schema/playlist-schema";
+
 import { getCurrentUserToken } from "../../services/auth";
 
 export const playlistCreateRequest = () => ({
@@ -50,13 +52,15 @@ export const fetchPlaylistsError = (message) => ({
 
 export const fetchPlaylistsSuccess = ({
   fetchType = playlistTypes.ALL,
-  byID,
-  ids,
+  playlistByID,
+  trackByID,
+  playlistIds,
 }) => ({
   type: PlaylistTypes.FETCH_PLAYLISTS_SUCCESS,
   payload: {
-    byID: byID,
-    ids: ids,
+    playlistByID: playlistByID,
+    trackByID: trackByID,
+    playlistIds: playlistIds,
     type: fetchType,
   },
 });
@@ -173,6 +177,7 @@ export function fetchAllPlaylists() {
       const userToken = await getCurrentUserToken();
 
       if (!userToken) {
+        console.log(userToken);
         return dispatch(signOutSuccess());
       }
 
@@ -184,13 +189,13 @@ export function fetchAllPlaylists() {
         return dispatch(fetchPlaylistsError(res.errorMessage));
       }
 
-      const normalizedPlaylists = normalizeFullPlaylists(res.data.data);
+      const normalizedData = normalizeFullPlaylists(res.data.data);
 
       return dispatch(
         fetchPlaylistsSuccess({
-          playlistByID: normalizedPlaylists.entities.playlists,
-          trackByID: normalizedPlaylists.entities.tracks,
-          playlistIds: normalizedPlaylists.result,
+          playlistByID: normalizedData.entities.playlists,
+          trackByID: normalizedData.entities.tracks,
+          playlistIds: normalizedData.result,
         }),
       );
     } catch (err) {
