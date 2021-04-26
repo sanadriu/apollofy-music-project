@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Redirect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
+
 import * as ROUTES from "../../routes";
 
 import Checkbox from "../../components/Checkbox";

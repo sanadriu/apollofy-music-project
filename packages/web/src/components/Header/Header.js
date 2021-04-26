@@ -34,6 +34,9 @@ function Header() {
           <li className="mr-4 px-3 py-2 bg-gray-600">
             <NavLink to={ROUTES.RESET_PASSWORD}>Reset password</NavLink>
           </li>
+          <li className="mr-4 px-3 py-2 bg-gray-600">
+            <NavLink to={ROUTES.WEB_PLAYER_HOME}>WebPlayer</NavLink>
+          </li>
         </ul>
 
         {isAuthenticated && (
