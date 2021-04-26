@@ -15,11 +15,9 @@ import {
 } from "../../components/WebPlayerLayout";
 
 import { selectPlaylistState } from "../../redux/playlist/playlist-selector";
-import { selectUserState } from "../../redux/user/user-selectors";
 import { authSelector } from "../../redux/auth/auth-selectors";
 
 import { fetchAllPlaylists } from "../../redux/playlist/playlist-actions";
-import { fetchAllUsers } from "../../redux/user/user-actions";
 
 import WebPlayerSidebar from "../../components/WebPlayerSidebar/WebPlayerSidebar";
 import WebPlayerMainView from "../../components/WebPlayerMainView/WebPlayerMainView";
@@ -33,16 +31,8 @@ function WebPlayerHome(props) {
   const history = useHistory();
 
   const {
-    byID: usersByID,
-    ids: usersIds,
-    usersLoading,
-    usersLoadingError,
-    usersFetched,
-  } = useSelector(selectUserState);
-
-  const {
-    byID: playlistsByID,
-    ids: playlistsIds,
+    playlistByID,
+    playlistIds,
     playlistsLoading,
     playlistsLoadingError,
     playlistsFetched,
@@ -52,16 +42,16 @@ function WebPlayerHome(props) {
 
   useEffect(() => {
     //if (isAuthenticated)
-    if (!playlistsIds.ALL.length) {
-      dispatch(fetchAllPlaylists());
-    }
+    //if (!playlistIds.ALL.length) {
+    // eslint-disable-next-line no-console
+
+    dispatch(fetchAllPlaylists());
+    //}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   /*if (!isAuthenticated) {
-    // eslint-disable-next-line no-console
-    console.log("Not authenticated");
-    return <Redirect to={ROUTES.LOGIN} />;
+    return <Redirect to={ROUTES.HOME} />;
   }*/
 
   const handleCardClick = (id) => {
@@ -69,23 +59,22 @@ function WebPlayerHome(props) {
     console.log(`Card id: ${id}`);
 
     // eslint-disable-next-line react/prop-types
-    // `/web-player/playlists/${id}`
     history.push(`/web-player/playlists/${id}`);
   };
 
   // eslint-disable-next-line no-console
-  console.log(playlistsIds);
+  console.log(playlistIds);
 
   let playlists = [];
   if (playlistsFetched) {
-    playlists = playlistsIds.ALL.map((id, index) => {
+    playlists = playlistIds.ALL.map((id, index) => {
       return (
         <Card
           key={id}
           id={id}
-          title={playlistsByID[id].name}
-          thumbnail={playlistsByID[id].thumbnail}
-          subtitle={playlistsByID[id].description}
+          title={playlistByID[id].title}
+          thumbnail={playlistByID[id].thumbnail}
+          subtitle={playlistByID[id].description}
           handleClick={handleCardClick}
         />
       );
