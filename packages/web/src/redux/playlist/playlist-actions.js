@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
 import * as PlaylistTypes from "./playlist-types";
 import { playlistTypes } from "./playlist-types";
+
+import { signOutSuccess } from "../auth/auth-actions";
+
 import api from "../../api";
 import {
   normalizePlaylists,
@@ -73,6 +76,39 @@ export const fetchPlaylistSuccess = (playlist) => ({
 });
 
 export function createPlaylist({ name, thumbnail, publicAccessible }) {
+export function createPlaylist({ title, type, publicAccessible }) {
+  return async function createThunk(dispatch) {
+    dispatch(playlistCreateRequest());
+
+    try {
+      const userToken = await getCurrentUserToken();
+
+      if (!userToken) {
+        return dispatch(signOutSuccess());
+      }
+
+      const res = await api.createPlaylist({
+        body: {
+          title: title,
+          type: type,
+          publicAccessible: publicAccessible,
+        },
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
+      if (res.errorMessage) {
+        return dispatch(playlistCreateError(res.errorMessage));
+      }
+
+      return dispatch(playlistCreateSuccess(res.data));
+    } catch (err) {
+      return dispatch(playlistCreateError(err));
+    }
+  };
+}
+
   return async function createPlaylistThunk(dispatch) {
     dispatch(playlistCreateRequest());
 
