@@ -13,8 +13,9 @@ export const PlaylistInitState = {
   playlistLoading: false,
   playlistLoadingError: null,
   playlistFetched: false,
-  byID: {},
-  ids: {
+  playlistByID: {},
+  trackById: {},
+  playlistIds: {
     ALL: [],
     OWN: [],
     FOLLOWING: [],
@@ -85,19 +86,23 @@ const PlaylistReducer = (state = PlaylistInitState, action) => {
     }
     case PlaylistType.FETCH_PLAYLISTS_SUCCESS: {
       const actionType = action.payload.type;
-      const newIds = { ...state.ids };
-      newIds[actionType] = [...state.ids[actionType], ...action.payload.ids];
+      const newIds = { ...state.playlistIds };
+      newIds[actionType] = [...action.payload.ids];
 
       return {
         ...state,
         playlistsLoading: false,
         playlistsLoadingError: null,
         playlistsFetched: true,
-        byID: {
-          ...state.byID,
-          ...action.payload.byID,
+        playlistByID: {
+          ...state.playlistByID,
+          ...action.payload.playlistByID,
         },
-        ids: newIds,
+        trackByID: {
+          ...state.trackByID,
+          ...action.payload.trackByID,
+        },
+        playlistIds: newIds,
       };
     }
     case PlaylistType.FETCH_PLAYLIST_REQUEST: {
@@ -122,8 +127,8 @@ const PlaylistReducer = (state = PlaylistInitState, action) => {
         playlistLoading: false,
         playlistLoadingError: null,
         playlistFetched: true,
-        byID: {
-          ...state.byID,
+        playlistByID: {
+          ...state.playlistByID,
           [playlistID]: {
             ...action.payload.data,
           },
@@ -131,7 +136,7 @@ const PlaylistReducer = (state = PlaylistInitState, action) => {
       };
     }
     default: {
-      return state;
+      return { ...state };
     }
   }
 };
