@@ -82,6 +82,15 @@ function makeApi(request = makeRequest()) {
     });
   }
 
+  function createPlaylist({ body, headers }) {
+    return request({
+      url: "/playlists",
+      requestMethod: "POST",
+      body: body,
+      headers: headers,
+    });
+  }
+
   function getPlaylists(headers) {
     return request({
       url: urlWithQuery("/playlists", "fullFetch", true),
@@ -165,6 +174,7 @@ function makeApi(request = makeRequest()) {
     getFollowingUsers: getFollowingUsers,
     getFollowersUsers: getFollowersUsers,
     getPopularUsers: getPopularUsers,
+    createPlaylist: createPlaylist,
     getPlaylists: getPlaylists,
     getOwnPlaylists: getOwnPlaylists,
     getFollowingPlaylists: getFollowingPlaylists,
