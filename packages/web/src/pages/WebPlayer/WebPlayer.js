@@ -5,8 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory, withRouter } from "react-router-dom";
 import { node } from "prop-types";
 
-import "./WebPlayer.scss";
-
 import BasePageLayout from "../../components/BasePageLayout";
 import { Container, Column, Row } from "../../components/Layout";
 
