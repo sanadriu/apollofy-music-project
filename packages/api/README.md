@@ -21,12 +21,22 @@ The `api` package will be run by default in the following url:
 - `packages/api/src/config`: the config needed by the app
 - `packages/api/src/controllers`: the controllers used in the Routes of the app
 - `packages/api/src/db`: the logic to connect to the database
+- `packages/api/src/middlewares`: the middlewares used along the app
 - `packages/api/src/models`: the mongoose models used in the app
 - `packages/api/src/repositories`: the repositories that perform the DB
   operations
 - `packages/api/src/routes`: the routers used in the app
 - `packages/api/src/services`: the services used in the app, auth, logging, etc
 - `packages/api/src/utils`: helper functions
+
+### Technologies used
+
+- axios
+- body-parser
+- express
+- firebase-admin
+- geoip-lite
+- mongoose
 
 ### Firebase
 
@@ -62,6 +72,21 @@ FB_CERT_AUTH_URI=...
 FB_CERT_TOKEN_URI=...
 FB_CERT_AUTH_PROVIDER_X_509_CERT_URL=...
 FB_CERT_CLIENT_X_509_CERT_URL=...
+```
+
+### Server Running
+
+If you are in the `root` folder level, run the following command to start the
+server
+
+```bash
+yarn run dev:api
+```
+
+In case you are in the `package/api` folder level, simply run:
+
+```bash
+yarn run dev
 ```
 
 ## License

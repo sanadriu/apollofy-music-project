@@ -15,13 +15,111 @@ Server and Client App for the Apollofy Music Project.
 
 ## Getting Started
 
+These instructions will get you a copy of the project up and running on your
+local machine for development and testing purposes.
+
 See the `README.md` files in each one of the `packages/*`.
 
-## Monorepo
+### Monorepo
 
 This is a monorepo created with Yarn. The packages are `api` and `web`. Each one
 has scripts that can be executed either individually or from the root of the
 monorepo. See each `package.json` file to learn what scripts are available.
+
+## Contents and Branches Naming Strategy
+
+The repository is made up of several branches that include the contents of each
+section.
+
+The branches follow a naming strategy like the following:
+
+- `main`: includes the main contents and the instructions
+- `assembler-solution`: includes the solution
+- `assembler-solution-dev`: includes the solution under development
+- `live-session-authentication`: includes the implementation of a basic user
+  authentication
+- `live-session-songs`: includes the implementation of the create/fetch songs
+  features
+- `live-session-playlists`: includes the implementation of the create/fetch
+  playlists features
+- `live-session-statistics`: includes the implementation of the create/fetch
+  statistics features
+
+### Fetching All the Branches
+
+In order to fetch all the remote branches in the repository, you can use the
+following command:
+
+```sh
+$ git fetch --all
+```
+
+### List Both Remote Tracking Branches and Local Branches
+
+```sh
+$ git branch --all
+```
+
+Then, you can create a local branch based on a remote branch with the following
+command:
+
+```sh
+$ git checkout -b <new_branch_name> <remote_branch_name>
+```
+
+## Installing
+
+First, you will need to install the dependencies with: `yarn install`.
+
+Run the following command in your terminal after cloning the main repo:
+
+```sh
+$ yarn install
+```
+
+## Linting and formatting
+
+This project is setup using eslint and prettier for linting and code formatting.
+
+At Assembler School, we recommend that all our students use them since they
+provide great value with too much additional effort.
+
+Furthermore, it also includes the `husky` and `lint-staged` packages that allow
+you to run scripts on the files in the Git staging area before each commit or
+before pushing changes to a remote repo.
+
+## Technologies used
+
+### Server Side
+
+- axios
+- body-parser
+- express
+- firebase-admin
+- geoip-lite
+- mongoose
+
+### Client Side
+
+- axios
+- chart JS
+- cloudinary
+- craco
+- firebase
+- formik
+- normalizr
+- prop-types
+- particle JS
+- react
+- redux
+  - redux-persist
+  - redux-thunk
+  - redux-devtools-extension
+  - redux-logger
+- reselect
+- react-router-dom
+- tailwindcss
+- yup
 
 ## License
 
