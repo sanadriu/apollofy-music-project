@@ -1,5 +1,5 @@
 const path = require("path");
-const tailwindcss = require("tailwindcss");
+const tailwindcss = require("tailwindcss")("tailwind.config.js");
 const autoprefixer = require("autoprefixer");
 const postcssFocusVisible = require("postcss-focus-visible");
 
@@ -15,16 +15,17 @@ const purgecss = require("@fullhuman/postcss-purgecss");
   defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
 });*/
 
+// purgecss({
+// content: ["./src/**/*.html", "./src/**/*.js", "./src/**/*.ts"],
+// }),
+
 module.exports = {
   style: {
     postcss: {
       plugins: [
         tailwindcss,
-        postcssFocusVisible,
+        //  postcssFocusVisible,
         autoprefixer,
-        purgecss({
-          content: ["./src/**/*.html", "./src/**/*.js", "./src/**/*.ts"],
-        }),
       ],
     },
   },
