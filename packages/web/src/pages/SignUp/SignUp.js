@@ -17,9 +17,8 @@ import { authSelector } from "../../redux/auth/auth-selectors";
 
 function SignUp() {
   const dispatch = useDispatch();
-  const { isSigningUp, signUpError, isAuthenticated } = useSelector(
-    authSelector,
-  );
+  const { isSigningUp, signUpError, isAuthenticated } =
+    useSelector(authSelector);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
