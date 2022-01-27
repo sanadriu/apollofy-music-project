@@ -1,11 +1,12 @@
 const { Schema, Types, model } = require("mongoose");
-const { isEmail } = require("validator");
+const { isEmail, isDate, isURL } = require("validator");
 
 const UserSchema = Schema(
   {
     _id: {
       type: String,
       trim: true,
+      required: true,
     },
     email: {
       type: String,
@@ -20,10 +21,26 @@ const UserSchema = Schema(
     firstname: {
       type: String,
       trim: true,
+      maxlength: 50,
     },
     lastname: {
       type: String,
       trim: true,
+      maxlength: 50,
+    },
+    description: {
+      type: String,
+      trim: true,
+      maxlength: 250,
+    },
+    birth_date: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (value) =>
+          value ? isDate(value, { strictMode: true }) : true,
+        message: () => `Date is not valid`,
+      },
     },
     url_avatar: {
       type: String,

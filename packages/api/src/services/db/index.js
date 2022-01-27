@@ -23,7 +23,7 @@ function MongoMemoryServerInstance() {
 
   async function connect() {
     try {
-      await mongoose.connect(instance.getUri(), options);
+      await mongoose.connect(await instance.getUri(), options);
 
       mongoose.connection.on("error", (error) => log.error(error.message));
     } catch (error) {
