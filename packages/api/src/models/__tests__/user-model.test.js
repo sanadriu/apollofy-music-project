@@ -132,6 +132,38 @@ describe("user-schema", () => {
   //   test("5.2. Description must not have more than 250 chars", async () => {});
   // });
 
+  describe("6. Birth date", () => {
+    test("6.1. Birth date is trimmed", async () => {
+      expect.assertions(1);
+
+      const birth_date = "2000/01/01";
+
+      const user = {
+        ...createSampleUser(),
+        birth_date: ` ${birth_date} `,
+      };
+
+      const createdUser = await UserModel.create(user);
+
+      expect(createdUser).toHaveProperty("birth_date", birth_date);
+    });
+
+    test("6.2. Birth date must be with format 'YYYY/MM/DD' and valid", async () => {
+      expect.assertions(1);
+
+      const user = {
+        ...createSampleUser(),
+        birth_date: "1st January 2009",
+      };
+
+      try {
+        await UserModel.create(user);
+      } catch (error) {
+        expect(error.errors.birth_date.properties.type).toBe("user defined");
+      }
+    });
+  });
+
   // describe("7. URL avatar", () => {
   //   test("7.1. URL avatar is trimmed", async () => {});
   //   test("7.1. URL must be valid", async () => {});
