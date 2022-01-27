@@ -47,11 +47,6 @@ const TrackSchema = Schema(
       default: 0,
       min: 0,
     },
-    num_likes: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
     liked_by: {
       type: [Types.ObjectId],
       ref: "user",
@@ -77,6 +72,10 @@ const TrackSchema = Schema(
     versionKey: false,
   },
 );
+
+TrackSchema.virtual("num_likes").get(function () {
+  return this.liked_by.length();
+});
 
 const Track = model("track", TrackSchema);
 

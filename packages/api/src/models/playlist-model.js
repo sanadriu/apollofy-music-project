@@ -37,16 +37,6 @@ const PlaylistSchema = Schema(
         message: () => `Image thumbnail URL is invalid`,
       },
     },
-    num_tracks: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
-    num_followers: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
     tracks: {
       type: [Types.ObjectId],
       ref: "track",
@@ -65,6 +55,14 @@ const PlaylistSchema = Schema(
     versionKey: false,
   },
 );
+
+PlaylistSchema.virtual("num_followers").get(function () {
+  return this.followed_by.length();
+});
+
+PlaylistSchema.virtual("num_tracks").get(function () {
+  return this.tracks.length();
+});
 
 const Playlist = model("playlist", PlaylistSchema);
 

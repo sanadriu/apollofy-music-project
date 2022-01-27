@@ -40,11 +40,6 @@ const AlbumSchema = Schema(
       ref: "genre",
       trim: true,
     },
-    num_likes: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
     liked_by: {
       type: [Types.ObjectId],
       ref: "user",
@@ -65,6 +60,14 @@ const AlbumSchema = Schema(
     versionKey: false,
   },
 );
+
+AlbumSchema.virtual("num_likes").get(function () {
+  return this.liked_by.length();
+});
+
+AlbumSchema.virtual("num_tracks").get(function () {
+  return this.liked_by.length();
+});
 
 const Album = model("album", AlbumSchema);
 

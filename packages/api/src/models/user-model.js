@@ -30,31 +30,6 @@ const UserSchema = Schema(
         message: () => `Image thumbnail URL is invalid`,
       },
     },
-    num_liked_albums: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
-    num_liked_tracks: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
-    num_followed_playlists: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
-    num_followed_users: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
-    num_followers: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
     liked_albums: {
       type: [Types.ObjectId],
       ref: "album",
@@ -85,6 +60,26 @@ const UserSchema = Schema(
     versionKey: false,
   },
 );
+
+UserSchema.virtual("num_liked_albums").get(function () {
+  return this.liked_albums.length();
+});
+
+UserSchema.virtual("num_liked_tracks").get(function () {
+  return this.liked_tracks.length();
+});
+
+UserSchema.virtual("num_followed_playlists").get(function () {
+  return this.followed_playlists.length();
+});
+
+UserSchema.virtual("num_followed_users").get(function () {
+  return this.followed_users.length();
+});
+
+UserSchema.virtual("num_followers").get(function () {
+  return this.followers.length();
+});
 
 const User = model("user", UserSchema);
 

@@ -17,11 +17,28 @@ describe("user-schema", () => {
     email: "",
     firstname: "",
     lastname: "",
-    url_image: "",
-    url_thumbnail: "",
+    url_avatar: "",
   };
 
   describe("1. ID", () => {
     test("1.1. ID is required", async () => {});
   });
+
+  describe("2. Email", () => {});
+
+  describe("3. Firstname", () => {});
+
+  describe("4. Lastname", () => {});
+
+  describe("5. URL avatar", () => {});
+
+  describe("10. List of liked albums", () => {});
+
+  describe("11. List of liked tracks", () => {});
+
+  describe("12. List of followed playlists", () => {});
+
+  describe("13. List of followed users", () => {});
+
+  describe("14. List of followers", () => {});
 });
