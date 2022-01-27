@@ -3,7 +3,10 @@ const { isEmail } = require("validator");
 
 const UserSchema = Schema(
   {
-    _id: String,
+    _id: {
+      type: String,
+      trim: true,
+    },
     email: {
       type: String,
       required: [true, "The email is required"],
