@@ -10,6 +10,7 @@ function createSampleUser() {
     firstname: faker.name.firstName(),
     lastname: faker.name.lastName(),
     url_avatar: faker.image.imageUrl(),
+    description: generateRandomSequence(100),
   };
 }
 
@@ -117,20 +118,105 @@ describe("user-schema", () => {
     });
   });
 
-  // describe("3. Firstname", () => {
-  //   test("3.1. Firstname is trimmed", async () => {});
-  //   test("3.2. Firstname must not have more than 50 chars", async () => {});
-  // });
+  describe("3. Firstname", () => {
+    test("3.1. Firstname is trimmed", async () => {
+      expect.assertions(1);
 
-  // describe("4. Lastname", () => {
-  //   test("4.1. Lastname is trimmed", async () => {});
-  //   test("4.2. Lastname must not have more than 50 chars", async () => {});
-  // });
+      const firstname = faker.name.firstName();
 
-  // describe("5. Description", () => {
-  //   test("5.1. Description is trimmed", async () => {});
-  //   test("5.2. Description must not have more than 250 chars", async () => {});
-  // });
+      const user = {
+        ...createSampleUser(),
+        firstname: ` ${firstname} `,
+      };
+
+      const createdUser = await UserModel.create(user);
+
+      expect(createdUser).toHaveProperty("firstname", firstname);
+    });
+    test("3.2. Firstname must not have more than 50 chars", async () => {
+      expect.assertions(1);
+
+      const firstname = generateRandomSequence(100);
+
+      const user = {
+        ...createSampleUser(),
+        firstname: firstname,
+      };
+
+      try {
+        await UserModel.create(user);
+      } catch (error) {
+        expect(error.errors.firstname.properties.type).toBe("maxlength");
+      }
+    });
+  });
+
+  describe("4. Lastname", () => {
+    test("4.1. Lastname is trimmed", async () => {
+      expect.assertions(1);
+
+      const lastname = faker.name.lastName();
+
+      const user = {
+        ...createSampleUser(),
+        lastname: ` ${lastname} `,
+      };
+
+      const createdUser = await UserModel.create(user);
+
+      expect(createdUser).toHaveProperty("lastname", lastname);
+    });
+
+    test("4.2. Lastname must not have more than 50 chars", async () => {
+      expect.assertions(1);
+
+      const lastname = generateRandomSequence(100);
+
+      const user = {
+        ...createSampleUser(),
+        lastname: lastname,
+      };
+
+      try {
+        await UserModel.create(user);
+      } catch (error) {
+        expect(error.errors.lastname.properties.type).toBe("maxlength");
+      }
+    });
+  });
+
+  describe("5. Description", () => {
+    test("5.1. Description is trimmed", async () => {
+      expect.assertions(1);
+
+      const description = generateRandomSequence(100);
+
+      const user = {
+        ...createSampleUser(),
+        description: ` ${description} `,
+      };
+
+      const createdUser = await UserModel.create(user);
+
+      expect(createdUser).toHaveProperty("description", description);
+    });
+    test("5.2. Description must not have more than 250 chars", async () => {
+      expect.assertions(1);
+
+      const description = generateRandomSequence(300);
+
+      const user = {
+        ...createSampleUser(),
+        description: description,
+      };
+
+      try {
+        await UserModel.create(user);
+      } catch (error) {
+        expect(error.errors.description.properties.type).toBe("maxlength");
+      }
+    });
+  });
 
   describe("6. Birth date", () => {
     test("6.1. Birth date is trimmed", async () => {
@@ -148,7 +234,7 @@ describe("user-schema", () => {
       expect(createdUser).toHaveProperty("birth_date", birth_date);
     });
 
-    test("6.2. Birth date must be with format 'YYYY/MM/DD' and valid", async () => {
+    test("6.2. Birth date must be with format 'YYYY-MM-DD' and valid", async () => {
       expect.assertions(1);
 
       const user = {
@@ -164,10 +250,38 @@ describe("user-schema", () => {
     });
   });
 
-  // describe("7. URL avatar", () => {
-  //   test("7.1. URL avatar is trimmed", async () => {});
-  //   test("7.1. URL must be valid", async () => {});
-  // });
+  describe("7. URL avatar", () => {
+    test("7.1. URL avatar is trimmed", async () => {
+      expect.assertions(1);
+
+      const url_avatar = faker.image.imageUrl();
+
+      const user = {
+        ...createSampleUser(),
+        url_avatar: ` ${url_avatar} `,
+      };
+
+      const createdUser = await UserModel.create(user);
+
+      expect(createdUser).toHaveProperty("url_avatar", url_avatar);
+    });
+
+    test("7.2. URL must be valid", async () => {
+      expect.assertions(1);
+
+      const url_avatar = generateRandomSequence(50);
+
+      const user = {
+        ...createSampleUser(),
+        url_avatar: url_avatar,
+      };
+      try {
+        await UserModel.create(user);
+      } catch (error) {
+        expect(error.errors.url_avatar.properties.type).toBe("user defined");
+      }
+    });
+  });
 
   // describe("10. List of liked albums", () => {});
 
