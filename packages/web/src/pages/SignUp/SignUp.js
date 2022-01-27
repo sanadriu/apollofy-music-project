@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
-
-import "./SignUp.scss";
-
-import Header from "../../components/Header";
+import { Link, Navigate } from "react-router-dom";
 import * as ROUTES from "../../routes";
 
 import {
@@ -50,7 +46,7 @@ function SignUp() {
   }
 
   if (isAuthenticated) {
-    return <Redirect to={ROUTES.HOME} />;
+    return <Navigate to={ROUTES.HOME} />;
   }
 
   return (

@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
-import "./styles/App.scss";
-
 import * as ROUTES from "./routes";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
@@ -36,12 +33,12 @@ function App() {
 
   return (
     <div className="App__container">
-      <Switch>
+      <Routes>
         <Route path={ROUTES.SIGN_UP} component={SignUp} />
         <Route path={ROUTES.LOGIN} component={Login} />
         <Route path={ROUTES.RESET_PASSWORD} component={ResetPassword} />
         <Route path={ROUTES.HOME} component={Home} exact />
-      </Switch>
+      </Routes>
     </div>
   );
 }
