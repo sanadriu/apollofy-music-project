@@ -31,6 +31,7 @@ const GenreSchema = Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
 

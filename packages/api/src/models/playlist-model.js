@@ -62,6 +62,7 @@ const PlaylistSchema = Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
 

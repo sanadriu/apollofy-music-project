@@ -4,6 +4,7 @@
  * @param {Promise} promise orm promise
  * @returns object { data: null | Promise, error: null | error.message }
  */
+
 async function normalizeDBQuery(promise) {
   let result = {
     data: null,

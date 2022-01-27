@@ -74,6 +74,7 @@ const TrackSchema = Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
 

@@ -62,6 +62,7 @@ const AlbumSchema = Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
 

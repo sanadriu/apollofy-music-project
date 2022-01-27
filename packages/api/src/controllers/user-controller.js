@@ -35,8 +35,6 @@ async function signUp(req, res, next) {
 }
 
 async function signOut(req, res) {
-  req.signOut();
-
   res.status(200).send({
     data: "OK",
     error: null,

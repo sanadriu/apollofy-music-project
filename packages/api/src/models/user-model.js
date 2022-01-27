@@ -4,6 +4,16 @@ const { isEmail } = require("validator");
 const UserSchema = Schema(
   {
     _id: String,
+    email: {
+      type: String,
+      required: [true, "The email is required"],
+      trim: true,
+      unique: true,
+      validate: {
+        validator: (value) => isEmail(value),
+        message: (props) => `The email ${props.value} is not valid`,
+      },
+    },
     firstname: {
       type: String,
       trim: true,
@@ -65,16 +75,6 @@ const UserSchema = Schema(
       type: [Types.ObjectId],
       ref: "user",
     },
-    email: {
-      type: String,
-      required: [true, "The email is required"],
-      trim: true,
-      unique: true,
-      validate: {
-        validator: (value) => isEmail(value),
-        message: (props) => `The email ${props.value} is not valid`,
-      },
-    },
     deleted_at: {
       type: Date,
       trim: true,
@@ -82,6 +82,7 @@ const UserSchema = Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
 
