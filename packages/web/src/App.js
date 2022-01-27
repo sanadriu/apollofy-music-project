@@ -33,6 +33,7 @@ function App() {
 
   return (
     <div className="App__container">
+      <h1>What ups wworld!</h1>
       <Routes>
         <Route path={ROUTES.SIGN_UP} component={SignUp} />
         <Route path={ROUTES.LOGIN} component={Login} />

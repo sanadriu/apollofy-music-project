@@ -52,7 +52,6 @@ function SignUp() {
   return (
     <>
       <main className="SignUp">
-        <Header />
         <section className="Login__wrapper">
           <h1 className="text-2xl font-bold mb-6">SignUp</h1>
           <hr className="my-4" />
