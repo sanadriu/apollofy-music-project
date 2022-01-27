@@ -38,7 +38,7 @@ const UserSchema = Schema(
       trim: true,
       validate: {
         validator: (value) =>
-          value ? isDate(value, { strictMode: true }) : true,
+          value ? isDate(value, { strictMode: true, delimiter: "-" }) : true,
         message: () => `Date is not valid`,
       },
     },
