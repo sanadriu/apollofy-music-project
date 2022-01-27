@@ -1,10 +1,10 @@
 const { Schema, Types, model } = require("mongoose");
 const { isURL } = require("validator");
 
-const PlaylistSchema = Schema(
+const PlaylistSchema = new Schema(
   {
     user: {
-      type: Types.ObjectId,
+      type: String,
       ref: "user",
       required: [true, "User is required"],
     },
@@ -21,20 +21,30 @@ const PlaylistSchema = Schema(
       type: String,
       trim: true,
     },
-    url_image: {
-      type: String,
-      trim: true,
-      validate: {
-        validator: (value) => (value ? isURL(value) : true),
-        message: () => `Image thumbnail URL is invalid`,
+    thumbnails: {
+      url_default: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for default thumbnail is invalid`,
+        },
       },
-    },
-    url_image_thumb: {
-      type: String,
-      trim: true,
-      validate: {
-        validator: (value) => (value ? isURL(value) : true),
-        message: () => `Image thumbnail URL is invalid`,
+      url_medium: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for medium thumbnail is invalid`,
+        },
+      },
+      url_large: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for large thumbnail is invalid`,
+        },
       },
     },
     tracks: {
@@ -57,11 +67,11 @@ const PlaylistSchema = Schema(
 );
 
 PlaylistSchema.virtual("num_followers").get(function () {
-  return this.followed_by.length();
+  return this.followed_by.length;
 });
 
 PlaylistSchema.virtual("num_tracks").get(function () {
-  return this.tracks.length();
+  return this.tracks.length;
 });
 
 const Playlist = model("playlist", PlaylistSchema);

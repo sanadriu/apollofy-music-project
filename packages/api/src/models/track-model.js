@@ -1,10 +1,10 @@
 const { Schema, model, Types } = require("mongoose");
-const { isURL } = require("validator");
+const { isURL, isDate } = require("validator");
 
-const TrackSchema = Schema(
+const TrackSchema = new Schema(
   {
     user: {
-      type: Types.ObjectId,
+      type: String,
       required: true,
       ref: "user",
       trim: true,
@@ -14,33 +14,59 @@ const TrackSchema = Schema(
       required: true,
       trim: true,
     },
-    color: {
-      type: String,
-      trim: true,
-    },
     duration: {
       type: Number,
     },
-    url_image: {
+    released_date: {
       type: String,
       trim: true,
       validate: {
-        validator: (value) => (value ? isURL(value) : true),
-        message: () => `Image URL is invalid`,
+        validator: (value) =>
+          value
+            ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" })
+            : true,
+        message: () => `Date is not valid`,
       },
     },
-    url_thumbnail: {
+    color: {
       type: String,
       trim: true,
-      validate: {
-        validator: (value) => (value ? isURL(value) : true),
-        message: () => `Image thumbnail URL is invalid`,
-      },
     },
     genres: {
       type: [Types.ObjectId],
       ref: "genre",
       trim: true,
+    },
+    albums: {
+      type: [Types.ObjectId],
+      ref: "album",
+      trim: true,
+    },
+    thumbnails: {
+      url_default: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for default thumbnail is invalid`,
+        },
+      },
+      url_medium: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for medium thumbnail is invalid`,
+        },
+      },
+      url_large: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for large thumbnail is invalid`,
+        },
+      },
     },
     num_plays: {
       type: Number,
@@ -50,16 +76,6 @@ const TrackSchema = Schema(
     liked_by: {
       type: [Types.ObjectId],
       ref: "user",
-      trim: true,
-    },
-    albums: {
-      type: [Types.ObjectId],
-      ref: "album",
-      trim: true,
-    },
-    released_at: {
-      type: Date,
-      required: true,
       trim: true,
     },
     deleted_at: {
@@ -74,7 +90,7 @@ const TrackSchema = Schema(
 );
 
 TrackSchema.virtual("num_likes").get(function () {
-  return this.liked_by.length();
+  return this.liked_by.length;
 });
 
 const Track = model("track", TrackSchema);

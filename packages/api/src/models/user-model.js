@@ -1,7 +1,7 @@
 const { Schema, Types, model } = require("mongoose");
 const { isEmail, isDate, isURL } = require("validator");
 
-const UserSchema = Schema(
+const UserSchema = new Schema(
   {
     _id: {
       type: String,
@@ -38,7 +38,9 @@ const UserSchema = Schema(
       trim: true,
       validate: {
         validator: (value) =>
-          value ? isDate(value, { strictMode: true, delimiter: "-" }) : true,
+          value
+            ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" })
+            : true,
         message: () => `Date is not valid`,
       },
     },
@@ -82,23 +84,23 @@ const UserSchema = Schema(
 );
 
 UserSchema.virtual("num_liked_albums").get(function () {
-  return this.liked_albums.length();
+  return this.liked_albums.length;
 });
 
 UserSchema.virtual("num_liked_tracks").get(function () {
-  return this.liked_tracks.length();
+  return this.liked_tracks.length;
 });
 
 UserSchema.virtual("num_followed_playlists").get(function () {
-  return this.followed_playlists.length();
+  return this.followed_playlists.length;
 });
 
 UserSchema.virtual("num_followed_users").get(function () {
-  return this.followed_users.length();
+  return this.followed_users.length;
 });
 
 UserSchema.virtual("num_followers").get(function () {
-  return this.followers.length();
+  return this.followers.length;
 });
 
 const User = model("user", UserSchema);

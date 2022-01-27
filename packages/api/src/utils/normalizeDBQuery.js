@@ -2,7 +2,7 @@
  * Normalizes the promise response and rejection
  *
  * @param {Promise} promise orm promise
- * @returns object { data: null | Promise, error: null | error.message }
+ * @returns {Object} { data: null | Promise, error: null | error.message }
  */
 
 async function normalizeDBQuery(promise) {

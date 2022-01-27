@@ -1,10 +1,10 @@
 const { Schema, Types, model } = require("mongoose");
 const { isURL } = require("validator");
 
-const AlbumSchema = Schema(
+const AlbumSchema = new Schema(
   {
     user: {
-      type: Types.ObjectId,
+      type: String,
       required: true,
       ref: "user",
       trim: true,
@@ -19,35 +19,45 @@ const AlbumSchema = Schema(
       required: true,
       trim: true,
     },
-    url_image: {
-      type: String,
-      trim: true,
-      validate: {
-        validator: (value) => (value ? isURL(value) : true),
-        message: () => `Image URL is invalid`,
-      },
-    },
-    url_thumbnail: {
-      type: String,
-      trim: true,
-      validate: {
-        validator: (value) => (value ? isURL(value) : true),
-        message: () => `Image thumbnail URL is invalid`,
-      },
-    },
     genres: {
       type: [Types.ObjectId],
       ref: "genre",
       trim: true,
     },
-    liked_by: {
-      type: [Types.ObjectId],
-      ref: "user",
-      trim: true,
-    },
     tracks: {
       type: [Types.ObjectId],
       ref: "track",
+      trim: true,
+    },
+    thumbnails: {
+      url_default: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for default thumbnail is invalid`,
+        },
+      },
+      url_medium: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for medium thumbnail is invalid`,
+        },
+      },
+      url_large: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for large thumbnail is invalid`,
+        },
+      },
+    },
+    liked_by: {
+      type: [Types.ObjectId],
+      ref: "user",
       trim: true,
     },
     deleted_at: {
@@ -62,11 +72,11 @@ const AlbumSchema = Schema(
 );
 
 AlbumSchema.virtual("num_likes").get(function () {
-  return this.liked_by.length();
+  return this.liked_by.length;
 });
 
 AlbumSchema.virtual("num_tracks").get(function () {
-  return this.liked_by.length();
+  return this.liked_by.length;
 });
 
 const Album = model("album", AlbumSchema);

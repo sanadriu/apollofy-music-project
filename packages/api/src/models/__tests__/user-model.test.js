@@ -1,16 +1,17 @@
 const db = require("../../services/db");
 const faker = require("faker");
 const UserModel = require("../user-model");
-const { generateRandomSequence } = require("../../utils");
+const { getRandomSequence } = require("../../utils");
 
 function createSampleUser() {
   return {
-    _id: generateRandomSequence(28),
+    _id: getRandomSequence(28),
     email: faker.internet.email(),
     firstname: faker.name.firstName(),
     lastname: faker.name.lastName(),
     url_avatar: faker.image.imageUrl(),
-    description: generateRandomSequence(100),
+    description: getRandomSequence(100),
+    birth_date: faker.date.past(18).toISOString().substring(0, 10),
   };
 }
 
@@ -27,11 +28,15 @@ describe("user-schema", () => {
     await db.stop();
   });
 
+  afterEach(async () => {
+    await UserModel.deleteMany();
+  });
+
   describe("1. ID", () => {
     test("1.1. ID is unique", async () => {
       expect.assertions(1);
 
-      const uid = generateRandomSequence(28);
+      const uid = getRandomSequence(28);
 
       const user01 = { ...createSampleUser(), _id: uid };
       const user02 = { ...createSampleUser(), _id: uid };
@@ -47,7 +52,7 @@ describe("user-schema", () => {
     test("1.2. ID is trimmed", async () => {
       expect.assertions(1);
 
-      const uid = generateRandomSequence(28);
+      const uid = getRandomSequence(28);
 
       const user = {
         ...createSampleUser(),
@@ -136,7 +141,7 @@ describe("user-schema", () => {
     test("3.2. Firstname must not have more than 50 chars", async () => {
       expect.assertions(1);
 
-      const firstname = generateRandomSequence(100);
+      const firstname = getRandomSequence(100);
 
       const user = {
         ...createSampleUser(),
@@ -170,7 +175,7 @@ describe("user-schema", () => {
     test("4.2. Lastname must not have more than 50 chars", async () => {
       expect.assertions(1);
 
-      const lastname = generateRandomSequence(100);
+      const lastname = getRandomSequence(100);
 
       const user = {
         ...createSampleUser(),
@@ -189,7 +194,7 @@ describe("user-schema", () => {
     test("5.1. Description is trimmed", async () => {
       expect.assertions(1);
 
-      const description = generateRandomSequence(100);
+      const description = getRandomSequence(100);
 
       const user = {
         ...createSampleUser(),
@@ -203,7 +208,7 @@ describe("user-schema", () => {
     test("5.2. Description must not have more than 250 chars", async () => {
       expect.assertions(1);
 
-      const description = generateRandomSequence(300);
+      const description = getRandomSequence(300);
 
       const user = {
         ...createSampleUser(),
@@ -222,7 +227,7 @@ describe("user-schema", () => {
     test("6.1. Birth date is trimmed", async () => {
       expect.assertions(1);
 
-      const birth_date = "2000/01/01";
+      const birth_date = "2000-01-01";
 
       const user = {
         ...createSampleUser(),
@@ -269,7 +274,7 @@ describe("user-schema", () => {
     test("7.2. URL must be valid", async () => {
       expect.assertions(1);
 
-      const url_avatar = generateRandomSequence(50);
+      const url_avatar = getRandomSequence(50);
 
       const user = {
         ...createSampleUser(),

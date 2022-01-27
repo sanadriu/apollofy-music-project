@@ -1,13 +1,16 @@
 const db = require("../../services/db");
 const faker = require("faker");
 const GenreModel = require("../genre-model");
-const { generateRandomSequence } = require("../../utils");
+const { getRandomSequence } = require("../../utils");
 
 function createSampleGenre() {
   return {
     name: faker.music.genre(),
-    url_image: faker.image.imageUrl(),
-    url_thumbnail: faker.image.imageUrl(),
+    thumbnails: {
+      url_default: faker.image.imageUrl(),
+      url_medium: faker.image.imageUrl(),
+      url_large: faker.image.imageUrl(),
+    },
   };
 }
 
@@ -20,6 +23,10 @@ describe("genre-schema", () => {
   afterAll(async () => {
     await db.disconnect();
     await db.stop();
+  });
+
+  afterEach(async () => {
+    await GenreModel.deleteMany();
   });
 
   describe("1. Name", () => {
@@ -65,70 +72,134 @@ describe("genre-schema", () => {
     });
   });
 
-  describe("2. URL Image", () => {
-    test("2.1. URL Image is trimmed", async () => {
+  describe("2. Thumbnail (default)", () => {
+    test("2.1. Thumbnail URL is trimmed", async () => {
       expect.assertions(1);
 
-      const url_image = faker.internet.url();
+      const url = faker.internet.url();
+      const sample = createSampleGenre();
 
       const genre = {
-        ...createSampleGenre(),
-        url_image: ` ${url_image} `,
+        ...sample,
+        thumbnails: {
+          ...sample.thumbnails,
+          url_default: ` ${url} `,
+        },
       };
 
       const createdGenre = await GenreModel.create(genre);
 
-      expect(createdGenre).toHaveProperty("url_image", url_image);
+      expect(createdGenre).toHaveProperty("thumbnails.url_default", url);
     });
 
-    test("2.2. URL Image must be valid", async () => {
+    test("2.2. Thumbnail URL must be valid", async () => {
       expect.assertions(1);
 
-      const url_image = generateRandomSequence(20);
+      const url = getRandomSequence(20);
+      const sample = createSampleGenre();
 
       const genre = {
-        ...createSampleGenre(),
-        url_image,
+        ...sample,
+        thumbnails: {
+          ...sample.thumbnails,
+          url_default: url,
+        },
       };
 
       try {
         await GenreModel.create(genre);
       } catch (error) {
-        expect(error.errors.url_image.properties.type).toBe("user defined");
+        expect(error.errors["thumbnails.url_default"].properties.type).toBe(
+          "user defined",
+        );
       }
     });
   });
 
-  describe("2. URL Thumbnail", () => {
-    test("2.1. URL Thumbnail is trimmed", async () => {
+  describe("3. Thumbnail (medium)", () => {
+    test("3.1. Thumbnail URL is trimmed", async () => {
       expect.assertions(1);
 
-      const url_thumbnail = faker.internet.url();
+      const url = faker.internet.url();
+      const sample = createSampleGenre();
 
       const genre = {
-        ...createSampleGenre(),
-        url_thumbnail: ` ${url_thumbnail} `,
+        ...sample,
+        thumbnails: {
+          ...sample.thumbnails,
+          url_medium: ` ${url} `,
+        },
       };
 
       const createdGenre = await GenreModel.create(genre);
 
-      expect(createdGenre).toHaveProperty("url_thumbnail", url_thumbnail);
+      expect(createdGenre).toHaveProperty("thumbnails.url_medium", url);
     });
 
-    test("2.2. URL Thumbnail must be valid", async () => {
+    test("3.2. Thumbnail URL must be valid", async () => {
       expect.assertions(1);
 
-      const url_thumbnail = generateRandomSequence(20);
+      const url = getRandomSequence(20);
+      const sample = createSampleGenre();
 
       const genre = {
-        ...createSampleGenre(),
-        url_thumbnail,
+        ...sample,
+        thumbnails: {
+          ...sample.thumbnails,
+          url_medium: url,
+        },
       };
 
       try {
         await GenreModel.create(genre);
       } catch (error) {
-        expect(error.errors.url_thumbnail.properties.type).toBe("user defined");
+        expect(error.errors["thumbnails.url_medium"].properties.type).toBe(
+          "user defined",
+        );
+      }
+    });
+  });
+
+  describe("4. Thumbnail (large)", () => {
+    test("4.1. Thumbnail URL is trimmed", async () => {
+      expect.assertions(1);
+
+      const url = faker.internet.url();
+      const sample = createSampleGenre();
+
+      const genre = {
+        ...sample,
+        thumbnails: {
+          ...sample.thumbnails,
+          url_large: ` ${url} `,
+        },
+      };
+
+      const createdGenre = await GenreModel.create(genre);
+
+      expect(createdGenre).toHaveProperty("thumbnails.url_large", url);
+    });
+
+    test("4.2. Thumbnail URL must be valid", async () => {
+      expect.assertions(1);
+
+      const url = getRandomSequence(20);
+      const sample = createSampleGenre();
+
+      const genre = {
+        ...sample,
+        thumbnails: {
+          ...sample.thumbnails,
+          url_large: url,
+        },
+      };
+
+      try {
+        await GenreModel.create(genre);
+      } catch (error) {
+        expect(error.errors["thumbnails.url_large"].properties.type).toBe(
+          "user defined",
+        );
       }
     });
   });

@@ -1,7 +1,9 @@
 const { Schema, model } = require("mongoose");
 const { isURL } = require("validator");
 
-const GenreSchema = Schema(
+const ThumbnailsSchema = new Schema({});
+
+const GenreSchema = new Schema(
   {
     name: {
       type: String,
@@ -9,20 +11,30 @@ const GenreSchema = Schema(
       unique: true,
       trim: true,
     },
-    url_image: {
-      type: String,
-      trim: true,
-      validate: {
-        validator: (value) => (value ? isURL(value) : true),
-        message: () => `Image URL is invalid`,
+    thumbnails: {
+      url_default: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for default thumbnail is invalid`,
+        },
       },
-    },
-    url_thumbnail: {
-      type: String,
-      trim: true,
-      validate: {
-        validator: (value) => (value ? isURL(value) : true),
-        message: () => `Image thumbnail URL is invalid`,
+      url_medium: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for medium thumbnail is invalid`,
+        },
+      },
+      url_large: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: (value) => (value ? isURL(value) : true),
+          message: () => `URL for large thumbnail is invalid`,
+        },
       },
     },
     deleted_at: {
