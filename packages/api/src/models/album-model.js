@@ -45,11 +45,6 @@ const AlbumSchema = Schema(
       default: 0,
       min: 0,
     },
-    num_plays: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
     liked_by: {
       type: [SchemaTypes.ObjectId],
       ref: "user",
