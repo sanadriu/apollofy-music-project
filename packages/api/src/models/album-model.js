@@ -1,10 +1,10 @@
-const { Schema, model, SchemaTypes } = require("mongoose");
+const { Schema, Types, model } = require("mongoose");
 const { isURL } = require("validator");
 
 const AlbumSchema = Schema(
   {
     user: {
-      type: SchemaTypes.ObjectId,
+      type: Types.ObjectId,
       required: true,
       ref: "user",
       trim: true,
@@ -57,6 +57,7 @@ const AlbumSchema = Schema(
     },
     deleted_at: {
       type: Date,
+      trim: true,
     },
   },
   {

@@ -1,57 +1,60 @@
-const mongoose = require("mongoose");
-const { Schema } = require("mongoose");
+const { Schema, Types, model } = require("mongoose");
 const { isEmail } = require("validator");
 
 const UserSchema = Schema(
   {
-    // we use the uid from firebase as the _id
     _id: String,
-    firstName: {
+    firstname: {
       type: String,
       trim: true,
     },
-    lastName: {
+    lastname: {
       type: String,
       trim: true,
     },
-    num_liked_Albums: {
+    num_liked_albums: {
       type: Number,
       default: 0,
+      min: 0,
     },
     num_liked_tracks: {
       type: Number,
       default: 0,
+      min: 0,
     },
     num_followed_playlists: {
       type: Number,
       default: 0,
+      min: 0,
     },
     num_followed_users: {
       type: Number,
       default: 0,
+      min: 0,
     },
     num_followers: {
       type: Number,
       default: 0,
+      min: 0,
     },
     liked_albums: {
-      type: [mongoose.Types.ObjectId],
+      type: [Types.ObjectId],
       ref: "album",
     },
     liked_tracks: {
-      type: [mongoose.Types.ObjectId],
+      type: [Types.ObjectId],
       ref: "track",
     },
     followed_playlists: {
-      type: [mongoose.Types.ObjectId],
+      type: [Types.ObjectId],
       ref: "playlist",
     },
     followed_users: {
-      type: [mongoose.Types.ObjectId],
+      type: [Types.ObjectId],
       ref: "user",
     },
     followers: {
-      type: [mongoose.Types.ObjectId],
+      type: [Types.ObjectId],
       ref: "user",
     },
     email: {
@@ -64,12 +67,16 @@ const UserSchema = Schema(
         message: (props) => `The email ${props.value} is not valid`,
       },
     },
+    deleted_at: {
+      type: Date,
+      trim: true,
+    },
   },
   {
     timestamps: true,
   },
 );
 
-const User = mongoose.model("user", UserSchema);
+const User = model("user", UserSchema);
 
 module.exports = User;

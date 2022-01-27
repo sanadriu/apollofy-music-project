@@ -1,10 +1,9 @@
-const mongoose = require("mongoose");
-const { Schema } = require("mongoose");
+const { Schema, Types, model } = require("mongoose");
 
 const PlaylistSchema = Schema(
   {
     user: {
-      type: mongoose.Types.ObjectId,
+      type: Types.ObjectId,
       ref: "user",
       required: [true, "User is required"],
     },
@@ -38,15 +37,16 @@ const PlaylistSchema = Schema(
       default: 0,
     },
     tracks: {
-      type: [mongoose.Types.ObjectId],
+      type: [Types.ObjectId],
       ref: "track",
     },
     followed_by: {
-      type: [mongoose.Types.ObjectId],
+      type: [Types.ObjectId],
       ref: "user",
     },
     deletedAt: {
       type: Date,
+      trim: true,
     },
   },
   {
@@ -54,6 +54,6 @@ const PlaylistSchema = Schema(
   },
 );
 
-const Playlist = mongoose.model("playlist", PlaylistSchema);
+const Playlist = model("playlist", PlaylistSchema);
 
 module.exports = Playlist;

@@ -1,10 +1,10 @@
-const { Schema, model, SchemaTypes } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 const { isURL } = require("validator");
 
 const TrackSchema = Schema(
   {
     user: {
-      type: SchemaTypes.ObjectId,
+      type: Types.ObjectId,
       required: true,
       ref: "user",
       trim: true,
@@ -38,7 +38,7 @@ const TrackSchema = Schema(
       },
     },
     genres: {
-      type: [SchemaTypes.ObjectId],
+      type: [Types.ObjectId],
       ref: "genre",
       trim: true,
     },
@@ -53,12 +53,12 @@ const TrackSchema = Schema(
       min: 0,
     },
     liked_by: {
-      type: [SchemaTypes.ObjectId],
+      type: [Types.ObjectId],
       ref: "user",
       trim: true,
     },
     albums: {
-      type: [SchemaTypes.ObjectId],
+      type: [Types.ObjectId],
       ref: "album",
       trim: true,
     },
