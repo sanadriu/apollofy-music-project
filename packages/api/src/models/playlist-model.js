@@ -1,4 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
+const { isURL } = require("validator");
 
 const PlaylistSchema = Schema(
   {
@@ -23,18 +24,28 @@ const PlaylistSchema = Schema(
     url_image: {
       type: String,
       trim: true,
+      validate: {
+        validator: (value) => (value ? isURL(value) : true),
+        message: () => `Image thumbnail URL is invalid`,
+      },
     },
     url_image_thumb: {
       type: String,
       trim: true,
+      validate: {
+        validator: (value) => (value ? isURL(value) : true),
+        message: () => `Image thumbnail URL is invalid`,
+      },
     },
     num_tracks: {
       type: Number,
       default: 0,
+      min: 0,
     },
     num_followers: {
       type: Number,
       default: 0,
+      min: 0,
     },
     tracks: {
       type: [Types.ObjectId],

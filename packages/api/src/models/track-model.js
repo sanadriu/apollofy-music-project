@@ -29,7 +29,7 @@ const TrackSchema = Schema(
         message: () => `Image URL is invalid`,
       },
     },
-    url_image_thmb: {
+    url_thumbnail: {
       type: String,
       trim: true,
       validate: {

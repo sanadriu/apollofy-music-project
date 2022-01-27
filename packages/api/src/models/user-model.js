@@ -12,6 +12,14 @@ const UserSchema = Schema(
       type: String,
       trim: true,
     },
+    url_avatar: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (value) => (value ? isURL(value) : true),
+        message: () => `Image thumbnail URL is invalid`,
+      },
+    },
     num_liked_albums: {
       type: Number,
       default: 0,

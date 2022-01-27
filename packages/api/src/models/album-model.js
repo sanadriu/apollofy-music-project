@@ -27,7 +27,7 @@ const AlbumSchema = Schema(
         message: () => `Image URL is invalid`,
       },
     },
-    url_image_thmb: {
+    url_thumbnail: {
       type: String,
       trim: true,
       validate: {
@@ -36,7 +36,7 @@ const AlbumSchema = Schema(
       },
     },
     genres: {
-      type: [SchemaTypes.ObjectId],
+      type: [Types.ObjectId],
       ref: "genre",
       trim: true,
     },
@@ -46,12 +46,12 @@ const AlbumSchema = Schema(
       min: 0,
     },
     liked_by: {
-      type: [SchemaTypes.ObjectId],
+      type: [Types.ObjectId],
       ref: "user",
       trim: true,
     },
     tracks: {
-      type: [SchemaTypes.ObjectId],
+      type: [Types.ObjectId],
       ref: "track",
       trim: true,
     },

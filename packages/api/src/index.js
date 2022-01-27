@@ -2,6 +2,8 @@ const { app } = require("./server");
 const { config } = require("./config");
 const { connect } = require("./db/connect");
 
+const models = require("./models");
+
 if (!config.app.port) {
   throw new Error("App config is invalid");
 }
