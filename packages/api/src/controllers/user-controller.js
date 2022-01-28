@@ -1,5 +1,5 @@
 const { User } = require("../models");
-const { UserRepo } = require("../repositories");
+const { getUserProfile } = require("./utils");
 
 async function signUp(req, res, next) {
   const { uid, email, name } = req.user;
@@ -7,16 +7,9 @@ async function signUp(req, res, next) {
   try {
     const user = await User.findOne({ email });
 
-    // if (response.error) {
-    //   return res.status(400).send({
-    //     data: null,
-    //     error: response.error,
-    //   });
-    // }
-
     if (user) {
       res.status(200).send({
-        data: user,
+        data: getUserProfile(user),
         error: null,
       });
     } else {
@@ -27,7 +20,7 @@ async function signUp(req, res, next) {
       });
 
       res.status(201).send({
-        data: newUser,
+        data: getUserProfile(newUser),
         error: null,
       });
     }
