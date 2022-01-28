@@ -28,6 +28,11 @@ const UserSchema = new Schema(
       trim: true,
       maxlength: 50,
     },
+    username: {
+      type: String,
+      trim: true,
+      maxlength: 50,
+    },
     description: {
       type: String,
       trim: true,

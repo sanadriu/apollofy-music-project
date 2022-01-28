@@ -41,6 +41,12 @@ async function signOut(req, res) {
   });
 }
 
+async function getUsers(req, res, next) {}
+
+async function getSingleUser(req, res, next) {}
+
+async function updateUser(req, res, next) {}
+
 module.exports = {
   signUp: signUp,
   signOut: signOut,
