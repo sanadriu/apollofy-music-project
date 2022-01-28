@@ -12,17 +12,17 @@ import ResetPassword from "./pages/ResetPassword";
 import { onAuthStateChanged } from "./services/auth";
 import { syncSignIn, signOut } from "./redux/auth/auth-actions";
 
-import { useDarkMode } from "./hooks/useDarkMode"
-import { GlobalStyles } from './styles/GlobalStyles'
-import { lightTheme, darkTheme } from "./styles/Themes"
+import { useDarkMode } from "./hooks/useDarkMode";
+import { GlobalStyles } from "./styles/GlobalStyles";
+import { lightTheme, darkTheme } from "./styles/Themes";
 
-import Switch from "./components/atoms/Switch"
+import Switch from "./components/atoms/Switch";
 
 function App() {
   const dispatch = useDispatch();
   const [theme, themeToggler, mountedComponent] = useDarkMode();
 
-  const themeMode = theme === 'light' ? lightTheme : darkTheme;
+  const themeMode = theme === "light" ? lightTheme : darkTheme;
 
   useEffect(() => {
     let unsubscribeFromAuth = null;
@@ -42,19 +42,18 @@ function App() {
     };
   }, [dispatch]);
 
-  if (!mountedComponent) return <div />
+  if (!mountedComponent) return <div />;
 
   return (
     <div className="App__container">
-       <ThemeProvider theme={themeMode}>
-          <Routes>
-            <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
-            <Route path={ROUTES.LOGIN} element={<Login />} />
-            <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-            <Route path={ROUTES.HOME} element={<Home />} exact />      
-          </Routes>
+      <ThemeProvider theme={themeMode}>
+        <Routes>
+          <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
+          <Route path={ROUTES.LOGIN} element={<Login />} />
+          <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+          <Route path={ROUTES.HOME} element={<Home />} exact />
+        </Routes>
       </ThemeProvider>
-      
     </div>
   );
 }
