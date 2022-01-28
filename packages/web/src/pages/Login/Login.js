@@ -100,7 +100,7 @@ function Login() {
           </RegisterButton>
           <RegisterButton
             type="button"
-            onClick={(e) => handleLoginWithGoogle(e)}
+            onClick={(e) => e.target}
             disabled={isSigningUp}
           >
             Register with email and password
