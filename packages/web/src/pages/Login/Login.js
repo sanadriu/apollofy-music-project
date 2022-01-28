@@ -5,10 +5,11 @@ import styled from "styled-components";
 
 import * as ROUTES from "../../routes";
 import { LoginBoard } from "../../components/organisms/LoginBoard/LoginBoard";
-import { FormDiv } from "../../components/atoms/FlexColumn/FlexColumn";
+import { FlexColumn } from "../../components/atoms/FlexColumn/FlexColumn";
 import RegisterModal from "../../components/organisms/modal/RegisterModal";
 
 import {
+  nextModal,
   resetAuthState,
   signInWithEmailRequest,
   signUpWithGoogleRequest,
@@ -45,7 +46,7 @@ const RegisterButton = styled.button`
 
 function Login() {
   const dispatch = useDispatch();
-  const { nextModal, currentModal, isSigningUp, signUpError, isAuthenticated } =
+  const { currentModal, isSigningUp, signUpError, isAuthenticated } =
     useSelector(authSelector);
 
   const [email, setEmail] = useState("");
@@ -78,11 +79,15 @@ function Login() {
     setPassword(e.target.value);
   }
 
-  function handleModal() {
+  const handleModal = () => {
     console.log("hola");
     setOpen(!isOpen);
-    dispatch(nextModal);
-  }
+    if (!isOpen) {
+      dispatch(nextModal(currentModal + 1));
+    } else {
+      dispatch(nextModal(0));
+    }
+  };
 
   if (isAuthenticated) {
     return <Navigate to={ROUTES.HOME} />;
@@ -92,7 +97,7 @@ function Login() {
     <>
       <MainFlex>
         <LoginBoard />
-        <FormDiv>
+        <FlexColumn>
           <Title>What&apos;s rocking right now</Title>
           <RegisterButton
             type="button"
@@ -110,7 +115,7 @@ function Login() {
           </RegisterButton>
           <RegisterButton
             type="button"
-            onClick={handleModal()}
+            onClick={handleModal}
             disabled={isSigningUp}
           >
             Register with email and password
@@ -164,7 +169,7 @@ function Login() {
               Reset password
             </Link>
           </section>
-        </FormDiv>
+        </FlexColumn>
       </MainFlex>
     </>
   );
