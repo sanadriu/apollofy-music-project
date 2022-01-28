@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+const log = require("../logger");
 
 const firebaseCertConfig = {
   type: process.env.FB_CERT_TYPE,
@@ -39,15 +40,16 @@ function getAuthToken(headers = {}) {
 }
 
 function login(req = {}, userClaims = {}) {
-  const { email, uid } = userClaims;
+  const { email, uid, name } = userClaims;
 
   if (typeof email !== "string" || typeof uid !== "string") {
     throw new Error("Missing user claims");
   }
 
   req.user = {
-    email: email,
-    uid: uid,
+    email,
+    uid,
+    name,
   };
 }
 
