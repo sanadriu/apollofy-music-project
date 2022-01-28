@@ -26,8 +26,10 @@ function getRandomSequence(length, chars = "AaBbCcDdEeFf0123456789") {
 }
 
 function getRandomItems(list = [], max = 1) {
-  if (max > list.length) return list;
-  if (list.length === 0) return list;
+  const clonedlist = [...list];
+
+  if (max > clonedlist.length) return clonedlist;
+  if (clonedlist.length === 0) return clonedlist;
 
   const shuffledList = shuffle(list);
   const length = Math.floor(Math.random() * max);
@@ -36,11 +38,13 @@ function getRandomItems(list = [], max = 1) {
 }
 
 function getRandomIndex(list = []) {
-  if (list.length === 0) {
+  const clonedlist = [...list];
+
+  if (clonedlist.length === 0) {
     throw new Error("List must not be empty");
   }
 
-  return Math.floor(Math.random() * list.length);
+  return Math.floor(Math.random() * clonedlist.length);
 }
 
 module.exports = {

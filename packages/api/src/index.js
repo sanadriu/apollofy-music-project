@@ -7,9 +7,9 @@ if (!config.app.port) {
 }
 
 connect()
-  .then(() => {
-    return seed();
-  })
+  // .then(() => {
+  //   return seed();
+  // })
   .then(() => {
     app.listen(config.app.port, () => {
       console.log(`Server listening on ${config.app.port}`);

@@ -6,13 +6,13 @@ const {
   createSampleTrack,
   createSampleAlbum,
   createSamplePlaylist,
-} = require("../utils/sampleGenerators");
+} = require("../utils/sample-generators");
 
-const numUsers = 1;
-const numGenres = 1;
-const numTracks = 1;
-const numAlbums = 1;
-const numPlaylists = 1;
+const numUsers = 4;
+const numGenres = 4;
+const numTracks = 20;
+const numAlbums = 4;
+const numPlaylists = 2;
 
 async function seedUserCollection(length = 1) {
   const users = Array.from({ length }, () => createSampleUser());
@@ -79,9 +79,8 @@ async function seedCollections() {
 }
 
 async function seed() {
-  await deleteCollections();
-
   try {
+    await deleteCollections();
     await seedCollections();
   } catch (error) {
     log.error(error.message);
