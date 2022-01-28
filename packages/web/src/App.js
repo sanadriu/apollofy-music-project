@@ -13,7 +13,7 @@ import { onAuthStateChanged } from "./services/auth";
 import { syncSignIn, signOut } from "./redux/auth/auth-actions";
 
 import { useDarkMode } from "./hooks/useDarkMode";
-import { GlobalStyles } from "./styles/GlobalStyles";
+// import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 
 import Switch from "./components/atoms/Switch";
