@@ -140,8 +140,9 @@ export const resetAuthState = () => ({
   type: AuthTypes.RESET_AUTH_STATE,
 });
 
-export const nextModal = () => ({
+export const nextModal = (modal) => ({
   type: AuthTypes.NEXT_MODAL,
+  payload: modal,
 });
 
 export const submitFirstModal = (value) => ({

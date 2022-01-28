@@ -113,7 +113,7 @@ const AuthReducer = (state = AuthInitialState, action) => {
     case AuthTypes.NEXT_MODAL: {
       return {
         ...state,
-        currentModal: state.currentModal + 1,
+        currentModal: payload,
       };
     }
     case AuthTypes.SUBMIT_FIRST_MODAL: {
