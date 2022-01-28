@@ -19,7 +19,7 @@ app.use(
   }),
 );
 
-app.use(authRouter);
+app.use("/", authRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send({
