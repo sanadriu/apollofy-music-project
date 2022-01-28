@@ -13,7 +13,7 @@ import { onAuthStateChanged } from "./services/auth";
 import { syncSignIn, signOut } from "./redux/auth/auth-actions";
 
 import { useDarkMode } from "./hooks/useDarkMode";
-// import { GlobalStyles } from "./styles/GlobalStyles";
+import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 
 import Switch from "./components/atoms/Switch";
@@ -45,16 +45,21 @@ function App() {
   if (!mountedComponent) return <div />;
 
   return (
-    <div className="App__container">
-      <ThemeProvider theme={themeMode}>
-        <Routes>
-          <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
-          <Route path={ROUTES.LOGIN} element={<Login />} />
-          <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-          <Route path={ROUTES.HOME} element={<Home />} exact />
-        </Routes>
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={themeMode}>
+      <>
+        <GlobalStyles />
+        <>
+          <Switch theme={theme} toggleTheme={themeToggler} />
+          <h1>Hello world!</h1>
+          <Routes>
+            <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
+            <Route path={ROUTES.LOGIN} element={<Login />} />
+            <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+            <Route path={ROUTES.HOME} element={<Home />} exact />
+          </Routes>
+        </>
+      </>
+    </ThemeProvider>
   );
 }
 

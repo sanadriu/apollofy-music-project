@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
+
 import * as ROUTES from "../../routes";
 import { LoginBoard } from "../../components/organisms/LoginBoard/LoginBoard";
-import { FormDiv } from "../../components/atoms/FlexColumn/FlexColumn";
+import { FlexColumn } from "../../components/atoms/FlexColumn/FlexColumn";
+import RegisterModal from "../../components/organisms/modal/RegisterModal";
 
 import {
+  nextModal,
   resetAuthState,
   signInWithEmailRequest,
   signUpWithGoogleRequest,
@@ -14,6 +17,7 @@ import {
 } from "../../redux/auth/auth-actions";
 
 import { authSelector } from "../../redux/auth/auth-selectors";
+import AccountForm from "../../components/organisms/forms/AccountForm/AccountForm";
 
 const MainFlex = styled.div`
   height: 100vh;
@@ -43,11 +47,12 @@ const RegisterButton = styled.button`
 
 function Login() {
   const dispatch = useDispatch();
-  const { isSigningUp, signUpError, isAuthenticated } =
+  const { currentModal, isSigningUp, signUpError, isAuthenticated } =
     useSelector(authSelector);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
     dispatch(resetAuthState());
@@ -79,6 +84,15 @@ function Login() {
     setPassword(e.target.value);
   }
 
+  const handleModal = () => {
+    setOpen(!isOpen);
+    if (!isOpen) {
+      dispatch(nextModal(currentModal + 1));
+    } else {
+      dispatch(nextModal(0));
+    }
+  };
+
   if (isAuthenticated) {
     return <Navigate to={ROUTES.HOME} />;
   }
@@ -87,7 +101,7 @@ function Login() {
     <>
       <MainFlex>
         <LoginBoard />
-        <FormDiv>
+        <FlexColumn>
           <Title>What&apos;s rocking right now</Title>
           <RegisterButton
             type="button"
@@ -105,11 +119,14 @@ function Login() {
           </RegisterButton>
           <RegisterButton
             type="button"
-            onClick={(e) => e.target}
+            onClick={handleModal}
             disabled={isSigningUp}
           >
             Register with email and password
           </RegisterButton>
+          <RegisterModal isOpen={isOpen} handleModal={handleModal}>
+            {currentModal === 1 ? <AccountForm /> : null}
+          </RegisterModal>
           <RegisterButton
             type="button"
             onClick={(e) => handleLoginWithGoogle(e)}
@@ -156,7 +173,7 @@ function Login() {
               Reset password
             </Link>
           </section>
-        </FormDiv>
+        </FlexColumn>
       </MainFlex>
     </>
   );
