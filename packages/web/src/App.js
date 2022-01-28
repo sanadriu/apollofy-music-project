@@ -33,10 +33,9 @@ function App() {
 
   return (
     <div className="App__container">
-      <h1>What ups wworld!</h1>
       <Routes>
         <Route path={ROUTES.SIGN_UP} component={SignUp} />
-        <Route path={ROUTES.LOGIN} component={Login} />
+        <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.RESET_PASSWORD} component={ResetPassword} />
         <Route path={ROUTES.HOME} component={Home} exact />
       </Routes>
