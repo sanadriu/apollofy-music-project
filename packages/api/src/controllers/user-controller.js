@@ -1,4 +1,5 @@
 const { UserRepo } = require("../repositories");
+const db = require("../models");
 
 async function signUp(req, res, next) {
   const { uid, email } = req.user;
@@ -41,13 +42,72 @@ async function signOut(req, res) {
   });
 }
 
-async function getUsers(req, res, next) {}
+async function getUsers(req, res, next) {
+  try {
+    const dbRes = await db.User.find({});
 
-async function getSingleUser(req, res, next) {}
+    res.status(200).send({
+      success: true,
+      data: dbRes,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 
-async function updateUser(req, res, next) {}
+async function getSingleUser(req, res, next) {
+  var populateQuery = [
+    { path: "liked_albums", select: "title thumbnails year genres" },
+    { path: "liked_tracks" },
+    { path: "followed_playlists" },
+    { path: "followed_users" },
+    { path: "followers" },
+  ];
+
+  try {
+    const { idUser } = req.params;
+
+    const dbRes = await db.User.findOne({
+      _id: idUser,
+    }).populate(populateQuery);
+
+    res.status(200).send({
+      success: true,
+      data: dbRes,
+    });
+  } catch (error) {
+    //console.log(error);
+    next(error);
+  }
+}
+
+async function updateUser(req, res, next) {
+  try {
+    const { newData } = req.body;
+    const { idUser } = req.params;
+
+    const dbRes = await db.User.findOneAndUpdate({ _id: idUser }, newData, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(201).send({
+      success: true,
+      message: "User updated",
+      data: dbRes,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+}
+
+async function deleteUser(req, res, next) {}
 
 module.exports = {
-  signUp: signUp,
-  signOut: signOut,
+  signUp,
+  signOut,
+  getUsers,
+  getSingleUser,
+  updateUser
 };
