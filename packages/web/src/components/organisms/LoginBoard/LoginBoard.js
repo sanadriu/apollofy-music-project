@@ -3,14 +3,24 @@ import styled from "styled-components";
 
 const Board = styled.div`
   width: 100%;
-  background-image: url("assets/img/music-pattern.jpg");
+  background-image: url("assets/svg/music-pattern.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   flex-basis: 40%;
-  transition: all 10s linear;
-  transform-origin: center center;
-  transform: rotate(360deg);
+
+  &#rotating-bg {
+    animation: rotation 10s linear infinite;
+  }
+
+  &@keyframes #rotating-bg {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
 `;
 
 const Logo = styled.img`

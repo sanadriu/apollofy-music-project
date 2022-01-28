@@ -34,16 +34,11 @@ const style = {
   pb: 3,
 };
 
-export default function RegisterModal_I() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function withModal({ open, handleModal }) {
+  const handleClose = () => handleModal();
 
-  return (
-    <div>
-      <button type="button" onClick={handleOpen}>
-        Open modal
-      </button>
+  function WrapperComponent({ ...props }) {
+    return (
       <StyledModal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
@@ -52,10 +47,10 @@ export default function RegisterModal_I() {
         BackdropComponent={Backdrop}
       >
         <Box sx={style}>
-          <h2 id="unstyled-modal-title">Text in a modal</h2>
-          <p id="unstyled-modal-description">Aliquid amet deserunt earum!</p>
+          <WrappedComponent {...props} />
         </Box>
       </StyledModal>
-    </div>
-  );
+    );
+  }
+  return WrapperComponent;
 }

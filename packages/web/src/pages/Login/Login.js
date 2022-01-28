@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
+
 import * as ROUTES from "../../routes";
 import { LoginBoard } from "../../components/organisms/LoginBoard/LoginBoard";
 import { FormDiv } from "../../components/atoms/FlexColumn/FlexColumn";
+import RegisterModal from "../../components/organisms/modal/RegisterModal";
 
 import {
   resetAuthState,
@@ -13,6 +15,7 @@ import {
 } from "../../redux/auth/auth-actions";
 
 import { authSelector } from "../../redux/auth/auth-selectors";
+import AccountForm from "../../components/organisms/forms/AccountForm/AccountForm";
 
 const MainFlex = styled.div`
   height: 100vh;
@@ -42,11 +45,12 @@ const RegisterButton = styled.button`
 
 function Login() {
   const dispatch = useDispatch();
-  const { isSigningUp, signUpError, isAuthenticated } =
+  const { nextModal, currentModal, isSigningUp, signUpError, isAuthenticated } =
     useSelector(authSelector);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
     dispatch(resetAuthState());
@@ -72,6 +76,12 @@ function Login() {
 
   function handleSetPassword(e) {
     setPassword(e.target.value);
+  }
+
+  function handleModal() {
+    console.log("hola");
+    setOpen(!isOpen);
+    dispatch(nextModal);
   }
 
   if (isAuthenticated) {
@@ -100,11 +110,14 @@ function Login() {
           </RegisterButton>
           <RegisterButton
             type="button"
-            onClick={(e) => handleLoginWithGoogle(e)}
+            onClick={handleModal()}
             disabled={isSigningUp}
           >
             Register with email and password
           </RegisterButton>
+          <RegisterModal isOpen={isOpen} handleModal={handleModal}>
+            {currentModal === 1 ? <AccountForm /> : null}
+          </RegisterModal>
           <RegisterButton
             type="button"
             onClick={(e) => handleLoginWithGoogle(e)}
