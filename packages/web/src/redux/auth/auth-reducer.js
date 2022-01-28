@@ -12,6 +12,11 @@ export const AuthInitialState = {
   currentUser: {
     email: null,
   },
+  currentModal: 0,
+  accountInfo: {},
+  dateOfBirth: null,
+  profilePicture: null,
+  description: null,
 };
 
 const AuthReducer = (state = AuthInitialState, action) => {
@@ -23,6 +28,7 @@ const AuthReducer = (state = AuthInitialState, action) => {
         ...state,
         isSigningUp: true,
         signUpError: null,
+        currentModal: 1,
       };
     }
     case AuthTypes.SIGN_UP_ERROR: {
@@ -102,6 +108,36 @@ const AuthReducer = (state = AuthInitialState, action) => {
         isSendingPasswordReset: false,
         passwordResetError: null,
         passwordResetSent: false,
+      };
+    }
+    case AuthTypes.NEXT_MODAL: {
+      return {
+        ...state,
+        currentModal: state.currentModal + 1,
+      };
+    }
+    case AuthTypes.SUBMIT_FIRST_MODAL: {
+      return {
+        ...state,
+        accountInfo: payload,
+      };
+    }
+    case AuthTypes.SUBMIT_SECOND_MODAL: {
+      return {
+        ...state,
+        dateOfBirth: payload,
+      };
+    }
+    case AuthTypes.SUBMIT_THIRD_MODAL: {
+      return {
+        ...state,
+        profilePicture: payload,
+      };
+    }
+    case AuthTypes.SUBMIT_REGISTER_MODAL: {
+      return {
+        ...state,
+        currentUser: payload,
       };
     }
     default: {
