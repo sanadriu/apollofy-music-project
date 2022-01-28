@@ -6,6 +6,8 @@ if (!config.app.port) {
   throw new Error("App config is invalid");
 }
 
+console.log(process.env.NODE_ENV);
+
 connect()
   // .then(() => {
   //   return seed();

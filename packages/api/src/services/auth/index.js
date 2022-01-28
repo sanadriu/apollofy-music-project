@@ -47,8 +47,8 @@ function login(req = {}, userClaims = {}) {
   }
 
   req.user = {
-    email,
     uid,
+    email,
     name,
   };
 }
