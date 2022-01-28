@@ -38,7 +38,7 @@ async function signOut(req, res) {
 
 async function getUsers(req, res, next) {
   try {
-    const dbRes = await User.find({});
+    const dbRes = await User.find({}).exists("deleted_at", false);
 
     res.status(200).send({
       success: true,
@@ -63,14 +63,23 @@ async function getSingleUser(req, res, next) {
 
     const dbRes = await User.findOne({
       _id: idUser,
-    }).populate(populateQuery);
+    })
+      .populate(populateQuery)
+      .exists("deleted_at", false);
+
+    if (dbRes === null) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+        data: dbRes,
+      });
+    }
 
     res.status(200).send({
       success: true,
       data: dbRes,
     });
   } catch (error) {
-    //console.log(error);
     next(error);
   }
 }
@@ -91,12 +100,33 @@ async function updateUser(req, res, next) {
       data: dbRes,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 }
 
-async function deleteUser(req, res, next) {}
+async function deleteUser(req, res, next) {
+  try {
+    //console.log({ deleted_at: Date.now()});
+    const { uid } = req.user;
+
+    const dbRes = await User.findOneAndUpdate(
+      { _id: uid },
+      { deleted_at: Date.now() },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    res.status(200).send({
+      success: true,
+      message: "User deleted",
+      data: dbRes,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 
 module.exports = {
   signUp,
@@ -104,4 +134,5 @@ module.exports = {
   getUsers,
   getSingleUser,
   updateUser,
+  deleteUser,
 };
