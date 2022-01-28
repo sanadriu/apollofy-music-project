@@ -12,21 +12,9 @@ module.exports = {
     "plugin:import/warnings",
     "plugin:jsx-a11y/recommended",
     "prettier",
-    "prettier/prettier",
-    "prettier/react",
-    "prettier/standard",
     "react-app",
-    "react-app/jest",
   ],
-  plugins: [
-    "html",
-    "react",
-    "jsx-a11y",
-    "markdown",
-    "react-hooks",
-    "jest",
-    "import",
-  ],
+  plugins: ["html", "jsx-a11y", "react", "markdown", "react-hooks", "import"],
   settings: {
     react: {
       version: "detect",

@@ -1,19 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
-
-import "./Login.scss";
-
-import Header from "../../components/Header";
+import { Link, Navigate } from "react-router-dom";
+import styled from "styled-components";
 import * as ROUTES from "../../routes";
+import { LoginBoard } from "../../components/organisms/LoginBoard/LoginBoard";
+import { FormDiv } from "../../components/atoms/FlexColumn/FlexColumn";
 
 import {
   resetAuthState,
   signInWithEmailRequest,
   signUpWithGoogleRequest,
+  signUpWithFacebook,
 } from "../../redux/auth/auth-actions";
 
 import { authSelector } from "../../redux/auth/auth-selectors";
+
+const MainFlex = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+`;
+
+const Title = styled.h1`
+  font: Readex Pro;
+  font-size: 4rem;
+`;
+
+const RegisterButton = styled.button`
+  width: 90%;
+  border-radius: 0.3rem;
+  color: black;
+  border: 1px solid black;
+  padding: 0.5rem;
+  background-color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #b04aff;
+    color: white;
+  }
+`;
 
 function Login() {
   const dispatch = useDispatch();
@@ -30,6 +56,10 @@ function Login() {
   function handleLoginWithGoogle(e) {
     e.preventDefault();
     dispatch(signUpWithGoogleRequest());
+  }
+  function handleLoginWithFacebook(e) {
+    e.preventDefault();
+    dispatch(signUpWithFacebook());
   }
 
   function handleSubmit(e) {
@@ -50,25 +80,43 @@ function Login() {
   }
 
   if (isAuthenticated) {
-    return <Redirect to={ROUTES.HOME} />;
+    return <Navigate to={ROUTES.HOME} />;
   }
 
   return (
     <>
-      <main className="Login">
-        <Header />
-        <section className="Login__wrapper">
-          <h1 className="text-2xl font-bold mb-6">Login</h1>
-          <hr className="my-4" />
-          <button
-            className="btn btn-primary w-full"
+      <MainFlex>
+        <LoginBoard />
+        <FormDiv>
+          <Title>What&apos;s rocking right now</Title>
+          <RegisterButton
             type="button"
-            onClick={handleLoginWithGoogle}
+            onClick={(e) => handleLoginWithGoogle(e)}
             disabled={isSigningUp}
           >
-            Login with Google
-          </button>
-          <hr className="mt-1 mb-4" />
+            Register with Google
+          </RegisterButton>
+          <RegisterButton
+            type="button"
+            onClick={(e) => handleLoginWithFacebook(e)}
+            disabled={isSigningUp}
+          >
+            Register with Facebook
+          </RegisterButton>
+          <RegisterButton
+            type="button"
+            onClick={(e) => e.target}
+            disabled={isSigningUp}
+          >
+            Register with email and password
+          </RegisterButton>
+          <RegisterButton
+            type="button"
+            onClick={(e) => handleLoginWithGoogle(e)}
+            disabled={isSigningUp}
+          >
+            Log in with your account
+          </RegisterButton>
           <form onSubmit={handleSubmit}>
             <label htmlFor="email" className="form-label">
               Email
@@ -108,8 +156,8 @@ function Login() {
               Reset password
             </Link>
           </section>
-        </section>
-      </main>
+        </FormDiv>
+      </MainFlex>
     </>
   );
 }

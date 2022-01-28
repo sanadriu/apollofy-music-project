@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "Strings",
   "private": true,
   "workspaces": {
     "packages": [
@@ -8,13 +8,24 @@
   },
   "contributors": [
     {
-      "name": "Dani Lucaci",
-      "email": "danilucaci@gmail.com",
-      "url": "https://www.danilucaci.com/"
+      "name": "Pere Serra Bosch",
+      "email": "pere.serra.bosch@gmail.com",
+      "url": "https://github.com/Interna1ta"
     },
     {
-      "name": "Joan Carrion",
-      "email": "joancarrion14@gmail.com"
+      "name": "Haroon Ahmad",
+      "email": "haroon334@gmail.com",
+      "url": "https://github.com/haroonahmad12"
+    },
+    {
+      "name": "Adrián Sánchez Guerrero",
+      "email": "skualed@gmail.com",
+      "url": "https://github.com/sanadriu"
+    },
+    {
+      "name": "Gonzalo Garcia Arahuetes",
+      "email": "gonzaloarahuetes@gmail.com",
+      "url": "https://github.com/gonzalogarahuetes"
     }
   ],
   "scripts": {

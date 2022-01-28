@@ -25,6 +25,16 @@ export function signUpWithGoogleRequest() {
     }
   };
 }
+export function signUpWithFacebook() {
+  return async function signUpThunk(dispatch) {
+    dispatch(signUpRequest());
+    try {
+      await auth.signInWithFacebook();
+    } catch (error) {
+      dispatch(signUpError(error.message));
+    }
+  };
+}
 
 export function signUpWithEmailRequest(email, password) {
   return async function signUpThunk(dispatch) {

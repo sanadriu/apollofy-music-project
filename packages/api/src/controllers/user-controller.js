@@ -13,9 +13,9 @@ async function signUp(req, res, next) {
       });
     }
 
-    if (response.data) {
+    if (response.data.data) {
       return res.status(200).send({
-        data: "OK",
+        data: response.data.data,
         error: null,
       });
     }
@@ -26,7 +26,7 @@ async function signUp(req, res, next) {
     });
 
     res.status(201).send({
-      data: "OK",
+      data: response.data,
       error: null,
     });
   } catch (error) {

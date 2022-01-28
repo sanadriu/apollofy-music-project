@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import "./ResetPassword.scss";
-
-import Header from "../../components/Header";
-
 import {
   sendPasswordResetEmail,
   resetAuthState,
@@ -47,7 +42,6 @@ function ResetPassword() {
   return (
     <>
       <main className="ResetPassword">
-        <Header />
         <section className="Login__wrapper">
           <h1 className="text-2xl font-bold mb-6">Password Reset</h1>
           <hr className="my-4" />
