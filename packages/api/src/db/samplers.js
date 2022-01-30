@@ -13,7 +13,7 @@ function createSampleUser() {
     lastname: faker.name.lastName(),
     username: faker.name.title(),
     url_avatar: faker.image.imageUrl(),
-    description: getRandomSequence(100),
+    description: faker.lorem.paragraphs(1),
     birth_date: faker.date.past(18).toISOString().substring(0, 10),
   };
 }

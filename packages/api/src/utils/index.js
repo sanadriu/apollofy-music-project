@@ -47,10 +47,21 @@ function getRandomIndex(list = []) {
   return Math.floor(Math.random() * clonedlist.length);
 }
 
+function switchValueInList(list, value) {
+  if (!(list instanceof Array)) {
+    throw new Error("List must be an Array");
+  }
+
+  const index = list.indexOf(value);
+
+  return index === -1 ? [...list, value] : list.splice(index, 1);
+}
+
 module.exports = {
   getRandomSequence,
   deepClone,
   shuffle,
   getRandomItems,
   getRandomIndex,
+  switchValueInList,
 };
