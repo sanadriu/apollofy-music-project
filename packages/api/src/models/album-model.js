@@ -29,6 +29,11 @@ const AlbumSchema = new Schema(
       ref: "track",
       trim: true,
     },
+    liked_by: {
+      type: [String],
+      ref: "user",
+      trim: true,
+    },
     thumbnails: {
       url_default: {
         type: String,
@@ -55,11 +60,7 @@ const AlbumSchema = new Schema(
         },
       },
     },
-    liked_by: {
-      type: [Types.ObjectId],
-      ref: "user",
-      trim: true,
-    },
+
     deleted_at: {
       type: Date,
       trim: true,
@@ -76,7 +77,7 @@ AlbumSchema.virtual("num_likes").get(function () {
 });
 
 AlbumSchema.virtual("num_tracks").get(function () {
-  return this.liked_by.length;
+  return this.tracks.length;
 });
 
 const Album = model("album", AlbumSchema);

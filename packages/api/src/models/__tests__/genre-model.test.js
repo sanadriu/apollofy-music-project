@@ -2,19 +2,11 @@ const db = require("../../services/db");
 const faker = require("faker");
 const GenreModel = require("../genre-model");
 const { getRandomSequence } = require("../../utils");
-
-function createSampleGenre() {
-  return {
-    name: faker.music.genre(),
-    thumbnails: {
-      url_default: faker.image.imageUrl(),
-      url_medium: faker.image.imageUrl(),
-      url_large: faker.image.imageUrl(),
-    },
-  };
-}
+const { createSampleGenre } = require("../../db/samplers");
 
 describe("genre-schema", () => {
+  const sample = createSampleGenre();
+
   beforeAll(async () => {
     await db.start();
     await db.connect();
@@ -33,7 +25,7 @@ describe("genre-schema", () => {
     test("1.1. Name is required", async () => {
       expect.assertions(1);
 
-      const { name, ...genre } = createSampleGenre();
+      const { name, ...genre } = sample;
 
       try {
         await GenreModel.create(genre);
@@ -45,8 +37,8 @@ describe("genre-schema", () => {
     test("1.2. Name is unique", async () => {
       expect.assertions(1);
 
-      const genre01 = { ...createSampleGenre(), name: "foo" };
-      const genre02 = { ...createSampleGenre(), name: "foo" };
+      const genre01 = { ...sample, name: "foo" };
+      const genre02 = { ...sample, name: "foo" };
 
       try {
         await GenreModel.create(genre01);
@@ -62,7 +54,7 @@ describe("genre-schema", () => {
       const name = faker.music.genre();
 
       const genre = {
-        ...createSampleGenre(),
+        ...sample,
         name: ` ${name} `,
       };
 
@@ -76,8 +68,7 @@ describe("genre-schema", () => {
     test("2.1. Thumbnail URL is trimmed", async () => {
       expect.assertions(1);
 
-      const url = faker.internet.url();
-      const sample = createSampleGenre();
+      const url = faker.image.imageUrl();
 
       const genre = {
         ...sample,
@@ -95,8 +86,7 @@ describe("genre-schema", () => {
     test("2.2. Thumbnail URL must be valid", async () => {
       expect.assertions(1);
 
-      const url = getRandomSequence(20);
-      const sample = createSampleGenre();
+      const url = "foo";
 
       const genre = {
         ...sample,
@@ -120,8 +110,7 @@ describe("genre-schema", () => {
     test("3.1. Thumbnail URL is trimmed", async () => {
       expect.assertions(1);
 
-      const url = faker.internet.url();
-      const sample = createSampleGenre();
+      const url = faker.image.imageUrl();
 
       const genre = {
         ...sample,
@@ -139,8 +128,7 @@ describe("genre-schema", () => {
     test("3.2. Thumbnail URL must be valid", async () => {
       expect.assertions(1);
 
-      const url = getRandomSequence(20);
-      const sample = createSampleGenre();
+      const url = "foo";
 
       const genre = {
         ...sample,
@@ -164,8 +152,7 @@ describe("genre-schema", () => {
     test("4.1. Thumbnail URL is trimmed", async () => {
       expect.assertions(1);
 
-      const url = faker.internet.url();
-      const sample = createSampleGenre();
+      const url = faker.image.imageUrl();
 
       const genre = {
         ...sample,
@@ -183,8 +170,7 @@ describe("genre-schema", () => {
     test("4.2. Thumbnail URL must be valid", async () => {
       expect.assertions(1);
 
-      const url = getRandomSequence(20);
-      const sample = createSampleGenre();
+      const url = "foo";
 
       const genre = {
         ...sample,

@@ -1,12 +1,12 @@
 const { app } = require("./server");
-const { config } = require("./config");
+const { config, mode } = require("./config");
 const { connect, seed } = require("./db");
 
 if (!config.app.port) {
   throw new Error("App config is invalid");
 }
 
-console.log(process.env.NODE_ENV);
+console.log(`Environment mode: ${mode}`);
 
 connect()
   // .then(() => {
