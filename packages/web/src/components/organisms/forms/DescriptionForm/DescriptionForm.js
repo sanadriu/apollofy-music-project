@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
@@ -19,6 +21,8 @@ const ModalButton = styled(PrimaryButton)`
 `;
 
 const DescriptionArea = styled.textarea`
+  width: 22rem;
+  height: 8rem;
   border: 1px solid #b04aff;
   border-radius: 0.3rem;
 `;
@@ -30,23 +34,24 @@ export default function DescriptionForm() {
   const navigate = useNavigate();
 
   function handleDescription() {
-    dispatch(signUpRequest());
-    const updatedCurrentUser = {
-      ...currentUser,
-      description: value,
-    };
+    if (value.length <= 250) {
+      dispatch(signUpRequest());
+      const updatedCurrentUser = {
+        ...currentUser,
+        description: value,
+      };
 
-    dispatch(submitRegisterModal(updatedCurrentUser));
-    try {
-      dispatch(
-        signUpWithEmailRequest(
-          updatedCurrentUser.email,
-          updatedCurrentUser.password,
-        ),
-      );
-      navigate("/");
-    } catch (err) {
-      alert(err.message);
+      dispatch(submitRegisterModal(updatedCurrentUser));
+      try {
+        dispatch(signUpWithEmailRequest(updatedCurrentUser.email, updatedCurrentUser.password));
+        navigate("/");
+      } catch (err) {
+        alert(err.message);
+      }
+    } else {
+      toast.error("Your description is too long", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
     }
   }
 
@@ -58,10 +63,12 @@ export default function DescriptionForm() {
       </SmallText>
       <DescriptionArea
         placeholder="Type a few lines about you..."
-        value={currentUser.description || ""}
+        defaultValue={currentUser.description || ""}
+        maxlength="250"
         onChange={(e) => setValue(e.target.value)}
       />
       <ModalButton onClick={() => handleDescription()}>Finish</ModalButton>
+      <ToastContainer />
     </FlexColumn>
   );
 }
