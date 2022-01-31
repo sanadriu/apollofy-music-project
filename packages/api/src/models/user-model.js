@@ -104,6 +104,9 @@ const UserSchema = new Schema(
   {
     timestamps: true,
     versionKey: false,
+    toJSON: {
+      virtuals: true,
+    },
   },
 );
 
@@ -147,16 +150,34 @@ UserSchema.statics.getNumPages = function () {
 
 UserSchema.statics.getUser = function (id, extend = false) {
   const populate = [
-    { path: "liked_albums", select: "title" },
-    { path: "liked_tracks", select: "title" },
-    { path: "followed_playlists", select: "title" },
-    { path: "followed_users", select: "username" },
-    { path: "followers", select: "username" },
+    {
+      path: "liked_albums",
+      match: { deleted_at: { $exists: false } },
+      // ...(extend ? { select: "title" } : {}),
+    },
+    {
+      path: "liked_tracks",
+      match: { deleted_at: { $exists: false } },
+      // ...(extend ? { select: "title" } : {}),
+    },
+    {
+      path: "followed_playlists",
+      match: { deleted_at: { $exists: false } },
+      // ...(extend ? { select: "title" } : {}),
+    },
+    {
+      path: "followed_users",
+      match: { deleted_at: { $exists: false } },
+      // ...(extend ? { select: "username" } : {}),
+    },
+    {
+      path: "followers",
+      match: { deleted_at: { $exists: false } },
+      // ...(extend ? { select: "username" } : {}),
+    },
   ];
 
-  return this.findById(id)
-    .notDeleted()
-    .populate(extend ? populate : undefined);
+  return this.findById(id).notDeleted().populate(populate);
 };
 
 UserSchema.statics.getUserByEmail = function (email) {

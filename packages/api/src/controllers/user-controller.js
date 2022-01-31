@@ -68,18 +68,11 @@ async function getUsers(req, res, next) {
       });
     }
 
-<<<<<<< HEAD
     if (page > pages) {
       return res.status(404).send({
         data: null,
         error: "Page not found",
         pages,
-=======
-    if (response.data.data) {
-      return res.status(200).send({
-        data: response.data.data,
-        error: null,
->>>>>>> 5d42184b537534263cf03208f8acad9b67b0ebcd
       });
     }
 
@@ -104,7 +97,6 @@ async function getSingleUser_v1(req, res, next) {
     { path: "followers" },
   ];
 
-<<<<<<< HEAD
   try {
     const { idUser } = req.params;
 
@@ -138,10 +130,6 @@ async function getSingleUser(req, res, next) {
 
     return res.status(200).send({
       data: dbRes,
-=======
-    res.status(201).send({
-      data: response.data,
->>>>>>> 5d42184b537534263cf03208f8acad9b67b0ebcd
       error: null,
     });
   } catch (error) {
