@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../redux/auth/auth-actions";
 import { authSelector } from "../../redux/auth/auth-selectors";
@@ -8,9 +8,14 @@ import * as ROUTES from "../../routes";
 function Home() {
   const { isAuthenticated, currentUser } = useSelector(authSelector);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function logout() {
     dispatch(signOut());
+  }
+
+  function editProfile() {
+    navigate(ROUTES.EDIT_PROFILE);
   }
   if (!isAuthenticated) {
     return <Navigate to={ROUTES.LOGIN} />;
@@ -26,6 +31,9 @@ function Home() {
         )}
         <button type="button" onClick={logout}>
           Logout
+        </button>
+        <button type="button" onClick={editProfile}>
+          Edit Profile
         </button>
       </section>
     </main>
