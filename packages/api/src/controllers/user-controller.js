@@ -2,9 +2,7 @@ const { Types } = require("mongoose");
 const { User } = require("../models");
 const { getUserProfile } = require("./utils");
 const { auth } =
-  process.env.NODE_ENV === "test"
-    ? require("../services/__mocks__")
-    : require("../services");
+  process.env.NODE_ENV === "test" ? require("../services/__mocks__") : require("../services");
 
 async function signUp(req, res, next) {
   const { uid, email, name } = req.user;
@@ -41,19 +39,6 @@ async function signOut(req, res) {
   });
 }
 
-async function getUsers_v1(req, res, next) {
-  try {
-    const dbRes = await User.find({});
-
-    res.status(200).send({
-      success: true,
-      data: dbRes,
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
 async function getUsers(req, res, next) {
   try {
     const { page = 1, sort = "created_at", order = "asc" } = req.query;
@@ -88,32 +73,6 @@ async function getUsers(req, res, next) {
   }
 }
 
-async function getSingleUser_v1(req, res, next) {
-  var populateQuery = [
-    { path: "liked_albums", select: "title thumbnails year genres" },
-    { path: "liked_tracks" },
-    { path: "followed_playlists" },
-    { path: "followed_users" },
-    { path: "followers" },
-  ];
-
-  try {
-    const { idUser } = req.params;
-
-    const dbRes = await User.findOne({
-      _id: idUser,
-    }).populate(populateQuery);
-
-    res.status(200).send({
-      success: true,
-      data: dbRes,
-    });
-  } catch (error) {
-    //console.log(error);
-    next(error);
-  }
-}
-
 async function getSingleUser(req, res, next) {
   try {
     const { idUser } = req.params;
@@ -133,27 +92,6 @@ async function getSingleUser(req, res, next) {
       error: null,
     });
   } catch (error) {
-    next(error);
-  }
-}
-
-async function updateUser_v1(req, res, next) {
-  try {
-    const newData = req.body;
-    const { uid } = req.user;
-
-    const dbRes = await User.findOneAndUpdate({ _id: uid }, newData, {
-      new: true,
-      runValidators: true,
-    });
-
-    res.status(200).send({
-      success: true,
-      message: "User updated successfully",
-      data: dbRes,
-    });
-  } catch (error) {
-    console.log(error);
     next(error);
   }
 }
@@ -268,9 +206,24 @@ async function likeTrack(req, res, next) {
 async function followUser(req, res, next) {
   try {
     const { uid } = req.user;
-    const { idFollowedUser } = req.params;
+    const { idUser } = req.params;
 
-    const dbRes = await User.followUser(uid, idFollowedUser);
+    if (!(await User.getUser(uid))) {
+      return res.status(404).send({
+        error: "User not found",
+        data: null,
+      });
+    }
+
+    if (!(await User.getUser(idUser))) {
+      return res.status(404).send({
+        error: "User to be followed not found",
+        data: null,
+      });
+    }
+
+    await User.followUser(uid, idUser);
+    await User.getFollowed(idUser, uid);
 
     if (!dbRes) {
       return res.status(404).send({
@@ -311,29 +264,6 @@ async function followPlaylist(req, res, next) {
   }
 }
 
-async function getFollowed(req, res, next) {
-  try {
-    const { uid } = req.user;
-    const { idFollower } = req.params;
-
-    const dbRes = await User.getFollowed(uid, idFollower);
-
-    if (!dbRes) {
-      return res.status(404).send({
-        error: "User not found",
-        data: null,
-      });
-    }
-
-    return res.status(200).send({
-      data: "Operation done successfully",
-      error: null,
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
 module.exports = {
   signUp,
   signOut,
@@ -345,5 +275,4 @@ module.exports = {
   likeTrack,
   followUser,
   followPlaylist,
-  getFollowed,
 };
