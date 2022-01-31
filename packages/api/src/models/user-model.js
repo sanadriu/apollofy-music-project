@@ -44,9 +44,7 @@ const UserSchema = new Schema(
       trim: true,
       validate: {
         validator: (value) =>
-          value
-            ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" })
-            : true,
+          value ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" }) : true,
         message: () => `Date is not valid`,
       },
     },
@@ -153,49 +151,43 @@ UserSchema.statics.getUser = function (id, extend = false) {
     {
       path: "liked_albums",
       match: { deleted_at: { $exists: false } },
-      // ...(extend ? { select: "title" } : {}),
     },
     {
       path: "liked_tracks",
       match: { deleted_at: { $exists: false } },
-      // ...(extend ? { select: "title" } : {}),
     },
     {
       path: "followed_playlists",
       match: { deleted_at: { $exists: false } },
-      // ...(extend ? { select: "title" } : {}),
     },
     {
       path: "followed_users",
       match: { deleted_at: { $exists: false } },
-      // ...(extend ? { select: "username" } : {}),
     },
     {
       path: "followers",
       match: { deleted_at: { $exists: false } },
-      // ...(extend ? { select: "username" } : {}),
     },
   ];
 
-  return this.findById(id).notDeleted().populate(populate);
+  return this.findById(id)
+    .notDeleted()
+    .populate(extend ? populate : undefined);
 };
 
 UserSchema.statics.getUserByEmail = function (email) {
   return this.findOne({ email }).notDeleted();
 };
 
-UserSchema.statics.getUsers = function (
-  page = 1,
-  sort = "created_at",
-  order = "asc",
-) {
+UserSchema.statics.getUsers = function (page = 1, sort = "created_at", order = "asc") {
   const limit = 10;
   const start = (page - 1) * limit;
 
   return this.find()
     .notDeleted()
     .sort({ [sort]: order })
-    .skip(start);
+    .skip(start)
+    .limit(limit);
 };
 
 UserSchema.statics.updateUser = function (id, data) {
@@ -226,14 +218,48 @@ UserSchema.statics.deleteUser = function (id) {
   );
 };
 
+// UserSchema.statics.switchValueInList = async function (id, listName, value) {
+//   const user = await this.findById(id).notDeleted();
+
+//   if (!user) return null;
+
+//   user[listName] = switchValueInList(user[listName], value);
+
+//   return await user.save({ validateBeforeSave: true });
+// };
+
 UserSchema.statics.switchValueInList = async function (id, listName, value) {
   const user = await this.findById(id).notDeleted();
 
   if (!user) return null;
 
-  user[listName] = switchValueInList(user[listName], value);
-
-  return await user.save({ validateBeforeSave: true });
+  if (user[listName].indexOf(value) === -1) {
+    return await this.findOneAndUpdate(
+      { _id: id, deleted_at: { $exists: false } },
+      {
+        $push: {
+          [listName]: value,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+  } else {
+    return await this.findOneAndUpdate(
+      { _id: id, deleted_at: { $exists: false } },
+      {
+        $pull: {
+          [listName]: value,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+  }
 };
 
 UserSchema.statics.likeAlbum = async function (id, idAlbum) {

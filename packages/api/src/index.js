@@ -9,9 +9,10 @@ if (!config.app.port) {
 console.log(`Environment mode: ${mode}`);
 
 connect()
-  // .then(() => {
-  //   return seed();
-  // })
+  .then(() => {
+    // return seed();
+    return Promise.resolve();
+  })
   .then(() => {
     app.listen(config.app.port, () => {
       console.log(`Server listening on ${config.app.port}`);

@@ -5,7 +5,9 @@ const {
   MONGO_DB_URL_PRODUCTION,
   MONGO_DB_URL_DEVELOPMENT,
   MONGO_DB_URL_TEST,
+  CLIENT_URL,
   PORT = 4000,
+  SEED = false,
 } = process.env;
 
 const baseConfig = {
@@ -13,7 +15,7 @@ const baseConfig = {
     port: PORT || 4000,
   },
   client: {
-    url: process.env.CLIENT_URL || "http://localhost:3000",
+    url: CLIENT_URL || "http://localhost:3000",
   },
 };
 
