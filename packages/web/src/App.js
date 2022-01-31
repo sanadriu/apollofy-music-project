@@ -16,11 +16,6 @@ import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 
-<<<<<<< HEAD
-import Switch from "./components/atoms/Switch";
-
-=======
->>>>>>> sanadriu/dev
 function App() {
   const dispatch = useDispatch();
   const [theme, themeToggler, mountedComponent] = useDarkMode();
