@@ -16,8 +16,6 @@ import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 
-import Switch from "./components/atoms/Switch";
-
 function App() {
   const dispatch = useDispatch();
   const [theme, themeToggler, mountedComponent] = useDarkMode();
@@ -49,8 +47,6 @@ function App() {
       <>
         <GlobalStyles />
         <>
-          <Switch theme={theme} toggleTheme={themeToggler} />
-          <h1>Hello world!</h1>
           <Routes>
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />

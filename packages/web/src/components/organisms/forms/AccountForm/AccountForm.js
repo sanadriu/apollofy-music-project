@@ -1,13 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import AccountSchema from "../../../../schemas/AccountSchema";
-import { authSelector } from "../../../../redux/auth/auth-selectors";
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
+import {
+  submitFirstModal,
+  nextModal,
+} from "../../../../redux/auth/auth-actions";
+import { authSelector } from "../../../../redux/auth/auth-selectors";
 
 const RegisterInput = styled.input`
   width: 90%;
@@ -29,7 +33,7 @@ const ModalButton = styled(PrimaryButton)`
 
 export default function AccountForm() {
   const dispatch = useDispatch();
-  const { submitFirstModal } = useSelector(authSelector);
+  const { currentModal } = useSelector(authSelector);
   return (
     <>
       <Formik
@@ -44,28 +48,39 @@ export default function AccountForm() {
           setTimeout(async () => {
             setSubmitting(true);
             dispatch(submitFirstModal(values));
+            dispatch(nextModal(currentModal + 1));
+            setSubmitting(false);
           }, 400);
         }}
       >
         {({ isSubmitting }) => (
           <Form className="formik">
             <FlexColumn>
-              <MiddleTitle variant="h5" className="formTypo">
-                Sign up
-              </MiddleTitle>
-              <RegisterInput type="name" name="name" placeholder="Name" />
+              <MiddleTitle>Create your account</MiddleTitle>
+              <Field
+                as={RegisterInput}
+                type="text"
+                name="name"
+                placeholder="Name"
+              />
               <ErrorMessage
                 className="errorMessage"
                 name="name"
                 component="div"
               />
-              <RegisterInput type="email" name="email" placeholder="Email" />
+              <Field
+                as={RegisterInput}
+                type="text"
+                name="email"
+                placeholder="Email"
+              />
               <ErrorMessage
                 className="errorMessage"
                 name="email"
                 component="div"
               />
-              <RegisterInput
+              <Field
+                as={RegisterInput}
                 type="password"
                 name="password"
                 placeholder="Password"
@@ -75,7 +90,8 @@ export default function AccountForm() {
                 name="password"
                 component="div"
               />
-              <RegisterInput
+              <Field
+                as={RegisterInput}
                 type="password"
                 name="confirm_password"
                 placeholder="Confirm password"

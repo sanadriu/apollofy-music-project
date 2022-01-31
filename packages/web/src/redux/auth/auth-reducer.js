@@ -13,10 +13,6 @@ export const AuthInitialState = {
     email: null,
   },
   currentModal: 0,
-  accountInfo: {},
-  dateOfBirth: null,
-  profilePicture: null,
-  description: null,
 };
 
 const AuthReducer = (state = AuthInitialState, action) => {
@@ -120,19 +116,25 @@ const AuthReducer = (state = AuthInitialState, action) => {
     case AuthTypes.SUBMIT_FIRST_MODAL: {
       return {
         ...state,
-        accountInfo: payload,
+        currentUser: { ...payload },
       };
     }
     case AuthTypes.SUBMIT_SECOND_MODAL: {
       return {
         ...state,
-        dateOfBirth: payload,
+        currentUser: {
+          ...state.currentUser,
+          dateOfBirth: payload
+        },
       };
     }
     case AuthTypes.SUBMIT_THIRD_MODAL: {
       return {
         ...state,
-        profilePicture: payload,
+        currentUser: {
+          ...state.currentUser,
+          profilePicture: payload
+        },
       };
     }
     case AuthTypes.SUBMIT_REGISTER_MODAL: {
