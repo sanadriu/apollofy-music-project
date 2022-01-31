@@ -40,4 +40,5 @@ const config = {
 
 module.exports = {
   config: config[NODE_ENV],
+  mode: NODE_ENV,
 };

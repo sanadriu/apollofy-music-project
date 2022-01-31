@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+const log = require("../logger");
 
 const firebaseCertConfig = {
   type: process.env.FB_CERT_TYPE,
@@ -18,6 +19,10 @@ admin.initializeApp({
 });
 
 const auth = admin.auth();
+
+function deleteUser(uid) {
+  return auth.deleteUser(uid);
+}
 
 function verifyIdToken(token) {
   return auth.verifyIdToken(token);
@@ -39,19 +44,21 @@ function getAuthToken(headers = {}) {
 }
 
 function login(req = {}, userClaims = {}) {
-  const { email, uid } = userClaims;
+  const { email, uid, name } = userClaims;
 
   if (typeof email !== "string" || typeof uid !== "string") {
     throw new Error("Missing user claims");
   }
 
   req.user = {
-    email: email,
-    uid: uid,
+    uid,
+    email,
+    name,
   };
 }
 
 module.exports = {
+  deleteUser,
   verifyIdToken,
   getAuthToken,
   login,

@@ -14,8 +14,18 @@ const TrackSchema = new Schema(
       required: true,
       trim: true,
     },
+    url: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (value) => (value ? isURL(value) : true),
+        message: () => `URL for song is invalid`,
+      },
+    },
     duration: {
       type: Number,
+      required: true,
+      min: 0,
     },
     released_date: {
       type: String,
@@ -35,12 +45,14 @@ const TrackSchema = new Schema(
     genres: {
       type: [Types.ObjectId],
       ref: "genre",
-      trim: true,
     },
     albums: {
       type: [Types.ObjectId],
       ref: "album",
-      trim: true,
+    },
+    liked_by: {
+      type: [String],
+      ref: "user",
     },
     thumbnails: {
       url_default: {
@@ -72,11 +84,6 @@ const TrackSchema = new Schema(
       type: Number,
       default: 0,
       min: 0,
-    },
-    liked_by: {
-      type: [Types.ObjectId],
-      ref: "user",
-      trim: true,
     },
     deleted_at: {
       type: Date,

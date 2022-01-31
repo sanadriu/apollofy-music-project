@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-// import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
+// import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
 
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
@@ -62,7 +61,7 @@ export default function ProfilePictureForm() {
             aria-label="upload picture"
             component="span"
           >
-            <PhotoCamera />
+            {/* <PhotoCamera /> */}
           </IconButton>
         </label>
         {value ? <p>{value}</p> : null}

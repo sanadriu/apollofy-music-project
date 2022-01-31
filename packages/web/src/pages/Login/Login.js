@@ -81,58 +81,56 @@ function Login() {
   }
 
   return (
-    <>
-      <MainFlex>
-        <LoginBoard />
-        <FlexColumn>
-          <Title>What&apos;s rocking right now</Title>
-          <RegisterButton
-            type="button"
-            onClick={(e) => handleLoginWithGoogle(e)}
-            disabled={isSigningUp}
+    <MainFlex>
+      <LoginBoard />
+      <FlexColumn>
+        <Title>What&apos;s rocking right now</Title>
+        <RegisterButton
+          type="button"
+          onClick={(e) => handleLoginWithGoogle(e)}
+          disabled={isSigningUp}
+        >
+          Register with Google
+        </RegisterButton>
+        <RegisterButton
+          type="button"
+          onClick={(e) => handleLoginWithGoogle(e)}
+          disabled={isSigningUp}
+        >
+          Register with Facebook
+        </RegisterButton>
+        <RegisterButton
+          type="button"
+          onClick={handleModal}
+          disabled={isSigningUp}
+        >
+          Register with email and password
+        </RegisterButton>
+        <RegisterModal isOpen={isOpen} handleModal={handleModal}>
+          {currentModal === 1 ? <AccountForm /> : null}
+          {currentModal === 2 ? <BirthDayForm /> : null}
+          {currentModal === 3 ? <ProfilePictureForm /> : null}
+          {currentModal === 4 ? <DescriptionForm /> : null}
+        </RegisterModal>
+        <RegisterButton
+          type="button"
+          onClick={(e) => handleLoginWithGoogle(e)}
+          disabled={isSigningUp}
+        >
+          Log in with your account
+        </RegisterButton>
+        {signUpError && <section className="mt-4">{signUpError}</section>}
+        <section className="mt-4">
+          <hr className="mt-1 mb-4" />
+          <Link
+            to={ROUTES.RESET_PASSWORD}
+            className="underline text-blue-gray-200 w-full text-center block"
           >
-            Register with Google
-          </RegisterButton>
-          <RegisterButton
-            type="button"
-            onClick={(e) => handleLoginWithFacebook(e)}
-            disabled={isSigningUp}
-          >
-            Register with Facebook
-          </RegisterButton>
-          <RegisterButton
-            type="button"
-            onClick={handleModal}
-            disabled={isSigningUp}
-          >
-            Register with email and password
-          </RegisterButton>
-          <RegisterModal isOpen={isOpen} handleModal={handleModal}>
-            {currentModal === 1 ? <AccountForm /> : null}
-            {currentModal === 2 ? <BirthDayForm /> : null}
-            {currentModal === 3 ? <ProfilePictureForm /> : null}
-            {currentModal === 4 ? <DescriptionForm /> : null}
-          </RegisterModal>
-          <RegisterButton
-            type="button"
-            onClick={(e) => handleLoginWithGoogle(e)}
-            disabled={isSigningUp}
-          >
-            Log in with your account
-          </RegisterButton>
-          {signUpError && <section className="mt-4">{signUpError}</section>}
-          <section className="mt-4">
-            <hr className="mt-1 mb-4" />
-            <Link
-              to={ROUTES.RESET_PASSWORD}
-              className="underline text-blue-gray-200 w-full text-center block"
-            >
-              Reset password
-            </Link>
-          </section>
-        </FlexColumn>
-      </MainFlex>
-    </>
+            Reset password
+          </Link>
+        </section>
+      </FlexColumn>
+    </MainFlex>
   );
 }
 

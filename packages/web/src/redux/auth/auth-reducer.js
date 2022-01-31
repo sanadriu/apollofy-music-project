@@ -122,13 +122,19 @@ const AuthReducer = (state = AuthInitialState, action) => {
     case AuthTypes.SUBMIT_SECOND_MODAL: {
       return {
         ...state,
-        currentUser: { ...state.currentUser, dateOfBirth: payload },
+        currentUser: {
+          ...state.currentUser,
+          dateOfBirth: payload
+        },
       };
     }
     case AuthTypes.SUBMIT_THIRD_MODAL: {
       return {
         ...state,
-        currentUser: { ...state.currentUser, profilePicture: payload },
+        currentUser: {
+          ...state.currentUser,
+          profilePicture: payload
+        },
       };
     }
     case AuthTypes.SUBMIT_REGISTER_MODAL: {
