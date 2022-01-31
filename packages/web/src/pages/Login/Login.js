@@ -11,12 +11,14 @@ import RegisterModal from "../../components/organisms/modal/RegisterModal";
 import {
   nextModal,
   resetAuthState,
-  signInWithEmailRequest,
   signUpWithGoogleRequest,
 } from "../../redux/auth/auth-actions";
 
 import { authSelector } from "../../redux/auth/auth-selectors";
 import AccountForm from "../../components/organisms/forms/AccountForm/AccountForm";
+import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm";
+import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureForm/ProfilePictureForm";
+import DescriptionForm from "../../components/organisms/forms/DescriptionForm/DescriptionForm";
 
 const MainFlex = styled.div`
   height: 100vh;
@@ -49,8 +51,6 @@ function Login() {
   const { currentModal, isSigningUp, signUpError, isAuthenticated } =
     useSelector(authSelector);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
@@ -62,25 +62,7 @@ function Login() {
     dispatch(signUpWithGoogleRequest());
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    dispatch(signInWithEmailRequest(email, password));
-
-    setEmail("");
-    setPassword("");
-  }
-
-  function handleSetEmail(e) {
-    setEmail(e.target.value);
-  }
-
-  function handleSetPassword(e) {
-    setPassword(e.target.value);
-  }
-
   const handleModal = () => {
-    console.log("hola");
     setOpen(!isOpen);
     if (!isOpen) {
       dispatch(nextModal(currentModal + 1));
@@ -122,6 +104,9 @@ function Login() {
           </RegisterButton>
           <RegisterModal isOpen={isOpen} handleModal={handleModal}>
             {currentModal === 1 ? <AccountForm /> : null}
+            {currentModal === 2 ? <BirthDayForm /> : null}
+            {currentModal === 3 ? <ProfilePictureForm /> : null}
+            {currentModal === 4 ? <DescriptionForm /> : null}
           </RegisterModal>
           <RegisterButton
             type="button"
@@ -130,35 +115,6 @@ function Login() {
           >
             Log in with your account
           </RegisterButton>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
-              type="text"
-              id="email"
-              className="form-input"
-              value={email}
-              onChange={handleSetEmail}
-            />
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="form-input"
-              value={password}
-              onChange={handleSetPassword}
-            />
-            <button
-              className="btn btn-primary w-full"
-              type="submit"
-              disabled={isSigningUp}
-            >
-              Login
-            </button>
-          </form>
           {signUpError && <section className="mt-4">{signUpError}</section>}
           <section className="mt-4">
             <hr className="mt-1 mb-4" />
