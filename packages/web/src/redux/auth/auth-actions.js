@@ -157,20 +157,20 @@ export const nextModal = (modal) => ({
 
 export const submitFirstModal = (value) => ({
   type: AuthTypes.SUBMIT_FIRST_MODAL,
-  paylaod: value,
+  payload: value,
 });
 
 export const submitSecondModal = (value) => ({
   type: AuthTypes.SUBMIT_SECOND_MODAL,
-  paylaod: value,
+  payload: value,
 });
 
 export const submitThirdModal = (value) => ({
   type: AuthTypes.SUBMIT_THIRD_MODAL,
-  paylaod: value,
+  payload: value,
 });
 
 export const submitRegisterModal = (value) => ({
   type: AuthTypes.SUBMIT_REGISTER_MODAL,
-  paylaod: value,
+  payload: value,
 });
