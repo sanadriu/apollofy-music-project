@@ -6,7 +6,7 @@ const cors = require("cors");
 
 const { config } = require("./config");
 const { errorMiddleware } = require("./middlewares");
-const { authRouter, userRouter } = require("./routes");
+const { authRouter, userRouter, albumRouter, playlistRouter } = require("./routes");
 
 const app = express();
 
@@ -21,10 +21,19 @@ app.use(
 
 app.use("/", authRouter);
 app.use("/users", userRouter);
+app.use("/albums", albumRouter);
+app.use("/playlists", playlistRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send({
     data: "hello-world",
+  });
+});
+
+app.use("*", (req, res) => {
+  res.status(404).send({
+    success: false,
+    message: "Not found",
   });
 });
 

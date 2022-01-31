@@ -10,6 +10,7 @@ const GenreSchema = new Schema(
       required: true,
       unique: true,
       trim: true,
+      maxlength: 50,
     },
     thumbnails: {
       url_default: {
@@ -43,7 +44,10 @@ const GenreSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
     versionKey: false,
   },
 );

@@ -13,6 +13,7 @@ const TrackSchema = new Schema(
       type: String,
       required: true,
       trim: true,
+      maxlength: 50,
     },
     url: {
       type: String,
@@ -32,9 +33,7 @@ const TrackSchema = new Schema(
       trim: true,
       validate: {
         validator: (value) =>
-          value
-            ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" })
-            : true,
+          value ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" }) : true,
         message: () => `Date is not valid`,
       },
     },
@@ -91,7 +90,10 @@ const TrackSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
     versionKey: false,
   },
 );

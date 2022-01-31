@@ -1,6 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
 const { isEmail, isDate, isURL } = require("validator");
-const { switchValueInList } = require("../utils");
 
 const UserSchema = new Schema(
   {
@@ -100,10 +99,18 @@ const UserSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
     versionKey: false,
     toJSON: {
       virtuals: true,
+      transform: function (doc, ret) {
+        ret.id = ret._id;
+
+        delete ret._id;
+      },
     },
   },
 );
@@ -175,10 +182,6 @@ UserSchema.statics.getUser = function (id, extend = false) {
     .populate(extend ? populate : undefined);
 };
 
-UserSchema.statics.getUserByEmail = function (email) {
-  return this.findOne({ email }).notDeleted();
-};
-
 UserSchema.statics.getUsers = function (page = 1, sort = "created_at", order = "asc") {
   const limit = 10;
   const start = (page - 1) * limit;
@@ -196,37 +199,17 @@ UserSchema.statics.updateUser = function (id, data) {
   return this.findOneAndUpdate(
     { _id: id, deleted_at: { $exists: false } },
     { $set: { firstname, lastname, username, description, thumbnails } },
-    {
-      new: true,
-      runValidators: true,
-    },
+    { new: true, runValidators: true },
   );
 };
 
 UserSchema.statics.deleteUser = function (id) {
   return this.findOneAndUpdate(
     { _id: id, deleted_at: { $exists: false } },
-    {
-      $set: {
-        deleted_at: Date.now(),
-      },
-    },
-    {
-      new: true,
-      runValidators: true,
-    },
+    { $set: { deleted_at: Date.now() } },
+    { new: true },
   );
 };
-
-// UserSchema.statics.switchValueInList = async function (id, listName, value) {
-//   const user = await this.findById(id).notDeleted();
-
-//   if (!user) return null;
-
-//   user[listName] = switchValueInList(user[listName], value);
-
-//   return await user.save({ validateBeforeSave: true });
-// };
 
 UserSchema.statics.switchValueInList = async function (id, listName, value) {
   const user = await this.findById(id).notDeleted();
@@ -236,28 +219,14 @@ UserSchema.statics.switchValueInList = async function (id, listName, value) {
   if (user[listName].indexOf(value) === -1) {
     return await this.findOneAndUpdate(
       { _id: id, deleted_at: { $exists: false } },
-      {
-        $push: {
-          [listName]: value,
-        },
-      },
-      {
-        new: true,
-        runValidators: true,
-      },
+      { $push: { [listName]: value } },
+      { new: true, runValidators: true },
     );
   } else {
     return await this.findOneAndUpdate(
       { _id: id, deleted_at: { $exists: false } },
-      {
-        $pull: {
-          [listName]: value,
-        },
-      },
-      {
-        new: true,
-        runValidators: true,
-      },
+      { $pull: { [listName]: value } },
+      { new: true, runValidators: true },
     );
   }
 };
@@ -270,12 +239,12 @@ UserSchema.statics.likeTrack = async function (id, idTrack) {
   return await this.switchValueInList(id, "liked_tracks", idTrack);
 };
 
-UserSchema.statics.followUser = async function (id, idFollowedUser) {
-  return await this.switchValueInList(id, "followed_users", idFollowedUser);
+UserSchema.statics.followUser = async function (id, idFollowed) {
+  return await this.switchValueInList(id, "followed_users", idFollowed);
 };
 
 UserSchema.statics.followPlaylist = async function (id, idPlaylist) {
-  return await this.switchValueInList(id, "followed_playlist", idPlaylist);
+  return await this.switchValueInList(id, "followed_playlists", idPlaylist);
 };
 
 UserSchema.statics.getFollowed = async function (id, idFollower) {
@@ -289,3 +258,13 @@ UserSchema.statics.helloWorld = function () {
 const User = model("user", UserSchema);
 
 module.exports = User;
+
+// UserSchema.statics.switchValueInList = async function (id, listName, value) {
+//   const user = await this.findById(id).notDeleted();
+
+//   if (!user) return null;
+
+//   user[listName] = switchValueInList(user[listName], value);
+
+//   return await user.save({ validateBeforeSave: true });
+// };

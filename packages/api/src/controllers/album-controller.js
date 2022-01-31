@@ -1,11 +1,11 @@
 const { Types } = require("mongoose");
-const { Playlist } = require("../models");
+const { Album, Track } = require("../models");
 
-async function getPlaylists(req, res, next) {
+async function getAlbums(req, res, next) {
   try {
     const { page = 1, sort = "created_at", order = "asc" } = req.query;
 
-    const pages = await Playlist.getNumPages();
+    const pages = await Album.getNumPages();
 
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
@@ -31,7 +31,7 @@ async function getPlaylists(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylists(page, sort, order);
+    const dbRes = await Album.getAlbums(page, sort, order);
 
     return res.status(200).send({
       data: dbRes,
@@ -43,24 +43,24 @@ async function getPlaylists(req, res, next) {
   }
 }
 
-async function getSinglePlaylist(req, res, next) {
+async function getSingleAlbum(req, res, next) {
   try {
-    const { idPlaylist } = req.params;
+    const { idAlbum } = req.params;
     const { extend = false } = req.query;
 
-    if (!Types.ObjectId.isValid(idPlaylist)) {
+    if (!Types.ObjectId.isValid(idAlbum)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong playlist ID",
+        error: "Wrong album ID",
       });
     }
 
-    const dbRes = await Playlist.getPlaylist(idPlaylist, extend);
+    const dbRes = await Album.getAlbum(idAlbum, extend);
 
     if (!dbRes) {
       return res.status(404).send({
         data: null,
-        error: "Playlist not found",
+        error: "Album not found",
       });
     }
 
@@ -73,12 +73,20 @@ async function getSinglePlaylist(req, res, next) {
   }
 }
 
-async function createPlaylist(req, res, next) {
+async function createAlbum(req, res, next) {
   try {
-    const details = req.body;
+    const { tracks: idTrackList, ...details } = req.body;
     const { uid } = req.user;
 
-    const dbRes = await Playlist.createPlaylist(uid, details);
+    const allowedTracks = await Promise.all(
+      idTrackList.filter(async (idTrack) => {
+        const dbRes = await Track.getTrack(idTrack);
+
+        return dbRes.user === uid;
+      }),
+    );
+
+    const dbRes = await Album.createAlbum(uid, { ...details, allowedTracks });
 
     return res.status(200).send({
       data: dbRes._id,
@@ -89,25 +97,25 @@ async function createPlaylist(req, res, next) {
   }
 }
 
-async function updatePlaylist(req, res, next) {
+async function updateAlbum(req, res, next) {
   try {
-    const details = req.body;
+    const { tracks: idTrackList, ...details } = req.body;
     const { uid } = req.user;
-    const { idPlaylist } = req.params;
+    const { idAlbum } = req.params;
 
-    if (!Types.ObjectId.isValid(idPlaylist)) {
+    if (!Types.ObjectId.isValid(idAlbum)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong playlist ID",
+        error: "Wrong album ID",
       });
     }
 
-    const dbRes = await Playlist.getPlaylist(idPlaylist);
+    const dbRes = await Album.getAlbum(idAlbum);
 
     if (!dbRes) {
       return res.status(404).send({
         data: null,
-        error: "Playlist not found",
+        error: "Album not found",
       });
     }
 
@@ -120,10 +128,18 @@ async function updatePlaylist(req, res, next) {
       });
     }
 
-    await Playlist.updatePlaylist(idPlaylist, details);
+    const allowedTracks = await Promise.all(
+      idTrackList.filter(async (idTrack) => {
+        const dbRes = await Track.getTrack(idTrack);
+
+        return dbRes.user === uid;
+      }),
+    );
+
+    await Album.updateAlbum(idAlbum, { ...details, allowedTracks });
 
     return res.status(200).send({
-      data: "Playlist updated successfully",
+      data: "Album updated successfully",
       error: null,
     });
   } catch (error) {
@@ -131,24 +147,24 @@ async function updatePlaylist(req, res, next) {
   }
 }
 
-async function deletePlaylist(req, res, next) {
+async function deleteAlbum(req, res, next) {
   try {
     const { uid } = req.user;
-    const { idPlaylist } = req.params;
+    const { idAlbum } = req.params;
 
-    if (!Types.ObjectId.isValid(idPlaylist)) {
+    if (!Types.ObjectId.isValid(idAlbum)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong playlist ID",
+        error: "Wrong album ID",
       });
     }
 
-    const dbRes = await Playlist.getPlaylist(idPlaylist);
+    const dbRes = await Album.getAlbum(idAlbum);
 
     if (!dbRes) {
       return res.status(404).send({
         data: null,
-        error: "Playlist not found",
+        error: "Album not found",
       });
     }
 
@@ -161,10 +177,10 @@ async function deletePlaylist(req, res, next) {
       });
     }
 
-    await Playlist.deletePlaylist(idPlaylist);
+    await Album.deleteAlbum(idAlbum);
 
     return res.status(200).send({
-      data: "Playlist deleted successfully",
+      data: "Album deleted successfully",
       error: null,
     });
   } catch (error) {
@@ -173,9 +189,9 @@ async function deletePlaylist(req, res, next) {
 }
 
 module.exports = {
-  getPlaylists,
-  getSinglePlaylist,
-  createPlaylist,
-  updatePlaylist,
-  deletePlaylist,
+  getAlbums,
+  getSingleAlbum,
+  createAlbum,
+  updateAlbum,
+  deleteAlbum,
 };

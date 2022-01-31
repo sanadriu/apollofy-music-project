@@ -2,10 +2,12 @@ const { Types } = require("mongoose");
 const { User, Playlist, Album, Track } = require("../models");
 const { getUserProfile } = require("./utils");
 const { mode } = require("../config");
+const { logger } = require("../services");
 const { auth } = mode === "test" ? require("../services/__mocks__") : require("../services");
 
 async function signUp(req, res, next) {
   const { uid, email, name } = req.user;
+  console.log(req.user);
 
   try {
     const user = await User.findOne({ email });
@@ -104,6 +106,29 @@ async function getSingleUser(req, res, next) {
   }
 }
 
+async function getSelfUser(req, res, next) {
+  try {
+    const { uid } = req.user;
+    const { extend = false } = req.query;
+
+    const dbRes = await User.getUser(uid, extend);
+
+    if (!dbRes) {
+      return res.status(404).send({
+        data: null,
+        error: "User not puto",
+      });
+    }
+
+    return res.status(200).send({
+      data: dbRes,
+      error: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function updateUser(req, res, next) {
   try {
     const details = req.body;
@@ -156,7 +181,7 @@ async function likeAlbum(req, res, next) {
     const { uid } = req.user;
     const { idAlbum } = req.params;
 
-    if (Types.ObjectId.isValid(idAlbum)) {
+    if (!Types.ObjectId.isValid(idAlbum)) {
       return res.status(400).send({
         error: "Wrong album ID",
         data: null,
@@ -170,15 +195,15 @@ async function likeAlbum(req, res, next) {
       });
     }
 
-    // if (!(await Album.getAlbum(idAlbum))) {
-    //   return res.status(404).send({
-    //     error: "User to be followed not found",
-    //     data: null,
-    //   });
-    // }
+    if (!(await Album.getAlbum(idAlbum))) {
+      return res.status(404).send({
+        error: "Album not found",
+        data: null,
+      });
+    }
 
     await User.likeAlbum(uid, idAlbum);
-    // await Album.getLiked(idAlbum, uid);
+    await Album.getLiked(idAlbum, uid);
 
     return res.status(200).send({
       data: "Operation done successfully",
@@ -194,7 +219,7 @@ async function likeTrack(req, res, next) {
     const { uid } = req.user;
     const { idTrack } = req.params;
 
-    if (Types.ObjectId.isValid(idTrack)) {
+    if (!Types.ObjectId.isValid(idTrack)) {
       return res.status(400).send({
         error: "Wrong track ID",
         data: null,
@@ -208,15 +233,15 @@ async function likeTrack(req, res, next) {
       });
     }
 
-    // if (!(await Track.getTrack(idTrack))) {
-    //   return res.status(404).send({
-    //     error: "User to be followed not found",
-    //     data: null,
-    //   });
-    // }
+    if (!(await Track.getTrack(idTrack))) {
+      return res.status(404).send({
+        error: "Track not found",
+        data: null,
+      });
+    }
 
     await User.likeTrack(uid, idTrack);
-    // await Track.getLiked(idTrack, uid);
+    await Track.getLiked(idTrack, uid);
 
     return res.status(200).send({
       data: "Operation done successfully",
@@ -232,7 +257,7 @@ async function followPlaylist(req, res, next) {
     const { uid } = req.user;
     const { idPlaylist } = req.params;
 
-    if (Types.ObjectId.isValid(idPlaylist)) {
+    if (!Types.ObjectId.isValid(idPlaylist)) {
       return res.status(400).send({
         error: "Wrong playlist ID",
         data: null,
@@ -246,15 +271,15 @@ async function followPlaylist(req, res, next) {
       });
     }
 
-    // if (!(await Playlist.getPlaylist(idPlaylist))) {
-    //   return res.status(404).send({
-    //     error: "User to be followed not found",
-    //     data: null,
-    //   });
-    // }
+    if (!(await Playlist.getPlaylist(idPlaylist))) {
+      return res.status(404).send({
+        error: "User to be followed not found",
+        data: null,
+      });
+    }
 
     await User.followPlaylist(uid, idPlaylist);
-    // await Playlist.getLiked(idPlaylist, uid);
+    await Playlist.getFollowed(idPlaylist, uid);
 
     return res.status(200).send({
       data: "Operation done successfully",
@@ -308,6 +333,7 @@ module.exports = {
   signOut,
   getUsers,
   getSingleUser,
+  getSelfUser,
   updateUser,
   deleteUser,
   likeAlbum,

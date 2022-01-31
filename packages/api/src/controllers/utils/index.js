@@ -1,11 +1,5 @@
-function getUserProfile(user) {
-  return {
-    id: user._id,
-    email: user.email,
-    username: user.username,
-    firstname: user.firstname,
-    lastname: user.lastname,
-  };
+function getUserProfile({ id, email, username, firstname, lastname }) {
+  return { id, email, username, firstname, lastname };
 }
 
 module.exports = {
