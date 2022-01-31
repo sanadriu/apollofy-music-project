@@ -51,7 +51,7 @@ async function getUsers(req, res, next) {
 
 async function getSingleUser(req, res, next) {
   var populateQuery = [
-    { path: "liked_albums", select: "title thumbnails year genres" },
+    { path: "liked_by", select: "title thumbnails year genres" },
     { path: "liked_tracks" },
     { path: "followed_playlists" },
     { path: "followed_users" },
@@ -106,7 +106,7 @@ async function updateUser(req, res, next) {
 
 async function deleteUser(req, res, next) {
   try {
-    //console.log({ deleted_at: Date.now()});
+
     const { uid } = req.user;
 
     const dbRes = await User.findOneAndUpdate(
