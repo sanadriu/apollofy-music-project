@@ -1,4 +1,3 @@
-import { saveUserData, userLoggedOut } from "./user-actions";
 import * as UserTypes from "./user-types";
 
 export const UserInitialState = {

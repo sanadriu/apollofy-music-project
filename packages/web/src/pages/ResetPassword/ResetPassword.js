@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
+  authSelector,
   sendPasswordResetEmail,
   resetAuthState,
-} from "../../redux/auth/auth-actions";
-import { authSelector } from "../../redux/auth/auth-selectors";
+} from "../../redux/auth";
 
 function buttonText(loading, sent) {
   if (loading) {

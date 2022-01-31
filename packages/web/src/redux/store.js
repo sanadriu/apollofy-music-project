@@ -6,14 +6,14 @@ import thunk from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import rootReducer from "./root-reducer";
+import CombinedReducers from "./reducers";
 
 const persistConfig = {
   key: "apollofy-music-project-client",
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, CombinedReducers);
 
 const middleware = [thunk];
 

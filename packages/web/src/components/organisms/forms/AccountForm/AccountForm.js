@@ -7,11 +7,9 @@ import AccountSchema from "../../../../schemas/AccountSchema";
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-import {
-  submitFirstModal,
-  nextModal,
-} from "../../../../redux/auth/auth-actions";
-import { authSelector } from "../../../../redux/auth/auth-selectors";
+
+import { setNameEmailAndPassword } from "../../../../redux/auth";
+import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const RegisterInput = styled.input`
   width: 90%;
@@ -33,7 +31,7 @@ const ModalButton = styled(PrimaryButton)`
 
 export default function AccountForm() {
   const dispatch = useDispatch();
-  const { currentModal } = useSelector(authSelector);
+  const { currentModal } = useSelector(modalSelector);
   return (
     <>
       <Formik
@@ -47,7 +45,7 @@ export default function AccountForm() {
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(async () => {
             setSubmitting(true);
-            dispatch(submitFirstModal(values));
+            dispatch(setNameEmailAndPassword(values));
             dispatch(nextModal(currentModal + 1));
             setSubmitting(false);
           }, 400);

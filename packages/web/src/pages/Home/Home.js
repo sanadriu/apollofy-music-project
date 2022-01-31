@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signOut } from "../../redux/auth/auth-actions";
-import { authSelector } from "../../redux/auth/auth-selectors";
+
+import { authSelector, signOut } from "../../redux/auth";
 import * as ROUTES from "../../routes";
 import * as API from "../../api";
 import {
@@ -40,7 +40,7 @@ function Home() {
     <main className="p-4">
       <section className="p-4">
         {isAuthenticated ? (
-          <h1 className="text-xl">Hello {currentUser.email}</h1>
+          <h1 className="text-xl">Hello {currentUser.username}</h1>
         ) : (
           <h1 className="text-xl">Hello World</h1>
         )}

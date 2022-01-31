@@ -9,13 +9,13 @@ import { FlexColumn } from "../../components/atoms/FlexColumn/FlexColumn";
 import RegisterModal from "../../components/organisms/modal/RegisterModal";
 
 import {
-  nextModal,
+  authSelector,
   resetAuthState,
   signUpWithGoogleRequest,
   signUpWithFacebook,
-} from "../../redux/auth/auth-actions";
+} from "../../redux/auth";
+import { modalSelector, nextModal } from "../../redux/modal";
 
-import { authSelector } from "../../redux/auth/auth-selectors";
 import AccountForm from "../../components/organisms/forms/AccountForm/AccountForm";
 import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm";
 import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureForm/ProfilePictureForm";
@@ -49,8 +49,8 @@ const RegisterButton = styled.button`
 
 function Login() {
   const dispatch = useDispatch();
-  const { currentModal, isSigningUp, signUpError, isAuthenticated } =
-    useSelector(authSelector);
+  const { isSigningUp, signUpError, isAuthenticated } = useSelector(authSelector);
+  const { currentModal } = useSelector(modalSelector);
 
   const [isOpen, setOpen] = useState(false);
 
@@ -62,6 +62,7 @@ function Login() {
     e.preventDefault();
     dispatch(signUpWithGoogleRequest());
   }
+
   function handleLoginWithFacebook(e) {
     e.preventDefault();
     dispatch(signUpWithFacebook());
@@ -81,58 +82,54 @@ function Login() {
   }
 
   return (
-    <>
-      <MainFlex>
-        <LoginBoard />
-        <FlexColumn>
-          <Title>What&apos;s rocking right now</Title>
-          <RegisterButton
-            type="button"
-            onClick={(e) => handleLoginWithGoogle(e)}
-            disabled={isSigningUp}
-          >
-            Register with Google
-          </RegisterButton>
-          <RegisterButton
-            type="button"
-            onClick={(e) => handleLoginWithFacebook(e)}
-            disabled={isSigningUp}
-          >
-            Register with Facebook
-          </RegisterButton>
-          <RegisterButton
-            type="button"
-            onClick={handleModal}
-            disabled={isSigningUp}
-          >
-            Register with email and password
-          </RegisterButton>
-          <RegisterModal isOpen={isOpen} handleModal={handleModal}>
+    <MainFlex>
+      <LoginBoard />
+      <FlexColumn>
+        <Title>What&apos;s rocking right now</Title>
+        <RegisterButton
+          type="button"
+          onClick={(e) => handleLoginWithGoogle(e)}
+          disabled={isSigningUp}
+        >
+          Register with Google
+        </RegisterButton>
+        <RegisterButton
+          type="button"
+          onClick={(e) => handleLoginWithFacebook(e)}
+          disabled={isSigningUp}
+        >
+          Register with Facebook
+        </RegisterButton>
+        <RegisterButton type="button" onClick={handleModal} disabled={isSigningUp}>
+          Register with email and password
+        </RegisterButton>
+        <RegisterModal isOpen={isOpen} handleModal={handleModal}>
+          <>
             {currentModal === 1 ? <AccountForm /> : null}
             {currentModal === 2 ? <BirthDayForm /> : null}
             {currentModal === 3 ? <ProfilePictureForm /> : null}
             {currentModal === 4 ? <DescriptionForm /> : null}
-          </RegisterModal>
-          <RegisterButton
-            type="button"
-            onClick={(e) => handleLoginWithGoogle(e)}
-            disabled={isSigningUp}
+          </>
+        </RegisterModal>
+        <RegisterButton
+          type="button"
+          onClick={(e) => handleLoginWithGoogle(e)}
+          disabled={isSigningUp}
+        >
+          Log in with your account
+        </RegisterButton>
+        {signUpError && <section className="mt-4">{signUpError}</section>}
+        <section className="mt-4">
+          <hr className="mt-1 mb-4" />
+          <Link
+            to={ROUTES.RESET_PASSWORD}
+            className="underline text-blue-gray-200 w-full text-center block"
           >
-            Log in with your account
-          </RegisterButton>
-          {signUpError && <section className="mt-4">{signUpError}</section>}
-          <section className="mt-4">
-            <hr className="mt-1 mb-4" />
-            <Link
-              to={ROUTES.RESET_PASSWORD}
-              className="underline text-blue-gray-200 w-full text-center block"
-            >
-              Reset password
-            </Link>
-          </section>
-        </FlexColumn>
-      </MainFlex>
-    </>
+            Reset password
+          </Link>
+        </section>
+      </FlexColumn>
+    </MainFlex>
   );
 }
 

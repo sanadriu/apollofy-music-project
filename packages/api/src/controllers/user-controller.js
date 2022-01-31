@@ -54,6 +54,12 @@ async function getUsers(req, res, next) {
       });
     }
 
+    if (pages.data.data) {
+      return res.status(200).send({
+        data: pages.data.data,
+      });
+    }
+
     if (page > pages) {
       return res.status(404).send({
         data: null,
@@ -104,6 +110,10 @@ async function updateUser(req, res, next) {
 
     const dbRes = await User.updateUser(uid, details);
 
+    res.status(201).send({
+      data: dbRes.data,
+    });
+
     if (!dbRes) {
       return res.status(404).send({
         data: null,
@@ -113,6 +123,7 @@ async function updateUser(req, res, next) {
 
     return res.status(200).send({
       data: "User updated successfully",
+
       error: null,
     });
   } catch (error) {

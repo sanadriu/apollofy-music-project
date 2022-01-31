@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-// import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
 
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { SmallText } from "../../../atoms/SmallText/SmallText";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-import { authSelector } from "../../../../redux/auth/auth-selectors";
-import { nextModal, submitThirdModal } from "../../../../redux/auth/auth-actions";
+import { modalSelector, nextModal } from "../../../../redux/modal";
+import { setProfilePicture } from "../../../../redux/auth";
 
 const Input = styled("input")({
   display: "none",
@@ -25,10 +24,10 @@ const ModalButton = styled(PrimaryButton)`
 export default function ProfilePictureForm() {
   const [value, setValue] = useState(null);
   const dispatch = useDispatch();
-  const { currentModal } = useSelector(authSelector);
+  const { currentModal } = useSelector(modalSelector);
 
   function handlePicture() {
-    if (value) dispatch(submitThirdModal(value));
+    if (value) dispatch(setProfilePicture(value));
 
     dispatch(nextModal(currentModal + 1));
   }
