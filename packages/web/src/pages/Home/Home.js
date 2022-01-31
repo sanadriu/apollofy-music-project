@@ -2,8 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { signOut } from "../../redux/auth/auth-actions";
-import { authSelector } from "../../redux/auth/auth-selectors";
+import { authSelector, signOut } from "../../redux/auth";
 import * as ROUTES from "../../routes";
 
 function Home() {

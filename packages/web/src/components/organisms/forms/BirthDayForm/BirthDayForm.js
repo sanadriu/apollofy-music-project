@@ -5,11 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-import { authSelector } from "../../../../redux/auth/auth-selectors";
-import {
-  nextModal,
-  submitSecondModal,
-} from "../../../../redux/auth/auth-actions";
+
+import { setDateOfBirth } from '../../../../redux/auth';
+import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const ModalButton = styled(PrimaryButton)`
   width: 20%;
@@ -18,10 +16,10 @@ const ModalButton = styled(PrimaryButton)`
 export default function BirthDayForm() {
   const [value, setValue] = useState(null);
   const dispatch = useDispatch();
-  const { currentModal } = useSelector(authSelector);
+  const { currentModal } = useSelector(modalSelector);
 
   function handleOption() {
-    if (value) dispatch(submitSecondModal(value));
+    if (value) dispatch(setDateOfBirth(value));
 
     dispatch(nextModal(currentModal + 1));
   }

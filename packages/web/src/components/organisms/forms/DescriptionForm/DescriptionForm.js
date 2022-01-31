@@ -7,12 +7,13 @@ import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { SmallText } from "../../../atoms/SmallText/SmallText";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-import { authSelector } from "../../../../redux/auth/auth-selectors";
+
 import {
+  authSelector,
   signUpRequest,
   signUpWithEmailRequest,
-  submitRegisterModal,
-} from "../../../../redux/auth/auth-actions";
+  setCurrentUser,
+} from '../../../../redux/auth';
 
 const ModalButton = styled(PrimaryButton)`
   width: 20%;
@@ -36,7 +37,7 @@ export default function DescriptionForm() {
       description: value,
     };
 
-    dispatch(submitRegisterModal(updatedCurrentUser));
+    dispatch(setCurrentUser(updatedCurrentUser));
     try {
       dispatch(
         signUpWithEmailRequest(

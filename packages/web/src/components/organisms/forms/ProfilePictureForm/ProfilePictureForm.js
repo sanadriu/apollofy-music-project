@@ -10,11 +10,9 @@ import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { SmallText } from "../../../atoms/SmallText/SmallText";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-import { authSelector } from "../../../../redux/auth/auth-selectors";
-import {
-  nextModal,
-  submitThirdModal,
-} from "../../../../redux/auth/auth-actions";
+
+import { setProfilePicture } from "../../../../redux/auth";
+import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const Input = styled("input")({
   display: "none",
@@ -27,10 +25,10 @@ const ModalButton = styled(PrimaryButton)`
 export default function ProfilePictureForm() {
   const [value, setValue] = useState(null);
   const dispatch = useDispatch();
-  const { currentModal } = useSelector(authSelector);
+  const { currentModal } = useSelector(modalSelector);
 
   function handlePicture() {
-    if (value) dispatch(submitThirdModal(value));
+    if (value) dispatch(setProfilePicture(value));
 
     dispatch(nextModal(currentModal + 1));
   }

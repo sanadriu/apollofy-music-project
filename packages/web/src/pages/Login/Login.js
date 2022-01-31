@@ -9,13 +9,13 @@ import { FlexColumn } from "../../components/atoms/FlexColumn/FlexColumn";
 import RegisterModal from "../../components/organisms/modal/RegisterModal";
 
 import {
-  nextModal,
+  authSelector,
   resetAuthState,
   signUpWithGoogleRequest,
-  signUpWithFacebook,
-} from "../../redux/auth/auth-actions";
+  signUpWithFacebook
+} from '../../redux/auth';
+import { modalSelector, nextModal } from '../../redux/modal';
 
-import { authSelector } from "../../redux/auth/auth-selectors";
 import AccountForm from "../../components/organisms/forms/AccountForm/AccountForm";
 import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm";
 import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureForm/ProfilePictureForm";
@@ -49,8 +49,8 @@ const RegisterButton = styled.button`
 
 function Login() {
   const dispatch = useDispatch();
-  const { currentModal, isSigningUp, signUpError, isAuthenticated } =
-    useSelector(authSelector);
+  const { isSigningUp, signUpError, isAuthenticated } = useSelector(authSelector);
+  const { currentModal } = useSelector(modalSelector);
 
   const [isOpen, setOpen] = useState(false);
 
@@ -62,6 +62,7 @@ function Login() {
     e.preventDefault();
     dispatch(signUpWithGoogleRequest());
   }
+
   function handleLoginWithFacebook(e) {
     e.preventDefault();
     dispatch(signUpWithFacebook());
@@ -107,10 +108,12 @@ function Login() {
           Register with email and password
         </RegisterButton>
         <RegisterModal isOpen={isOpen} handleModal={handleModal}>
-          {currentModal === 1 ? <AccountForm /> : null}
-          {currentModal === 2 ? <BirthDayForm /> : null}
-          {currentModal === 3 ? <ProfilePictureForm /> : null}
-          {currentModal === 4 ? <DescriptionForm /> : null}
+          <>
+            {currentModal === 1 ? <AccountForm /> : null}
+            {currentModal === 2 ? <BirthDayForm /> : null}
+            {currentModal === 3 ? <ProfilePictureForm /> : null}
+            {currentModal === 4 ? <DescriptionForm /> : null}
+          </>
         </RegisterModal>
         <RegisterButton
           type="button"
