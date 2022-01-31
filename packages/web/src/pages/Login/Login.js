@@ -19,6 +19,7 @@ import {
   nextModal,
   resetAuthState,
   signUpWithGoogleRequest,
+  signUpWithFacebook,
 } from "../../redux/auth/auth-actions";
 import { MiddleTitle } from "../../components/atoms/MiddleTitle/MiddleTitle";
 
@@ -60,10 +61,9 @@ const RegisterButton = styled.button`
   }
 `;
 
-function Login() {
+export default function Login() {
   const dispatch = useDispatch();
-  const { currentModal, isSigningUp, signUpError, isAuthenticated } =
-    useSelector(authSelector);
+  const { currentModal, isSigningUp, signUpError, isAuthenticated } = useSelector(authSelector);
 
   const [isOpen, setOpen] = useState(false);
   const [resetPassModalIsOpen, setResetPassModalOpen] = useState(false);
@@ -75,6 +75,10 @@ function Login() {
   function handleLoginWithGoogle(e) {
     e.preventDefault();
     dispatch(signUpWithGoogleRequest());
+  }
+  function handleLoginWithFacebook(e) {
+    e.preventDefault();
+    dispatch(signUpWithFacebook());
   }
 
   const handleModal = () => {
@@ -117,11 +121,7 @@ function Login() {
           >
             Register with Facebook
           </RegisterButton>
-          <RegisterButton
-            type="button"
-            onClick={handleModal}
-            disabled={isSigningUp}
-          >
+          <RegisterButton type="button" onClick={handleModal} disabled={isSigningUp}>
             Register with email and password
           </RegisterButton>
           <RegisterModal isOpen={isOpen} handleModal={handleModal}>
@@ -141,9 +141,7 @@ function Login() {
           {signUpError && <section className="mt-4">{signUpError}</section>}
           <section className="mt-4">
             <hr className="mt-1 mb-4" />
-            <ResetButton onClick={handleResetPassModal}>
-              Reset password
-            </ResetButton>
+            <ResetButton onClick={handleResetPassModal}>Reset password</ResetButton>
             <ResetPassModal
               resetPassModalIsOpen={resetPassModalIsOpen}
               handleResetPassModal={handleResetPassModal}
@@ -154,5 +152,3 @@ function Login() {
     </>
   );
 }
-
-export default Login;

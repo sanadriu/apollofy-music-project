@@ -39,6 +39,12 @@ export function singUpWithEmailAndPassword(email, password) {
   return auth.createUserWithEmailAndPassword(email, password);
 }
 
+export function signInWithFacebook() {
+  const FacebookAuthProvider = new firebase.auth.FacebookAuthProvider();
+
+  return auth.signInWithPopup(FacebookAuthProvider);
+}
+
 export function sendPasswordResetEmail(email) {
   return auth.sendPasswordResetEmail(email);
 }

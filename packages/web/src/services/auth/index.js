@@ -7,4 +7,5 @@ export {
   signOut,
   getCurrentUserToken,
   getCurrentUserEmail,
+  signInWithFacebook,
 } from "./auth";
