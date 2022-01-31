@@ -12,3 +12,7 @@ export const fetchingUserData = () => ({
 export const fetchSuccess = () => ({
   type: UserTypes.FETCH_SUCCESS,
 });
+
+export const userLoggedOut = () => ({
+  type: UserTypes.USER_LOGGED_OUT,
+});

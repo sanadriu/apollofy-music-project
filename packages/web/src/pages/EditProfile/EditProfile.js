@@ -1,6 +1,6 @@
 import React from "react";
 
-const EditProfile = () => {
+const EditProfile = ( ) => {
   return <h1>Hello Wold</h1>;
 };
 

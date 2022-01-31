@@ -3,3 +3,4 @@ export const FETCHING_ERROR = "FETCHING_ERROR";
 export const FETCH_SUCCESS = "FETCH_SUCCESS";
 export const SAVE_USER_DATA = "SAVE_USER_DATA";
 export const SUBMIT_USER_DATA = "SUBMIT_USER_DATA";
+export const USER_LOGGED_OUT = "USER_LOGGED_OUT";

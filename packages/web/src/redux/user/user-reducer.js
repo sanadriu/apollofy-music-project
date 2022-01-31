@@ -1,4 +1,4 @@
-import { saveUserData } from "./user-actions";
+import { saveUserData, userLoggedOut } from "./user-actions";
 import * as UserTypes from "./user-types";
 
 export const UserInitialState = {
@@ -28,6 +28,13 @@ const UserReducer = (state = UserInitialState, action) => {
       return {
         ...state,
         userData: payload,
+      };
+
+    case UserTypes.USER_LOGGED_OUT:
+      return {
+        ...state,
+        fetchSuccess: false,
+        userData: null,
       };
     default:
       return { ...state };

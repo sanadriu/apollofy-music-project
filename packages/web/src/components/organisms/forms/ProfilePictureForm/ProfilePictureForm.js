@@ -12,10 +12,7 @@ import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { SmallText } from "../../../atoms/SmallText/SmallText";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
 import { authSelector } from "../../../../redux/auth/auth-selectors";
-import {
-  nextModal,
-  submitThirdModal,
-} from "../../../../redux/auth/auth-actions";
+import { nextModal, submitThirdModal } from "../../../../redux/auth/auth-actions";
 
 const Input = styled("input")({
   display: "none",
@@ -39,9 +36,7 @@ export default function ProfilePictureForm() {
   return (
     <FlexColumn>
       <MiddleTitle>Pick a Profile Picture</MiddleTitle>
-      <SmallText>
-        Do you have a favourite selfie? Otherwise, you can take it right now!
-      </SmallText>
+      <SmallText>Do you have a favourite selfie? Otherwise, you can take it right now!</SmallText>
       <Stack direction="row" alignItems="center" spacing={2}>
         <label htmlFor="contained-button-file">
           <Input
@@ -57,19 +52,13 @@ export default function ProfilePictureForm() {
         </label>
         <label htmlFor="icon-button-file">
           <Input accept="image/*" id="icon-button-file" type="file" />
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="span"
-          >
+          <IconButton color="primary" aria-label="upload picture" component="span">
             <PhotoCamera />
           </IconButton>
         </label>
         {value ? <p>{value}</p> : null}
       </Stack>
-      <ModalButton onClick={() => handlePicture()}>
-        {value ? "Submit" : "Skip for now"}
-      </ModalButton>
+      <ModalButton onClick={() => handlePicture()}>{value ? "Submit" : "Skip for now"}</ModalButton>
     </FlexColumn>
   );
 }

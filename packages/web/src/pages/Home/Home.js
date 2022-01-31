@@ -5,7 +5,12 @@ import { signOut } from "../../redux/auth/auth-actions";
 import { authSelector } from "../../redux/auth/auth-selectors";
 import * as ROUTES from "../../routes";
 import * as API from "../../api";
-import { fetchingUserData, saveUserData, fetchSuccess } from "../../redux/user/user-actions";
+import {
+  fetchingUserData,
+  saveUserData,
+  fetchSuccess,
+  userLoggedOut,
+} from "../../redux/user/user-actions";
 
 function Home() {
   const { isAuthenticated, currentUser } = useSelector(authSelector);
@@ -14,11 +19,11 @@ function Home() {
 
   function logout() {
     dispatch(signOut());
+    dispatch(userLoggedOut());
   }
 
   async function editProfile() {
     const user = await API.getUser(currentUser.uid);
-    console.log(user.data.data);
     dispatch(fetchingUserData());
     if (user) {
       dispatch(fetchSuccess());
