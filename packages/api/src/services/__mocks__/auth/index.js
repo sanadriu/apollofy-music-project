@@ -1,5 +1,9 @@
 const { User } = require("../../../models");
 
+function deleteUser() {
+  return Promise.resolve();
+}
+
 function verifyIdToken(token) {
   return User.findOne({ _id: token })
     .select("email username")
@@ -40,6 +44,7 @@ function login(req = {}, userClaims = {}) {
 }
 
 module.exports = {
+  deleteUser,
   verifyIdToken,
   getAuthToken,
   login,

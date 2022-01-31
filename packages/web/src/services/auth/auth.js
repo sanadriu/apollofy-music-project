@@ -1,5 +1,6 @@
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 if (!firebase.apps.length) {
   // Paste your config object here ⬇️
@@ -36,6 +37,12 @@ export function singInWithEmailAndPassword(email, password) {
 
 export function singUpWithEmailAndPassword(email, password) {
   return auth.createUserWithEmailAndPassword(email, password);
+}
+
+export function signInWithFacebook() {
+  const FacebookAuthProvider = new firebase.auth.FacebookAuthProvider();
+
+  return auth.signInWithPopup(FacebookAuthProvider);
 }
 
 export function sendPasswordResetEmail(email) {

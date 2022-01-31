@@ -20,6 +20,10 @@ admin.initializeApp({
 
 const auth = admin.auth();
 
+function deleteUser(uid) {
+  return auth.deleteUser(uid);
+}
+
 function verifyIdToken(token) {
   return auth.verifyIdToken(token);
 }
@@ -54,6 +58,7 @@ function login(req = {}, userClaims = {}) {
 }
 
 module.exports = {
+  deleteUser,
   verifyIdToken,
   getAuthToken,
   login,

@@ -3,7 +3,7 @@ const {
   getRandomItems,
   getRandomIndex,
   getRandomSequence,
-} = require("./utils");
+} = require("../utils");
 
 function createSampleUser() {
   return {
@@ -11,8 +11,9 @@ function createSampleUser() {
     email: faker.internet.email(),
     firstname: faker.name.firstName(),
     lastname: faker.name.lastName(),
+    username: faker.name.title(),
     url_avatar: faker.image.imageUrl(),
-    description: getRandomSequence(100),
+    description: faker.lorem.paragraphs(1),
     birth_date: faker.date.past(18).toISOString().substring(0, 10),
   };
 }
@@ -37,11 +38,12 @@ function createSampleTrack(users = [], genres = []) {
 
   return {
     user,
-    title: faker.lorem.words(faker.datatype.number({ min: 1, max: 5 })),
+    title: faker.name.title(),
     duration: faker.datatype.number({ min: 0, max: 600 }),
     released_date: faker.date.past().toISOString().substring(0, 10),
     color: faker.commerce.color(),
     genres: getRandomItems(genres, 2),
+    url: faker.internet.url(),
     thumbnails: {
       url_default: faker.image.imageUrl(),
       url_medium: faker.image.imageUrl(),
@@ -59,7 +61,7 @@ function createSampleAlbum(users = [], genres = []) {
 
   return {
     user: user,
-    title: faker.lorem.words(faker.datatype.number({ min: 1, max: 5 })),
+    title: faker.name.title(),
     year: faker.date.past().getFullYear(),
     genres: getRandomItems(genres, 2),
     thumbnails: {
@@ -79,7 +81,7 @@ function createSamplePlaylist(users = []) {
 
   return {
     user,
-    name: faker.lorem.words(faker.datatype.number({ min: 1, max: 3 })),
+    title: faker.name.title(),
     description: faker.lorem.paragraphs(1),
     color: faker.commerce.color(),
     thumbnails: {

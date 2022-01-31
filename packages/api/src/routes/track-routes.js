@@ -7,8 +7,9 @@ const trackRouter = Router();
 
 trackRouter.get("/", trackController.getTracks);
 trackRouter.get("/:idTrack", trackController.getSingleTrack);
-//trackRouter.patch("/:idTrack", authMiddleware, trackController.updateUser);
-//trackRouter.delete("/:idTrack", authMiddleware, trackController.deleteUser);
+trackRouter.post("/",authMiddleware, trackController.createTrack);
+trackRouter.patch("/:idTrack", authMiddleware, trackController.updateTrack);
+trackRouter.delete("/:idTrack", authMiddleware, trackController.deleteTrack);
 
 module.exports = {
     trackRouter,

@@ -5,13 +5,14 @@ const PlaylistSchema = new Schema(
   {
     user: {
       type: String,
+      required: true,
       ref: "user",
-      required: [true, "User is required"],
+      trim: true,
     },
-    name: {
+    title: {
       type: String,
       trim: true,
-      required: [true, "This name is required"],
+      required: true,
     },
     description: {
       type: String,
@@ -20,6 +21,14 @@ const PlaylistSchema = new Schema(
     color: {
       type: String,
       trim: true,
+    },
+    tracks: {
+      type: [Types.ObjectId],
+      ref: "track",
+    },
+    followed_by: {
+      type: [String],
+      ref: "user",
     },
     thumbnails: {
       url_default: {
@@ -46,14 +55,6 @@ const PlaylistSchema = new Schema(
           message: () => `URL for large thumbnail is invalid`,
         },
       },
-    },
-    tracks: {
-      type: [Types.ObjectId],
-      ref: "track",
-    },
-    followed_by: {
-      type: [Types.ObjectId],
-      ref: "user",
     },
     deletedAt: {
       type: Date,
