@@ -1,5 +1,5 @@
 import axios from "axios";
 
-function getUser(id) {
-    return axios
+export function getUser(id) {
+  return axios.get(`http://localhost:4000/users/${id}`);
 }

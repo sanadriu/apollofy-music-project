@@ -46,7 +46,7 @@ const AuthReducer = (state = AuthInitialState, action) => {
         signUpError: null,
         currentUser: {
           email: payload.data.email,
-          uid: payload.data._id,
+          uid: payload.data.id,
         },
       };
     }

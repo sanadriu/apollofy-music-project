@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
+import EditProfie from "./pages/EditProfile";
 
 import { onAuthStateChanged } from "./services/auth";
 import { syncSignIn, signOut } from "./redux/auth/auth-actions";
@@ -17,7 +18,6 @@ import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 
 import Switch from "./components/atoms/Switch";
-import EditProfile from "./pages/EditProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ function App() {
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
             <Route path={ROUTES.HOME} element={<Home />} exact />
-            <Route path={ROUTES.EDIT_PROFILE} element={<EditProfile />} />
+            <Route path={ROUTES.EDIT_PROFILE} element={<EditProfie />} />
           </Routes>
         </>
       </>
