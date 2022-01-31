@@ -18,7 +18,7 @@ const ModalButton = styled(PrimaryButton)`
 export default function BirthDayForm() {
   const [value, setValue] = useState(null);
   const dispatch = useDispatch();
-  const { currentModal } = useSelector(authSelector);
+  const { currentModal, currentUser } = useSelector(authSelector);
 
   function handleOption() {
     if (value) dispatch(submitSecondModal(value));
@@ -34,6 +34,7 @@ export default function BirthDayForm() {
         name="trip-start"
         min="1915-01-01"
         max="2015-12-31"
+        value={currentUser.dateOfBirth || null}
         onChange={(e) => setValue(e.target.value)}
       />
       <ModalButton onClick={() => handleOption()}>

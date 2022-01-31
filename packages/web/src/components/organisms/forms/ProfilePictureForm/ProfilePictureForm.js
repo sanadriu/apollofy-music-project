@@ -28,7 +28,7 @@ const ModalButton = styled(PrimaryButton)`
 export default function ProfilePictureForm() {
   const [value, setValue] = useState(null);
   const dispatch = useDispatch();
-  const { currentModal } = useSelector(authSelector);
+  const { currentModal, currentUser } = useSelector(authSelector);
 
   function handlePicture() {
     if (value) dispatch(submitThirdModal(value));
@@ -49,6 +49,7 @@ export default function ProfilePictureForm() {
             id="contained-button-file"
             multiple
             type="file"
+            value={currentUser.profilePicture || null}
             onChange={(e) => setValue(e.target.value)}
           />
           <Button variant="contained" component="span">

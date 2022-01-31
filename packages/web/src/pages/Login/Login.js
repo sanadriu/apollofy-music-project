@@ -2,23 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
 
 import * as ROUTES from "../../routes";
 import { LoginBoard } from "../../components/organisms/LoginBoard/LoginBoard";
 import { FlexColumn } from "../../components/atoms/FlexColumn/FlexColumn";
 import RegisterModal from "../../components/organisms/modal/RegisterModal";
+import ResetPassModal from "../../components/organisms/modal/ResetPassModal";
+import { authSelector } from "../../redux/auth/auth-selectors";
+import AccountForm from "../../components/organisms/forms/AccountForm/AccountForm";
+import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm";
+import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureForm/ProfilePictureForm";
+import DescriptionForm from "../../components/organisms/forms/DescriptionForm/DescriptionForm";
 
 import {
   nextModal,
   resetAuthState,
   signUpWithGoogleRequest,
 } from "../../redux/auth/auth-actions";
-
-import { authSelector } from "../../redux/auth/auth-selectors";
-import AccountForm from "../../components/organisms/forms/AccountForm/AccountForm";
-import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm";
-import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureForm/ProfilePictureForm";
-import DescriptionForm from "../../components/organisms/forms/DescriptionForm/DescriptionForm";
+import { MiddleTitle } from "../../components/atoms/MiddleTitle/MiddleTitle";
 
 const MainFlex = styled.div`
   height: 100vh;
@@ -31,10 +33,22 @@ const Title = styled.h1`
   font-size: 4rem;
 `;
 
+const ResetButton = styled.button`
+  font-size: 0.75rem;
+  border-radius: 0.3rem;
+  border: 1px solid darkgray;
+  padding: 0.5rem;
+  background-color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: #b04aff;
+    color: white;
+  }
+`;
+
 const RegisterButton = styled.button`
   width: 90%;
   border-radius: 0.3rem;
-  color: black;
   border: 1px solid black;
   padding: 0.5rem;
   background-color: white;
@@ -52,6 +66,7 @@ function Login() {
     useSelector(authSelector);
 
   const [isOpen, setOpen] = useState(false);
+  const [resetPassModalIsOpen, setResetPassModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(resetAuthState());
@@ -71,6 +86,12 @@ function Login() {
     }
   };
 
+  const handleResetPassModal = () => {
+    setResetPassModalOpen(!resetPassModalIsOpen);
+  };
+
+  const handleError = (err) => toast(err);
+
   if (isAuthenticated) {
     return <Navigate to={ROUTES.HOME} />;
   }
@@ -81,6 +102,7 @@ function Login() {
         <LoginBoard />
         <FlexColumn>
           <Title>What&apos;s rocking right now</Title>
+          <MiddleTitle>Register today</MiddleTitle>
           <RegisterButton
             type="button"
             onClick={(e) => handleLoginWithGoogle(e)}
@@ -108,6 +130,7 @@ function Login() {
             {currentModal === 3 ? <ProfilePictureForm /> : null}
             {currentModal === 4 ? <DescriptionForm /> : null}
           </RegisterModal>
+          <MiddleTitle>Already registered?</MiddleTitle>
           <RegisterButton
             type="button"
             onClick={(e) => handleLoginWithGoogle(e)}
@@ -118,12 +141,13 @@ function Login() {
           {signUpError && <section className="mt-4">{signUpError}</section>}
           <section className="mt-4">
             <hr className="mt-1 mb-4" />
-            <Link
-              to={ROUTES.RESET_PASSWORD}
-              className="underline text-blue-gray-200 w-full text-center block"
-            >
+            <ResetButton onClick={handleResetPassModal}>
               Reset password
-            </Link>
+            </ResetButton>
+            <ResetPassModal
+              resetPassModalIsOpen={resetPassModalIsOpen}
+              handleResetPassModal={handleResetPassModal}
+            />
           </section>
         </FlexColumn>
       </MainFlex>

@@ -12,20 +12,7 @@ import {
   nextModal,
 } from "../../../../redux/auth/auth-actions";
 import { authSelector } from "../../../../redux/auth/auth-selectors";
-
-const RegisterInput = styled.input`
-  width: 90%;
-  border-radius: 0.3rem;
-  color: black;
-  border: 1px solid black;
-  padding: 0.5rem;
-  background-color: white;
-
-  &:focus {
-    background-color: #b04aff;
-    color: white;
-  }
-`;
+import { RegisterInput } from "../../../atoms/RegisterInput/RegisterInput";
 
 const ModalButton = styled(PrimaryButton)`
   width: 20%;
@@ -33,15 +20,15 @@ const ModalButton = styled(PrimaryButton)`
 
 export default function AccountForm() {
   const dispatch = useDispatch();
-  const { currentModal } = useSelector(authSelector);
+  const { currentModal, currentUser } = useSelector(authSelector);
   return (
     <>
       <Formik
         initialValues={{
-          name: "",
-          email: "",
-          password: "",
-          confirm_password: "",
+          name: currentUser.name || "",
+          email: currentUser.email || "",
+          password: currentUser.password || "",
+          confirm_password: currentUser.confirm_password || "",
         }}
         validationSchema={AccountSchema}
         onSubmit={(values, { setSubmitting }) => {

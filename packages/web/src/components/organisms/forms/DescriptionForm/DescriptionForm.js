@@ -58,6 +58,7 @@ export default function DescriptionForm() {
       </SmallText>
       <DescriptionArea
         placeholder="Type a few lines about you..."
+        value={currentUser.description || ""}
         onChange={(e) => setValue(e.target.value)}
       />
       <ModalButton onClick={() => handleDescription()}>Finish</ModalButton>
