@@ -17,7 +17,7 @@ import {
 import { modalSelector, nextModal } from '../../redux/modal';
 
 import AccountForm from "../../components/organisms/forms/AccountForm/AccountForm";
-import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm";
+import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm2";
 import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureForm/ProfilePictureForm";
 import DescriptionForm from "../../components/organisms/forms/DescriptionForm/DescriptionForm";
 

@@ -15,10 +15,6 @@ import {
   setCurrentUser,
 } from '../../../../redux/auth';
 
-const ModalButton = styled(PrimaryButton)`
-  width: 20%;
-`;
-
 const DescriptionArea = styled.textarea`
   border: 1px solid #b04aff;
   border-radius: 0.3rem;
@@ -61,7 +57,7 @@ export default function DescriptionForm() {
         placeholder="Type a few lines about you..."
         onChange={(e) => setValue(e.target.value)}
       />
-      <ModalButton onClick={() => handleDescription()}>Finish</ModalButton>
+      <PrimaryButton onClick={() => handleDescription()}>Finish</PrimaryButton>
     </FlexColumn>
   );
 }

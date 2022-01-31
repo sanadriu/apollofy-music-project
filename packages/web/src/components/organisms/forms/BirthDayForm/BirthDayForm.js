@@ -17,6 +17,7 @@ export default function BirthDayForm() {
   const [value, setValue] = useState(null);
   const dispatch = useDispatch();
   const { currentModal } = useSelector(modalSelector);
+  console.log(value);
 
   function handleOption() {
     if (value) dispatch(setDateOfBirth(value));

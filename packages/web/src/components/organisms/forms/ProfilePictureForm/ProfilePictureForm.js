@@ -18,10 +18,6 @@ const Input = styled("input")({
   display: "none",
 });
 
-const ModalButton = styled(PrimaryButton)`
-  width: 20%;
-`;
-
 export default function ProfilePictureForm() {
   const [value, setValue] = useState(null);
   const dispatch = useDispatch();
@@ -64,9 +60,9 @@ export default function ProfilePictureForm() {
         </label>
         {value ? <p>{value}</p> : null}
       </Stack>
-      <ModalButton onClick={() => handlePicture()}>
+      <PrimaryButton onClick={() => handlePicture()}>
         {value ? "Submit" : "Skip for now"}
-      </ModalButton>
+      </PrimaryButton>
     </FlexColumn>
   );
 }

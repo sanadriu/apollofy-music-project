@@ -212,7 +212,7 @@ export const initialState = {
     name: null,
     email: null,
     password: null,
-    confirm_passowrd: null,
+    passwordConfirmation: null,
   },
 };
 
@@ -270,7 +270,7 @@ const AuthReducer = (state = initialState, action) => {
           name: null,
           email: null,
           password: null,
-          confirm_passowrd: null,
+          passwordConfirmation: null,
         },
       };
     }
