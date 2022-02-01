@@ -99,10 +99,10 @@ AlbumSchema.query.notDeleted = function () {
 
 /* Statics */
 
-AlbumSchema.statics.getNumPages = function () {
+AlbumSchema.statics.getNumPages = function (filter = {}) {
   const limit = 10;
 
-  return this.countDocuments()
+  return this.countDocuments(filter)
     .notDeleted()
     .then((count) => {
       return Math.floor(count / limit) + (count % limit ? 1 : 0);
@@ -196,12 +196,21 @@ AlbumSchema.statics.getLiked = async function (id, idUser) {
   return await this.switchValueInList(id, "liked_by", idUser);
 };
 
-AlbumSchema.statics.getUserAlbums = function (uid) {
-  return this.find({})
-    .where("user")
-    .equals(uid)
+AlbumSchema.statics.getUserAlbums = function (
+  page = 1,
+  sort = "created_at",
+  order = "asc",
+  idUser,
+) {
+  const limit = 10;
+  const start = (page - 1) * limit;
+
+  return this.find({ user: idUser })
     .notDeleted()
-    .populate({ path: "genres tracks liked_by" });
+    .populate({ path: "genres tracks liked_by" })
+    .sort({ [sort]: order })
+    .skip(start)
+    .limit(limit);
 };
 
 const Album = model("album", AlbumSchema);

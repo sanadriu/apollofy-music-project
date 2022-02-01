@@ -43,6 +43,14 @@ async function getSingleTrack(req, res, next) {
     const { idTrack } = req.params;
     const { extend = false } = req.query;
 
+    if (!Types.ObjectId.isValid(idTrack)) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong track ID",
+      });
+    }
+
     const dbRes = await Track.getTrack(idTrack, extend);
 
     if (dbRes === null) {
@@ -159,7 +167,7 @@ async function deleteTrack(req, res, next) {
       });
     }
 
-    await Track.deleteTrack(idTrack, track);
+    await Track.deleteTrack(idTrack);
 
     return res.status(200).send({
       data: null,
@@ -171,14 +179,48 @@ async function deleteTrack(req, res, next) {
   }
 }
 
+async function playTrack() {
+  try {
+    const { idTrack } = req.params;
+
+    if (!Types.ObjectId.isValid(idTrack)) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong track ID",
+      });
+    }
+
+    const dbRes = await Track.getTrack(idTrack);
+
+    if (dbRes === null) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Track not found",
+      });
+    }
+
+    await Track.getPlayed(idTrack);
+
+    return res.status(200).send({
+      data: dbRes,
+      success: true,
+      message: "Track fetched successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function getUserTracks(req, res, next) {
   try {
     const { page = 1, sort = "created_at", order = "asc" } = req.query;
     const { uid } = req.user;
 
-    const pages = await Track.getNumPages();
+    const pages = await Track.getNumPages({ user: uid });
 
-    if (!(!isNaN(page) && page > 0)) {
+    if (!isNaN(page) || page <= 0) {
       return res.status(400).send({
         data: null,
         success: false,
@@ -215,5 +257,6 @@ module.exports = {
   updateTrack,
   deleteTrack,
   createTrack,
+  playTrack,
   getUserTracks,
 };

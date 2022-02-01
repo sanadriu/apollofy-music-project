@@ -1,5 +1,6 @@
 const { Schema, Types, model } = require("mongoose");
 const { isEmail, isDate, isURL } = require("validator");
+const { getHash } = require("../services/crypto");
 
 const UserSchema = new Schema(
   {
@@ -157,22 +158,27 @@ UserSchema.statics.getUser = function (id, extend = false) {
   const populate = [
     {
       path: "liked_albums",
+      select: "title",
       match: { deleted_at: { $exists: false } },
     },
     {
       path: "liked_tracks",
+      select: "title",
       match: { deleted_at: { $exists: false } },
     },
     {
       path: "followed_playlists",
+      select: "title",
       match: { deleted_at: { $exists: false } },
     },
     {
       path: "followed_users",
+      // select: "username",
       match: { deleted_at: { $exists: false } },
     },
     {
       path: "followers",
+      // select: "username",
       match: { deleted_at: { $exists: false } },
     },
   ];
@@ -206,7 +212,10 @@ UserSchema.statics.updateUser = function (id, data) {
 UserSchema.statics.deleteUser = function (id) {
   return this.findOneAndUpdate(
     { _id: id, deleted_at: { $exists: false } },
-    { $set: { deleted_at: Date.now() } },
+    {
+      $set: { deleted_at: Date.now(), _id: getHash(id) },
+      $unset: { username: "", firstname: "", lastname: "", email: "" },
+    },
     { new: true },
   );
 };
@@ -254,13 +263,3 @@ UserSchema.statics.getFollowed = async function (id, idFollower) {
 const User = model("user", UserSchema);
 
 module.exports = User;
-
-// UserSchema.statics.switchValueInList = async function (id, listName, value) {
-//   const user = await this.findById(id).notDeleted();
-
-//   if (!user) return null;
-
-//   user[listName] = switchValueInList(user[listName], value);
-
-//   return await user.save({ validateBeforeSave: true });
-// };

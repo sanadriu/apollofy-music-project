@@ -191,13 +191,35 @@ async function deletePlaylist(req, res, next) {
 async function getUserPlaylists(req, res, next) {
   try {
     const { uid } = req.user;
-    const playlists = await Playlist.getUserPlaylists(uid);
+    const { page = 1, sort = "created_at", order = "asc" } = req.query;
+
+    const pages = await Playlist.getNumPages({ user: uid });
+
+    if (!isNaN(page) || page <= 0) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong page",
+        pages,
+      });
+    }
+
+    if (page > pages) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Page not found",
+        pages,
+      });
+    }
+    const dbRes = await Playlist.getUserPlaylists(page, sort, order, uid);
 
     return res.status(200).send({
-      data: playlists,
+      data: dbRes,
       success: true,
+      message: "Playlists fetched successfully",
     });
-  } catch (error) {
+  } catch (message) {
     next(error);
   }
 }

@@ -129,7 +129,7 @@ async function getSelfUser(req, res, next) {
     return res.status(200).send({
       data: dbRes,
       success: true,
-      message: "Request successful",
+      message: "User fetched successfully",
     });
   } catch (error) {
     next(error);
