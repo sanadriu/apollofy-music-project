@@ -142,7 +142,9 @@ TrackSchema.statics.getTrack = function (id, extend = false) {
     { path: "liked_by", match: { deleted_at: { $exists: false } } },
   ];
 
-  return this.findById(id).notDeleted().populate(populate);
+  return this.findById(id)
+    .notDeleted()
+    .populate(extend ? populate : undefined);
 };
 
 TrackSchema.statics.createTrack = function (idUser, data) {

@@ -272,7 +272,7 @@ async function followPlaylist(req, res, next) {
 
     if (!(await Playlist.getPlaylist(idPlaylist))) {
       return res.status(404).send({
-        error: "User to be followed not found",
+        error: "Playlist not found",
         data: null,
       });
     }
