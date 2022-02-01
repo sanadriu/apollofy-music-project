@@ -63,15 +63,12 @@ async function getUsers(req, res, next) {
       });
     }
 
-<<<<<<< HEAD
-=======
     if (pages.data.data) {
       return res.status(200).send({
         data: pages.data.data,
       });
     }
 
->>>>>>> 233a98d08ef5ba7fa798a404a647f416c62b5414
     if (page > pages) {
       return res.status(404).send({
         data: null,
@@ -103,7 +100,6 @@ async function getSingleUser(req, res, next) {
       return res.status(404).send({
         data: null,
         error: "User not found",
-<<<<<<< HEAD
       });
     }
 
@@ -119,22 +115,27 @@ async function getSingleUser(req, res, next) {
 async function getSelfUser(req, res, next) {
   try {
     const { uid } = req.user;
+
     const { extend = false } = req.query;
 
     const dbRes = await User.getUser(uid, extend);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "User not puto",
-=======
->>>>>>> 233a98d08ef5ba7fa798a404a647f416c62b5414
+
+        success: false,
+
+        message: "User not found",
       });
     }
 
     return res.status(200).send({
       data: dbRes,
-      error: null,
+
+      success: true,
+
+      message: "User fetched successfully",
     });
   } catch (error) {
     next(error);
@@ -148,13 +149,10 @@ async function updateUser(req, res, next) {
 
     const dbRes = await User.updateUser(uid, details);
 
-<<<<<<< HEAD
-=======
     res.status(201).send({
       data: dbRes.data,
     });
 
->>>>>>> 233a98d08ef5ba7fa798a404a647f416c62b5414
     if (!dbRes) {
       return res.status(404).send({
         data: null,
@@ -164,10 +162,6 @@ async function updateUser(req, res, next) {
 
     return res.status(200).send({
       data: "User updated successfully",
-<<<<<<< HEAD
-=======
-
->>>>>>> 233a98d08ef5ba7fa798a404a647f416c62b5414
       error: null,
     });
   } catch (error) {
@@ -249,14 +243,10 @@ async function likeTrack(req, res, next) {
       });
     }
 
-<<<<<<< HEAD
-    if (!(await User.getUser(uid))) {
-=======
     // eslint-disable-next-line no-undef
     const dbRes = await User.likeAlbum(uid, idAlbum);
 
     if (!dbRes) {
->>>>>>> 233a98d08ef5ba7fa798a404a647f416c62b5414
       return res.status(404).send({
         error: "User not found",
         data: null,
@@ -297,21 +287,6 @@ async function followPlaylist(req, res, next) {
     if (!(await User.getUser(uid))) {
       return res.status(404).send({
         error: "User not found",
-        data: null,
-      });
-    }
-
-<<<<<<< HEAD
-    if (!(await Playlist.getPlaylist(idPlaylist))) {
-=======
-    await User.followUser(uid, idUser);
-    await User.getFollowed(idUser, uid);
-
-    // eslint-disable-next-line no-undef
-    if (!dbRes) {
->>>>>>> 233a98d08ef5ba7fa798a404a647f416c62b5414
-      return res.status(404).send({
-        error: "User to be followed not found",
         data: null,
       });
     }

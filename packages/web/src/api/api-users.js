@@ -1,11 +1,15 @@
 import axios from "axios";
 
-export function getUser(id) {
-  return axios.get(`http://localhost:4000/users/${id}`);
+export function getUser(authToken) {
+  return axios.get(`http://localhost:4000/users/me`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
 }
 
 export function deleteUser(authToken) {
-  return axios.post(`http://localhost:4000/users/me`, {
+  return axios.delete(`http://localhost:4000/users/me`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
