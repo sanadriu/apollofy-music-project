@@ -115,21 +115,21 @@ TrackSchema.query.notDeleted = function () {
 
 /* Statics */
 
-TrackSchema.statics.getNumPages = function () {
+TrackSchema.statics.getNumPages = function (filter = {}) {
   const limit = 10;
 
-  return this.countDocuments()
+  return this.countDocuments(filter)
     .notDeleted()
     .then((count) => {
       return Math.floor(count / limit) + (count % limit ? 1 : 0);
     });
 };
 
-TrackSchema.statics.getTracks = function (page = 1, sort = "created_at", order = "asc") {
+TrackSchema.statics.getTracks = function (page = 1, sort = "created_at", order = "asc",uid) {
   const limit = 10;
   const start = (page - 1) * limit;
 
-  return this.find()
+  return this.find({ user: uid })
     .notDeleted()
     .sort({ [sort]: order })
     .skip(start)
@@ -228,16 +228,13 @@ TrackSchema.statics.getUserTracks = function (page = 1, sort = "created_at", ord
   const limit = 10;
   const start = (page - 1) * limit;
 
-  return this.find()
-    .where("user")
-    .equals(uid)
+  return this.find({ user: uid })
     .notDeleted()
     .populate({ path: "genres liked_by" })
     .sort({ [sort]: order })
     .skip(start)
     .limit(limit);
 
-  //return this.find({}).where("user").equals(uid).notDeleted().populate({ path: "genres liked_by" });
 };
 
 const Track = model("track", TrackSchema);

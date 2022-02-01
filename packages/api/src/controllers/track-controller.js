@@ -139,7 +139,7 @@ async function getUserTracks(req, res, next) {
 
     const { uid } = req.user;
 
-    const pages = await Track.getNumPages();
+    const pages = await Track.getNumPages({ user: uid });
 
     if (!(!isNaN(page) && page > 0)) {
       return res.status(400).send({
@@ -156,7 +156,7 @@ async function getUserTracks(req, res, next) {
         pages,
       });
     }
-    
+
     const tracks = await Track.getUserTracks(page, sort, order, uid);
 
     return res.status(200).send({

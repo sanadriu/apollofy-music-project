@@ -97,10 +97,10 @@ PlaylistSchema.query.notDeleted = function () {
 
 /* Statics */
 
-PlaylistSchema.statics.getNumPages = function () {
+PlaylistSchema.statics.getNumPages = function (filter = {}) {
   const limit = 10;
 
-  return this.countDocuments()
+  return this.countDocuments(filter)
     .notDeleted()
     .then((count) => {
       return Math.floor(count / limit) + (count % limit ? 1 : 0);
@@ -190,13 +190,22 @@ PlaylistSchema.statics.getFollowed = async function (id, idUser) {
   return await this.switchValueInList(id, "followed_by", idUser);
 };
 
-PlaylistSchema.statics.getUserPlaylists = function (uid){
-  return this.find({})
-    .where("user")
-    .equals(uid)
+PlaylistSchema.statics.getUserPlaylists = function (
+  page = 1,
+  sort = "created_at",
+  order = "asc",
+  uid,
+) {
+  const limit = 10;
+  const start = (page - 1) * limit;
+
+  return this.find({ user: uid })
     .notDeleted()
-    .populate({ path: "tracks followed_by"});
-}
+    .populate({ path: "tracks followed_by" })
+    .sort({ [sort]: order })
+    .skip(start)
+    .limit(limit);
+};
 
 const Playlist = model("playlist", PlaylistSchema);
 

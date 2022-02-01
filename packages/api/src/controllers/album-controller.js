@@ -181,16 +181,36 @@ async function deleteAlbum(req, res, next) {
     next(error);
   }
 }
-async function getUserAlbums(req,res,next){
+async function getUserAlbums(req, res, next) {
   try {
+    const { page = 1, sort = "created_at", order = "asc" } = req.query;
     const { uid } = req.user;
-    const albums = await Album.getUserAlbums(uid);
+
+    const pages = await Track.getNumPages({ user: uid });
+
+    if (!(!isNaN(page) && page > 0)) {
+      return res.status(400).send({
+        data: null,
+        error: "Wrong page",
+        pages,
+      });
+    }
+
+    if (page > pages) {
+      return res.status(404).send({
+        data: null,
+        error: "Page not found",
+        pages,
+      });
+    }
+
+    const albums = await Album.getUserAlbums(page, sort, order, uid);
 
     return res.status(200).send({
       data: albums,
       error: null,
+      pages
     });
-
   } catch (error) {
     next(error);
   }
@@ -202,5 +222,5 @@ module.exports = {
   createAlbum,
   updateAlbum,
   deleteAlbum,
-  getUserAlbums
+  getUserAlbums,
 };
