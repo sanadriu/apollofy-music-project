@@ -8,6 +8,10 @@ export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
 export const SIGN_UP_ERROR = "SIGN_UP_ERROR";
 
+export const SIGN_IN_REQUEST = "SIGN_IN_REQUEST";
+export const SIGN_IN_SUCCESS = "SIGN_IN_SUCCESS";
+export const SIGN_IN_ERROR = "SIGN_IN_ERROR";
+
 export const SIGN_OUT_REQUEST = "SIGN_OUT_REQUEST";
 export const SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS";
 export const SIGN_OUT_ERROR = "SIGN_OUT_ERROR";
@@ -26,6 +30,20 @@ export const SET_CURRENT_USER = "SET_CURRENT_USER";
 
 // action creators
 
+export const signInRequest = () => ({
+  type: SIGN_IN_REQUEST,
+});
+
+export const signInSuccess = (user) => ({
+  type: SIGN_IN_SUCCESS,
+  payload: user,
+});
+
+export const signInError = (error) => ({
+  type: SIGN_IN_ERROR,
+  payload: error,
+});
+
 export const resetStoreAndLogOut = () => ({
   type: RESET_STORE_AND_LOG_OUT,
 });
@@ -43,7 +61,7 @@ export function signUpWithGoogleRequest() {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
     try {
-      await authService.singInWithGoogle();
+      await authService.signInWithGoogle();
     } catch (error) {
       dispatch(signUpError(error.message));
     }
@@ -64,7 +82,7 @@ export function signUpWithEmailRequest(email, password) {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
     try {
-      await authService.singUpWithEmailAndPassword(email, password);
+      await authService.signUpWithEmailAndPassword(email, password);
     } catch (error) {
       dispatch(signUpError(error.message));
     }
@@ -72,12 +90,14 @@ export function signUpWithEmailRequest(email, password) {
 }
 
 export function signInWithEmailRequest(email, password) {
-  return async function signUpThunk(dispatch) {
-    dispatch(signUpRequest());
+  return async function signInThunk(dispatch) {
+    dispatch(signInRequest());
     try {
-      await authService.singInWithEmailAndPassword(email, password);
+      await authService.signInWithEmailAndPassword(email, password);
+      // DATABASE REQUEST
+      signInSuccess();
     } catch (error) {
-      dispatch(signUpError(error.message));
+      dispatch(signInError(error.message));
     }
   };
 }
@@ -197,6 +217,8 @@ export const setCurrentUser = (value) => ({
 // reducer
 
 export const initialState = {
+  isSigningIn: false,
+  signInError: null,
   isSigningUp: false,
   signUpError: null,
   isSigningOut: false,
@@ -236,12 +258,40 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         isSigningUp: false,
+        isSigningIn: false,
         signUpError: null,
         currentUser: {
           email: payload.data.email,
           uid: payload.data.id,
           username: payload.data.username,
         },
+      };
+    }
+    case SIGN_IN_SUCCESS: {
+      return {
+        ...state,
+        isAuthenticated: true,
+        isSigningIn: false,
+        signInError: null,
+        currentUser: {
+          email: payload.data.email,
+          uid: payload.data.id,
+          username: payload.data.username,
+        },
+      };
+    }
+    case SIGN_IN_REQUEST: {
+      return {
+        ...state,
+        isSigningIn: true,
+        signInError: null,
+      };
+    }
+    case SIGN_IN_ERROR: {
+      return {
+        ...state,
+        isSigningUp: false,
+        signUpError: payload,
       };
     }
     case SIGN_OUT_REQUEST: {
