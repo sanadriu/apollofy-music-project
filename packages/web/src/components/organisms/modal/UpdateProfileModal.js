@@ -45,7 +45,7 @@ export default function UpdateProfileModal({
     const userToken = await getCurrentUserToken();
 
     if (userToken) {
-      updateUser(userToken, updatedEmail, updatedUsername);
+      updateUser(userToken, updatedUsername, updatedEmail);
     }
   };
 

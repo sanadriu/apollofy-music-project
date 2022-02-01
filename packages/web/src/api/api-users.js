@@ -12,11 +12,11 @@ export function deleteUser(authToken) {
   });
 }
 
-export function updateUser(authToken, username = "", email = "") {
-  return axios.post(`http://localhost:4000/users/me`, {
+export function updateUser(authToken, username, email) {
+  return axios.patch(`http://localhost:4000/users/me`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
-      data: { username: username, email: email },
     },
+    data: { username: username && username, email: email && email },
   });
 }

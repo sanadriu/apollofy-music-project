@@ -86,9 +86,9 @@ const EditProfile = () => {
             type="button"
             size="small"
             onClick={() => {
+              setEmailModal(true);
               setPasswordModal(false);
               setUsernameModal(false);
-              setEmailModal(true);
               setOpenProfileModal(true);
             }}
           >
@@ -105,8 +105,8 @@ const EditProfile = () => {
             type="button"
             size="small"
             onClick={() => {
-              setPasswordModal(false);
               setUsernameModal(true);
+              setPasswordModal(false);
               setEmailModal(false);
               setOpenProfileModal(true);
             }}
