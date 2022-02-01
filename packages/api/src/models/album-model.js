@@ -167,7 +167,7 @@ AlbumSchema.statics.updateAlbum = function (id, data) {
 AlbumSchema.statics.deleteAlbum = function (id) {
   return this.findOneAndUpdate(
     { _id: id, deleted_at: { $exists: false } },
-    { $pull: { [listName]: value } },
+    { $set: { deleted_at: Date.now() } },
     { new: true },
   );
 };

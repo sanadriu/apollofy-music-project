@@ -81,7 +81,7 @@ async function createPlaylist(req, res, next) {
     const dbRes = await Playlist.createPlaylist(uid, details);
 
     return res.status(200).send({
-      data: dbRes._id,
+      data: dbRes.id,
       error: null,
     });
   } catch (error) {

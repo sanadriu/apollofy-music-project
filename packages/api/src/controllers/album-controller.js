@@ -1,5 +1,7 @@
 const { Types } = require("mongoose");
-const { Album, Track } = require("../models");
+const { Album } = require("../models");
+
+const { filterUserTracks } = require("./utils");
 
 async function getAlbums(req, res, next) {
   try {
@@ -78,15 +80,12 @@ async function createAlbum(req, res, next) {
     const { tracks = [], ...details } = req.body;
     const { uid } = req.user;
 
-    const trackList = tracks instanceof Array ? tracks : [tracks];
-    const allowedTracks = await Promise.all(
-      trackList.filter(async (id) => (await Track.getTrack(id)).user === uid),
-    );
+    const allowedTracks = await filterUserTracks(uid, tracks);
 
     const dbRes = await Album.createAlbum(uid, { ...details, tracks: allowedTracks });
 
     return res.status(200).send({
-      data: dbRes._id,
+      data: dbRes.id,
       error: null,
     });
   } catch (error) {
@@ -125,10 +124,7 @@ async function updateAlbum(req, res, next) {
       });
     }
 
-    const trackList = tracks instanceof Array ? tracks : [tracks];
-    const allowedTracks = await Promise.all(
-      trackList.filter(async (id) => (await Track.getTrack(id)).user === uid),
-    );
+    const allowedTracks = await filterUserTracks(uid, tracks);
 
     await Album.updateAlbum(idAlbum, { ...details, tracks: allowedTracks });
 

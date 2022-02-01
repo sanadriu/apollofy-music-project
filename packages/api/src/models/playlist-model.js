@@ -59,7 +59,7 @@ const PlaylistSchema = new Schema(
         },
       },
     },
-    deletedAt: {
+    deleted_at: {
       type: Date,
       trim: true,
     },

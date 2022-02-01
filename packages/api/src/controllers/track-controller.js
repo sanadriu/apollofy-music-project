@@ -1,3 +1,4 @@
+const { Types } = require("mongoose");
 const { Track } = require("../models");
 
 async function getTracks(req, res, next) {
@@ -58,29 +59,55 @@ async function getSingleTrack(req, res, next) {
   }
 }
 
+async function createTrack(req, res, next) {
+  try {
+    const details = req.body;
+    const { uid } = req.user;
+
+    const track = await Track.createTrack(uid, details);
+
+    return res.status(200).send({
+      data: track.id,
+      message: "Track created successfully",
+      error: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function updateTrack(req, res, next) {
   try {
     const details = req.body;
     const { idTrack } = req.params;
     const { uid } = req.user;
 
-    const track = await Track.findById(idTrack).where("user").equals(uid);
+    if (!Types.ObjectId.isValid(idTrack)) {
+      return res.status(400).send({
+        data: null,
+        error: "Wrong track ID",
+      });
+    }
 
-    if (!track) {
+    const dbRes = await Track.getTrack(idTrack);
+
+    if (!dbRes) {
+      return res.status(404).send({
+        data: null,
+        error: "Track not found",
+      });
+    }
+
+    const isAuthorized = dbRes.user === uid;
+
+    if (!isAuthorized) {
       return res.status(401).send({
         data: null,
         error: "Unauthorized",
       });
     }
 
-    const dbRes = await Track.updateTrack(idTrack, details);
-
-    if (!dbRes) {
-      return res.status(404).send({
-        data: null,
-        error: "Task not found",
-      });
-    }
+    await Track.updateTrack(idTrack, details);
 
     return res.status(200).send({
       data: "Track updated successfully",
@@ -96,9 +123,25 @@ async function deleteTrack(req, res, next) {
     const { idTrack } = req.params;
     const { uid } = req.user;
 
-    const track = await Track.findById(idTrack).where("user").equals(uid);
+    if (!Types.ObjectId.isValid(idTrack)) {
+      return res.status(400).send({
+        data: null,
+        error: "Wrong track ID",
+      });
+    }
 
-    if (!track) {
+    const dbRes = await Track.getTrack(idTrack);
+
+    if (!dbRes) {
+      return res.status(404).send({
+        data: null,
+        error: "Track not found",
+      });
+    }
+
+    const isAuthorized = dbRes.user === uid;
+
+    if (!isAuthorized) {
       return res.status(401).send({
         data: null,
         error: "Unauthorized",
@@ -109,23 +152,6 @@ async function deleteTrack(req, res, next) {
 
     return res.status(200).send({
       data: "Track deleted successfully",
-      error: null,
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function createTrack(req, res, next) {
-  try {
-    const details = req.body;
-    const { uid } = req.user;
-
-    const track = await Track.createTrack(uid, details);
-
-    return res.status(200).send({
-      data: track,
-      message: "Track created successfully",
       error: null,
     });
   } catch (error) {
