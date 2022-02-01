@@ -15,7 +15,7 @@ import {
   signUpRequest,
   signUpWithEmailRequest,
   setCurrentUser,
-} from '../../../../redux/auth';
+} from "../../../../redux/auth";
 
 const DescriptionArea = styled.textarea`
   width: 22rem;

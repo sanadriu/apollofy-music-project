@@ -8,9 +8,9 @@ import {
   authSelector,
   resetAuthState,
   signUpWithGoogleRequest,
-  signUpWithFacebook
-} from '../../redux/auth';
-import { modalSelector, nextModal } from '../../redux/modal';
+  signUpWithFacebook,
+} from "../../redux/auth";
+import { modalSelector, nextModal } from "../../redux/modal";
 
 import * as ROUTES from "../../routes";
 import { LoginBoard } from "../../components/organisms/LoginBoard/LoginBoard";

@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login/Login";
 import ResetPassword from "./pages/ResetPassword";
+import EditProfie from "./pages/EditProfile";
 
 import { onAuthStateChanged } from "./services/auth";
 import { syncSignIn, signOut } from "./redux/auth";
@@ -51,7 +52,8 @@ function App() {
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-            <Route path={ROUTES.HOME} element={<Home />} />
+            <Route path={ROUTES.HOME} element={<Home />} exact />
+            <Route path={ROUTES.EDIT_PROFILE} element={<EditProfie />} />
           </Routes>
         </>
       </>

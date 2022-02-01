@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-// import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
 
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { SmallText } from "../../../atoms/SmallText/SmallText";
@@ -58,11 +58,10 @@ export default function ProfilePictureForm() {
             {/* <PhotoCamera /> */}
           </IconButton>
         </label>
-        {value ? <p>{value}</p> : null}
+        {value ? <p>{value}</p> : null
+        }
       </Stack>
-      <ModalButton onClick={() => handlePicture()}>
-        {value ? "Submit" : "Skip for now"}
-      </ModalButton>
+      <ModalButton onClick={() => handlePicture()}>{value ? "Submit" : "Skip for now"}</ModalButton>
     </FlexColumn>
   );
 }

@@ -12,12 +12,9 @@ export const SIGN_OUT_REQUEST = "SIGN_OUT_REQUEST";
 export const SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS";
 export const SIGN_OUT_ERROR = "SIGN_OUT_ERROR";
 
-export const SEND_PASSWORD_RESET_EMAIL_REQUEST =
-  "SEND_PASSWORD_RESET_EMAIL_REQUEST";
-export const SEND_PASSWORD_RESET_EMAIL_ERROR =
-  "SEND_PASSWORD_RESET_EMAIL_ERROR";
-export const SEND_PASSWORD_RESET_EMAIL_SUCCESS =
-  "SEND_PASSWORD_RESET_EMAIL_SUCCESS";
+export const SEND_PASSWORD_RESET_EMAIL_REQUEST = "SEND_PASSWORD_RESET_EMAIL_REQUEST";
+export const SEND_PASSWORD_RESET_EMAIL_ERROR = "SEND_PASSWORD_RESET_EMAIL_ERROR";
+export const SEND_PASSWORD_RESET_EMAIL_SUCCESS = "SEND_PASSWORD_RESET_EMAIL_SUCCESS";
 
 export const RESET_AUTH_STATE = "RESET_AUTH_STATE";
 export const RESET_STORE_AND_LOG_OUT = "RESET_STORE_AND_LOG_OUT";
@@ -242,7 +239,8 @@ const AuthReducer = (state = initialState, action) => {
         signUpError: null,
         currentUser: {
           email: payload.data.email,
-          uid: payload.data._id,
+          uid: payload.data.id,
+          username: payload.data.username,
         },
       };
     }
@@ -321,7 +319,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         currentUser: {
           ...state.currentUser,
-          dateOfBirth: payload
+          dateOfBirth: payload,
         },
       };
     }
@@ -330,7 +328,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         currentUser: {
           ...state.currentUser,
-          profilePicture: payload
+          profilePicture: payload,
         },
       };
     }

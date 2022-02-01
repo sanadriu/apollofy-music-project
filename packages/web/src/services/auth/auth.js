@@ -19,7 +19,7 @@ if (!firebase.apps.length) {
   firebase.app();
 }
 
-const auth = firebase.auth();
+export const auth = firebase.auth();
 
 export function onAuthStateChanged(...props) {
   return auth.onAuthStateChanged(...props);
