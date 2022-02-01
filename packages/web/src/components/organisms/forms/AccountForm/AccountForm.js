@@ -9,6 +9,7 @@ import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
 
 import { setNameEmailAndPassword } from "../../../../redux/auth";
+
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const RegisterInput = styled.input`
@@ -55,50 +56,19 @@ export default function AccountForm() {
           <Form className="formik">
             <FlexColumn>
               <MiddleTitle>Create your account</MiddleTitle>
-              <Field
-                as={RegisterInput}
-                type="text"
-                name="name"
-                placeholder="Name"
-              />
-              <ErrorMessage
-                className="errorMessage"
-                name="name"
-                component="div"
-              />
-              <Field
-                as={RegisterInput}
-                type="text"
-                name="email"
-                placeholder="Email"
-              />
-              <ErrorMessage
-                className="errorMessage"
-                name="email"
-                component="div"
-              />
-              <Field
-                as={RegisterInput}
-                type="password"
-                name="password"
-                placeholder="Password"
-              />
-              <ErrorMessage
-                className="errorMessage"
-                name="password"
-                component="div"
-              />
+              <Field as={RegisterInput} type="text" name="name" placeholder="Name" />
+              <ErrorMessage className="errorMessage" name="name" component="div" />
+              <Field as={RegisterInput} type="text" name="email" placeholder="Email" />
+              <ErrorMessage className="errorMessage" name="email" component="div" />
+              <Field as={RegisterInput} type="password" name="password" placeholder="Password" />
+              <ErrorMessage className="errorMessage" name="password" component="div" />
               <Field
                 as={RegisterInput}
                 type="password"
                 name="confirm_password"
                 placeholder="Confirm password"
               />
-              <ErrorMessage
-                className="errorMessage"
-                name="confirm_password"
-                component="div"
-              />
+              <ErrorMessage className="errorMessage" name="confirm_password" component="div" />
               <ModalButton type="submit" disabled={isSubmitting}>
                 Submit
               </ModalButton>

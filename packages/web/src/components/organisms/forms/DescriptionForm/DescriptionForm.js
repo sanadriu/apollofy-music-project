@@ -13,7 +13,7 @@ import {
   signUpRequest,
   signUpWithEmailRequest,
   setCurrentUser,
-} from '../../../../redux/auth';
+} from "../../../../redux/auth";
 
 const ModalButton = styled(PrimaryButton)`
   width: 20%;
@@ -39,12 +39,7 @@ export default function DescriptionForm() {
 
     dispatch(setCurrentUser(updatedCurrentUser));
     try {
-      dispatch(
-        signUpWithEmailRequest(
-          updatedCurrentUser.email,
-          updatedCurrentUser.password,
-        ),
-      );
+      dispatch(signUpWithEmailRequest(updatedCurrentUser.email, updatedCurrentUser.password));
       navigate("/");
     } catch (err) {
       alert(err.message);

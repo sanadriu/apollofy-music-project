@@ -6,7 +6,8 @@ import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
 
-import { setDateOfBirth } from '../../../../redux/auth';
+import { setDateOfBirth } from "../../../../redux/auth";
+
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const ModalButton = styled(PrimaryButton)`
@@ -34,9 +35,7 @@ export default function BirthDayForm() {
         max="2015-12-31"
         onChange={(e) => setValue(e.target.value)}
       />
-      <ModalButton onClick={() => handleOption()}>
-        {value ? "Submit" : "Skip for now"}
-      </ModalButton>
+      <ModalButton onClick={() => handleOption()}>{value ? "Submit" : "Skip for now"}</ModalButton>
     </FlexColumn>
   );
 }
