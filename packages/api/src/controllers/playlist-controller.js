@@ -191,11 +191,11 @@ async function deletePlaylist(req, res, next) {
 async function getUserPlaylists(req, res, next) {
   try {
     const { uid } = req.user;
-    const { page = 1, sort = "created_at", order = "asc" } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", extend = false } = req.query;
 
     const pages = await Playlist.getNumPages({ user: uid });
 
-    if (!isNaN(page) || page <= 0) {
+    if (isNaN(page) || page <= 0) {
       return res.status(400).send({
         data: null,
         success: false,
@@ -212,7 +212,7 @@ async function getUserPlaylists(req, res, next) {
         pages,
       });
     }
-    const dbRes = await Playlist.getUserPlaylists(page, sort, order, uid);
+    const dbRes = await Playlist.getUserPlaylists(uid, { page, sort, order, extend });
 
     return res.status(200).send({
       data: dbRes,

@@ -1,4 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const { isEmail, isDate, isURL } = require("validator");
 const { getHash } = require("../services/crypto");
 
@@ -116,24 +117,26 @@ const UserSchema = new Schema(
   },
 );
 
+/* Virtual */
+
 UserSchema.virtual("num_liked_albums").get(function () {
-  return this.liked_albums.length;
+  return this.liked_albums?.length;
 });
 
 UserSchema.virtual("num_liked_tracks").get(function () {
-  return this.liked_tracks.length;
+  return this.liked_tracks?.length;
 });
 
 UserSchema.virtual("num_followed_playlists").get(function () {
-  return this.followed_playlists.length;
+  return this.followed_playlists?.length;
 });
 
 UserSchema.virtual("num_followed_users").get(function () {
-  return this.followed_users.length;
+  return this.followed_users?.length;
 });
 
 UserSchema.virtual("num_followers").get(function () {
-  return this.followers.length;
+  return this.followers?.length;
 });
 
 /* Query Helpers */
@@ -158,34 +161,32 @@ UserSchema.statics.getUser = function (id, extend = false) {
   const populate = [
     {
       path: "liked_albums",
-      select: "title",
       match: { deleted_at: { $exists: false } },
+      select: extend ? "title" : "id",
     },
     {
       path: "liked_tracks",
-      select: "title",
       match: { deleted_at: { $exists: false } },
+      select: extend ? "title" : "id",
     },
     {
       path: "followed_playlists",
-      select: "title",
       match: { deleted_at: { $exists: false } },
+      select: extend ? "title" : "id",
     },
     {
       path: "followed_users",
-      // select: "username",
       match: { deleted_at: { $exists: false } },
+      select: extend ? "username" : "id",
     },
     {
       path: "followers",
-      // select: "username",
       match: { deleted_at: { $exists: false } },
+      select: extend ? "username" : "id",
     },
   ];
 
-  return this.findById(id)
-    .notDeleted()
-    .populate(extend ? populate : undefined);
+  return this.findById(id).notDeleted().select("-email").populate(populate);
 };
 
 UserSchema.statics.getUsers = function (page = 1, sort = "created_at", order = "asc") {
@@ -194,17 +195,18 @@ UserSchema.statics.getUsers = function (page = 1, sort = "created_at", order = "
 
   return this.find()
     .notDeleted()
+    .select("-email")
     .sort({ [sort]: order })
     .skip(start)
     .limit(limit);
 };
 
 UserSchema.statics.updateUser = function (id, data) {
-  const { firstname, lastname, username, description, thumbnails } = data;
+  const { firstname, lastname, username, description, birth_date, thumbnails } = data;
 
   return this.findOneAndUpdate(
     { _id: id, deleted_at: { $exists: false } },
-    { $set: { firstname, lastname, username, description, thumbnails } },
+    { $set: { firstname, lastname, username, description, birth_date, thumbnails } },
     { new: true, runValidators: true },
   );
 };
@@ -259,6 +261,8 @@ UserSchema.statics.followPlaylist = async function (id, idPlaylist) {
 UserSchema.statics.getFollowed = async function (id, idFollower) {
   return await this.switchValueInList(id, "followers", idFollower);
 };
+
+UserSchema.plugin(mongooseLeanVirtuals);
 
 const User = model("user", UserSchema);
 

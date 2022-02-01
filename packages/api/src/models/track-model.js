@@ -102,8 +102,10 @@ const TrackSchema = new Schema(
   },
 );
 
+/* Virtual */
+
 TrackSchema.virtual("num_likes").get(function () {
-  return this.liked_by.length;
+  return this.liked_by?.length;
 });
 
 /* Query Helpers */
@@ -137,13 +139,24 @@ TrackSchema.statics.getTracks = function (page = 1, sort = "created_at", order =
 
 TrackSchema.statics.getTrack = function (id, extend = false) {
   const populate = [
-    { path: "genres", match: { deleted_at: { $exists: false } } },
-    { path: "liked_by", match: { deleted_at: { $exists: false } } },
+    {
+      path: "user",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "username firstname lastname thumbnails" : "id",
+    },
+    {
+      path: "genres",
+      match: { deleted_at: { $exists: false } },
+      select: "name",
+    },
+    {
+      path: "liked_by",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "name" : "id",
+    },
   ];
 
-  return this.findById(id)
-    .notDeleted()
-    .populate(extend ? populate : undefined);
+  return this.findById(id).notDeleted().populate(populate);
 };
 
 TrackSchema.statics.createTrack = function (idUser, data) {
@@ -224,18 +237,29 @@ TrackSchema.statics.getPlayed = async function (id) {
   );
 };
 
-TrackSchema.statics.getUserTracks = function (
-  page = 1,
-  sort = "created_at",
-  order = "asc",
-  idUser,
-) {
+TrackSchema.statics.getUserTracks = function (idUser, options) {
+  const { page = 1, sort = "created_at", order = "asc", extend = false } = options;
+
   const limit = 10;
   const start = (page - 1) * limit;
 
+  const populate = [
+    {
+      path: "genres",
+      match: { deleted_at: { $exists: false } },
+      select: "name",
+    },
+    {
+      path: "liked_by",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "name" : "id",
+    },
+  ];
+
   return this.find({ user: idUser })
     .notDeleted()
-    .populate({ path: "genres liked_by" })
+    .select("-user")
+    .populate(populate)
     .sort({ [sort]: order })
     .skip(start)
     .limit(limit);

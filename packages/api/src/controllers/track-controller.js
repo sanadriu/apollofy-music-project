@@ -7,7 +7,7 @@ async function getTracks(req, res, next) {
 
     const pages = await Track.getNumPages();
 
-    if (!(!isNaN(page) && page > 0)) {
+    if (isNaN(page) || page <= 0) {
       return res.status(400).send({
         data: null,
         success: false,
@@ -215,12 +215,12 @@ async function playTrack() {
 
 async function getUserTracks(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc" } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", extend = false } = req.query;
     const { uid } = req.user;
 
     const pages = await Track.getNumPages({ user: uid });
 
-    if (!isNaN(page) || page <= 0) {
+    if (isNaN(page) || page <= 0) {
       return res.status(400).send({
         data: null,
         success: false,
@@ -238,7 +238,7 @@ async function getUserTracks(req, res, next) {
       });
     }
 
-    const dbRes = await Track.getUserTracks(page, sort, order, uid);
+    const dbRes = await Track.getUserTracks(uid, { page, sort, order, extend });
 
     return res.status(200).send({
       data: dbRes,
