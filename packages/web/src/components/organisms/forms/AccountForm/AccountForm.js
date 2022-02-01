@@ -3,39 +3,27 @@ import styled from "styled-components";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setNameEmailAndPassword } from "../../../../redux/auth";
+import { authSelector, setNameEmailAndPassword } from "../../../../redux/auth";
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 import AccountSchema from "../../../../schemas/AccountSchema";
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-
-const RegisterInput = styled.input`
-  width: 90%;
-  border-radius: 0.3rem;
-  color: black;
-  border: 1px solid black;
-  padding: 0.5rem;
-  background-color: white;
-
-  &:focus {
-    background-color: #b04aff;
-    color: white;
-  }
-`;
+import { RegisterInput } from "../../../atoms/RegisterInput/RegisterInput";
 
 export default function AccountForm() {
   const dispatch = useDispatch();
   const { currentModal } = useSelector(modalSelector);
+  const { currentUser } = useSelector(authSelector);
 
   return (
     <Formik
       initialValues={{
-        name: "",
-        email: "",
-        password: "",
-        passwordConfirmation: "",
+        name: currentUser.name || "",
+        email: currentUser.email || "",
+        password: currentUser.password || "",
+        confirm_password: currentUser.confirm_password || "",
       }}
       validationSchema={AccountSchema}
       onSubmit={(values, { setSubmitting }) => {

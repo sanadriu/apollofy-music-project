@@ -1,28 +1,38 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
 
-import { setDateOfBirth } from '../../../../redux/auth';
+import { authSelector, setDateOfBirth } from '../../../../redux/auth';
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const ModalButton = styled(PrimaryButton)`
-  width: 20%;
+  width: 35%;
 `;
 
 export default function BirthDayForm() {
   const [value, setValue] = useState(null);
   const dispatch = useDispatch();
   const { currentModal } = useSelector(modalSelector);
-  console.log(value);
+  const { currentUser } = useSelector(authSelector);
 
   function handleOption() {
-    if (value) dispatch(setDateOfBirth(value));
-
-    dispatch(nextModal(currentModal + 1));
+    if (value) {
+      const date = parseInt(value.substr(0, 4), 10);
+      if (date >= 1930 && date <= 2015) {
+        dispatch(setDateOfBirth(value));
+        dispatch(nextModal(currentModal + 1));
+      } else {
+        toast("The date must be between 1930 and 2015");
+      }
+    } else {
+      dispatch(nextModal(currentModal + 1));
+    }
   }
 
   return (
@@ -33,11 +43,11 @@ export default function BirthDayForm() {
         name="trip-start"
         min="1915-01-01"
         max="2015-12-31"
+        defaultValue={currentUser.dateOfBirth || null}
         onChange={(e) => setValue(e.target.value)}
       />
-      <ModalButton onClick={() => handleOption()}>
-        {value ? "Submit" : "Skip for now"}
-      </ModalButton>
+      <ToastContainer />
+      <ModalButton onClick={() => handleOption()}>{value ? "Submit" : "Skip for now"}</ModalButton>
     </FlexColumn>
   );
 }

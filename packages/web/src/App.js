@@ -6,7 +6,7 @@ import { ThemeProvider } from "styled-components";
 import * as ROUTES from "./routes";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
-import Login from "./pages/Login";
+import Login from "./pages/Login/Login";
 import ResetPassword from "./pages/ResetPassword";
 
 import { onAuthStateChanged } from "./services/auth";
@@ -51,7 +51,7 @@ function App() {
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-            <Route path={ROUTES.HOME} element={<Home />} exact />
+            <Route path={ROUTES.HOME} element={<Home />} />
           </Routes>
         </>
       </>
