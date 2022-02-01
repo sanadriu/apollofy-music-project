@@ -14,7 +14,7 @@ async function signUp(req, res, next) {
     if (user) {
       res.status(200).send({
         data: getUserProfile(user),
-        error: null,
+        success: true,
       });
     } else {
       const newUser = await User.create({
@@ -25,7 +25,7 @@ async function signUp(req, res, next) {
 
       res.status(201).send({
         data: getUserProfile(newUser),
-        error: null,
+        success: true,
       });
     }
   } catch (error) {
@@ -36,7 +36,7 @@ async function signUp(req, res, next) {
 async function signOut(req, res) {
   res.status(200).send({
     data: "OK",
-    error: null,
+    success: true,
   });
 }
 
@@ -49,7 +49,8 @@ async function getUsers(req, res, next) {
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
         data: null,
-        error: "Wrong value for page",
+        success: false,
+        message: "Wrong value for page",
         pages,
       });
     }
@@ -57,7 +58,8 @@ async function getUsers(req, res, next) {
     if (!["asc", "desc"].includes(order)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong value for order",
+        message: "Wrong value for order",
+        success: false,
         pages,
       });
     }
@@ -65,7 +67,8 @@ async function getUsers(req, res, next) {
     if (page > pages) {
       return res.status(404).send({
         data: null,
-        error: "Page not found",
+        success: false,
+        message: "Page not found",
         pages,
       });
     }
@@ -74,7 +77,8 @@ async function getUsers(req, res, next) {
 
     return res.status(200).send({
       data: dbRes,
-      error: null,
+      success: true,
+      message: "Users fetched successfully",
       pages,
     });
   } catch (error) {
@@ -89,16 +93,18 @@ async function getSingleUser(req, res, next) {
 
     const dbRes = await User.getUser(idUser, extend);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "User not found",
+        success: false,
+        message: "User not found",
       });
     }
 
     return res.status(200).send({
       data: dbRes,
-      error: null,
+      success: true,
+      message: "User fetched successfully",
     });
   } catch (error) {
     next(error);
@@ -112,16 +118,18 @@ async function getSelfUser(req, res, next) {
 
     const dbRes = await User.getUser(uid, extend);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "User not puto",
+        success: false,
+        message: "User not found",
       });
     }
 
     return res.status(200).send({
       data: dbRes,
-      error: null,
+      success: true,
+      message: "Request successful",
     });
   } catch (error) {
     next(error);
@@ -135,16 +143,18 @@ async function updateUser(req, res, next) {
 
     const dbRes = await User.updateUser(uid, details);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "User not found",
+        success: false,
+        message: "User not found",
       });
     }
 
     return res.status(200).send({
-      data: "User updated successfully",
-      error: null,
+      data: null,
+      success: true,
+      message: "User updated successfully",
     });
   } catch (error) {
     next(error);
@@ -157,18 +167,20 @@ async function deleteUser(req, res, next) {
 
     const dbRes = await User.deleteUser(uid);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "User not found",
+        success: false,
+        message: "User not found",
       });
     }
 
     await auth.deleteUser(uid);
 
     return res.status(200).send({
-      data: "User deleted successfully",
-      error: null,
+      data: null,
+      success: true,
+      message: "User deleted successfully",
     });
   } catch (error) {
     next(error);
@@ -182,22 +194,25 @@ async function likeAlbum(req, res, next) {
 
     if (!Types.ObjectId.isValid(idAlbum)) {
       return res.status(400).send({
-        error: "Wrong album ID",
         data: null,
+        success: false,
+        message: "Wrong album ID",
       });
     }
 
     if (!(await User.getUser(uid))) {
       return res.status(404).send({
-        error: "User not found",
         data: null,
+        success: false,
+        message: "User not found",
       });
     }
 
     if (!(await Album.getAlbum(idAlbum))) {
       return res.status(404).send({
-        error: "Album not found",
         data: null,
+        success: false,
+        message: "Album not found",
       });
     }
 
@@ -205,8 +220,9 @@ async function likeAlbum(req, res, next) {
     await Album.getLiked(idAlbum, uid);
 
     return res.status(200).send({
-      data: "Operation done successfully",
-      error: null,
+      data: null,
+      success: true,
+      message: "Operation done successfully",
     });
   } catch (error) {
     next(error);
@@ -220,22 +236,25 @@ async function likeTrack(req, res, next) {
 
     if (!Types.ObjectId.isValid(idTrack)) {
       return res.status(400).send({
-        error: "Wrong track ID",
         data: null,
+        success: false,
+        message: "Wrong track ID",
       });
     }
 
     if (!(await User.getUser(uid))) {
       return res.status(404).send({
-        error: "User not found",
         data: null,
+        success: false,
+        message: "User not found",
       });
     }
 
     if (!(await Track.getTrack(idTrack))) {
       return res.status(404).send({
-        error: "Track not found",
         data: null,
+        success: false,
+        message: "Track not found",
       });
     }
 
@@ -243,8 +262,9 @@ async function likeTrack(req, res, next) {
     await Track.getLiked(idTrack, uid);
 
     return res.status(200).send({
-      data: "Operation done successfully",
-      error: null,
+      data: null,
+      success: true,
+      message: "Operation done successfully",
     });
   } catch (error) {
     next(error);
@@ -258,22 +278,25 @@ async function followPlaylist(req, res, next) {
 
     if (!Types.ObjectId.isValid(idPlaylist)) {
       return res.status(400).send({
-        error: "Wrong playlist ID",
         data: null,
+        success: false,
+        message: "Wrong playlist ID",
       });
     }
 
     if (!(await User.getUser(uid))) {
       return res.status(404).send({
-        error: "User not found",
         data: null,
+        success: false,
+        message: "User not found",
       });
     }
 
     if (!(await Playlist.getPlaylist(idPlaylist))) {
       return res.status(404).send({
-        error: "Playlist not found",
         data: null,
+        success: false,
+        message: "Playlist not found",
       });
     }
 
@@ -281,8 +304,9 @@ async function followPlaylist(req, res, next) {
     await Playlist.getFollowed(idPlaylist, uid);
 
     return res.status(200).send({
-      data: "Operation done successfully",
-      error: null,
+      data: null,
+      success: true,
+      message: "Operation done successfully",
     });
   } catch (error) {
     next(error);
@@ -296,22 +320,25 @@ async function followUser(req, res, next) {
 
     if (uid === idUser) {
       return res.status(400).send({
-        error: "Users must be different",
         data: null,
+        success: false,
+        message: "Users must be different",
       });
     }
 
     if (!(await User.getUser(uid))) {
       return res.status(404).send({
-        error: "User not found",
         data: null,
+        success: false,
+        message: "User not found",
       });
     }
 
     if (!(await User.getUser(idUser))) {
       return res.status(404).send({
-        error: "User to be followed not found",
         data: null,
+        success: false,
+        message: "User to be followed not found",
       });
     }
 
@@ -319,8 +346,9 @@ async function followUser(req, res, next) {
     await User.getFollowed(idUser, uid);
 
     return res.status(200).send({
-      data: "Operation done successfully",
-      error: null,
+      data: null,
+      success: true,
+      message: "Operation done successfully",
     });
   } catch (error) {
     next(error);

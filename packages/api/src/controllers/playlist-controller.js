@@ -10,7 +10,8 @@ async function getPlaylists(req, res, next) {
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
         data: null,
-        error: "Wrong value for page",
+        success: false,
+        message: "Wrong value for page",
         pages,
       });
     }
@@ -18,7 +19,8 @@ async function getPlaylists(req, res, next) {
     if (!["asc", "desc"].includes(order)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong value for order",
+        success: false,
+        message: "Wrong value for order",
         pages,
       });
     }
@@ -26,7 +28,8 @@ async function getPlaylists(req, res, next) {
     if (page > pages) {
       return res.status(404).send({
         data: null,
-        error: "Page not found",
+        success: false,
+        message: "Page not found",
         pages,
       });
     }
@@ -35,7 +38,8 @@ async function getPlaylists(req, res, next) {
 
     return res.status(200).send({
       data: dbRes,
-      error: null,
+      success: true,
+      message: "Playlists fetched successfully",
       pages,
     });
   } catch (error) {
@@ -51,22 +55,25 @@ async function getSinglePlaylist(req, res, next) {
     if (!Types.ObjectId.isValid(idPlaylist)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong playlist ID",
+        success: false,
+        message: "Wrong playlist ID",
       });
     }
 
     const dbRes = await Playlist.getPlaylist(idPlaylist, extend);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "Playlist not found",
+        success: false,
+        message: "Playlist not found",
       });
     }
 
     return res.status(200).send({
       data: dbRes,
-      error: null,
+      success: true,
+      message: "Playlist fetched successfully",
     });
   } catch (error) {
     next(error);
@@ -82,7 +89,8 @@ async function createPlaylist(req, res, next) {
 
     return res.status(200).send({
       data: dbRes.id,
-      error: null,
+      success: true,
+      message: "Playlist created successfully",
     });
   } catch (error) {
     next(error);
@@ -98,16 +106,18 @@ async function updatePlaylist(req, res, next) {
     if (!Types.ObjectId.isValid(idPlaylist)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong playlist ID",
+        success: false,
+        message: "Wrong playlist ID",
       });
     }
 
     const dbRes = await Playlist.getPlaylist(idPlaylist);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "Playlist not found",
+        success: false,
+        message: "Playlist not found",
       });
     }
 
@@ -116,15 +126,17 @@ async function updatePlaylist(req, res, next) {
     if (!isAuthorized) {
       return res.status(401).send({
         data: null,
-        error: "Unauthorized",
+        success: false,
+        message: "Unauthorized",
       });
     }
 
     await Playlist.updatePlaylist(idPlaylist, details);
 
     return res.status(200).send({
-      data: "Playlist updated successfully",
-      error: null,
+      data: null,
+      success: true,
+      message: "Playlist updated successfully",
     });
   } catch (error) {
     next(error);
@@ -139,16 +151,18 @@ async function deletePlaylist(req, res, next) {
     if (!Types.ObjectId.isValid(idPlaylist)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong playlist ID",
+        success: false,
+        message: "Wrong playlist ID",
       });
     }
 
     const dbRes = await Playlist.getPlaylist(idPlaylist);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "Playlist not found",
+        success: false,
+        message: "Playlist not found",
       });
     }
 
@@ -157,15 +171,31 @@ async function deletePlaylist(req, res, next) {
     if (!isAuthorized) {
       return res.status(401).send({
         data: null,
-        error: "Unauthorized",
+        success: false,
+        message: "Unauthorized",
       });
     }
 
     await Playlist.deletePlaylist(idPlaylist);
 
     return res.status(200).send({
-      data: "Playlist deleted successfully",
-      error: null,
+      data: null,
+      success: true,
+      message: "Playlist deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getUserPlaylists(req, res, next) {
+  try {
+    const { uid } = req.user;
+    const playlists = await Playlist.getUserPlaylists(uid);
+
+    return res.status(200).send({
+      data: playlists,
+      success: true,
     });
   } catch (error) {
     next(error);
@@ -178,4 +208,5 @@ module.exports = {
   createPlaylist,
   updatePlaylist,
   deletePlaylist,
+  getUserPlaylists,
 };
