@@ -10,8 +10,6 @@ async function authMiddleware(req, res, next) {
         ? await mockAuth.verifyIdToken(bearerToken)
         : await auth.verifyIdToken(bearerToken);
 
-    logger.debug(userClaims);
-
     auth.login(req, userClaims);
 
     next();

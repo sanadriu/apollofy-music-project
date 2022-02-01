@@ -149,7 +149,7 @@ TrackSchema.statics.getNumPages = function (filter = {}) {
     });
 };
 
-TrackSchema.statics.getTrack = function (id, options) {
+TrackSchema.statics.getTrack = function (id, options = {}) {
   const { extend = false } = options;
 
   const populate = getPopulate(extend);
@@ -157,7 +157,7 @@ TrackSchema.statics.getTrack = function (id, options) {
   return this.findById(id).notDeleted().populate(populate);
 };
 
-TrackSchema.statics.getTracks = function (options) {
+TrackSchema.statics.getTracks = function (options = {}) {
   const { page = 1, sort = "created_at", order = "asc" } = options;
 
   const limit = 10;
@@ -251,7 +251,7 @@ TrackSchema.statics.getPlayed = async function (id) {
   );
 };
 
-TrackSchema.statics.getUserTracks = function (idUser, options) {
+TrackSchema.statics.getUserTracks = function (idUser, options = {}) {
   const { page = 1, sort = "created_at", order = "asc", extend = false } = options;
 
   const limit = 10;

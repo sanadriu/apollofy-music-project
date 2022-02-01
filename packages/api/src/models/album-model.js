@@ -160,7 +160,7 @@ AlbumSchema.statics.getNumPages = function (filter = {}) {
     });
 };
 
-AlbumSchema.statics.getAlbum = function (id, options) {
+AlbumSchema.statics.getAlbum = function (id, options = {}) {
   const { extend = false } = options;
 
   const populate = getPopulate(extend);
@@ -168,7 +168,7 @@ AlbumSchema.statics.getAlbum = function (id, options) {
   return this.findById(id).notDeleted().populate(populate);
 };
 
-AlbumSchema.statics.getAlbums = function (options) {
+AlbumSchema.statics.getAlbums = function (options = {}) {
   const { page = 1, sort = "created_at", order = "asc" } = options;
 
   const limit = 10;
@@ -239,7 +239,7 @@ AlbumSchema.statics.getLiked = async function (id, idUser) {
   return await this.switchValueInList(id, "liked_by", idUser);
 };
 
-AlbumSchema.statics.getUserAlbums = function (idUser, options) {
+AlbumSchema.statics.getUserAlbums = function (idUser, options = {}) {
   const { page = 1, sort = "created_at", order = "asc", extend = false } = options;
 
   const limit = 10;

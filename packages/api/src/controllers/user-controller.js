@@ -1,5 +1,4 @@
-const { Types } = require("mongoose");
-const { User, Playlist, Album, Track } = require("../models");
+const { User } = require("../models");
 const { getUserProfile } = require("./utils");
 const { mode } = require("../config");
 const { auth } = mode === "test" ? require("../services/__mocks__") : require("../services");
@@ -185,132 +184,6 @@ async function deleteUser(req, res, next) {
   }
 }
 
-async function likeAlbum(req, res, next) {
-  try {
-    const { uid } = req.user;
-    const { idAlbum } = req.params;
-
-    if (!Types.ObjectId.isValid(idAlbum)) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: "Wrong album ID",
-      });
-    }
-
-    if (!(await User.getUser(uid))) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    if (!(await Album.getAlbum(idAlbum))) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "Album not found",
-      });
-    }
-
-    await User.likeAlbum(uid, idAlbum);
-    await Album.getLiked(idAlbum, uid);
-
-    return res.status(200).send({
-      data: null,
-      success: true,
-      message: "Operation done successfully",
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function likeTrack(req, res, next) {
-  try {
-    const { uid } = req.user;
-    const { idTrack } = req.params;
-
-    if (!Types.ObjectId.isValid(idTrack)) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: "Wrong track ID",
-      });
-    }
-
-    if (!(await User.getUser(uid))) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    if (!(await Track.getTrack(idTrack))) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "Track not found",
-      });
-    }
-
-    await User.likeTrack(uid, idTrack);
-    await Track.getLiked(idTrack, uid);
-
-    return res.status(200).send({
-      data: null,
-      success: true,
-      message: "Operation done successfully",
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function followPlaylist(req, res, next) {
-  try {
-    const { uid } = req.user;
-    const { idPlaylist } = req.params;
-
-    if (!Types.ObjectId.isValid(idPlaylist)) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: "Wrong playlist ID",
-      });
-    }
-
-    if (!(await User.getUser(uid))) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    if (!(await Playlist.getPlaylist(idPlaylist))) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "Playlist not found",
-      });
-    }
-
-    await User.followPlaylist(uid, idPlaylist);
-    await Playlist.getFollowed(idPlaylist, uid);
-
-    return res.status(200).send({
-      data: null,
-      success: true,
-      message: "Operation done successfully",
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
 async function followUser(req, res, next) {
   try {
     const { uid } = req.user;
@@ -361,8 +234,5 @@ module.exports = {
   getSelfUser,
   updateUser,
   deleteUser,
-  likeAlbum,
-  likeTrack,
   followUser,
-  followPlaylist,
 };

@@ -138,7 +138,7 @@ PlaylistSchema.statics.getNumPages = function (filter = {}) {
     });
 };
 
-PlaylistSchema.statics.getPlaylist = function (id, options) {
+PlaylistSchema.statics.getPlaylist = function (id, options = {}) {
   const { extend = false } = options;
 
   const populate = getPopulate(extend);
@@ -146,7 +146,7 @@ PlaylistSchema.statics.getPlaylist = function (id, options) {
   return this.findById(id).notDeleted().populate(populate);
 };
 
-PlaylistSchema.statics.getPlaylists = function (options) {
+PlaylistSchema.statics.getPlaylists = function (options = {}) {
   const { page = 1, sort = "created_at", order = "asc" } = options;
 
   const limit = 10;
@@ -217,7 +217,7 @@ PlaylistSchema.statics.getFollowed = async function (id, idUser) {
   return await this.switchValueInList(id, "followed_by", idUser);
 };
 
-PlaylistSchema.statics.getUserPlaylists = function (idUser, options) {
+PlaylistSchema.statics.getUserPlaylists = function (idUser, options = {}) {
   const { page = 1, sort = "created_at", order = "asc", extend = false } = options;
 
   const limit = 10;

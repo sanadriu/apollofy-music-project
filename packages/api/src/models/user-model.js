@@ -195,7 +195,7 @@ UserSchema.statics.getUser = function (id) {
   return this.findById(id).notDeleted().populate(populate);
 };
 
-UserSchema.statics.getUsers = function (options) {
+UserSchema.statics.getUsers = function (options = {}) {
   const { page = 1, sort = "created_at", order = "asc" } = options;
 
   const limit = 10;
