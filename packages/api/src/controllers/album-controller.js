@@ -36,7 +36,7 @@ async function getAlbums(req, res, next) {
       });
     }
 
-    const dbRes = await Album.getAlbums(page, sort, order);
+    const dbRes = await Album.getAlbums({ page, sort, order });
 
     return res.status(200).send({
       data: dbRes,
@@ -62,7 +62,7 @@ async function getSingleAlbum(req, res, next) {
       });
     }
 
-    const dbRes = await Album.getAlbum(idAlbum, extend);
+    const dbRes = await Album.getAlbum(idAlbum, { extend });
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -115,7 +115,7 @@ async function updateAlbum(req, res, next) {
       });
     }
 
-    const dbRes = await Album.getAlbum(idAlbum);
+    const dbRes = await Album.findById(idAlbum).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -162,7 +162,7 @@ async function deleteAlbum(req, res, next) {
       });
     }
 
-    const dbRes = await Album.getAlbum(idAlbum);
+    const dbRes = await Album.findById(idAlbum).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({

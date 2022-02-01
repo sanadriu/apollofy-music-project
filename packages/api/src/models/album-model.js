@@ -99,6 +99,55 @@ AlbumSchema.query.notDeleted = function () {
   return this.where({ deleted_at: { $exists: false } });
 };
 
+/* Population Object */
+
+const limitedPopulate = [
+  {
+    path: "user",
+    match: { deleted_at: { $exists: false } },
+    select: "username",
+  },
+  {
+    path: "tracks",
+    match: { deleted_at: { $exists: false } },
+    select: "title",
+  },
+  {
+    path: "genres",
+    match: { deleted_at: { $exists: false } },
+    select: "name",
+  },
+  {
+    path: "liked_by",
+    match: { deleted_at: { $exists: false } },
+    select: "username",
+  },
+];
+
+function getPopulate(extend) {
+  return [
+    {
+      path: "user",
+      match: { deleted_at: { $exists: false } },
+      select: "username",
+    },
+    {
+      path: "genres",
+      match: { deleted_at: { $exists: false } },
+      select: "name",
+    },
+    {
+      path: "tracks",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "title url duration color release_date num_likes num_plays" : "title",
+    },
+    {
+      path: "liked_by",
+      match: { deleted_at: { $exists: false } },
+      select: "username",
+    },
+  ];
+}
 /* Statics */
 
 AlbumSchema.statics.getNumPages = function (filter = {}) {
@@ -111,39 +160,25 @@ AlbumSchema.statics.getNumPages = function (filter = {}) {
     });
 };
 
-AlbumSchema.statics.getAlbum = function (id, extend = false) {
-  const populate = [
-    {
-      path: "user",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "username firstname lastname thumbnails" : "id",
-    },
-    {
-      path: "tracks",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "title url duration genres color release_date num_likes num_plays" : "id",
-    },
-    {
-      path: "genres",
-      match: { deleted_at: { $exists: false } },
-      select: "name",
-    },
-    {
-      path: "liked_by",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "username" : "id",
-    },
-  ];
+AlbumSchema.statics.getAlbum = function (id, options) {
+  const { extend = false } = options;
+
+  const populate = getPopulate(extend);
 
   return this.findById(id).notDeleted().populate(populate);
 };
 
-AlbumSchema.statics.getAlbums = function (page = 1, sort = "created_at", order = "asc") {
+AlbumSchema.statics.getAlbums = function (options) {
+  const { page = 1, sort = "created_at", order = "asc" } = options;
+
   const limit = 10;
   const start = (page - 1) * limit;
 
+  const populate = getPopulate();
+
   return this.find()
     .notDeleted()
+    .populate(populate)
     .sort({ [sort]: order })
     .skip(start)
     .limit(limit);
@@ -210,23 +245,7 @@ AlbumSchema.statics.getUserAlbums = function (idUser, options) {
   const limit = 10;
   const start = (page - 1) * limit;
 
-  const populate = [
-    {
-      path: "tracks",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "title url duration genres color release_date num_likes num_plays" : "id",
-    },
-    {
-      path: "genres",
-      match: { deleted_at: { $exists: false } },
-      select: "name",
-    },
-    {
-      path: "liked_by",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "username" : "id",
-    },
-  ];
+  const populate = getPopulate(extend);
 
   return this.find({ user: idUser })
     .notDeleted()

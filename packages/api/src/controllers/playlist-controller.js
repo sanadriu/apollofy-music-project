@@ -34,7 +34,7 @@ async function getPlaylists(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylists(page, sort, order);
+    const dbRes = await Playlist.getPlaylists({ page, sort, order });
 
     return res.status(200).send({
       data: dbRes,
@@ -60,7 +60,7 @@ async function getSinglePlaylist(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylist(idPlaylist, extend);
+    const dbRes = await Playlist.getPlaylist(idPlaylist, { extend });
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -111,7 +111,7 @@ async function updatePlaylist(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylist(idPlaylist);
+    const dbRes = await Playlist.findById(idPlaylist).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -156,7 +156,7 @@ async function deletePlaylist(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylist(idPlaylist);
+    const dbRes = await Playlist.findById(idPlaylist).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({

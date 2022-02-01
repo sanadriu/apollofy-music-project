@@ -145,57 +145,67 @@ UserSchema.query.notDeleted = function () {
   return this.where({ deleted_at: { $exists: false } });
 };
 
+/* Population Object */
+
+function getPopulate() {
+  return [
+    {
+      path: "liked_albums",
+      match: { deleted_at: { $exists: false } },
+      select: "title",
+    },
+    {
+      path: "liked_tracks",
+      match: { deleted_at: { $exists: false } },
+      select: "title",
+    },
+    {
+      path: "followed_playlists",
+      match: { deleted_at: { $exists: false } },
+      select: "title",
+    },
+    {
+      path: "followed_users",
+      match: { deleted_at: { $exists: false } },
+      select: "username",
+    },
+    {
+      path: "followers",
+      match: { deleted_at: { $exists: false } },
+      select: "username",
+    },
+  ];
+}
+
 /* Statics */
 
-UserSchema.statics.getNumPages = function () {
+UserSchema.statics.getNumPages = function (filter = {}) {
   const limit = 10;
 
-  return this.countDocuments()
+  return this.countDocuments(filter)
     .notDeleted()
     .then((count) => {
       return Math.floor(count / limit) + (count % limit ? 1 : 0);
     });
 };
 
-UserSchema.statics.getUser = function (id, extend = false) {
-  const populate = [
-    {
-      path: "liked_albums",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "title" : "id",
-    },
-    {
-      path: "liked_tracks",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "title" : "id",
-    },
-    {
-      path: "followed_playlists",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "title" : "id",
-    },
-    {
-      path: "followed_users",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "username" : "id",
-    },
-    {
-      path: "followers",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "username" : "id",
-    },
-  ];
+UserSchema.statics.getUser = function (id) {
+  const populate = getPopulate();
 
-  return this.findById(id).notDeleted().select("-email").populate(populate);
+  return this.findById(id).notDeleted().populate(populate);
 };
 
-UserSchema.statics.getUsers = function (page = 1, sort = "created_at", order = "asc") {
+UserSchema.statics.getUsers = function (options) {
+  const { page = 1, sort = "created_at", order = "asc" } = options;
+
   const limit = 10;
   const start = (page - 1) * limit;
 
+  const populate = getPopulate();
+
   return this.find()
     .notDeleted()
-    .select("-email")
+    .populate(populate)
     .sort({ [sort]: order })
     .skip(start)
     .limit(limit);
@@ -211,12 +221,23 @@ UserSchema.statics.updateUser = function (id, data) {
   );
 };
 
-UserSchema.statics.deleteUser = function (id) {
+UserSchema.statics.deleteUser = async function (id) {
+  const user = await this.findById(id).notDeleted();
+
+  if (!user) return null;
+
   return this.findOneAndUpdate(
     { _id: id, deleted_at: { $exists: false } },
     {
-      $set: { deleted_at: Date.now(), _id: getHash(id) },
-      $unset: { username: "", firstname: "", lastname: "", email: "" },
+      $set: { deleted_at: Date.now() },
+      $unset: {
+        username: getHash(user.username),
+        firstname: getHash(user.firstname),
+        lastname: getHash(user.lastname),
+        description: getHash(user.description),
+        email: getHash(user.email),
+        thumbnails: getHash(user.thumbnails),
+      },
     },
     { new: true },
   );

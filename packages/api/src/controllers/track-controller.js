@@ -25,7 +25,7 @@ async function getTracks(req, res, next) {
       });
     }
 
-    const dbRes = await Track.getTracks(page, sort, order);
+    const dbRes = await Track.getTracks({ page, sort, order });
 
     res.status(200).send({
       data: dbRes,
@@ -51,7 +51,7 @@ async function getSingleTrack(req, res, next) {
       });
     }
 
-    const dbRes = await Track.getTrack(idTrack, extend);
+    const dbRes = await Track.getTrack(idTrack, { extend });
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -102,7 +102,7 @@ async function updateTrack(req, res, next) {
       });
     }
 
-    const dbRes = await Track.getTrack(idTrack);
+    const dbRes = await Track.findById(idTrack).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -147,7 +147,7 @@ async function deleteTrack(req, res, next) {
       });
     }
 
-    const dbRes = await Track.getTrack(idTrack);
+    const dbRes = await Track.findById(idTrack).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -179,7 +179,7 @@ async function deleteTrack(req, res, next) {
   }
 }
 
-async function playTrack() {
+async function playTrack(req, res, next) {
   try {
     const { idTrack } = req.params;
 
@@ -191,7 +191,7 @@ async function playTrack() {
       });
     }
 
-    const dbRes = await Track.getTrack(idTrack);
+    const dbRes = await Track.findById(idTrack).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -204,9 +204,9 @@ async function playTrack() {
     await Track.getPlayed(idTrack);
 
     return res.status(200).send({
-      data: dbRes,
+      data: null,
       success: true,
-      message: "Track fetched successfully",
+      message: "Operation done successfully",
     });
   } catch (error) {
     next(error);
