@@ -11,9 +11,10 @@ import UpdateProfileModal from "../../components/organisms/modal/UpdateProfileMo
 import { getCurrentUserToken } from "../../services/auth/auth";
 
 const MainDiv = styled.div`
-  width: 60%;
+  width: 50%;
   display: flex;
   flex-direction: column;
+  margin: auto;
 `;
 
 const InputDiv = styled.div`
