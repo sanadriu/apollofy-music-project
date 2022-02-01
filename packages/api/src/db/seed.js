@@ -1,4 +1,4 @@
-const log = require("../services/logger");
+const { logger } = require("../services");
 const { deleteCollections, seedCollections } = require("./collections");
 
 async function seed() {
@@ -6,7 +6,7 @@ async function seed() {
     await deleteCollections();
     await seedCollections();
   } catch (error) {
-    log.error(error.message);
+    logger.error(error.message);
 
     await deleteCollections();
   }

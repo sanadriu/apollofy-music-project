@@ -1,5 +1,6 @@
 const { auth, logger } = require("../services");
 const { auth: mockAuth } = require("../services/__mocks__");
+const { mode } = require("../config");
 
 async function authMiddleware(req, res, next) {
   try {
@@ -8,7 +9,7 @@ async function authMiddleware(req, res, next) {
     const userClaims = await auth.verifyIdToken(bearerToken);
 =======
     const userClaims =
-      process.env.NODE_ENV === "test"
+      mode === "test"
         ? await mockAuth.verifyIdToken(bearerToken)
         : await auth.verifyIdToken(bearerToken);
 >>>>>>> sanadriu/dev
