@@ -7,14 +7,15 @@ import { PurpleLink } from "../../atoms/PurpleLink/PurpleLink";
 
 const FooterText = styled(HomeSmallText)`
   color: lightgray;
+  margin-bottom: 0.5rem;
 `;
 
 export default function Footer() {
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
   return (
     <div>
       <FooterText>
-        For developers, try out our <PurpleLink onClick={navigate("")}>API</PurpleLink>
+        For developers, try out our <PurpleLink>API</PurpleLink>
       </FooterText>
       <FooterText>
         <PurpleLink href="https://github.com/Interna1ta/apollofy-music-project">

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Bar = styled.nav`
-  margin: 3rem 1rem 0 3rem;
   width: 3rem;
   display: flex;
   flex-direction: column;
@@ -82,6 +81,20 @@ export default function ControlBar() {
         >
           <path
             d="M96.875 87.5H91.9375L90.1875 85.8125C96.3125 78.6875 100 69.4375 100 59.375C100 36.9375 81.8125 18.75 59.375 18.75C36.9375 18.75 18.75 36.9375 18.75 59.375C18.75 81.8125 36.9375 100 59.375 100C69.4375 100 78.6875 96.3125 85.8125 90.1875L87.5 91.9375V96.875L118.75 128.062L128.062 118.75L96.875 87.5V87.5ZM59.375 87.5C43.8125 87.5 31.25 74.9375 31.25 59.375C31.25 43.8125 43.8125 31.25 59.375 31.25C74.9375 31.25 87.5 43.8125 87.5 59.375C87.5 74.9375 74.9375 87.5 59.375 87.5Z"
+            fill="black"
+          />
+        </svg>
+      </Link>
+      <Link to="/stats">
+        <svg
+          width="2rem"
+          height="2rem"
+          viewBox="0 0 150 150"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M31.25 57.5H50V118.75H31.25V57.5ZM66.25 31.25H83.75V118.75H66.25V31.25ZM101.25 81.25H118.75V118.75H101.25V81.25Z"
             fill="black"
           />
         </svg>
