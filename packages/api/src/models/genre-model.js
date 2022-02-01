@@ -1,8 +1,6 @@
 const { Schema, model } = require("mongoose");
 const { isURL } = require("validator");
 
-const ThumbnailsSchema = new Schema({});
-
 const GenreSchema = new Schema(
   {
     name: {

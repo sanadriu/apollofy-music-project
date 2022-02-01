@@ -28,6 +28,7 @@ app.use("/albums", albumRouter);
 app.use("/playlists", playlistRouter);
 app.use("/tracks", trackRouter);
 app.use("/genres", genreRouter);
+//app.use("/search",searchRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send({
@@ -38,7 +39,7 @@ app.get("/", (req, res) => {
 app.use("*", (req, res) => {
   res.status(404).send({
     success: false,
-    message: "Not found",
+    message: "Resource not found",
   });
 });
 

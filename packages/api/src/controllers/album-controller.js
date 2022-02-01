@@ -12,7 +12,8 @@ async function getAlbums(req, res, next) {
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
         data: null,
-        error: "Wrong value for page",
+        success: false,
+        message: "Wrong value for page",
         pages,
       });
     }
@@ -20,7 +21,8 @@ async function getAlbums(req, res, next) {
     if (!["asc", "desc"].includes(order)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong value for order",
+        success: false,
+        message: "Wrong value for order",
         pages,
       });
     }
@@ -28,7 +30,8 @@ async function getAlbums(req, res, next) {
     if (page > pages) {
       return res.status(404).send({
         data: null,
-        error: "Page not found",
+        success: false,
+        message: "Page not found",
         pages,
       });
     }
@@ -37,7 +40,8 @@ async function getAlbums(req, res, next) {
 
     return res.status(200).send({
       data: dbRes,
-      error: null,
+      success: true,
+      message: "Albums fetched successfully",
       pages,
     });
   } catch (error) {
@@ -53,22 +57,25 @@ async function getSingleAlbum(req, res, next) {
     if (!Types.ObjectId.isValid(idAlbum)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong album ID",
+        success: false,
+        message: "Wrong album ID",
       });
     }
 
     const dbRes = await Album.getAlbum(idAlbum, extend);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "Album not found",
+        success: false,
+        message: "Album not found",
       });
     }
 
     return res.status(200).send({
       data: dbRes,
-      error: null,
+      success: true,
+      message: "Album fetched successfully",
     });
   } catch (error) {
     next(error);
@@ -86,7 +93,8 @@ async function createAlbum(req, res, next) {
 
     return res.status(200).send({
       data: dbRes.id,
-      error: null,
+      success: true,
+      message: "Album created successfully",
     });
   } catch (error) {
     next(error);
@@ -102,16 +110,18 @@ async function updateAlbum(req, res, next) {
     if (!Types.ObjectId.isValid(idAlbum)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong album ID",
+        success: false,
+        message: "Wrong album ID",
       });
     }
 
     const dbRes = await Album.getAlbum(idAlbum);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "Album not found",
+        success: false,
+        message: "Album not found",
       });
     }
 
@@ -120,7 +130,8 @@ async function updateAlbum(req, res, next) {
     if (!isAuthorized) {
       return res.status(401).send({
         data: null,
-        error: "Unauthorized",
+        success: false,
+        message: "Unauthorized",
       });
     }
 
@@ -129,8 +140,9 @@ async function updateAlbum(req, res, next) {
     await Album.updateAlbum(idAlbum, { ...details, tracks: allowedTracks });
 
     return res.status(200).send({
-      data: "Album updated successfully",
-      error: null,
+      data: null,
+      success: true,
+      message: "Album updated successfully",
     });
   } catch (error) {
     next(error);
@@ -145,16 +157,18 @@ async function deleteAlbum(req, res, next) {
     if (!Types.ObjectId.isValid(idAlbum)) {
       return res.status(400).send({
         data: null,
-        error: "Wrong album ID",
+        success: false,
+        message: "Wrong album ID",
       });
     }
 
     const dbRes = await Album.getAlbum(idAlbum);
 
-    if (!dbRes) {
+    if (dbRes === null) {
       return res.status(404).send({
         data: null,
-        error: "Album not found",
+        success: false,
+        message: "Album not found",
       });
     }
 
@@ -163,15 +177,54 @@ async function deleteAlbum(req, res, next) {
     if (!isAuthorized) {
       return res.status(401).send({
         data: null,
-        error: "Unauthorized",
+        success: false,
+        message: "Unauthorized",
       });
     }
 
     await Album.deleteAlbum(idAlbum);
 
     return res.status(200).send({
-      data: "Album deleted successfully",
-      error: null,
+      data: null,
+      success: true,
+      message: "Album deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+async function getUserAlbums(req, res, next) {
+  try {
+    const { page = 1, sort = "created_at", order = "asc", extend = false } = req.query;
+    const { uid } = req.user;
+
+    const pages = await Album.getNumPages({ user: uid });
+
+    if (isNaN(page) || page <= 0) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong page",
+        pages,
+      });
+    }
+
+    if (page > pages) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Page not found",
+        pages,
+      });
+    }
+
+    const dbRes = await Album.getUserAlbums(uid, { page, sort, order, extend });
+
+    return res.status(200).send({
+      data: dbRes,
+      success: true,
+      message: "Albums fetched successfully",
+      pages,
     });
   } catch (error) {
     next(error);
@@ -184,4 +237,5 @@ module.exports = {
   createAlbum,
   updateAlbum,
   deleteAlbum,
+  getUserAlbums,
 };
