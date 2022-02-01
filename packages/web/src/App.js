@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Navigate, Outlet, Routes, Route } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { ThemeProvider } from "styled-components";
+import PropTypes from "prop-types";
 
 import * as ROUTES from "./routes";
 import Home from "./pages/Home";
@@ -12,15 +13,20 @@ import EditProfile from "./pages/EditProfile";
 import NotFound from "./pages/NotFound";
 
 import { onAuthStateChanged } from "./services/auth";
-import { syncSignIn, signOut } from "./redux/auth";
+import { authSelector, syncSignIn, signOut } from "./redux/auth";
 
 import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 
+const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+};
+
 function App() {
   const dispatch = useDispatch();
   const [theme, themeToggler, mountedComponent] = useDarkMode();
+  const { isAuthenticated } = useSelector(authSelector);
 
   const themeMode = theme === "light" ? lightTheme : darkTheme;
 
@@ -48,19 +54,35 @@ function App() {
     <ThemeProvider theme={themeMode}>
       <>
         <GlobalStyles />
-        <>
-          <Routes>
-            <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
-            <Route path={ROUTES.LOGIN} element={<Login />} />
-            <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-            <Route path={ROUTES.HOME} element={<Home />} exact />
+        <Routes>
+          <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
+          <Route path={ROUTES.LOGIN} element={<Login />} />
+          <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+          {isAuthenticated && <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
+            <Route path={ROUTES.HOME} exact element={<Home />} />
+          </Route>}
+          {isAuthenticated && <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
             <Route path={ROUTES.EDIT_PROFILE} element={<EditProfile />} />
+          </Route>}
+          {isAuthenticated && <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
             <Route path='*' element={<NotFound />} />
-          </Routes>
-        </>
+          </Route>}
+        </Routes>
       </>
     </ThemeProvider>
   );
 }
+
+PrivateWrapper.propTypes = {
+  auth: PropTypes.exact({
+    isAuthenticated: PropTypes.bool,
+  }),
+};
+
+PrivateWrapper.defaultProps = {
+  auth: {
+    isAuthenticated: false
+  },
+};
 
 export default App;

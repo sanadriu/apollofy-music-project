@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as ROUTES from "../../routes";
@@ -15,7 +15,7 @@ import {
 } from "../../redux/user";
 
 function Home() {
-  const { isAuthenticated, currentUser } = useSelector(authSelector);
+  const { currentUser } = useSelector(authSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,18 +34,10 @@ function Home() {
     }
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to={ROUTES.LOGIN} />;
-  }
-
   return (
     <main className="p-4">
       <section className="p-4">
-        {isAuthenticated ? (
-          <h1 className="text-xl">Hello {currentUser.username}</h1>
-        ) : (
-          <h1 className="text-xl">Hello World</h1>
-        )}
+        {currentUser && <h1 className="text-xl">Hello {currentUser.username}</h1>}
         <button type="button" onClick={logout}>
           Logout
         </button>
