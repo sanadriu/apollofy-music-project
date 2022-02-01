@@ -190,6 +190,14 @@ PlaylistSchema.statics.getFollowed = async function (id, idUser) {
   return await this.switchValueInList(id, "followed_by", idUser);
 };
 
+PlaylistSchema.statics.getUserPlaylists = function (uid){
+  return this.find({})
+    .where("user")
+    .equals(uid)
+    .notDeleted()
+    .populate({ path: "tracks followed_by"});
+}
+
 const Playlist = model("playlist", PlaylistSchema);
 
 module.exports = Playlist;

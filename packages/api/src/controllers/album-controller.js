@@ -181,6 +181,20 @@ async function deleteAlbum(req, res, next) {
     next(error);
   }
 }
+async function getUserAlbums(req,res,next){
+  try {
+    const { uid } = req.user;
+    const albums = await Album.getUserAlbums(uid);
+
+    return res.status(200).send({
+      data: albums,
+      error: null,
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
 
 module.exports = {
   getAlbums,
@@ -188,4 +202,5 @@ module.exports = {
   createAlbum,
   updateAlbum,
   deleteAlbum,
+  getUserAlbums
 };

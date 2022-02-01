@@ -196,6 +196,14 @@ AlbumSchema.statics.getLiked = async function (id, idUser) {
   return await this.switchValueInList(id, "liked_by", idUser);
 };
 
+AlbumSchema.statics.getUserAlbums = function (uid) {
+  return this.find({})
+    .where("user")
+    .equals(uid)
+    .notDeleted()
+    .populate({ path: "genres tracks liked_by" });
+};
+
 const Album = model("album", AlbumSchema);
 
 module.exports = Album;

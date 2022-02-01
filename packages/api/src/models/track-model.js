@@ -224,6 +224,22 @@ TrackSchema.statics.getLiked = async function (id, idUser) {
   return await this.switchValueInList(id, "liked_by", idUser);
 };
 
+TrackSchema.statics.getUserTracks = function (page = 1, sort = "created_at", order = "asc", uid) {
+  const limit = 10;
+  const start = (page - 1) * limit;
+
+  return this.find()
+    .where("user")
+    .equals(uid)
+    .notDeleted()
+    .populate({ path: "genres liked_by" })
+    .sort({ [sort]: order })
+    .skip(start)
+    .limit(limit);
+
+  //return this.find({}).where("user").equals(uid).notDeleted().populate({ path: "genres liked_by" });
+};
+
 const Track = model("track", TrackSchema);
 
 module.exports = Track;

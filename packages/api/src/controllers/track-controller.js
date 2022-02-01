@@ -133,10 +133,47 @@ async function createTrack(req, res, next) {
   }
 }
 
+async function getUserTracks(req, res, next) {
+  try {
+    const { page = 1, sort = "created_at", order = "asc" } = req.query;
+
+    const { uid } = req.user;
+
+    const pages = await Track.getNumPages();
+
+    if (!(!isNaN(page) && page > 0)) {
+      return res.status(400).send({
+        data: null,
+        error: "Wrong page",
+        pages,
+      });
+    }
+
+    if (page > pages) {
+      return res.status(404).send({
+        data: null,
+        error: "Page not found",
+        pages,
+      });
+    }
+    
+    const tracks = await Track.getUserTracks(page, sort, order, uid);
+
+    return res.status(200).send({
+      data: tracks,
+      error: null,
+      pages,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   getTracks,
   getSingleTrack,
   updateTrack,
   deleteTrack,
   createTrack,
+  getUserTracks,
 };

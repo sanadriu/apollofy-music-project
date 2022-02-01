@@ -172,10 +172,26 @@ async function deletePlaylist(req, res, next) {
   }
 }
 
+
+async function getUserPlaylists(req,res,next){
+  try {
+    const { uid } = req.user;
+    const playlists = await Playlist.getUserPlaylists(uid);
+
+    return res.status(200).send({
+      data: playlists,
+      error: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   getPlaylists,
   getSinglePlaylist,
   createPlaylist,
   updatePlaylist,
   deletePlaylist,
+  getUserPlaylists,
 };
