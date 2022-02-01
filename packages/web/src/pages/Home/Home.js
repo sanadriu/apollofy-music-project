@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -7,17 +7,21 @@ import withLayout from "../../components/hoc/withLayout";
 import * as API from "../../api";
 
 import { authSelector, signOut } from "../../redux/auth";
-import {
-  fetchingUserData,
-  saveUserData,
-  fetchSuccess,
-  userLoggedOut,
-} from "../../redux/user";
+import { fetchingUserData, saveUserData, fetchSuccess, userLoggedOut } from "../../redux/user";
+import { getCurrentUserToken } from "../../services/auth";
 
 function Home() {
   const { currentUser } = useSelector(authSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    (async function userToken() {
+      const req = await getCurrentUserToken();
+      const user = await API.getUser(req);
+      dispatch(saveUserData(user.data.data));
+    })();
+  }, []);
 
   function logout() {
     dispatch(signOut());
@@ -25,13 +29,8 @@ function Home() {
   }
 
   async function editProfile() {
-    const user = await API.getUser(currentUser.uid);
-    dispatch(fetchingUserData());
-    if (user) {
-      dispatch(fetchSuccess());
-      dispatch(saveUserData(user.data.data));
-      navigate(ROUTES.EDIT_PROFILE);
-    }
+    dispatch(fetchSuccess());
+    navigate(ROUTES.EDIT_PROFILE);
   }
 
   return (

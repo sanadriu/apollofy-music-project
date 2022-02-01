@@ -121,6 +121,7 @@ async function getSingleUser(req, res, next) {
 async function getSelfUser(req, res, next) {
   try {
     const { uid } = req.user;
+
     const { extend = false } = req.query;
 
     const dbRes = await User.getUser(uid, extend);
@@ -299,18 +300,6 @@ async function followPlaylist(req, res, next) {
         data: null,
         success: false,
         message: "User not found",
-      });
-    }
-
-    await User.followUser(uid, idUser);
-    await User.getFollowed(idUser, uid);
-
-    // eslint-disable-next-line no-undef
-    if (!dbRes) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "Playlist not found",
       });
     }
 

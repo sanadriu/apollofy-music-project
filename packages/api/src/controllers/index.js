@@ -8,7 +8,7 @@ module.exports = {
   userController,
   albumController,
   playlistController,
-  userController,
+
   trackController,
   genreController,
 };
