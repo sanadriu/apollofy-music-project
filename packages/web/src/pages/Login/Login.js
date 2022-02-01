@@ -20,6 +20,7 @@ import AccountForm from "../../components/organisms/forms/AccountForm/AccountFor
 import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm2";
 import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureForm/ProfilePictureForm";
 import DescriptionForm from "../../components/organisms/forms/DescriptionForm/DescriptionForm";
+import Button from "../../components/atoms/buttons/Button";
 
 const MainFlex = styled.div`
   height: 100vh;
@@ -30,21 +31,6 @@ const MainFlex = styled.div`
 const Title = styled.h1`
   font: Readex Pro;
   font-size: 4rem;
-`;
-
-const RegisterButton = styled.button`
-  width: 90%;
-  border-radius: 0.3rem;
-  color: black;
-  border: 1px solid black;
-  padding: 0.5rem;
-  background-color: white;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #b04aff;
-    color: white;
-  }
 `;
 
 function Login() {
@@ -86,27 +72,28 @@ function Login() {
       <LoginBoard />
       <FlexColumn>
         <Title>What&apos;s rocking right now</Title>
-        <RegisterButton
-          type="button"
+        <Button
+          btnColor="black"
+          type="outline"
           onClick={(e) => handleLoginWithGoogle(e)}
-          disabled={isSigningUp}
         >
-          Register with Google
-        </RegisterButton>
-        <RegisterButton
-          type="button"
-          onClick={(e) => handleLoginWithGoogle(e)}
-          disabled={isSigningUp}
+          Sign up with Google
+        </Button>
+        <Button
+          btnColor="black"
+          type="outline"
+          onClick={(e) => handleLoginWithFacebook(e)}
         >
-          Register with Facebook
-        </RegisterButton>
-        <RegisterButton
-          type="button"
+          Sign up with Facebook
+        </Button>
+        <Button
+          btnColor="black"
+          type="outline"
           onClick={handleModal}
           disabled={isSigningUp}
         >
-          Register with email and password
-        </RegisterButton>
+          Sign up with email
+        </Button>
         <RegisterModal isOpen={isOpen} handleModal={handleModal}>
           <>
             {currentModal === 1 ? <AccountForm /> : null}
@@ -115,13 +102,15 @@ function Login() {
             {currentModal === 4 ? <DescriptionForm /> : null}
           </>
         </RegisterModal>
-        <RegisterButton
-          type="button"
+        <span>Already have an account?</span>
+        <Button
+          btnColor="black"
+          type="outline"
           onClick={(e) => handleLoginWithGoogle(e)}
           disabled={isSigningUp}
         >
-          Log in with your account
-        </RegisterButton>
+          Sign in
+        </Button>
         {signUpError && <section className="mt-4">{signUpError}</section>}
         <section className="mt-4">
           <hr className="mt-1 mb-4" />

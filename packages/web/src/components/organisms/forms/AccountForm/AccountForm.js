@@ -3,13 +3,13 @@ import styled from "styled-components";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
+import { setNameEmailAndPassword } from "../../../../redux/auth";
+import { modalSelector, nextModal } from "../../../../redux/modal";
+
 import AccountSchema from "../../../../schemas/AccountSchema";
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-
-import { setNameEmailAndPassword } from "../../../../redux/auth";
-import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const RegisterInput = styled.input`
   width: 90%;
