@@ -62,12 +62,6 @@ async function getUsers(req, res, next) {
       });
     }
 
-<<<<<<< HEAD
-    if (response.data.data) {
-      return res.status(200).send({
-        data: response.data.data,
-        error: null,
-=======
     if (page > pages) {
       return res.status(404).send({
         data: null,
@@ -99,7 +93,6 @@ async function getSingleUser(req, res, next) {
       return res.status(404).send({
         data: null,
         error: "User not found",
->>>>>>> sanadriu/dev
       });
     }
 
@@ -112,8 +105,6 @@ async function getSingleUser(req, res, next) {
   }
 }
 
-<<<<<<< HEAD
-=======
 async function getSelfUser(req, res, next) {
   try {
     const { uid } = req.user;
@@ -137,7 +128,6 @@ async function getSelfUser(req, res, next) {
   }
 }
 
->>>>>>> ab89175d2e614322390039c799e8396c9b1de918
 async function updateUser(req, res, next) {
   try {
     const details = req.body;
@@ -145,10 +135,6 @@ async function updateUser(req, res, next) {
 
     const dbRes = await User.updateUser(uid, details);
 
-<<<<<<< HEAD
-    res.status(201).send({
-      data: response.data,
-=======
     if (!dbRes) {
       return res.status(404).send({
         data: null,
@@ -158,7 +144,6 @@ async function updateUser(req, res, next) {
 
     return res.status(200).send({
       data: "User updated successfully",
->>>>>>> sanadriu/dev
       error: null,
     });
   } catch (error) {
@@ -247,42 +232,13 @@ async function likeTrack(req, res, next) {
       });
     }
 
-<<<<<<< HEAD
-    return res.status(200).send({
-      data: "Operation done successfully",
-      error: null,
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function followUser(req, res, next) {
-  try {
-    const { uid } = req.user;
-    const { idUser } = req.params;
-
-    if (!(await User.getUser(uid))) {
-=======
     if (!(await Track.getTrack(idTrack))) {
->>>>>>> ab89175d2e614322390039c799e8396c9b1de918
       return res.status(404).send({
         error: "Track not found",
         data: null,
       });
     }
 
-<<<<<<< HEAD
-    if (!(await User.getUser(idUser))) {
-      return res.status(404).send({
-        error: "User to be followed not found",
-        data: null,
-      });
-    }
-
-    await User.followUser(uid, idUser);
-    await User.getFollowed(idUser, uid);
-=======
     await User.likeTrack(uid, idTrack);
     await Track.getLiked(idTrack, uid);
 
@@ -306,7 +262,6 @@ async function followPlaylist(req, res, next) {
         data: null,
       });
     }
->>>>>>> ab89175d2e614322390039c799e8396c9b1de918
 
     if (!(await User.getUser(uid))) {
       return res.status(404).send({
@@ -334,14 +289,6 @@ async function followPlaylist(req, res, next) {
   }
 }
 
-<<<<<<< HEAD
-async function followPlaylist(req, res, next) {
-  try {
-    const { uid } = req.user;
-    const { idPlaylist } = req.params;
-
-    const dbRes = await User.followPlaylist(uid, idPlaylist);
-=======
 async function followUser(req, res, next) {
   try {
     const { uid } = req.user;
@@ -353,7 +300,6 @@ async function followUser(req, res, next) {
         data: null,
       });
     }
->>>>>>> ab89175d2e614322390039c799e8396c9b1de918
 
     if (!(await User.getUser(uid))) {
       return res.status(404).send({

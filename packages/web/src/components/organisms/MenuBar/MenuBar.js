@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
@@ -9,7 +9,7 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 
-import { authSelector } from "../../../redux/auth";
+import { authSelector, signOut } from "../../../redux/auth";
 import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
 import { rightSideBar } from "../../atoms/RightSideBar/RightSideBar";
 
@@ -32,6 +32,7 @@ const ProfilePicture = styled.img`
 
 export default function MenuBar() {
   const { currentUser } = useSelector(authSelector);
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
@@ -46,6 +47,10 @@ export default function MenuBar() {
 
     setOpen(false);
   };
+
+  const logout = () => {
+    dispatch(signOut());
+  }
 
   function handleListKeyDown(event) {
     if (event.key === "Tab") {
@@ -107,7 +112,7 @@ export default function MenuBar() {
                 >
                   <MenuItem onClick={(e) => handleClose(e)}>Profile</MenuItem>
                   <MenuItem onClick={(e) => handleClose(e)}>My account</MenuItem>
-                  <MenuItem onClick={(e) => handleClose(e)}>Logout</MenuItem>
+                  <MenuItem onClick={() => logout()}>Logout</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

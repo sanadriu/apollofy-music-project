@@ -14,6 +14,7 @@ function Home() {
   function logout() {
     dispatch(signOut());
   }
+
   if (!isAuthenticated) {
     return <Navigate to={ROUTES.LOGIN} />;
   }

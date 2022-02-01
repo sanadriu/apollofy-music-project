@@ -5,14 +5,10 @@ const { mode } = require("../config");
 async function authMiddleware(req, res, next) {
   try {
     const bearerToken = await auth.getAuthToken(req.headers);
-<<<<<<< HEAD
-    const userClaims = await auth.verifyIdToken(bearerToken);
-=======
     const userClaims =
       mode === "test"
         ? await mockAuth.verifyIdToken(bearerToken)
         : await auth.verifyIdToken(bearerToken);
->>>>>>> sanadriu/dev
 
     auth.login(req, userClaims);
 
