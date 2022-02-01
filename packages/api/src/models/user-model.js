@@ -251,10 +251,6 @@ UserSchema.statics.getFollowed = async function (id, idFollower) {
   return await this.switchValueInList(id, "followers", idFollower);
 };
 
-UserSchema.statics.helloWorld = function () {
-  console.log("hello world");
-};
-
 const User = model("user", UserSchema);
 
 module.exports = User;

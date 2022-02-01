@@ -75,18 +75,15 @@ async function getSingleAlbum(req, res, next) {
 
 async function createAlbum(req, res, next) {
   try {
-    const { tracks: idTrackList, ...details } = req.body;
+    const { tracks = [], ...details } = req.body;
     const { uid } = req.user;
 
+    const trackList = tracks instanceof Array ? tracks : [tracks];
     const allowedTracks = await Promise.all(
-      idTrackList.filter(async (idTrack) => {
-        const dbRes = await Track.getTrack(idTrack);
-
-        return dbRes.user === uid;
-      }),
+      trackList.filter(async (id) => (await Track.getTrack(id)).user === uid),
     );
 
-    const dbRes = await Album.createAlbum(uid, { ...details, allowedTracks });
+    const dbRes = await Album.createAlbum(uid, { ...details, tracks: allowedTracks });
 
     return res.status(200).send({
       data: dbRes._id,
@@ -99,7 +96,7 @@ async function createAlbum(req, res, next) {
 
 async function updateAlbum(req, res, next) {
   try {
-    const { tracks: idTrackList, ...details } = req.body;
+    const { tracks = [], ...details } = req.body;
     const { uid } = req.user;
     const { idAlbum } = req.params;
 
@@ -128,15 +125,12 @@ async function updateAlbum(req, res, next) {
       });
     }
 
+    const trackList = tracks instanceof Array ? tracks : [tracks];
     const allowedTracks = await Promise.all(
-      idTrackList.filter(async (idTrack) => {
-        const dbRes = await Track.getTrack(idTrack);
-
-        return dbRes.user === uid;
-      }),
+      trackList.filter(async (id) => (await Track.getTrack(id)).user === uid),
     );
 
-    await Album.updateAlbum(idAlbum, { ...details, allowedTracks });
+    await Album.updateAlbum(idAlbum, { ...details, tracks: allowedTracks });
 
     return res.status(200).send({
       data: "Album updated successfully",

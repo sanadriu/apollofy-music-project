@@ -2,7 +2,6 @@ const { Types } = require("mongoose");
 const { User, Playlist, Album, Track } = require("../models");
 const { getUserProfile } = require("./utils");
 const { mode } = require("../config");
-const { logger } = require("../services");
 const { auth } = mode === "test" ? require("../services/__mocks__") : require("../services");
 
 async function signUp(req, res, next) {
