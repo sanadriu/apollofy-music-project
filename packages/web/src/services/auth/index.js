@@ -8,4 +8,5 @@ export {
   getCurrentUserToken,
   getCurrentUserEmail,
   signInWithFacebook,
+  auth,
 } from "./auth";

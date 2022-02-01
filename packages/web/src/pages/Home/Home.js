@@ -10,7 +10,7 @@ import {
   saveUserData,
   fetchSuccess,
   userLoggedOut,
-} from "../../redux/user/user-actions";
+} from "../../redux/user";
 
 function Home() {
   const { isAuthenticated, currentUser } = useSelector(authSelector);
