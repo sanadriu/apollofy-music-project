@@ -4,10 +4,7 @@ const { Types } = require("mongoose");
 const TrackModel = require("../track-model");
 const { getRandomSequence } = require("../../utils");
 const { createSampleTrack } = require("../../db/samplers");
-const {
-  seedUserCollection,
-  seedGenreCollection,
-} = require("../../db/collections");
+const { seedUserCollection, seedGenreCollection } = require("../../db/collections");
 
 describe("track-schema", () => {
   let sample;
@@ -222,41 +219,6 @@ describe("track-schema", () => {
     });
   });
 
-  describe("7. Albums", () => {
-    test("7.1. Albums must be an array of ObjectId", async () => {
-      expect.assertions(3);
-
-      const idAlbum = new Types.ObjectId().toString();
-
-      const validTrack01 = {
-        ...sample,
-        albums: [idAlbum],
-      };
-
-      const validTrack02 = {
-        ...sample,
-        albums: idAlbum,
-      };
-
-      const invalidTrack = {
-        ...sample,
-        albums: ["foo"],
-      };
-
-      await TrackModel.create(validTrack01).then((createdTrack) => {
-        expect(createdTrack.albums[0].toString()).toBe(idAlbum);
-      });
-
-      await TrackModel.create(validTrack02).then((createdTrack) => {
-        expect(createdTrack.albums[0].toString()).toBe(idAlbum);
-      });
-
-      await TrackModel.create(invalidTrack).catch((error) => {
-        expect(error.errors["albums.0"].kind).toBe("[ObjectId]");
-      });
-    });
-  });
-
   describe("8. Liked by", () => {
     test("8.1. Liked by must be an array of String", async () => {
       expect.assertions(2);
@@ -352,9 +314,7 @@ describe("track-schema", () => {
       try {
         await TrackModel.create(track);
       } catch (error) {
-        expect(error.errors["thumbnails.url_default"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_default"].properties.type).toBe("user defined");
       }
     });
   });
@@ -394,9 +354,7 @@ describe("track-schema", () => {
       try {
         await TrackModel.create(track);
       } catch (error) {
-        expect(error.errors["thumbnails.url_medium"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_medium"].properties.type).toBe("user defined");
       }
     });
   });
@@ -436,9 +394,7 @@ describe("track-schema", () => {
       try {
         await TrackModel.create(track);
       } catch (error) {
-        expect(error.errors["thumbnails.url_large"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_large"].properties.type).toBe("user defined");
       }
     });
   });
@@ -511,10 +467,7 @@ describe("track-schema", () => {
 
       const createdTrack = await TrackModel.create(track);
 
-      expect(createdTrack).toHaveProperty(
-        "num_likes",
-        createdTrack.liked_by.length,
-      );
+      expect(createdTrack).toHaveProperty("num_likes", createdTrack.liked_by.length);
     });
   });
 });

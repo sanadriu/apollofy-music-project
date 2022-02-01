@@ -1,199 +1,11 @@
 const { Types } = require("mongoose");
-const { Playlist } = require("../models");
+const { Track } = require("../models");
 
-async function getPlaylists(req, res, next) {
+async function getTracks(req, res, next) {
   try {
     const { page = 1, sort = "created_at", order = "asc" } = req.query;
 
-    const pages = await Playlist.getNumPages();
-
-    if (isNaN(page) || page <= 0) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: "Wrong value for page",
-        pages,
-      });
-    }
-
-    if (!["asc", "desc"].includes(order)) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: "Wrong value for order",
-        pages,
-      });
-    }
-
-    if (page > pages) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "Page not found",
-        pages,
-      });
-    }
-
-    const dbRes = await Playlist.getPlaylists(page, sort, order);
-
-    return res.status(200).send({
-      data: dbRes,
-      success: true,
-      message: "Playlists fetched successfully",
-      pages,
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function getSinglePlaylist(req, res, next) {
-  try {
-    const { idPlaylist } = req.params;
-    const { extend = false } = req.query;
-
-    if (!Types.ObjectId.isValid(idPlaylist)) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: "Wrong playlist ID",
-      });
-    }
-
-    const dbRes = await Playlist.getPlaylist(idPlaylist, extend);
-
-    if (dbRes === null) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "Playlist not found",
-      });
-    }
-
-    return res.status(200).send({
-      data: dbRes,
-      success: true,
-      message: "Playlist fetched successfully",
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function createPlaylist(req, res, next) {
-  try {
-    const details = req.body;
-    const { uid } = req.user;
-
-    const dbRes = await Playlist.createPlaylist(uid, details);
-
-    return res.status(200).send({
-      data: dbRes.id,
-      success: true,
-      message: "Playlist created successfully",
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function updatePlaylist(req, res, next) {
-  try {
-    const details = req.body;
-    const { uid } = req.user;
-    const { idPlaylist } = req.params;
-
-    if (!Types.ObjectId.isValid(idPlaylist)) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: "Wrong playlist ID",
-      });
-    }
-
-    const dbRes = await Playlist.getPlaylist(idPlaylist);
-
-    if (dbRes === null) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "Playlist not found",
-      });
-    }
-
-    const isAuthorized = dbRes.user === uid;
-
-    if (!isAuthorized) {
-      return res.status(401).send({
-        data: null,
-        success: false,
-        message: "Unauthorized",
-      });
-    }
-
-    await Playlist.updatePlaylist(idPlaylist, details);
-
-    return res.status(200).send({
-      data: null,
-      success: true,
-      message: "Playlist updated successfully",
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function deletePlaylist(req, res, next) {
-  try {
-    const { uid } = req.user;
-    const { idPlaylist } = req.params;
-
-    if (!Types.ObjectId.isValid(idPlaylist)) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: "Wrong playlist ID",
-      });
-    }
-
-    const dbRes = await Playlist.getPlaylist(idPlaylist);
-
-    if (dbRes === null) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "Playlist not found",
-      });
-    }
-
-    const isAuthorized = dbRes.user === uid;
-
-    if (!isAuthorized) {
-      return res.status(401).send({
-        data: null,
-        success: false,
-        message: "Unauthorized",
-      });
-    }
-
-    await Playlist.deletePlaylist(idPlaylist);
-
-    return res.status(200).send({
-      data: null,
-      success: true,
-      message: "Playlist deleted successfully",
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function getUserPlaylists(req, res, next) {
-  try {
-    const { uid } = req.user;
-    const { page = 1, sort = "created_at", order = "asc", extend = false } = req.query;
-
-    const pages = await Playlist.getNumPages({ user: uid });
+    const pages = await Track.getNumPages();
 
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
@@ -212,23 +24,239 @@ async function getUserPlaylists(req, res, next) {
         pages,
       });
     }
-    const dbRes = await Playlist.getUserPlaylists(uid, { page, sort, order, extend });
+
+    const dbRes = await Track.getTracks(page, sort, order);
+
+    res.status(200).send({
+      data: dbRes,
+      success: true,
+      message: "Tracks fetched successfully",
+      pages,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getSingleTrack(req, res, next) {
+  try {
+    const { idTrack } = req.params;
+    const { extend = false } = req.query;
+
+    if (!Types.ObjectId.isValid(idTrack)) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong track ID",
+      });
+    }
+
+    const dbRes = await Track.getTrack(idTrack, extend);
+
+    if (dbRes === null) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Track not found",
+      });
+    }
+
+    res.status(200).send({
+      data: dbRes,
+      success: true,
+      message: "Track fetched successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function createTrack(req, res, next) {
+  try {
+    const details = req.body;
+    const { uid } = req.user;
+
+    const dbRes = await Track.createTrack(uid, details);
+
+    return res.status(200).send({
+      data: dbRes.id,
+      success: true,
+      message: "Track created successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function updateTrack(req, res, next) {
+  try {
+    const details = req.body;
+    const { idTrack } = req.params;
+    const { uid } = req.user;
+
+    if (!Types.ObjectId.isValid(idTrack)) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong track ID",
+      });
+    }
+
+    const dbRes = await Track.getTrack(idTrack);
+
+    if (dbRes === null) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Track not found",
+      });
+    }
+
+    const isAuthorized = dbRes.user === uid;
+
+    if (!isAuthorized) {
+      return res.status(401).send({
+        data: null,
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    await Track.updateTrack(idTrack, details);
+
+    return res.status(200).send({
+      data: null,
+      success: true,
+      message: "Track updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function deleteTrack(req, res, next) {
+  try {
+    const { idTrack } = req.params;
+    const { uid } = req.user;
+
+    if (!Types.ObjectId.isValid(idTrack)) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong track ID",
+      });
+    }
+
+    const dbRes = await Track.getTrack(idTrack);
+
+    if (dbRes === null) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Track not found",
+      });
+    }
+
+    const isAuthorized = dbRes.user === uid;
+
+    if (!isAuthorized) {
+      return res.status(401).send({
+        data: null,
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    await Track.deleteTrack(idTrack);
+
+    return res.status(200).send({
+      data: null,
+      success: true,
+      message: "Track deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function playTrack() {
+  try {
+    const { idTrack } = req.params;
+
+    if (!Types.ObjectId.isValid(idTrack)) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong track ID",
+      });
+    }
+
+    const dbRes = await Track.getTrack(idTrack);
+
+    if (dbRes === null) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Track not found",
+      });
+    }
+
+    await Track.getPlayed(idTrack);
 
     return res.status(200).send({
       data: dbRes,
       success: true,
-      message: "Playlists fetched successfully",
+      message: "Track fetched successfully",
     });
-  } catch (message) {
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getUserTracks(req, res, next) {
+  try {
+    const { page = 1, sort = "created_at", order = "asc", extend = false } = req.query;
+    const { uid } = req.user;
+
+    const pages = await Track.getNumPages({ user: uid });
+
+    if (isNaN(page) || page <= 0) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong page",
+        pages,
+      });
+    }
+
+    if (page > pages) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Page not found",
+        pages,
+      });
+    }
+
+    const dbRes = await Track.getUserTracks(uid, { page, sort, order, extend });
+
+    return res.status(200).send({
+      data: dbRes,
+      success: true,
+      message: "Tracks fetched successfully",
+      pages,
+    });
+  } catch (error) {
     next(error);
   }
 }
 
 module.exports = {
-  getPlaylists,
-  getSinglePlaylist,
-  createPlaylist,
-  updatePlaylist,
-  deletePlaylist,
-  getUserPlaylists,
+  getTracks,
+  getSingleTrack,
+  updateTrack,
+  deleteTrack,
+  createTrack,
+  playTrack,
+  getUserTracks,
 };

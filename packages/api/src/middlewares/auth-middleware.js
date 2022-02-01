@@ -1,11 +1,12 @@
 const { auth, logger } = require("../services");
 const { auth: mockAuth } = require("../services/__mocks__");
+const { mode } = require("../config");
 
 async function authMiddleware(req, res, next) {
   try {
     const bearerToken = await auth.getAuthToken(req.headers);
     const userClaims =
-      process.env.NODE_ENV === "test"
+      mode === "test"
         ? await mockAuth.verifyIdToken(bearerToken)
         : await auth.verifyIdToken(bearerToken);
 
@@ -17,7 +18,7 @@ async function authMiddleware(req, res, next) {
 
     res.status(401).send({
       data: null,
-      error: "Unauthorized",
+      message: "Unauthorized",
     });
   }
 }

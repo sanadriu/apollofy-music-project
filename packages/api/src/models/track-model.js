@@ -13,6 +13,7 @@ const TrackSchema = new Schema(
       type: String,
       required: true,
       trim: true,
+      maxlength: 50,
     },
     url: {
       type: String,
@@ -32,9 +33,7 @@ const TrackSchema = new Schema(
       trim: true,
       validate: {
         validator: (value) =>
-          value
-            ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" })
-            : true,
+          value ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" }) : true,
         message: () => `Date is not valid`,
       },
     },
@@ -45,10 +44,6 @@ const TrackSchema = new Schema(
     genres: {
       type: [Types.ObjectId],
       ref: "genre",
-    },
-    albums: {
-      type: [Types.ObjectId],
-      ref: "album",
     },
     liked_by: {
       type: [String],
@@ -91,14 +86,184 @@ const TrackSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
     versionKey: false,
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        ret.id = ret._id;
+
+        delete ret._id;
+      },
+    },
   },
 );
 
+/* Virtual */
+
 TrackSchema.virtual("num_likes").get(function () {
-  return this.liked_by.length;
+  return this.liked_by?.length;
 });
+
+/* Query Helpers */
+
+TrackSchema.query.notDeleted = function () {
+  return this.where({ deleted_at: { $exists: false } });
+};
+
+/* Statics */
+
+TrackSchema.statics.getNumPages = function (filter = {}) {
+  const limit = 10;
+
+  return this.countDocuments(filter)
+    .notDeleted()
+    .then((count) => {
+      return Math.floor(count / limit) + (count % limit ? 1 : 0);
+    });
+};
+
+TrackSchema.statics.getTracks = function (page = 1, sort = "created_at", order = "asc", uid) {
+  const limit = 10;
+  const start = (page - 1) * limit;
+
+  return this.find({ user: uid })
+    .notDeleted()
+    .sort({ [sort]: order })
+    .skip(start)
+    .limit(limit);
+};
+
+TrackSchema.statics.getTrack = function (id, extend = false) {
+  const populate = [
+    {
+      path: "user",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "username firstname lastname thumbnails" : "id",
+    },
+    {
+      path: "genres",
+      match: { deleted_at: { $exists: false } },
+      select: "name",
+    },
+    {
+      path: "liked_by",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "name" : "id",
+    },
+  ];
+
+  return this.findById(id).notDeleted().populate(populate);
+};
+
+TrackSchema.statics.createTrack = function (idUser, data) {
+  const { title, url, released_date, color, genres, duration, thumbnails } = data;
+
+  return this.create({
+    user: idUser,
+    title,
+    url,
+    released_date,
+    color,
+    genres,
+    duration,
+    thumbnails,
+  });
+};
+
+TrackSchema.statics.updateTrack = function (id, data) {
+  const { title, url, released_date, color, genres, duration, thumbnails } = data;
+
+  return this.findOneAndUpdate(
+    { _id: id, deleted_at: { $exists: false } },
+    {
+      $set: {
+        thumbnails,
+        title,
+        url,
+        released_date,
+        color,
+        genres,
+        duration,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+};
+
+TrackSchema.statics.deleteTrack = function (id) {
+  return this.findOneAndUpdate(
+    { _id: id, deleted_at: { $exists: false } },
+    { $set: { deleted_at: Date.now() } },
+    { new: true },
+  );
+};
+
+TrackSchema.statics.switchValueInList = async function (id, listName, value) {
+  const user = await this.findById(id).notDeleted();
+
+  if (!user) return null;
+
+  if (user[listName].indexOf(value) === -1) {
+    return await this.findOneAndUpdate(
+      { _id: id, deleted_at: { $exists: false } },
+      { $push: { [listName]: value } },
+      { new: true, runValidators: true },
+    );
+  } else {
+    return await this.findOneAndUpdate(
+      { _id: id, deleted_at: { $exists: false } },
+      { $pull: { [listName]: value } },
+      { new: true, runValidators: true },
+    );
+  }
+};
+
+TrackSchema.statics.getLiked = async function (id, idUser) {
+  return await this.switchValueInList(id, "liked_by", idUser);
+};
+
+TrackSchema.statics.getPlayed = async function (id) {
+  return await this.findOneAndUpdate(
+    { _id: id, deleted_at: { $exists: false } },
+    { $inc: { num_plays: 1 } },
+    { new: true, runValidators: true },
+  );
+};
+
+TrackSchema.statics.getUserTracks = function (idUser, options) {
+  const { page = 1, sort = "created_at", order = "asc", extend = false } = options;
+
+  const limit = 10;
+  const start = (page - 1) * limit;
+
+  const populate = [
+    {
+      path: "genres",
+      match: { deleted_at: { $exists: false } },
+      select: "name",
+    },
+    {
+      path: "liked_by",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "name" : "id",
+    },
+  ];
+
+  return this.find({ user: idUser })
+    .notDeleted()
+    .select("-user")
+    .populate(populate)
+    .sort({ [sort]: order })
+    .skip(start)
+    .limit(limit);
+};
 
 const Track = model("track", TrackSchema);
 

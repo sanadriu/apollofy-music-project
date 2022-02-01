@@ -1,9 +1,5 @@
 const faker = require("faker");
-const {
-  getRandomItems,
-  getRandomIndex,
-  getRandomSequence,
-} = require("../utils");
+const { getRandomItems, getRandomIndex, getRandomSequence } = require("../utils");
 
 function createSampleUser() {
   return {
@@ -11,9 +7,9 @@ function createSampleUser() {
     email: faker.internet.email(),
     firstname: faker.name.firstName(),
     lastname: faker.name.lastName(),
-    username: faker.name.title(),
+    username: faker.internet.userName(),
     url_avatar: faker.image.imageUrl(),
-    description: faker.lorem.paragraphs(1),
+    description: faker.lorem.paragraphs(1).substring(0, 250),
     birth_date: faker.date.past(18).toISOString().substring(0, 10),
   };
 }
@@ -82,7 +78,7 @@ function createSamplePlaylist(users = []) {
   return {
     user,
     title: faker.name.title(),
-    description: faker.lorem.paragraphs(1),
+    description: faker.lorem.paragraphs(1).substring(0, 250),
     color: faker.commerce.color(),
     thumbnails: {
       url_default: faker.image.imageUrl(),
