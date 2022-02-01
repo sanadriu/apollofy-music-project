@@ -51,7 +51,7 @@ function App() {
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-            <Route path={ROUTES.HOME} element={<Home />} exact />
+            <Route path={ROUTES.HOME} element={<Home />} />
           </Routes>
         </>
       </>

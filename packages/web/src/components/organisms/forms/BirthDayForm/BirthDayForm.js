@@ -28,6 +28,8 @@ export default function BirthDayForm() {
       } else {
         toast("The date must be between 1930 and 2015");
       }
+    } else {
+      dispatch(nextModal(currentModal + 1));
     }
   }
 

@@ -32,6 +32,7 @@ const AuthReducer = (state = AuthInitialState, action) => {
         ...state,
         isSigningUp: false,
         signUpError: payload,
+        isAuthenticated: true,
       };
     }
     case AuthTypes.SIGN_UP_SUCCESS: {
@@ -124,7 +125,7 @@ const AuthReducer = (state = AuthInitialState, action) => {
         ...state,
         currentUser: {
           ...state.currentUser,
-          dateOfBirth: payload
+          dateOfBirth: payload,
         },
       };
     }
@@ -133,7 +134,7 @@ const AuthReducer = (state = AuthInitialState, action) => {
         ...state,
         currentUser: {
           ...state.currentUser,
-          profilePicture: payload
+          profilePicture: payload,
         },
       };
     }
