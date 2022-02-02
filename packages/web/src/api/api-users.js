@@ -26,3 +26,13 @@ export function updateUser(authToken, username, email) {
     data: { username: username && username, email: email && email },
   });
 }
+
+export function updateNewUser(authToken, updatedUser) {
+  return http.patch({
+    url: `http://localhost:4000/users/me`,
+    data: updatedUser,
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+}

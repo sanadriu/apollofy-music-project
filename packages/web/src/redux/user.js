@@ -72,6 +72,6 @@ const UserReducer = (state = UserInitialState, action) => {
 
 export default UserReducer;
 
-export const selectUserState = (state) => state.user;
+export const selectUserState = (state) => state.entities.user;
 
 export const userSelector = createSelector([selectUserState], (user) => user);

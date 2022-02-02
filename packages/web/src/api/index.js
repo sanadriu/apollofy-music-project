@@ -1,2 +1,2 @@
 export { default } from "./api";
-export { getUser } from "./api-users";
+export * from "./api-users";

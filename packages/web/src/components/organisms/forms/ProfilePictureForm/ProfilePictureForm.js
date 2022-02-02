@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "@mui/material/Button";
@@ -11,7 +12,7 @@ import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { SmallText } from "../../../atoms/SmallText/SmallText";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
 
-import { authSelector, setProfilePicture } from "../../../../redux/auth";
+import { authSelector, setPictureLink } from "../../../../redux/auth";
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const Input = styled("input")({
@@ -27,11 +28,27 @@ export default function ProfilePictureForm() {
   const dispatch = useDispatch();
   const { currentModal } = useSelector(modalSelector);
   const { currentUser } = useSelector(authSelector);
+  const [pictureLink, setLink] = useState("");
 
   function handlePicture() {
-    if (value) dispatch(setProfilePicture(value));
+    // if (value) dispatch(setProfilePicture(value));
 
     dispatch(nextModal(currentModal + 1));
+    dispatch(setPictureLink(pictureLink));
+  }
+
+  function uploadImage(files) {
+    const formData = new FormData();
+
+    formData.append("file", files[0]);
+    formData.append("upload_preset", "crm5jzoc");
+
+    axios
+      .post("https://api.cloudinary.com/v1_1/stringifiers/image/upload", formData)
+      .then((res) => {
+        setLink(res.data.secure_url);
+        console.log(res.data.secure_url);
+      });
   }
 
   return (
@@ -46,20 +63,31 @@ export default function ProfilePictureForm() {
             multiple
             type="file"
             defaultValue={currentUser.profilePicture || null}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+              uploadImage(e.target.files);
+              setValue(e.target.files);
+            }}
           />
           <Button variant="contained" component="span">
             Upload
           </Button>
         </label>
         <label htmlFor="icon-button-file">
-          <Input accept="image/*" id="icon-button-file" type="file" />
+          <Input
+            accept="image/*"
+            id="icon-button-file"
+            type="file"
+            onChange={(e) => {
+              uploadImage(e.target.files);
+              setValue(e.target.files);
+            }}
+          />
           <IconButton color="primary" aria-label="upload picture" component="span">
-            {/* <PhotoCamera /> */}
+            {" "}
+            <PhotoCamera />
           </IconButton>
         </label>
-        {value ? <p>{value}</p> : null
-        }
+        {/* {value ? <p>{value}</p> : null} */}
       </Stack>
       <ModalButton onClick={() => handlePicture()}>{value ? "Submit" : "Skip for now"}</ModalButton>
     </FlexColumn>

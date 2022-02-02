@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Navigate, Outlet, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import PropTypes from "prop-types";
 
 import * as ROUTES from "./routes";
@@ -71,15 +71,21 @@ function App() {
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-            {isAuthenticated && <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
-              <Route path={ROUTES.HOME} exact element={<Home />} />
-            </Route>}
-            {isAuthenticated && <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
-              <Route path={ROUTES.EDIT_PROFILE} element={<EditProfile />} />
-            </Route>}
-            {isAuthenticated && <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
-              <Route path='*' element={<NotFound />} />
-            </Route>}
+            {isAuthenticated && (
+              <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
+                <Route path={ROUTES.HOME} exact element={<Home />} />
+              </Route>
+            )}
+            {isAuthenticated && (
+              <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
+                <Route path={ROUTES.EDIT_PROFILE} element={<EditProfile />} />
+              </Route>
+            )}
+            {isAuthenticated && (
+              <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            )}
           </Routes>
         </>
         <ReactQueryDevtools />
@@ -96,7 +102,7 @@ PrivateWrapper.propTypes = {
 
 PrivateWrapper.defaultProps = {
   auth: {
-    isAuthenticated: false
+    isAuthenticated: false,
   },
 };
 

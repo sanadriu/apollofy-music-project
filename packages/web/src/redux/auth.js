@@ -1,6 +1,8 @@
 import { createSelector } from "reselect";
-import api from "../api";
+import api, { updateNewUser } from "../api";
 import * as authService from "../services/auth";
+import * as API from "../api";
+import { saveUserData } from "./user";
 
 // action types
 
@@ -27,6 +29,7 @@ export const SET_NAME_EMAIL_PASSWORD = "SET_NAME_EMAIL_PASSWORD";
 export const SET_DATE_OF_BIRTH = "SET_DATE_OF_BIRTH";
 export const SET_PROFILE_PICTURE = "SET_PROFILE_PICTURE";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+export const SET_PICTURE_LINK = "SET_PICTURE_LINK";
 
 // action creators
 
@@ -34,9 +37,8 @@ export const signInRequest = () => ({
   type: SIGN_IN_REQUEST,
 });
 
-export const signInSuccess = (user) => ({
+export const signInSuccess = () => ({
   type: SIGN_IN_SUCCESS,
-  payload: user,
 });
 
 export const signInError = (error) => ({
@@ -78,13 +80,23 @@ export function signUpWithFacebook() {
   };
 }
 
-export function signUpWithEmailRequest(email, password) {
+export function signUpWithEmailRequest(email, password, details) {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
+
     try {
       await authService.signUpWithEmailAndPassword(email, password);
+
+      const token = await authService.getCurrentUserToken();
+
+      await api.signUp({ Authorization: `Bearer ${token}` });
+      await updateNewUser(token, details);
+      const user = await API.getUser(token);
+      dispatch(saveUserData(user.data.data));
+
+      return dispatch(signUpSuccess());
     } catch (error) {
-      dispatch(signUpError(error.message));
+      return dispatch(signUpError(error.message));
     }
   };
 }
@@ -94,10 +106,15 @@ export function signInWithEmailRequest(email, password) {
     dispatch(signInRequest());
     try {
       await authService.signInWithEmailAndPassword(email, password);
-      // DATABASE REQUEST
-      signInSuccess();
+
+      const token = await authService.getCurrentUserToken();
+
+      await api.signUp({ Authorization: `Bearer ${token}` });
+      const user = await API.getUser(token);
+      dispatch(saveUserData(user.data.data));
+      return dispatch(signInSuccess());
     } catch (error) {
-      dispatch(signInError(error.message));
+      return dispatch(signInError(error.message));
     }
   };
 }
@@ -214,6 +231,11 @@ export const setCurrentUser = (value) => ({
   payload: value,
 });
 
+export const setPictureLink = (value) => ({
+  type: SET_PICTURE_LINK,
+  payload: value,
+});
+
 // reducer
 
 export const initialState = {
@@ -232,6 +254,7 @@ export const initialState = {
     email: null,
     password: null,
     passwordConfirmation: null,
+    pictureLink: null,
   },
 };
 
@@ -260,11 +283,6 @@ const AuthReducer = (state = initialState, action) => {
         isSigningUp: false,
         isSigningIn: false,
         signUpError: null,
-        currentUser: {
-          email: payload.data.email,
-          uid: payload.data.id,
-          username: payload.data.username,
-        },
       };
     }
     case SIGN_IN_SUCCESS: {
@@ -273,11 +291,6 @@ const AuthReducer = (state = initialState, action) => {
         isAuthenticated: true,
         isSigningIn: false,
         signInError: null,
-        currentUser: {
-          email: payload.data.email,
-          uid: payload.data.id,
-          username: payload.data.username,
-        },
       };
     }
     case SIGN_IN_REQUEST: {
@@ -369,7 +382,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         currentUser: {
           ...state.currentUser,
-          dateOfBirth: payload,
+          birth_date: payload,
         },
       };
     }
@@ -382,6 +395,16 @@ const AuthReducer = (state = initialState, action) => {
         },
       };
     }
+    case SET_PICTURE_LINK: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          pictureLink: payload,
+        },
+      };
+    }
+
     case SET_CURRENT_USER: {
       return {
         ...state,
