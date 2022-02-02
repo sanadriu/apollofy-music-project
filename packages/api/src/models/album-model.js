@@ -1,5 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
-const { isURL } = require("validator");
+const { isURL, isDate } = require("validator");
 
 const AlbumSchema = new Schema(
   {
@@ -20,9 +20,17 @@ const AlbumSchema = new Schema(
       required: true,
       trim: true,
     },
+    released_date: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (value) =>
+          value ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" }) : true,
+        message: () => `Date is not valid`,
+      },
+    },
     genres: {
-      type: [Types.ObjectId],
-      ref: "genre",
+      type: [String],
       trim: true,
     },
     tracks: {
@@ -113,11 +121,6 @@ const limitedPopulate = [
     select: "title",
   },
   {
-    path: "genres",
-    match: { deleted_at: { $exists: false } },
-    select: "name",
-  },
-  {
     path: "liked_by",
     match: { deleted_at: { $exists: false } },
     select: "username",
@@ -130,11 +133,6 @@ function getPopulate(extend) {
       path: "user",
       match: { deleted_at: { $exists: false } },
       select: "username",
-    },
-    {
-      path: "genres",
-      match: { deleted_at: { $exists: false } },
-      select: "name",
     },
     {
       path: "tracks",
@@ -167,13 +165,14 @@ AlbumSchema.statics.getAlbum = function (id, options = {}) {
 };
 
 AlbumSchema.statics.getAlbums = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc", limit = 10 } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, genre } = options;
 
   const start = (page - 1) * limit;
 
   const populate = getPopulate();
+  const filter = genre ? { genres: { $in: [genre] } } : {};
 
-  return this.find()
+  return this.find(filter)
     .notDeleted()
     .populate(populate)
     .sort({ [sort]: order })
