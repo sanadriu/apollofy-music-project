@@ -25,6 +25,13 @@ export function updateUser(authToken, username, email) {
   });
 }
 
-export function updateNewUser() {
-  //
+export function updateNewUser(authToken, updatedUser) {
+  return axios({
+    method: "patch",
+    url: `http://localhost:4000/users/me`,
+    data: updatedUser,
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
 }

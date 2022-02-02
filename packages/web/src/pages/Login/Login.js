@@ -22,6 +22,8 @@ import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureF
 import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm2";
 import DescriptionForm from "../../components/organisms/forms/DescriptionForm/DescriptionForm";
 import Button from "../../components/atoms/buttons/Button";
+import SignInModal from "../../components/organisms/modal/SigninModal";
+import SigninForm from "../../components/organisms/forms/SigninForm/SigninForm";
 
 const MainFlex = styled.div`
   height: 100vh;
@@ -30,8 +32,8 @@ const MainFlex = styled.div`
 `;
 
 const Title = styled.h1`
-  font: Readex Pro;
   font-size: 4rem;
+  text-align: center;
 `;
 
 const ResetButton = styled.button`
@@ -54,6 +56,7 @@ export default function Login() {
 
   const [isOpen, setOpen] = useState(false);
   const [resetPassModalIsOpen, setResetPassModalOpen] = useState(false);
+  const [signinIsOpen, setSigninIsOpen] = useState(false);
 
   useEffect(() => {
     dispatch(resetAuthState());
@@ -78,6 +81,10 @@ export default function Login() {
     }
   };
 
+  const handleSignIn = () => {
+    setSigninIsOpen(!signinIsOpen);
+  };
+
   const handleResetPassModal = () => {
     setResetPassModalOpen(!resetPassModalIsOpen);
   };
@@ -93,26 +100,13 @@ export default function Login() {
       <LoginBoard />
       <FlexColumn>
         <Title>What&apos;s rocking right now</Title>
-        <Button
-          btnColor="black"
-          type="outline"
-          onClick={(e) => handleLoginWithGoogle(e)}
-        >
+        <Button btnColor="black" type="outline" onClick={(e) => handleLoginWithGoogle(e)}>
           Sign up with Google
         </Button>
-        <Button
-          btnColor="black"
-          type="outline"
-          onClick={(e) => handleLoginWithFacebook(e)}
-        >
+        <Button btnColor="black" type="outline" onClick={(e) => handleLoginWithFacebook(e)}>
           Sign up with Facebook
         </Button>
-        <Button
-          btnColor="black"
-          type="outline"
-          onClick={handleModal}
-          disabled={isSigningUp}
-        >
+        <Button btnColor="black" type="outline" onClick={handleModal} disabled={isSigningUp}>
           Sign up with email
         </Button>
         <RegisterModal isOpen={isOpen} handleModal={handleModal}>
@@ -124,14 +118,12 @@ export default function Login() {
           </>
         </RegisterModal>
         <span>Already have an account?</span>
-        <Button
-          btnColor="black"
-          type="outline"
-          onClick={(e) => handleLoginWithGoogle(e)}
-          disabled={isSigningUp}
-        >
+        <Button btnColor="black" type="outline" onClick={handleSignIn} disabled={isSigningUp}>
           Sign in
         </Button>
+        <SignInModal signinIsOpen={signinIsOpen} handleModal={handleSignIn}>
+          <SigninForm />
+        </SignInModal>
         {signUpError && <section className="mt-4">{signUpError}</section>}
         <section className="mt-4">
           <hr className="mt-1 mb-4" />

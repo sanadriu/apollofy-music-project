@@ -1,5 +1,4 @@
 const { auth, logger } = require("../services");
-// eslint-disable-next-line jest/no-mocks-import
 const { auth: mockAuth } = require("../services/__mocks__");
 const { mode } = require("../config");
 
@@ -19,7 +18,7 @@ async function authMiddleware(req, res, next) {
 
     res.status(401).send({
       data: null,
-      error: "Unauthorized",
+      message: "Unauthorized",
     });
   }
 }

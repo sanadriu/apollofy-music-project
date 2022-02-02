@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as ROUTES from "../../routes";
@@ -11,17 +11,9 @@ import { fetchingUserData, saveUserData, fetchSuccess, userLoggedOut } from "../
 import { getCurrentUserToken } from "../../services/auth";
 
 function Home() {
-  const { isAuthenticated, currentUser } = useSelector(authSelector);
+  const { currentUser } = useSelector(authSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    (async function userToken() {
-      const req = await getCurrentUserToken();
-      const user = await API.getUser(req);
-      dispatch(saveUserData(user.data.data));
-    })();
-  }, []);
 
   function logout() {
     dispatch(signOut());
@@ -33,17 +25,11 @@ function Home() {
     navigate(ROUTES.EDIT_PROFILE);
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to={ROUTES.LOGIN} />;
-  }
-
   return (
     <main className="p-4">
       <section className="p-4">
-        {isAuthenticated ? (
-          <h1 className="text-xl">Hello {currentUser.username}</h1>
-        ) : (
-          <h1 className="text-xl">Hello World</h1>
+        {currentUser && (
+          <h1 className="text-xl">Hello {currentUser.username && currentUser.username}</h1>
         )}
         <button type="button" onClick={logout}>
           Logout

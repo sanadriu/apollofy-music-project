@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-import { authSelector } from "../../../redux/auth";
+import { userSelector } from "../../../redux/user";
 
 import { PrimaryButton } from "../../atoms/buttons/PrimaryButton";
 import { FlexColumn } from "../../atoms/FlexColumn/FlexColumn";
@@ -15,18 +15,17 @@ const FriendsColumnLayout = styled(rightSideBar)`
 `;
 
 export default function FriendsColumn() {
-  const { currentUser } = useSelector(authSelector);
+  const { userData } = useSelector(userSelector);
 
   return (
     <FriendsColumnLayout>
       <FlexColumn>
-        {currentUser.follows ? (
-          currentUser.follows.map((friend) => {
+        {userData?.followed_users && userData?.followed_users[0] ? (
+          userData.followed_users.map((friend) => {
             <FriendInfo
               key={friend.id}
-              profilePicture={friend.profilePicture}
-              name={friend.name}
-              lastTrack={friend.lastTrack}
+              profilePicture={friend.thumbnails.url_default}
+              name={friend.username}
             />;
           })
         ) : (

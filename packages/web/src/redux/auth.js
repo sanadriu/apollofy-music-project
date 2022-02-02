@@ -1,12 +1,18 @@
 import { createSelector } from "reselect";
-import api from "../api";
+import api, { updateNewUser } from "../api";
 import * as authService from "../services/auth";
+import * as API from "../api";
+import { saveUserData } from "./user";
 
 // action types
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
 export const SIGN_UP_ERROR = "SIGN_UP_ERROR";
+
+export const SIGN_IN_REQUEST = "SIGN_IN_REQUEST";
+export const SIGN_IN_SUCCESS = "SIGN_IN_SUCCESS";
+export const SIGN_IN_ERROR = "SIGN_IN_ERROR";
 
 export const SIGN_OUT_REQUEST = "SIGN_OUT_REQUEST";
 export const SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS";
@@ -27,6 +33,19 @@ export const SET_PICTURE_LINK = "SET_PICTURE_LINK";
 
 // action creators
 
+export const signInRequest = () => ({
+  type: SIGN_IN_REQUEST,
+});
+
+export const signInSuccess = () => ({
+  type: SIGN_IN_SUCCESS,
+});
+
+export const signInError = (error) => ({
+  type: SIGN_IN_ERROR,
+  payload: error,
+});
+
 export const resetStoreAndLogOut = () => ({
   type: RESET_STORE_AND_LOG_OUT,
 });
@@ -44,7 +63,7 @@ export function signUpWithGoogleRequest() {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
     try {
-      await authService.singInWithGoogle();
+      await authService.signInWithGoogle();
     } catch (error) {
       dispatch(signUpError(error.message));
     }
@@ -61,25 +80,41 @@ export function signUpWithFacebook() {
   };
 }
 
-export function signUpWithEmailRequest(email, password) {
+export function signUpWithEmailRequest(email, password, details) {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
+
     try {
-      const res = await authService.singUpWithEmailAndPassword(email, password);
-      console.log(res);
+      await authService.signUpWithEmailAndPassword(email, password);
+
+      const token = await authService.getCurrentUserToken();
+
+      await api.signUp({ Authorization: `Bearer ${token}` });
+      await updateNewUser(token, details);
+      const user = await API.getUser(token);
+      dispatch(saveUserData(user.data.data));
+
+      return dispatch(signUpSuccess());
     } catch (error) {
-      dispatch(signUpError(error.message));
+      return dispatch(signUpError(error.message));
     }
   };
 }
 
 export function signInWithEmailRequest(email, password) {
-  return async function signUpThunk(dispatch) {
-    dispatch(signUpRequest());
+  return async function signInThunk(dispatch) {
+    dispatch(signInRequest());
     try {
-      await authService.singInWithEmailAndPassword(email, password);
+      await authService.signInWithEmailAndPassword(email, password);
+
+      const token = await authService.getCurrentUserToken();
+
+      await api.signUp({ Authorization: `Bearer ${token}` });
+      const user = await API.getUser(token);
+      dispatch(saveUserData(user.data.data));
+      return dispatch(signInSuccess());
     } catch (error) {
-      dispatch(signUpError(error.message));
+      return dispatch(signInError(error.message));
     }
   };
 }
@@ -204,6 +239,8 @@ export const setPictureLink = (value) => ({
 // reducer
 
 export const initialState = {
+  isSigningIn: false,
+  signInError: null,
   isSigningUp: false,
   signUpError: null,
   isSigningOut: false,
@@ -244,12 +281,30 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         isSigningUp: false,
+        isSigningIn: false,
         signUpError: null,
-        currentUser: {
-          email: payload.data.email,
-          uid: payload.data.id,
-          username: payload.data.username,
-        },
+      };
+    }
+    case SIGN_IN_SUCCESS: {
+      return {
+        ...state,
+        isAuthenticated: true,
+        isSigningIn: false,
+        signInError: null,
+      };
+    }
+    case SIGN_IN_REQUEST: {
+      return {
+        ...state,
+        isSigningIn: true,
+        signInError: null,
+      };
+    }
+    case SIGN_IN_ERROR: {
+      return {
+        ...state,
+        isSigningUp: false,
+        signUpError: payload,
       };
     }
     case SIGN_OUT_REQUEST: {
@@ -327,7 +382,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         currentUser: {
           ...state.currentUser,
-          dateOfBirth: payload,
+          birth_date: payload,
         },
       };
     }

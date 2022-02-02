@@ -30,7 +30,7 @@ export default function FriendInfo(props) {
       <ProfilePicture alt="Friend's Picture" src={profilePicture} />
       <FlexColumn>
         <HomeSmallText>{name}</HomeSmallText>
-        <DetailText>{lastTrack}</DetailText>
+        {/* <DetailText>{lastTrack}</DetailText> */}
       </FlexColumn>
     </Layout>
   );

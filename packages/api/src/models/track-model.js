@@ -1,6 +1,5 @@
 const { Schema, model, Types } = require("mongoose");
 const { isURL, isDate } = require("validator");
-const { getHash } = require("../services/crypto");
 
 const TrackSchema = new Schema(
   {
@@ -103,8 +102,10 @@ const TrackSchema = new Schema(
   },
 );
 
+/* Virtual */
+
 TrackSchema.virtual("num_likes").get(function () {
-  return this.liked_by.length;
+  return this.liked_by?.length;
 });
 
 /* Query Helpers */
@@ -115,21 +116,21 @@ TrackSchema.query.notDeleted = function () {
 
 /* Statics */
 
-TrackSchema.statics.getNumPages = function () {
+TrackSchema.statics.getNumPages = function (filter = {}) {
   const limit = 10;
 
-  return this.countDocuments()
+  return this.countDocuments(filter)
     .notDeleted()
     .then((count) => {
       return Math.floor(count / limit) + (count % limit ? 1 : 0);
     });
 };
 
-TrackSchema.statics.getTracks = function (page = 1, sort = "created_at", order = "asc") {
+TrackSchema.statics.getTracks = function (page = 1, sort = "created_at", order = "asc", uid) {
   const limit = 10;
   const start = (page - 1) * limit;
 
-  return this.find()
+  return this.find({ user: uid })
     .notDeleted()
     .sort({ [sort]: order })
     .skip(start)
@@ -138,8 +139,21 @@ TrackSchema.statics.getTracks = function (page = 1, sort = "created_at", order =
 
 TrackSchema.statics.getTrack = function (id, extend = false) {
   const populate = [
-    { path: "genres", match: { deleted_at: { $exists: false } } },
-    { path: "liked_by", match: { deleted_at: { $exists: false } } },
+    {
+      path: "user",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "username firstname lastname thumbnails" : "id",
+    },
+    {
+      path: "genres",
+      match: { deleted_at: { $exists: false } },
+      select: "name",
+    },
+    {
+      path: "liked_by",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "name" : "id",
+    },
   ];
 
   return this.findById(id).notDeleted().populate(populate);
@@ -183,20 +197,11 @@ TrackSchema.statics.updateTrack = function (id, data) {
   );
 };
 
-TrackSchema.statics.deleteTrack = function (id, track) {
+TrackSchema.statics.deleteTrack = function (id) {
   return this.findOneAndUpdate(
     { _id: id, deleted_at: { $exists: false } },
-    {
-      $set: {
-        deleted_at: Date.now(),
-        title: getHash(track.title),
-        url: getHash(track.url),
-        user: getHash(track.user),
-      },
-    },
-    {
-      new: true,
-    },
+    { $set: { deleted_at: Date.now() } },
+    { new: true },
   );
 };
 
@@ -222,6 +227,42 @@ TrackSchema.statics.switchValueInList = async function (id, listName, value) {
 
 TrackSchema.statics.getLiked = async function (id, idUser) {
   return await this.switchValueInList(id, "liked_by", idUser);
+};
+
+TrackSchema.statics.getPlayed = async function (id) {
+  return await this.findOneAndUpdate(
+    { _id: id, deleted_at: { $exists: false } },
+    { $inc: { num_plays: 1 } },
+    { new: true, runValidators: true },
+  );
+};
+
+TrackSchema.statics.getUserTracks = function (idUser, options) {
+  const { page = 1, sort = "created_at", order = "asc", extend = false } = options;
+
+  const limit = 10;
+  const start = (page - 1) * limit;
+
+  const populate = [
+    {
+      path: "genres",
+      match: { deleted_at: { $exists: false } },
+      select: "name",
+    },
+    {
+      path: "liked_by",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "name" : "id",
+    },
+  ];
+
+  return this.find({ user: idUser })
+    .notDeleted()
+    .select("-user")
+    .populate(populate)
+    .sort({ [sort]: order })
+    .skip(start)
+    .limit(limit);
 };
 
 const Track = model("track", TrackSchema);
