@@ -1,5 +1,5 @@
 const { Types } = require("mongoose");
-const { Track } = require("../models");
+const { Track, User } = require("../models");
 
 async function getTracks(req, res, next) {
   try {
@@ -25,7 +25,7 @@ async function getTracks(req, res, next) {
       });
     }
 
-    const dbRes = await Track.getTracks(page, sort, order);
+    const dbRes = await Track.getTracks({ page, sort, order });
 
     res.status(200).send({
       data: dbRes,
@@ -51,7 +51,7 @@ async function getSingleTrack(req, res, next) {
       });
     }
 
-    const dbRes = await Track.getTrack(idTrack, extend);
+    const dbRes = await Track.getTrack(idTrack, { extend });
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -102,7 +102,7 @@ async function updateTrack(req, res, next) {
       });
     }
 
-    const dbRes = await Track.getTrack(idTrack);
+    const dbRes = await Track.findById(idTrack).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -147,7 +147,7 @@ async function deleteTrack(req, res, next) {
       });
     }
 
-    const dbRes = await Track.getTrack(idTrack);
+    const dbRes = await Track.findById(idTrack).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -179,7 +179,49 @@ async function deleteTrack(req, res, next) {
   }
 }
 
-async function playTrack() {
+async function likeTrack(req, res, next) {
+  try {
+    const { uid } = req.user;
+    const { idTrack } = req.params;
+
+    if (!Types.ObjectId.isValid(idTrack)) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong track ID",
+      });
+    }
+
+    if (!(await User.getUser(uid))) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (!(await Track.getTrack(idTrack))) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Track not found",
+      });
+    }
+
+    await User.likeTrack(uid, idTrack);
+    await Track.getLiked(idTrack, uid);
+
+    return res.status(200).send({
+      data: null,
+      success: true,
+      message: "Operation done successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function playTrack(req, res, next) {
   try {
     const { idTrack } = req.params;
 
@@ -191,7 +233,7 @@ async function playTrack() {
       });
     }
 
-    const dbRes = await Track.getTrack(idTrack);
+    const dbRes = await Track.findById(idTrack).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -204,9 +246,9 @@ async function playTrack() {
     await Track.getPlayed(idTrack);
 
     return res.status(200).send({
-      data: dbRes,
+      data: null,
       success: true,
-      message: "Track fetched successfully",
+      message: "Operation done successfully",
     });
   } catch (error) {
     next(error);
@@ -257,6 +299,7 @@ module.exports = {
   updateTrack,
   deleteTrack,
   createTrack,
+  likeTrack,
   playTrack,
   getUserTracks,
 };
