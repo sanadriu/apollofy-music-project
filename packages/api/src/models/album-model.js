@@ -150,9 +150,7 @@ function getPopulate(extend) {
 }
 /* Statics */
 
-AlbumSchema.statics.getNumPages = function (filter = {}) {
-  const limit = 10;
-
+AlbumSchema.statics.getNumPages = function (limit = 10, filter = {}) {
   return this.countDocuments(filter)
     .notDeleted()
     .then((count) => {
@@ -169,9 +167,8 @@ AlbumSchema.statics.getAlbum = function (id, options = {}) {
 };
 
 AlbumSchema.statics.getAlbums = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc" } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10 } = options;
 
-  const limit = 10;
   const start = (page - 1) * limit;
 
   const populate = getPopulate();

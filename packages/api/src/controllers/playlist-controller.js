@@ -3,9 +3,9 @@ const { Playlist, User } = require("../models");
 
 async function getPlaylists(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc" } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", limit = 10 } = req.query;
 
-    const pages = await Playlist.getNumPages();
+    const pages = await Playlist.getNumPages(limit);
 
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
@@ -34,7 +34,7 @@ async function getPlaylists(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylists({ page, sort, order });
+    const dbRes = await Playlist.getPlaylists({ page, sort, order, limit });
 
     return res.status(200).send({
       data: dbRes,
@@ -233,9 +233,9 @@ async function followPlaylist(req, res, next) {
 async function getUserPlaylists(req, res, next) {
   try {
     const { uid } = req.user;
-    const { page = 1, sort = "created_at", order = "asc", extend = false } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", limit = 10, extend = false } = req.query;
 
-    const pages = await Playlist.getNumPages({ user: uid });
+    const pages = await Playlist.getNumPages(limit, { user: uid });
 
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
@@ -254,12 +254,13 @@ async function getUserPlaylists(req, res, next) {
         pages,
       });
     }
-    const dbRes = await Playlist.getUserPlaylists(uid, { page, sort, order, extend });
+    const dbRes = await Playlist.getUserPlaylists(uid, { page, sort, order, limit, extend });
 
     return res.status(200).send({
       data: dbRes,
       success: true,
       message: "Playlists fetched successfully",
+      pages,
     });
   } catch (message) {
     next(error);
