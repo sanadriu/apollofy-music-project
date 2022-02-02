@@ -11,6 +11,9 @@ import Login from "./pages/Login/Login";
 import ResetPassword from "./pages/ResetPassword";
 import EditProfile from "./pages/EditProfile";
 import NotFound from "./pages/NotFound";
+import Switch from "./components/atoms/Switch";
+
+
 
 import { onAuthStateChanged } from "./services/auth";
 import { authSelector, syncSignIn, signOut } from "./redux/auth";
@@ -18,6 +21,7 @@ import { authSelector, syncSignIn, signOut } from "./redux/auth";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
@@ -54,10 +58,13 @@ function App() {
     <ThemeProvider theme={themeMode}>
       <>
         <GlobalStyles />
+        <Switch theme={theme} toggleTheme={themeToggler} />
         <Routes>
           <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
           <Route path={ROUTES.LOGIN} element={<Login />} />
           <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+          <Route path={ROUTES.USER_PROFILE} element={<ProfilePage />} />
+          
           {isAuthenticated && <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
             <Route path={ROUTES.HOME} exact element={<Home />} />
           </Route>}

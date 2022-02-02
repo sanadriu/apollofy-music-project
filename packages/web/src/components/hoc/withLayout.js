@@ -13,6 +13,7 @@ const MainLayout = styled.main`
   gap: 1rem;
   padding: 2rem 2rem 0 2rem;
   justify-content: space-between;
+  margin-bottom:6rem;
 `;
 
 const PageContent = styled.div`
