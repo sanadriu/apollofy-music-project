@@ -1,32 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TrackDetail = ({ track }) => {
-  console.log(track);
-
+const AlbumDetail = ({ album }) => {
   return (
     <>
-      <div>{track.title}</div>
-      <div>{track.user}</div>
+      <div>{album.title}</div>
     </>
   );
 }
 
-export default TrackDetail;
+export default AlbumDetail;
 
-TrackDetail.propTypes = {
-  track: PropTypes.exact({
+AlbumDetail.propTypes = {
+  album: PropTypes.exact({
     id: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    duration: PropTypes.number.isRequired,
     released_date: PropTypes.string.isRequired,
-    genres: PropTypes.arrayOf(PropTypes.object),
-    liked_by: PropTypes.arrayOf(PropTypes.object),
-    num_plays: PropTypes.number.isRequired,
+    tracks: PropTypes.arrayOf(PropTypes.object),
+    num_tracks: PropTypes.number.isRequired,
     num_likes: PropTypes.number.isRequired,
+    liked_by: PropTypes.arrayOf(PropTypes.object),
     thumbnails: PropTypes.exact({
       url_default: PropTypes.string,
       url_medium: PropTypes.string,
@@ -37,19 +31,16 @@ TrackDetail.propTypes = {
   }),
 };
 
-TrackDetail.defaultProps = {
-  track: {
+AlbumDetail.defaultProps = {
+  album: {
     id: null,
     user: {},
     title: null,
-    color: null,
-    url: null,
-    duration: null,
     released_date: null,
-    genres: [],
-    liked_by: [],
-    num_plays: null,
+    tracks: [],
+    num_tracks: null,
     num_likes: null,
+    liked_by: [],
     thumbnails: {
       url_default: null,
       url_medium: null,

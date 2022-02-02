@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { useQuery, useQueryClient } from 'react-query';
+import { useQueryClient } from 'react-query';
 
 import tracksApi from '../../../api/api-tracks';
+import { useTracks } from "../../../hooks/useTracks";
 
 import TrackDetail from "../../molecules/TrackDetail";
 
 const maxTrackPage = 10;
+const currentLimit = 10;
 
 export default function Tracks() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTrack, setSelectedTrack] = useState(null);
 
   const queryClient = useQueryClient();
+  const { data: tracks, isError, error, isLoading } = useTracks({ currentLimit, currentPage });
 
   useEffect(() => {
     if (currentPage < maxTrackPage) {
       const nextPage = currentPage + 1;
-      queryClient.prefetchQuery(["tracks", nextPage], () => tracksApi.getTracks(nextPage))
+      queryClient.prefetchQuery(
+        ["tracks", nextPage],
+        () => tracksApi.getTracks(currentLimit, nextPage)
+      )
     }
   }, [currentPage, queryClient])
 
-  const { data: tracks, isError, error, isLoading } = useQuery(
-    ["tracks", currentPage],
-    () => tracksApi.getTracks(currentPage),
-    {
-      staleTime: 2000,
-      keepPreviousData: true,
-    }
-  );
+  console.log(tracks);
+
   if (isLoading) return <h3>Loading...</h3>;
   if (isError) return (
     <>

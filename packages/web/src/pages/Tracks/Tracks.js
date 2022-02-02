@@ -5,7 +5,7 @@ import Tracks from "../../components/organisms/Tracks";
 function TracksPage() {
 
   return (
-    <main className="p-4">
+    <main>
       <section>
         <Tracks />
       </section>

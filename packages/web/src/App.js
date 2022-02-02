@@ -15,6 +15,8 @@ import EditProfile from "./pages/EditProfile";
 import NotFound from "./pages/NotFound";
 import Playlists from "./pages/Playlists";
 import Tracks from "./pages/Tracks";
+import Genres from "./pages/Genres";
+import Albums from "./pages/Albums";
 
 import { onAuthStateChanged } from "./services/auth";
 import { authSelector, syncSignIn, signOut } from "./redux/auth";
@@ -62,8 +64,10 @@ function App() {
         <>
           <GlobalStyles />
           <Routes>
+            <Route path="albums" element={<Albums />} />
             <Route path="playlists" element={<Playlists />} />
             <Route path="tracks" element={<Tracks />} />
+            <Route path="genres" element={<Genres />} />
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />

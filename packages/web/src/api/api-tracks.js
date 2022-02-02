@@ -6,18 +6,43 @@ const getTrack = async (trackId) => {
   return http.get(`${baseUrl}/tracks/${trackId}`);
 }
 
-const getTracks = async (pageNum = 10) => {
-  return http.get(`${baseUrl}/tracks?_limit=10&_page=${pageNum}`);
+const getTracks = async (limitNum = 10, pageNum = 1) => {
+  return http.get(`${baseUrl}/tracks?limit=${limitNum}&page=${pageNum}`);
 }
 
-const setTrack = async (track) => {
-  return http.post(`${baseUrl}/tracks`, track);
+const setTrack = async (authToken, track) => {
+  return http.post(`${baseUrl}/tracks`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    },
+    data: track
+  });
+}
+
+const updateTrack = async (authToken, track) => {
+  return http.post(`${baseUrl}/tracks/${track.id}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    },
+    data: track
+  });
+}
+
+const deleteTrack = async (authToken, trackId) => {
+  return http.post(`${baseUrl}/tracks/${trackId}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    },
+    data: trackId
+  });
 }
 
 const tracksApi = {
   getTrack,
   getTracks,
   setTrack,
+  updateTrack,
+  deleteTrack
 };
 
 export default tracksApi;

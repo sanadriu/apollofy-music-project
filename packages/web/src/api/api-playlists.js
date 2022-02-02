@@ -7,17 +7,42 @@ const getPlaylist = async (playlistId) => {
 }
 
 const getPlaylists = async (limitNum = 10, pageNum = 1) => {
-  return http.get(`${baseUrl}/playlists?_limit=${limitNum}&_page=${pageNum}`);
+  return http.get(`${baseUrl}/playlists?limit=${limitNum}&page=${pageNum}`);
 }
 
-const setPlaylist = async (playlist) => {
-  return http.post(`${baseUrl}/playlists`, playlist);
+const setPlaylist = async (authToken, playlist) => {
+  return http.post(`${baseUrl}/playlists`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    },
+    data: playlist
+  });
+}
+
+const updatePlaylist = async (authToken, playlist) => {
+  return http.post(`${baseUrl}/playlists/${playlist.id}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    },
+    data: playlist
+  });
+}
+
+const deletePlaylist = async (authToken, playlistId) => {
+  return http.post(`${baseUrl}/playlists/${playlistId}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    },
+    data: playlistId
+  });
 }
 
 const playlistsApi = {
   getPlaylist,
   getPlaylists,
   setPlaylist,
+  updatePlaylist,
+  deletePlaylist
 };
 
 export default playlistsApi;

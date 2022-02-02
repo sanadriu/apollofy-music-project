@@ -5,7 +5,7 @@ import Playlists from "../../components/organisms/Playlists";
 function PlaylistsPage() {
 
   return (
-    <main className="p-4">
+    <main>
       <section>
         <Playlists />
       </section>
