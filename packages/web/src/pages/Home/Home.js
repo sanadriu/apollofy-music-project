@@ -9,7 +9,7 @@ import * as API from "../../api";
 import { authSelector, signOut } from "../../redux/auth";
 import { fetchingUserData, saveUserData, fetchSuccess, userLoggedOut } from "../../redux/user";
 import { getCurrentUserToken } from "../../services/auth";
-import Tracks from "../../components/organisms/Tracks";
+import Playlists from "../../components/organisms/Playlists";
 
 function Home() {
   const { currentUser } = useSelector(authSelector);
@@ -46,7 +46,7 @@ function Home() {
         </button>
       </section>
       <section>
-        <Tracks />
+        <Playlists />
       </section>
     </main>
   );
