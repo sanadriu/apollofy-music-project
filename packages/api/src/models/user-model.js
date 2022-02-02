@@ -147,7 +147,7 @@ UserSchema.query.notDeleted = function () {
 
 /* Population Object */
 
-function getPopulate() {
+function getPopulate(extend) {
   return [
     {
       path: "liked_albums",
@@ -167,12 +167,12 @@ function getPopulate() {
     {
       path: "followed_users",
       match: { deleted_at: { $exists: false } },
-      select: "username",
+      select: extend ? "username firstname lastname thumbnails" : "username",
     },
     {
       path: "followers",
       match: { deleted_at: { $exists: false } },
-      select: "username",
+      select: extend ? "username firstname lastname thumbnails" : "username",
     },
   ];
 }
@@ -187,8 +187,10 @@ UserSchema.statics.getNumPages = function (limit = 10, filter = {}) {
     });
 };
 
-UserSchema.statics.getUser = function (id) {
-  const populate = getPopulate();
+UserSchema.statics.getUser = function (id, options = {}) {
+  const { extend = false } = options;
+
+  const populate = getPopulate(extend);
 
   return this.findById(id).notDeleted().populate(populate);
 };
@@ -279,8 +281,6 @@ UserSchema.statics.followPlaylist = async function (id, idPlaylist) {
 UserSchema.statics.getFollowed = async function (id, idFollower) {
   return await this.switchValueInList(id, "followers", idFollower);
 };
-
-UserSchema.plugin(mongooseLeanVirtuals);
 
 const User = model("user", UserSchema);
 

@@ -88,8 +88,9 @@ async function getUsers(req, res, next) {
 async function getSingleUser(req, res, next) {
   try {
     const { idUser } = req.params;
+    const { extend = false } = req.query;
 
-    const dbRes = await User.getUser(idUser).select("-email");
+    const dbRes = await User.getUser(idUser, { extend }).select("-email");
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -112,8 +113,9 @@ async function getSingleUser(req, res, next) {
 async function getSelfUser(req, res, next) {
   try {
     const { uid } = req.user;
+    const { extend = false } = req.query;
 
-    const dbRes = await User.getUser(uid);
+    const dbRes = await User.getUser(uid, { extend });
 
     if (dbRes === null) {
       return res.status(404).send({
