@@ -238,10 +238,10 @@ async function likeAlbum(req, res, next) {
 
 async function getUserAlbums(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc", extend = false } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", limit = 10, extend = false } = req.query;
     const { uid } = req.user;
 
-    const pages = await Album.getNumPages({ user: uid });
+    const pages = await Album.getNumPages(limit, { user: uid });
 
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
@@ -261,7 +261,7 @@ async function getUserAlbums(req, res, next) {
       });
     }
 
-    const dbRes = await Album.getUserAlbums(uid, { page, sort, order, extend });
+    const dbRes = await Album.getUserAlbums(uid, { page, sort, order, limit, extend });
 
     return res.status(200).send({
       data: dbRes,
