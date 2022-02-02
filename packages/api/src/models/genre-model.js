@@ -47,6 +47,14 @@ const GenreSchema = new Schema(
       updatedAt: "updated_at",
     },
     versionKey: false,
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        ret.id = ret._id;
+
+        delete ret._id;
+      },
+    },
   },
 );
 

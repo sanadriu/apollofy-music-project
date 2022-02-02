@@ -8,7 +8,7 @@ function verifyIdToken(token) {
   return User.findOne({ _id: token })
     .select("email username")
     .then((result) => ({
-      uid: result._id,
+      uid: result.id,
       email: result.email,
       name: result.username,
     }));
@@ -16,10 +16,7 @@ function verifyIdToken(token) {
 
 function getAuthToken(headers = {}) {
   return new Promise(function (resolve, reject) {
-    if (
-      !headers.authorization ||
-      !headers.authorization.startsWith("Bearer ")
-    ) {
+    if (!headers.authorization || !headers.authorization.startsWith("Bearer ")) {
       reject(new Error("Missing authorization header"));
     }
 

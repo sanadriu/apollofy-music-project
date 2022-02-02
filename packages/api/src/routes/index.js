@@ -4,6 +4,7 @@ const { albumRouter } = require("./album-routes");
 const { playlistRouter } = require("./playlist-routes");
 const { trackRouter } = require("./track-routes");
 const { genreRouter } = require("./genre-routes");
+const { searchRouter } = require("./search-routes");
 
 module.exports = {
   userRouter,
@@ -12,4 +13,5 @@ module.exports = {
   playlistRouter,
   trackRouter,
   genreRouter,
+  searchRouter,
 };

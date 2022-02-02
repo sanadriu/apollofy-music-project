@@ -1,5 +1,6 @@
 const { Schema, model, Types } = require("mongoose");
 const { isURL, isDate } = require("validator");
+const { populate } = require("./user-model");
 
 const TrackSchema = new Schema(
   {
@@ -114,6 +115,28 @@ TrackSchema.query.notDeleted = function () {
   return this.where({ deleted_at: { $exists: false } });
 };
 
+/* Population Object */
+
+function getPopulate(extend = false) {
+  return [
+    {
+      path: "user",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "username firstname lastname thumbnails" : "username",
+    },
+    {
+      path: "genres",
+      match: { deleted_at: { $exists: false } },
+      select: "name",
+    },
+    {
+      path: "liked_by",
+      match: { deleted_at: { $exists: false } },
+      select: "username",
+    },
+  ];
+}
+
 /* Statics */
 
 TrackSchema.statics.getNumPages = function (filter = {}) {
@@ -126,37 +149,28 @@ TrackSchema.statics.getNumPages = function (filter = {}) {
     });
 };
 
-TrackSchema.statics.getTracks = function (page = 1, sort = "created_at", order = "asc", uid) {
+TrackSchema.statics.getTrack = function (id, options = {}) {
+  const { extend = false } = options;
+
+  const populate = getPopulate(extend);
+
+  return this.findById(id).notDeleted().populate(populate);
+};
+
+TrackSchema.statics.getTracks = function (options = {}) {
+  const { page = 1, sort = "created_at", order = "asc" } = options;
+
   const limit = 10;
   const start = (page - 1) * limit;
 
-  return this.find({ user: uid })
+  const populate = getPopulate();
+
+  return this.find()
     .notDeleted()
+    .populate(populate)
     .sort({ [sort]: order })
     .skip(start)
     .limit(limit);
-};
-
-TrackSchema.statics.getTrack = function (id, extend = false) {
-  const populate = [
-    {
-      path: "user",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "username firstname lastname thumbnails" : "id",
-    },
-    {
-      path: "genres",
-      match: { deleted_at: { $exists: false } },
-      select: "name",
-    },
-    {
-      path: "liked_by",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "name" : "id",
-    },
-  ];
-
-  return this.findById(id).notDeleted().populate(populate);
 };
 
 TrackSchema.statics.createTrack = function (idUser, data) {
@@ -237,24 +251,13 @@ TrackSchema.statics.getPlayed = async function (id) {
   );
 };
 
-TrackSchema.statics.getUserTracks = function (idUser, options) {
+TrackSchema.statics.getUserTracks = function (idUser, options = {}) {
   const { page = 1, sort = "created_at", order = "asc", extend = false } = options;
 
   const limit = 10;
   const start = (page - 1) * limit;
 
-  const populate = [
-    {
-      path: "genres",
-      match: { deleted_at: { $exists: false } },
-      select: "name",
-    },
-    {
-      path: "liked_by",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "name" : "id",
-    },
-  ];
+  const populate = getPopulate(extend);
 
   return this.find({ user: idUser })
     .notDeleted()
