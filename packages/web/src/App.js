@@ -58,15 +58,23 @@ function App() {
           <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
           <Route path={ROUTES.LOGIN} element={<Login />} />
           <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-          {isAuthenticated && <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
-            <Route path={ROUTES.HOME} exact element={<Home />} />
-          </Route>}
-          {isAuthenticated && <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
-            <Route path={ROUTES.EDIT_PROFILE} element={<EditProfile />} />
-          </Route>}
-          {isAuthenticated && <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
-            <Route path='*' element={<NotFound />} />
-          </Route>}
+          {isAuthenticated ? (
+            <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
+              <Route path={ROUTES.HOME} exact element={<Home />} />
+            </Route>
+          ) : (
+            <Route path={ROUTES.HOME} exact element={<Navigate to="/login" />} />
+          )}
+          {isAuthenticated && (
+            <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
+              <Route path={ROUTES.EDIT_PROFILE} element={<EditProfile />} />
+            </Route>
+          )}
+          {isAuthenticated && (
+            <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          )}
         </Routes>
       </>
     </ThemeProvider>
@@ -81,7 +89,7 @@ PrivateWrapper.propTypes = {
 
 PrivateWrapper.defaultProps = {
   auth: {
-    isAuthenticated: false
+    isAuthenticated: false,
   },
 };
 

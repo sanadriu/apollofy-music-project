@@ -9,17 +9,19 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 
-import { authSelector, signOut } from "../../../redux/auth";
-import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
+import { signOut } from "../../../redux/auth";
+import { SmallText } from "../../atoms/SmallText/SmallText";
 import { rightSideBar } from "../../atoms/RightSideBar/RightSideBar";
+import { userSelector } from "../../../redux/user";
 
 const MenuLayout = styled(rightSideBar)`
-  height: 2.5rem;
+  height: 3rem;
 `;
 
 const Button = styled.button`
   background-color: transparent;
   width: 2rem;
+  margin-top: 0.2rem;
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -27,11 +29,16 @@ const Button = styled.button`
 
 const ProfilePicture = styled.img`
   width: 2rem;
+  height: 2rem;
   border-radius: 50%;
 `;
 
+const ProfileName = styled(SmallText)`
+  margin-top: 0.4rem;
+`;
+
 export default function MenuBar() {
-  const { currentUser } = useSelector(authSelector);
+  const { userData } = useSelector(userSelector);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -50,7 +57,7 @@ export default function MenuBar() {
 
   const logout = () => {
     dispatch(signOut());
-  }
+  };
 
   function handleListKeyDown(event) {
     if (event.key === "Tab") {
@@ -74,9 +81,13 @@ export default function MenuBar() {
     <MenuLayout>
       <ProfilePicture
         alt="Profile Picture"
-        src="../../../assets/images/President_Barack_Obama_Test.jpg"
+        src={
+          userData?.thumbnails?.url_default
+            ? userData.thumbnails.url_default
+            : "https://res.cloudinary.com/stringifiers/image/upload/v1643731517/gidnkoxyrdltjkklfkcw.jpg"
+        }
       />
-      <HomeSmallText>{currentUser.name}</HomeSmallText>
+      <ProfileName>{userData?.username}</ProfileName>
       <Button
         ref={anchorRef}
         id="composition-button"

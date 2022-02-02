@@ -7,4 +7,5 @@ export const FlexColumn = styled.div`
   padding: 1rem;
   justify-content: center;
   align-items: center;
+  flex-grow: 1;
 `;

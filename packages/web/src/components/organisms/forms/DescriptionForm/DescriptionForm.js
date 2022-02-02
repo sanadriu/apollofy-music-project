@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,7 +14,10 @@ import {
   signUpRequest,
   signUpWithEmailRequest,
   setCurrentUser,
+  signUpSuccess,
 } from "../../../../redux/auth";
+import { getCurrentUserToken } from "../../../../services/auth";
+import { updateNewUser } from "../../../../api";
 
 const DescriptionArea = styled.textarea`
   width: 22rem;
@@ -28,20 +30,30 @@ export default function DescriptionForm() {
   const [value, setValue] = useState("");
   const dispatch = useDispatch();
   const { currentUser } = useSelector(authSelector);
-  const navigate = useNavigate();
 
   function handleDescription() {
     if (value.length <= 250) {
       dispatch(signUpRequest());
       const updatedCurrentUser = {
-        ...currentUser,
+        username: currentUser.name,
+        email: currentUser.email,
+        thumbnails: {
+          url_default: currentUser.pictureLink,
+        },
+        birth_date: currentUser.birth_date.toISOString().substring(0, 10),
         description: value,
       };
 
       dispatch(setCurrentUser(updatedCurrentUser));
+
       try {
-        dispatch(signUpWithEmailRequest(updatedCurrentUser.email, updatedCurrentUser.password));
-        navigate("/");
+        dispatch(
+          signUpWithEmailRequest(
+            updatedCurrentUser.email,
+            currentUser.password,
+            updatedCurrentUser,
+          ),
+        );
       } catch (err) {
         alert(err.message);
       }

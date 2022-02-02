@@ -15,14 +15,6 @@ function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    (async function userToken() {
-      const req = await getCurrentUserToken();
-      const user = await API.getUser(req);
-      dispatch(saveUserData(user.data.data));
-    })();
-  }, []);
-
   function logout() {
     dispatch(signOut());
     dispatch(userLoggedOut());
@@ -36,7 +28,9 @@ function Home() {
   return (
     <main className="p-4">
       <section className="p-4">
-        {currentUser && <h1 className="text-xl">Hello {currentUser.username}</h1>}
+        {currentUser && (
+          <h1 className="text-xl">Hello {currentUser.username && currentUser.username}</h1>
+        )}
         <button type="button" onClick={logout}>
           Logout
         </button>

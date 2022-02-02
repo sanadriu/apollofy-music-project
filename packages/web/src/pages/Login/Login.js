@@ -32,8 +32,8 @@ const MainFlex = styled.div`
 `;
 
 const Title = styled.h1`
-  font: Readex Pro;
   font-size: 4rem;
+  text-align: center;
 `;
 
 const ResetButton = styled.button`
