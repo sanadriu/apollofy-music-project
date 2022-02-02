@@ -128,9 +128,7 @@ function getPopulate(extend = false) {
 
 /* Statics */
 
-PlaylistSchema.statics.getNumPages = function (filter = {}) {
-  const limit = 10;
-
+PlaylistSchema.statics.getNumPages = function (limit = 10, filter = {}) {
   return this.countDocuments(filter)
     .notDeleted()
     .then((count) => {
@@ -147,9 +145,8 @@ PlaylistSchema.statics.getPlaylist = function (id, options = {}) {
 };
 
 PlaylistSchema.statics.getPlaylists = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc" } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10 } = options;
 
-  const limit = 10;
   const start = (page - 1) * limit;
 
   const populate = getPopulate();
