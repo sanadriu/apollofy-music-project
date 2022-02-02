@@ -24,3 +24,7 @@ export function updateUser(authToken, username, email) {
     data: { username: username && username, email: email && email },
   });
 }
+
+export function updateNewUser() {
+  //
+}

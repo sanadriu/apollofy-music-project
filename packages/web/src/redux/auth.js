@@ -23,6 +23,7 @@ export const SET_NAME_EMAIL_PASSWORD = "SET_NAME_EMAIL_PASSWORD";
 export const SET_DATE_OF_BIRTH = "SET_DATE_OF_BIRTH";
 export const SET_PROFILE_PICTURE = "SET_PROFILE_PICTURE";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+export const SET_PICTURE_LINK = "SET_PICTURE_LINK";
 
 // action creators
 
@@ -64,7 +65,8 @@ export function signUpWithEmailRequest(email, password) {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
     try {
-      await authService.singUpWithEmailAndPassword(email, password);
+      const res = await authService.singUpWithEmailAndPassword(email, password);
+      console.log(res);
     } catch (error) {
       dispatch(signUpError(error.message));
     }
@@ -194,6 +196,11 @@ export const setCurrentUser = (value) => ({
   payload: value,
 });
 
+export const setPictureLink = (value) => ({
+  type: SET_PICTURE_LINK,
+  payload: value,
+});
+
 // reducer
 
 export const initialState = {
@@ -210,6 +217,7 @@ export const initialState = {
     email: null,
     password: null,
     passwordConfirmation: null,
+    pictureLink: null,
   },
 };
 
@@ -332,6 +340,16 @@ const AuthReducer = (state = initialState, action) => {
         },
       };
     }
+    case SET_PICTURE_LINK: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          pictureLink: payload,
+        },
+      };
+    }
+
     case SET_CURRENT_USER: {
       return {
         ...state,

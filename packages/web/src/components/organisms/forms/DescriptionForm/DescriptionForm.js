@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -28,7 +27,6 @@ export default function DescriptionForm() {
   const [value, setValue] = useState("");
   const dispatch = useDispatch();
   const { currentUser } = useSelector(authSelector);
-  const navigate = useNavigate();
 
   function handleDescription() {
     if (value.length <= 250) {
@@ -41,7 +39,6 @@ export default function DescriptionForm() {
       dispatch(setCurrentUser(updatedCurrentUser));
       try {
         dispatch(signUpWithEmailRequest(updatedCurrentUser.email, updatedCurrentUser.password));
-        navigate("/");
       } catch (err) {
         alert(err.message);
       }
