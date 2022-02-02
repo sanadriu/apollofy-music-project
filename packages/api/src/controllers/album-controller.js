@@ -5,9 +5,9 @@ const { filterUserTracks } = require("./utils");
 
 async function getAlbums(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc" } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", limit = 10 } = req.query;
 
-    const pages = await Album.getNumPages();
+    const pages = await Album.getNumPages(limit);
 
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
@@ -36,7 +36,7 @@ async function getAlbums(req, res, next) {
       });
     }
 
-    const dbRes = await Album.getAlbums({ page, sort, order });
+    const dbRes = await Album.getAlbums({ page, sort, order, limit });
 
     return res.status(200).send({
       data: dbRes,

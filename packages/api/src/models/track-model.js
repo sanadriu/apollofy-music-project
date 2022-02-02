@@ -1,6 +1,5 @@
 const { Schema, model, Types } = require("mongoose");
 const { isURL, isDate } = require("validator");
-const { populate } = require("./user-model");
 
 const TrackSchema = new Schema(
   {
@@ -139,9 +138,7 @@ function getPopulate(extend = false) {
 
 /* Statics */
 
-TrackSchema.statics.getNumPages = function (filter = {}) {
-  const limit = 10;
-
+TrackSchema.statics.getNumPages = function (limit = 10, filter = {}) {
   return this.countDocuments(filter)
     .notDeleted()
     .then((count) => {
@@ -158,9 +155,8 @@ TrackSchema.statics.getTrack = function (id, options = {}) {
 };
 
 TrackSchema.statics.getTracks = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc" } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10 } = options;
 
-  const limit = 10;
   const start = (page - 1) * limit;
 
   const populate = getPopulate();
