@@ -9,6 +9,7 @@ import * as API from "../../api";
 import { authSelector, signOut } from "../../redux/auth";
 import { fetchingUserData, saveUserData, fetchSuccess, userLoggedOut } from "../../redux/user";
 import { getCurrentUserToken } from "../../services/auth";
+import Tracks from "../../components/organisms/Tracks";
 
 function Home() {
   const { currentUser } = useSelector(authSelector);
@@ -43,6 +44,9 @@ function Home() {
         <button type="button" onClick={editProfile}>
           Edit Profile
         </button>
+      </section>
+      <section>
+        <Tracks />
       </section>
     </main>
   );
