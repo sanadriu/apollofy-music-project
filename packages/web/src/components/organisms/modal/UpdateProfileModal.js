@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -9,6 +10,7 @@ import { useTheme } from "@mui/material/styles";
 import styled from "styled-components";
 import { auth, getCurrentUserToken } from "../../../services/auth";
 import { updateUser } from "../../../api/api-users";
+import { saveUserData } from "../../../redux/user";
 
 // eslint-disable-next-line react/prop-types
 const TextField = styled.input`
@@ -29,12 +31,34 @@ export default function UpdateProfileModal({
   email,
   password,
   username,
+  birthDay,
 }) {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [updatedEmail, setUpdatedEmail] = React.useState(null);
   const [updatedUsername, setUpdatedUsername] = React.useState(null);
+  const [updatedBirthday, setUpdatedBirthday] = React.useState(null);
+
+  const setTargetValue = (target) => {
+    console.log(updatedEmail, updatedUsername, updatedBirthday);
+    if (email) {
+      setUpdatedEmail({ email: target.value });
+      setUpdatedUsername(null);
+      setUpdatedBirthday(null);
+    }
+    if (username) {
+      setUpdatedEmail(null);
+      setUpdatedBirthday(null);
+      setUpdatedUsername({ username: target.value });
+    }
+    if (birthDay) {
+      setUpdatedEmail(null);
+      setUpdatedUsername(null);
+      setUpdatedBirthday({ birth_date: target.value });
+    }
+  };
 
   const sendUpdate = async () => {
     if (password) {
@@ -45,8 +69,19 @@ export default function UpdateProfileModal({
     const userToken = await getCurrentUserToken();
 
     if (userToken) {
-      updateUser(userToken, updatedUsername, updatedEmail);
+      const res = await updateUser(
+        userToken,
+        (updatedUsername && updatedUsername) ||
+          (updatedEmail && updatedEmail) ||
+          (updatedBirthday && updatedBirthday),
+      );
+
+      if (res) {
+        dispatch(saveUserData(res.data.data));
+      }
     }
+
+    handleClose();
   };
 
   return (
@@ -59,19 +94,25 @@ export default function UpdateProfileModal({
       >
         <DialogTitle id="responsive-dialog-title">
           Please Enter Your new{" "}
-          {(email && "Email Address") || (password && "Password") || (username && "Username")}
+          {(email && "Email Address") ||
+            (password && "Password") ||
+            (username && "Username") ||
+            (birthDay && "Birthday")}
         </DialogTitle>
         <TextField
-          type={(email && "email") || (password && "password") || (username && "text")}
+          type={
+            (email && "email") ||
+            (password && "password") ||
+            (username && "text") ||
+            (birthDay && "date")
+          }
           placeholder={
             (email && "email@mail.com") ||
             (password && "Click on Agree to send a password reset link") ||
-            (username && "new username")
+            (username && "new username") ||
+            (birthDay && "change your birthday")
           }
-          onChange={(e) => {
-            email && setUpdatedEmail(e.target.value);
-            username && setUpdatedUsername(e.target.value);
-          }}
+          onChange={(e) => setTargetValue(e.target)}
           disabled={password && true}
         />
         <DialogActions>

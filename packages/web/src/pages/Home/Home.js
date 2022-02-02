@@ -6,12 +6,11 @@ import * as ROUTES from "../../routes";
 import withLayout from "../../components/hoc/withLayout";
 import * as API from "../../api";
 
-import { authSelector, signOut } from "../../redux/auth";
-import { fetchingUserData, saveUserData, fetchSuccess, userLoggedOut } from "../../redux/user";
-import { getCurrentUserToken } from "../../services/auth";
+import { signOut } from "../../redux/auth";
+import { userLoggedOut, userSelector } from "../../redux/user";
 
 function Home() {
-  const { currentUser } = useSelector(authSelector);
+  const { userData } = useSelector(userSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,16 +20,13 @@ function Home() {
   }
 
   async function editProfile() {
-    dispatch(fetchSuccess());
     navigate(ROUTES.EDIT_PROFILE);
   }
 
   return (
     <main className="p-4">
       <section className="p-4">
-        {currentUser && (
-          <h1 className="text-xl">Hello {currentUser.username && currentUser.username}</h1>
-        )}
+        {userData && <h1 className="text-xl">Hello {userData.username && userData.username}</h1>}
         <button type="button" onClick={logout}>
           Logout
         </button>

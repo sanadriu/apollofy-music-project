@@ -160,7 +160,7 @@ async function updateUser(req, res, next) {
     }
 
     return res.status(200).send({
-      data: null,
+      data: dbRes,
       success: true,
       message: "User updated successfully",
     });

@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 import api, { updateNewUser } from "../api";
 import * as authService from "../services/auth";
 import * as API from "../api";
-import { saveUserData } from "./user";
+import { fetchSuccess, saveUserData } from "./user";
 
 // action types
 
@@ -111,6 +111,7 @@ export function signInWithEmailRequest(email, password) {
 
       await api.signUp({ Authorization: `Bearer ${token}` });
       const user = await API.getUser(token);
+      dispatch(fetchSuccess());
       dispatch(saveUserData(user.data.data));
       return dispatch(signInSuccess());
     } catch (error) {
