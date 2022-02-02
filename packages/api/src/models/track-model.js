@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require("mongoose");
+const { Schema, model } = require("mongoose");
 const { isURL, isDate } = require("validator");
 
 const TrackSchema = new Schema(
@@ -42,11 +42,12 @@ const TrackSchema = new Schema(
       trim: true,
     },
     genres: {
-      type: [Types.ObjectId],
-      ref: "genre",
+      type: [String],
+      trim: true,
     },
     liked_by: {
       type: [String],
+      trim: true,
       ref: "user",
     },
     thumbnails: {
@@ -124,11 +125,6 @@ function getPopulate(extend = false) {
       select: extend ? "username firstname lastname thumbnails" : "username",
     },
     {
-      path: "genres",
-      match: { deleted_at: { $exists: false } },
-      select: "name",
-    },
-    {
       path: "liked_by",
       match: { deleted_at: { $exists: false } },
       select: "username",
@@ -155,13 +151,14 @@ TrackSchema.statics.getTrack = function (id, options = {}) {
 };
 
 TrackSchema.statics.getTracks = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc", limit = 10 } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, genre } = options;
 
   const start = (page - 1) * limit;
 
   const populate = getPopulate();
+  const filter = genre ? { genres: { $in: [genre] } } : {};
 
-  return this.find()
+  return this.find(filter)
     .notDeleted()
     .populate(populate)
     .sort({ [sort]: order })

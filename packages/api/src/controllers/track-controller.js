@@ -3,7 +3,7 @@ const { Track, User } = require("../models");
 
 async function getTracks(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc", limit = 10 } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", limit = 10, genre } = req.query;
 
     const pages = await Track.getNumPages(limit);
 
@@ -25,7 +25,7 @@ async function getTracks(req, res, next) {
       });
     }
 
-    const dbRes = await Track.getTracks({ page, sort, order, limit });
+    const dbRes = await Track.getTracks({ page, sort, order, limit, genre });
 
     res.status(200).send({
       data: dbRes,
