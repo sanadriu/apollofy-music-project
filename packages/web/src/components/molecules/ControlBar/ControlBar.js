@@ -8,6 +8,7 @@ const Bar = styled.nav`
   flex-direction: column;
   gap: 1.5rem;
   padding: 0.5rem;
+  margin-top: 0.5rem;
 `;
 
 export default function ControlBar() {
