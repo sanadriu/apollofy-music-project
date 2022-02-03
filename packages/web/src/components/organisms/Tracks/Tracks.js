@@ -7,31 +7,29 @@ import { useTracks } from "../../../hooks/useTracks";
 
 import TrackDetail from "../../molecules/TrackDetail";
 
-const currentLimit = 10;
-
 export default function Tracks() {
   const params = useParams();
-  const selectedGenre = params ? params.genre : '';
+  const selectedGenre = params ? params.genre : undefined;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [currentGenre, setSelectedGenre] = useState(selectedGenre);
 
   const queryClient = useQueryClient();
-  const { data: tracks, isError, error, isLoading } = useTracks(currentLimit, currentPage, currentGenre);
+  const { data: tracks, isError, error, isLoading } = useTracks(currentPage, currentGenre);
 
   const maxTrackPage = tracks?.data?.pages;
 
   useEffect(() => {
     if (currentPage < maxTrackPage) {
       const nextPage = currentPage + 1;
-      const nextGenre = (!currentGenre) ? '' : currentGenre;
+      const nextGenre = (!currentGenre) ? undefined : currentGenre;
       queryClient.prefetchQuery(
         ["tracks", nextPage, nextGenre],
-        () => tracksApi.getTracks(currentLimit, nextPage, currentGenre)
+        () => tracksApi.getTracks(nextPage, nextGenre)
       )
     }
-  }, [currentPage, currentGenre, queryClient])
+  }, [currentPage, currentGenre, maxTrackPage, queryClient])
 
   if (isLoading) return <h3>Loading...</h3>;
   if (isError) return (

@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const TrackDetail = ({ track }) => {
-  console.log(track);
 
   return (
     <>
