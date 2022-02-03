@@ -47,7 +47,6 @@ export default function ProfilePictureForm() {
       .post("https://api.cloudinary.com/v1_1/stringifiers/image/upload", formData)
       .then((res) => {
         setLink(res.data.secure_url);
-        console.log(res.data.secure_url);
       });
   }
 

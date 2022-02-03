@@ -8,8 +8,6 @@ const { auth } = mode === "test" ? require("../services/__mocks__") : require(".
 
 async function signUp(req, res, next) {
   const { uid, email, name } = req.user;
-  console.log(req.user);
-
   try {
     const user = await User.findOne({ email });
 

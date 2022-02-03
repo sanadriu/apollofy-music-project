@@ -44,7 +44,7 @@ export function ExampleAudioPlayer() {
         // string - wrapper's class name, optional, deafult: ''
         className="reproduction-bar"
         // callback function - called on did mount, optional, default: noop
-        onDidMount={console.log}
+        onDidMount={console.log("hello")}
         // default player state, optional
         defaultState={{
           // boolean - is player muted, optional, default: false

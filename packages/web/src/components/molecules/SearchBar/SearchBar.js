@@ -47,8 +47,6 @@ export default function SearchBar() {
 
   function handleSearch(e) {
     e.preventDefault();
-
-    console.log(search);
   }
   return (
     <Layout>

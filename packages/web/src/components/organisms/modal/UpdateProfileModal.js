@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import axios from "axios";
 import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -32,6 +33,7 @@ export default function UpdateProfileModal({
   password,
   username,
   birthDay,
+  profilePic,
 }) {
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -40,22 +42,27 @@ export default function UpdateProfileModal({
   const [updatedEmail, setUpdatedEmail] = React.useState(null);
   const [updatedUsername, setUpdatedUsername] = React.useState(null);
   const [updatedBirthday, setUpdatedBirthday] = React.useState(null);
+  const [fileLoading, setFileLoading] = React.useState(false);
+  const [newProfileLink, setNewProfieLink] = React.useState("");
 
   const setTargetValue = (target) => {
     if (email) {
       setUpdatedEmail({ email: target.value });
       setUpdatedUsername(null);
       setUpdatedBirthday(null);
+      setFileLoading(false);
     }
     if (username) {
       setUpdatedEmail(null);
       setUpdatedBirthday(null);
       setUpdatedUsername({ username: target.value });
+      setFileLoading(false);
     }
     if (birthDay) {
       setUpdatedEmail(null);
       setUpdatedUsername(null);
       setUpdatedBirthday({ birth_date: target.value });
+      setFileLoading(false);
     }
   };
 
@@ -72,7 +79,8 @@ export default function UpdateProfileModal({
         userToken,
         (updatedUsername && updatedUsername) ||
           (updatedEmail && updatedEmail) ||
-          (updatedBirthday && updatedBirthday),
+          (updatedBirthday && updatedBirthday) ||
+          (newProfileLink && newProfileLink),
       );
 
       if (res) {
@@ -83,6 +91,23 @@ export default function UpdateProfileModal({
     handleClose();
   };
 
+  async function uploadImage(files) {
+    const formData = new FormData();
+    setFileLoading(true);
+
+    formData.append("file", files[0]);
+    formData.append("upload_preset", "crm5jzoc");
+
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/stringifiers/image/upload",
+      formData,
+    );
+    if (res) {
+      setNewProfieLink({ thumbnails: { url_default: res.data.secure_url } });
+      setFileLoading(false);
+    }
+  }
+
   return (
     <div>
       <Dialog
@@ -92,18 +117,19 @@ export default function UpdateProfileModal({
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          Please Enter Your new{" "}
-          {(email && "Email Address") ||
-            (password && "Password") ||
-            (username && "Username") ||
-            (birthDay && "Birthday")}
+          {(email && "Please Enter Your new Email Address") ||
+            (password && "Please Enter Your new Password") ||
+            (username && "Please Enter Your new Username") ||
+            (birthDay && "Please Enter Your new Birthday") ||
+            (profilePic && "Select your new profile picture")}
         </DialogTitle>
         <TextField
           type={
             (email && "email") ||
             (password && "password") ||
             (username && "text") ||
-            (birthDay && "date")
+            (birthDay && "date") ||
+            (profilePic && "file")
           }
           placeholder={
             (email && "email@mail.com") ||
@@ -111,14 +137,20 @@ export default function UpdateProfileModal({
             (username && "new username") ||
             (birthDay && "change your birthday")
           }
-          onChange={(e) => setTargetValue(e.target)}
+          onChange={(e) => (profilePic ? uploadImage(e.target.files) : setTargetValue(e.target))}
           disabled={password && true}
         />
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="outlined" color="error" onClick={sendUpdate} autoFocus>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={sendUpdate}
+            autoFocus
+            disabled={fileLoading && true}
+          >
             Agree
           </Button>
         </DialogActions>
