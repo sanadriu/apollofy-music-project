@@ -263,7 +263,7 @@ async function getUserPlaylists(req, res, next) {
       pages,
     });
   } catch (message) {
-    next(error);
+    next(message);
   }
 }
 

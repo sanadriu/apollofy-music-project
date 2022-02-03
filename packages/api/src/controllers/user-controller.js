@@ -1,6 +1,7 @@
 const { User } = require("../models");
 const { getUserProfile } = require("./utils");
 const { mode } = require("../config");
+// eslint-disable-next-line jest/no-mocks-import
 const { auth } = mode === "test" ? require("../services/__mocks__") : require("../services");
 
 async function signUp(req, res, next) {
