@@ -5,13 +5,13 @@ import { SmallText } from "../../atoms/SmallText/SmallText";
 import { useTracks } from "../../../hooks/useTracks";
 import TrackDetail from "../../molecules/TrackDetail/TrackDetail";
 
-const Layout = styled.div`
+export const SectionLayout = styled.div`
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
 `;
 
-const TracksList = styled(Layout)`
+const TracksList = styled(SectionLayout)`
   margin-top: 0;
   background-color: lightgray;
   border-radius: 1.3rem;
@@ -29,13 +29,13 @@ export default function PopularTracks() {
   const { data: tracks, isError, error, isLoading } = useTracks({ currentLimit, currentPage });
 
   return (
-    <Layout>
+    <SectionLayout>
       <SmallText>Popular Tracks</SmallText>
       <TracksList>
         {tracks?.data?.data?.map((track) => (
           <TrackDetail key={track.id} track={track} />
         ))}
       </TracksList>
-    </Layout>
+    </SectionLayout>
   );
 }

@@ -2,9 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import HeadphonesIcon from "@mui/icons-material/Headphones";
 
 import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
 import { DetailText } from "../../atoms/DetailText/DetailText";
+import ProfilePlayTrack from "../../atoms/ProfilePlayTrack/ProfilePlayTrack";
 
 const TrackLayout = styled.div`
   display: flex;
@@ -29,6 +31,7 @@ const TrackFlex = styled.div`
   flex-direction: column;
   justify-content: start;
   padding-left: 0.5rem;
+  flex-grow: 1;
 `;
 
 const TrackLink = styled(Link)`
@@ -38,6 +41,21 @@ const TrackLink = styled(Link)`
   &:hover {
     color: white;
   }
+`;
+
+const StyledNumTrack = styled.div`
+  font-family: ${({ theme }) => theme.fonts.primary};
+  margin-left: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  width: 20%;
+`;
+
+const StyledNumber = styled.div`
+  padding-left: 0.5rem;
+  font-weight: 500;
 `;
 
 const TrackDetail = ({ track }) => {
@@ -52,6 +70,11 @@ const TrackDetail = ({ track }) => {
           <DetailText>{track.user.username}</DetailText>
         </TrackLink>
       </TrackFlex>
+      <StyledNumTrack>
+        <HeadphonesIcon sx={{ color: "purple" }} />
+        <StyledNumber>{track.num_plays}</StyledNumber>
+      </StyledNumTrack>
+      <ProfilePlayTrack />
     </TrackLayout>
   );
 };

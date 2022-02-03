@@ -5,7 +5,6 @@ export const FlexColumn = styled.div`
   flex-direction: column;
   gap: 2rem;
   padding: 1rem;
-  justify-content: center;
   align-items: center;
   flex-grow: 1;
 `;
