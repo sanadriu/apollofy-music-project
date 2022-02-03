@@ -7,7 +7,6 @@ import { useTracks } from "../../../hooks/useTracks";
 
 import TrackDetail from "../../molecules/TrackDetail";
 
-const maxTrackPage = 10;
 const currentLimit = 10;
 
 export default function Tracks() {
@@ -20,6 +19,8 @@ export default function Tracks() {
 
   const queryClient = useQueryClient();
   const { data: tracks, isError, error, isLoading } = useTracks(currentLimit, currentPage, currentGenre);
+
+  const maxTrackPage = tracks?.data?.pages;
 
   useEffect(() => {
     if (currentPage < maxTrackPage) {

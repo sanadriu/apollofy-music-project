@@ -50,9 +50,9 @@ describe("playlist-schema", () => {
         user: ` ${user} `,
       };
 
-      const createdTrack = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdTrack).toHaveProperty("user", user);
+      expect(createdPlaylist).toHaveProperty("user", user);
     });
   });
 
@@ -79,9 +79,9 @@ describe("playlist-schema", () => {
         title: ` ${title} `,
       };
 
-      const createdTrack = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdTrack).toHaveProperty("title", title);
+      expect(createdPlaylist).toHaveProperty("title", title);
     });
   });
 
@@ -96,9 +96,9 @@ describe("playlist-schema", () => {
         description: ` ${description} `,
       };
 
-      const createdUser = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdUser).toHaveProperty("description", description);
+      expect(createdPlaylist).toHaveProperty("description", description);
     });
   });
 
@@ -113,9 +113,9 @@ describe("playlist-schema", () => {
         color: ` ${color} `,
       };
 
-      const createdUser = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdUser).toHaveProperty("color", color);
+      expect(createdPlaylist).toHaveProperty("color", color);
     });
   });
 
@@ -140,12 +140,12 @@ describe("playlist-schema", () => {
         tracks: ["foo"],
       };
 
-      await PlaylistModel.create(validPlaylist01).then((createdTrack) => {
-        expect(createdTrack.tracks[0].toString()).toBe(idTrack);
+      await PlaylistModel.create(validPlaylist01).then((createdPlaylist) => {
+        expect(createdPlaylist.tracks[0].toString()).toBe(idTrack);
       });
 
-      await PlaylistModel.create(validPlaylist02).then((createdTrack) => {
-        expect(createdTrack.tracks[0].toString()).toBe(idTrack);
+      await PlaylistModel.create(validPlaylist02).then((createdPlaylist) => {
+        expect(createdPlaylist.tracks[0].toString()).toBe(idTrack);
       });
 
       await PlaylistModel.create(invalidPlaylist).catch((error) => {
@@ -170,12 +170,12 @@ describe("playlist-schema", () => {
         followed_by: idUser,
       };
 
-      await PlaylistModel.create(validPlaylist01).then((createdTrack) => {
-        expect(createdTrack.followed_by[0]).toBe(idUser);
+      await PlaylistModel.create(validPlaylist01).then((createdPlaylist) => {
+        expect(createdPlaylist.followed_by[0]).toBe(idUser);
       });
 
-      await PlaylistModel.create(validPlaylist02).then((createdTrack) => {
-        expect(createdTrack.followed_by[0]).toBe(idUser);
+      await PlaylistModel.create(validPlaylist02).then((createdPlaylist) => {
+        expect(createdPlaylist.followed_by[0]).toBe(idUser);
       });
     });
   });
@@ -194,9 +194,9 @@ describe("playlist-schema", () => {
         },
       };
 
-      const createdTrack = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdTrack).toHaveProperty("thumbnails.url_default", url);
+      expect(createdPlaylist).toHaveProperty("thumbnails.url_default", url);
     });
 
     test("7.2. Thumbnail URL must be valid", async () => {
@@ -215,9 +215,7 @@ describe("playlist-schema", () => {
       try {
         await PlaylistModel.create(playlist);
       } catch (error) {
-        expect(error.errors["thumbnails.url_default"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_default"].properties.type).toBe("user defined");
       }
     });
   });
@@ -236,9 +234,9 @@ describe("playlist-schema", () => {
         },
       };
 
-      const createdTrack = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdTrack).toHaveProperty("thumbnails.url_medium", url);
+      expect(createdPlaylist).toHaveProperty("thumbnails.url_medium", url);
     });
 
     test("8.2. Thumbnail URL must be valid", async () => {
@@ -257,9 +255,7 @@ describe("playlist-schema", () => {
       try {
         await PlaylistModel.create(playlist);
       } catch (error) {
-        expect(error.errors["thumbnails.url_medium"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_medium"].properties.type).toBe("user defined");
       }
     });
   });
@@ -278,9 +274,9 @@ describe("playlist-schema", () => {
         },
       };
 
-      const createdTrack = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdTrack).toHaveProperty("thumbnails.url_large", url);
+      expect(createdPlaylist).toHaveProperty("thumbnails.url_large", url);
     });
 
     test("9.2. Thumbnail URL must be valid", async () => {
@@ -299,9 +295,7 @@ describe("playlist-schema", () => {
       try {
         await PlaylistModel.create(playlist);
       } catch (error) {
-        expect(error.errors["thumbnails.url_large"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_large"].properties.type).toBe("user defined");
       }
     });
   });
@@ -317,9 +311,9 @@ describe("playlist-schema", () => {
         followed_by: Array.from({ length }, () => getRandomSequence(28)),
       };
 
-      const createdTrack = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdTrack).toHaveProperty("num_followers", length);
+      expect(createdPlaylist).toHaveProperty("num_followers", length);
     });
 
     test("10.2. Value is readonly / cannot be overwritten (virtual)", async () => {
@@ -330,12 +324,9 @@ describe("playlist-schema", () => {
         num_followers: 1000,
       };
 
-      const createdTrack = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdTrack).toHaveProperty(
-        "num_followers",
-        createdTrack.followed_by.length,
-      );
+      expect(createdPlaylist).toHaveProperty("num_followers", createdPlaylist.followed_by.length);
     });
   });
 
@@ -350,9 +341,9 @@ describe("playlist-schema", () => {
         tracks: Array.from({ length }, () => new Types.ObjectId().toString()),
       };
 
-      const createdTrack = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdTrack).toHaveProperty("num_tracks", length);
+      expect(createdPlaylist).toHaveProperty("num_tracks", length);
     });
 
     test("11.2. Value is readonly / cannot be overwritten (virtual)", async () => {
@@ -363,12 +354,9 @@ describe("playlist-schema", () => {
         num_tracks: 1000,
       };
 
-      const createdTrack = await PlaylistModel.create(playlist);
+      const createdPlaylist = await PlaylistModel.create(playlist);
 
-      expect(createdTrack).toHaveProperty(
-        "num_tracks",
-        createdTrack.tracks.length,
-      );
+      expect(createdPlaylist).toHaveProperty("num_tracks", createdPlaylist.tracks.length);
     });
   });
 });
