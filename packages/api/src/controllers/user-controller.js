@@ -3,6 +3,7 @@ const { Types } = require("mongoose");
 const { User, Playlist, Album, Track } = require("../models");
 const { getUserProfile } = require("./utils");
 const { mode } = require("../config");
+// eslint-disable-next-line jest/no-mocks-import
 const { auth } = mode === "test" ? require("../services/__mocks__") : require("../services");
 
 async function signUp(req, res, next) {
@@ -43,9 +44,9 @@ async function signOut(req, res) {
 
 async function getUsers(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc" } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", limit } = req.query;
 
-    const pages = await User.getNumPages();
+    const pages = await User.getNumPages(limit);
 
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
@@ -80,7 +81,7 @@ async function getUsers(req, res, next) {
       });
     }
 
-    const dbRes = await User.getUsers(page, sort, order);
+    const dbRes = await User.getUsers({ page, sort, order, limit }).select("-email");
 
     return res.status(200).send({
       data: dbRes,
@@ -98,7 +99,7 @@ async function getSingleUser(req, res, next) {
     const { idUser } = req.params;
     const { extend = false } = req.query;
 
-    const dbRes = await User.getUser(idUser, extend);
+    const dbRes = await User.getUser(idUser, { extend }).select("-email");
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -121,10 +122,9 @@ async function getSingleUser(req, res, next) {
 async function getSelfUser(req, res, next) {
   try {
     const { uid } = req.user;
-
     const { extend = false } = req.query;
 
-    const dbRes = await User.getUser(uid, extend);
+    const dbRes = await User.getUser(uid, { extend });
 
     if (dbRes === null) {
       return res.status(404).send({

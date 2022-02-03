@@ -10,13 +10,13 @@ const {
 async function seedUserCollection(length = 1) {
   const users = Array.from({ length }, () => createSampleUser());
 
-  return await models.User.insertMany(users).then((docs) => docs.map(({ _id }) => _id));
+  return await models.User.insertMany(users).then((docs) => docs.map(({ id }) => id));
 }
 
 async function seedGenreCollection(length = 1) {
   const genres = Array.from({ length }, () => createSampleGenre());
 
-  return await models.Genre.insertMany(genres).then((docs) => docs.map(({ _id }) => _id));
+  return await models.Genre.insertMany(genres).then((docs) => docs.map(({ name }) => name));
 }
 
 async function seedTrackCollection(length = 1, users = [], genres = []) {
@@ -25,7 +25,7 @@ async function seedTrackCollection(length = 1, users = [], genres = []) {
 
   const tracks = Array.from({ length }, () => createSampleTrack(users, genres));
 
-  return await models.Track.insertMany(tracks).then((docs) => docs.map(({ _id }) => _id));
+  return await models.Track.insertMany(tracks).then((docs) => docs.map(({ id }) => id));
 }
 
 async function seedAlbumCollection(length = 1, users = [], genres = []) {
@@ -34,7 +34,7 @@ async function seedAlbumCollection(length = 1, users = [], genres = []) {
 
   const albums = Array.from({ length }, () => createSampleAlbum(users, genres));
 
-  return await models.Album.insertMany(albums).then((docs) => docs.map(({ _id }) => _id));
+  return await models.Album.insertMany(albums).then((docs) => docs.map(({ id }) => id));
 }
 
 async function seedPlaylistCollection(length = 1, users = []) {
@@ -42,7 +42,7 @@ async function seedPlaylistCollection(length = 1, users = []) {
 
   const playlists = Array.from({ length }, () => createSamplePlaylist(users));
 
-  return await models.Playlist.insertMany(playlists).then((docs) => docs.map(({ _id }) => _id));
+  return await models.Playlist.insertMany(playlists).then((docs) => docs.map(({ id }) => id));
 }
 
 async function deleteCollections() {

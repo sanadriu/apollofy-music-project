@@ -1,5 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
-const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
+
 const { isEmail, isDate, isURL } = require("validator");
 const { getHash } = require("../services/crypto");
 
@@ -157,8 +157,8 @@ UserSchema.statics.getNumPages = function () {
     });
 };
 
-UserSchema.statics.getUser = function (id, extend = false) {
-  const populate = [
+function getPopulate(extend) {
+  return [
     {
       path: "liked_albums",
       match: { deleted_at: { $exists: false } },
@@ -177,24 +177,42 @@ UserSchema.statics.getUser = function (id, extend = false) {
     {
       path: "followed_users",
       match: { deleted_at: { $exists: false } },
-      select: extend ? "username" : "id",
+      select: extend ? "username firstname lastname thumbnails" : "username",
     },
     {
       path: "followers",
       match: { deleted_at: { $exists: false } },
-      select: extend ? "username" : "id",
+      select: extend ? "username firstname lastname thumbnails" : "username",
     },
   ];
+}
+
+/* Statics */
+
+UserSchema.statics.getNumPages = function (limit = 10, filter = {}) {
+  return this.countDocuments(filter)
+    .notDeleted()
+    .then((count) => {
+      return Math.floor(count / limit) + (count % limit ? 1 : 0);
+    });
+};
+
+UserSchema.statics.getUser = function (id, options = {}) {
+  const { extend = false } = options;
+
+  const populate = getPopulate(extend);
 
   return this.findById(id).notDeleted().populate(populate);
 };
 
-UserSchema.statics.getUsers = function (page = 1, sort = "created_at", order = "asc") {
-  const limit = 10;
+UserSchema.statics.getUsers = function (options = {}) {
+  const { page = 1, sort = "created_at", order = "asc", limit = 10 } = options;
+
   const start = (page - 1) * limit;
 
   return this.find()
     .notDeleted()
+    .populate(populate)
     .sort({ [sort]: order })
     .skip(start)
     .limit(limit);
@@ -260,8 +278,6 @@ UserSchema.statics.followPlaylist = async function (id, idPlaylist) {
 UserSchema.statics.getFollowed = async function (id, idFollower) {
   return await this.switchValueInList(id, "followers", idFollower);
 };
-
-UserSchema.plugin(mongooseLeanVirtuals);
 
 const User = model("user", UserSchema);
 

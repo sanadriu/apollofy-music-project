@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require("mongoose");
+const { Schema, model } = require("mongoose");
 const { isURL, isDate } = require("validator");
 
 const TrackSchema = new Schema(
@@ -42,11 +42,12 @@ const TrackSchema = new Schema(
       trim: true,
     },
     genres: {
-      type: [Types.ObjectId],
-      ref: "genre",
+      type: [String],
+      trim: true,
     },
     liked_by: {
       type: [String],
+      trim: true,
       ref: "user",
     },
     thumbnails: {
@@ -114,11 +115,26 @@ TrackSchema.query.notDeleted = function () {
   return this.where({ deleted_at: { $exists: false } });
 };
 
+/* Population Object */
+
+function getPopulate(extend = false) {
+  return [
+    {
+      path: "user",
+      match: { deleted_at: { $exists: false } },
+      select: extend ? "username firstname lastname thumbnails" : "username",
+    },
+    {
+      path: "liked_by",
+      match: { deleted_at: { $exists: false } },
+      select: "username",
+    },
+  ];
+}
+
 /* Statics */
 
-TrackSchema.statics.getNumPages = function (filter = {}) {
-  const limit = 10;
-
+TrackSchema.statics.getNumPages = function (limit = 10, filter = {}) {
   return this.countDocuments(filter)
     .notDeleted()
     .then((count) => {
@@ -126,11 +142,23 @@ TrackSchema.statics.getNumPages = function (filter = {}) {
     });
 };
 
-TrackSchema.statics.getTracks = function (page = 1, sort = "created_at", order = "asc", uid) {
-  const limit = 10;
+TrackSchema.statics.getTrack = function (id, options = {}) {
+  const { extend = false } = options;
+
+  const populate = getPopulate(extend);
+
+  return this.findById(id).notDeleted().populate(populate);
+};
+
+TrackSchema.statics.getTracks = function (options = {}) {
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, genre } = options;
+
   const start = (page - 1) * limit;
 
-  return this.find({ user: uid })
+  const populate = getPopulate();
+  const filter = genre ? { genres: { $in: [genre] } } : {};
+
+  return this.find(filter)
     .notDeleted()
     .sort({ [sort]: order })
     .skip(start)

@@ -22,11 +22,13 @@ export default function FriendsColumn() {
       <FlexColumn>
         {userData?.followed_users && userData?.followed_users[0] ? (
           userData.followed_users.map((friend) => {
-            <FriendInfo
-              key={friend.id}
-              profilePicture={friend.thumbnails.url_default}
-              name={friend.username}
-            />;
+            return (
+              <FriendInfo
+                key={friend.id}
+                profilePicture={friend.thumbnails.url_default}
+                name={friend.username}
+              />
+            );
           })
         ) : (
           <HomeSmallText>You do not follow anyone yet</HomeSmallText>

@@ -4,10 +4,7 @@ const { Types, get } = require("mongoose");
 const AlbumModel = require("../album-model");
 const { getRandomSequence } = require("../../utils");
 const { createSampleAlbum } = require("../../db/samplers");
-const {
-  seedUserCollection,
-  seedGenreCollection,
-} = require("../../db/collections");
+const { seedUserCollection, seedGenreCollection } = require("../../db/collections");
 
 describe("album-schema", () => {
   let sample;
@@ -90,66 +87,64 @@ describe("album-schema", () => {
     });
   });
 
-  describe("3. Year", () => {
-    test("3.1. Year is required", async () => {
+  describe("3. Released date", () => {
+    test("3.1. Released date must be with format 'YYYY-MM-DD' and valid", async () => {
       expect.assertions(1);
 
-      const { year, ...album } = sample;
-
-      try {
-        await AlbumModel.create(album);
-      } catch (error) {
-        expect(error.errors.year.properties.type).toBe("required");
-      }
-    });
-
-    test("3.2. Year must be a number", async () => {
-      expect.assertions(1);
-
-      const album = {
+      const validAlbum = {
         ...sample,
-        year: "foo",
-      };
-
-      try {
-        await AlbumModel.create(album);
-      } catch (error) {
-        expect(error.errors.year.kind).toBe("Number");
-      }
-    });
-  });
-
-  describe("4. Genres", () => {
-    test("4.1. Genres must be an array of ObjectId", async () => {
-      expect.assertions(3);
-
-      const idGenre = new Types.ObjectId().toString();
-
-      const validAlbum01 = {
-        ...sample,
-        genres: [idGenre],
-      };
-
-      const validAlbum02 = {
-        ...sample,
-        genres: idGenre,
+        released_date: "2000-01-01",
       };
 
       const invalidAlbum = {
         ...sample,
-        genres: ["foo"],
+        released_date: "1st January 2000",
       };
 
-      await AlbumModel.create(validAlbum01).then((createdTrack) => {
-        expect(createdTrack.genres[0].toString()).toBe(idGenre);
-      });
-
-      await AlbumModel.create(validAlbum02).then((createdTrack) => {
-        expect(createdTrack.genres[0].toString()).toBe(idGenre);
-      });
-
+      await AlbumModel.create(validAlbum);
       await AlbumModel.create(invalidAlbum).catch((error) => {
-        expect(error.errors["genres.0"].kind).toBe("[ObjectId]");
+        expect(error.errors.released_date.properties.type).toBe("user defined");
+      });
+    });
+
+    test("3.2. Released date is trimmed", async () => {
+      expect.assertions(1);
+
+      const released_date = "2000-01-01";
+
+      const track = {
+        ...sample,
+        released_date: ` ${released_date} `,
+      };
+
+      const createdAlbum = await AlbumModel.create(track);
+
+      expect(createdAlbum).toHaveProperty("released_date", released_date);
+    });
+  });
+
+  describe("4. Genres", () => {
+    test("4.1. Genres must be an array of String", async () => {
+      expect.assertions(2);
+
+      const genre = faker.music.genre();
+
+      const validAlbum01 = {
+        ...sample,
+        genres: [genre],
+      };
+
+      const validAlbum02 = {
+        ...sample,
+        genres: genre,
+      };
+
+      await AlbumModel.create(validAlbum01).then((createdAlbum) => {
+        expect(createdAlbum.genres).toEqual([genre]);
+      });
+
+      await AlbumModel.create(validAlbum02).then((createdAlbum) => {
+        expect(createdAlbum.genres).toEqual([genre]);
       });
     });
   });
@@ -250,9 +245,7 @@ describe("album-schema", () => {
       try {
         await AlbumModel.create(album);
       } catch (error) {
-        expect(error.errors["thumbnails.url_default"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_default"].properties.type).toBe("user defined");
       }
     });
   });
@@ -292,9 +285,7 @@ describe("album-schema", () => {
       try {
         await AlbumModel.create(album);
       } catch (error) {
-        expect(error.errors["thumbnails.url_medium"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_medium"].properties.type).toBe("user defined");
       }
     });
   });
@@ -334,9 +325,7 @@ describe("album-schema", () => {
       try {
         await AlbumModel.create(album);
       } catch (error) {
-        expect(error.errors["thumbnails.url_large"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_large"].properties.type).toBe("user defined");
       }
     });
   });
@@ -367,10 +356,7 @@ describe("album-schema", () => {
 
       const createdTrack = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty(
-        "num_likes",
-        createdTrack.liked_by.length,
-      );
+      expect(createdTrack).toHaveProperty("num_likes", createdTrack.liked_by.length);
     });
   });
 
@@ -400,10 +386,7 @@ describe("album-schema", () => {
 
       const createdTrack = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty(
-        "num_tracks",
-        createdTrack.tracks.length,
-      );
+      expect(createdTrack).toHaveProperty("num_tracks", createdTrack.tracks.length);
     });
   });
 });

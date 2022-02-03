@@ -137,12 +137,29 @@ PlaylistSchema.statics.getPlaylist = function (id, extend = false) {
       select: extend ? "username" : "id",
     },
   ];
+}
+
+/* Statics */
+
+PlaylistSchema.statics.getNumPages = function (limit = 10, filter = {}) {
+  return this.countDocuments(filter)
+    .notDeleted()
+    .then((count) => {
+      return Math.floor(count / limit) + (count % limit ? 1 : 0);
+    });
+};
+
+PlaylistSchema.statics.getPlaylist = function (id, options = {}) {
+  const { extend = false } = options;
+
+  const populate = getPopulate(extend);
 
   return this.findById(id).notDeleted().populate(populate);
 };
 
-PlaylistSchema.statics.getPlaylists = function (page = 1, sort = "created_at", order = "asc") {
-  const limit = 10;
+PlaylistSchema.statics.getPlaylists = function (options = {}) {
+  const { page = 1, sort = "created_at", order = "asc", limit = 10 } = options;
+
   const start = (page - 1) * limit;
 
   return this.find()

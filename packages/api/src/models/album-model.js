@@ -1,5 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
-const { isURL } = require("validator");
+const { isURL, isDate } = require("validator");
 
 const AlbumSchema = new Schema(
   {
@@ -20,9 +20,17 @@ const AlbumSchema = new Schema(
       required: true,
       trim: true,
     },
+    released_date: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (value) =>
+          value ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" }) : true,
+        message: () => `Date is not valid`,
+      },
+    },
     genres: {
-      type: [Types.ObjectId],
-      ref: "genre",
+      type: [String],
       trim: true,
     },
     tracks: {
@@ -101,18 +109,8 @@ AlbumSchema.query.notDeleted = function () {
 
 /* Statics */
 
-AlbumSchema.statics.getNumPages = function (filter = {}) {
-  const limit = 10;
-
-  return this.countDocuments(filter)
-    .notDeleted()
-    .then((count) => {
-      return Math.floor(count / limit) + (count % limit ? 1 : 0);
-    });
-};
-
-AlbumSchema.statics.getAlbum = function (id, extend = false) {
-  const populate = [
+function getPopulate(extend) {
+  return [
     {
       path: "user",
       match: { deleted_at: { $exists: false } },
@@ -120,11 +118,6 @@ AlbumSchema.statics.getAlbum = function (id, extend = false) {
     },
     {
       path: "tracks",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "title url duration genres color release_date num_likes num_plays" : "id",
-    },
-    {
-      path: "genres",
       match: { deleted_at: { $exists: false } },
       select: "name",
     },
@@ -134,15 +127,34 @@ AlbumSchema.statics.getAlbum = function (id, extend = false) {
       select: extend ? "username" : "id",
     },
   ];
+}
+/* Statics */
+
+AlbumSchema.statics.getNumPages = function (limit = 10, filter = {}) {
+  return this.countDocuments(filter)
+    .notDeleted()
+    .then((count) => {
+      return Math.floor(count / limit) + (count % limit ? 1 : 0);
+    });
+};
+
+AlbumSchema.statics.getAlbum = function (id, options = {}) {
+  const { extend = false } = options;
+
+  const populate = getPopulate(extend);
 
   return this.findById(id).notDeleted().populate(populate);
 };
 
-AlbumSchema.statics.getAlbums = function (page = 1, sort = "created_at", order = "asc") {
-  const limit = 10;
+AlbumSchema.statics.getAlbums = function (options = {}) {
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, genre } = options;
+
   const start = (page - 1) * limit;
 
-  return this.find()
+  const populate = getPopulate();
+  const filter = genre ? { genres: { $in: [genre] } } : {};
+
+  return this.find(filter)
     .notDeleted()
     .sort({ [sort]: order })
     .skip(start)

@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as ROUTES from "../../routes";
 import withLayout from "../../components/hoc/withLayout";
-import * as API from "../../api";
 
 import { signOut } from "../../redux/auth";
 import { userLoggedOut, userSelector } from "../../redux/user";
+import SearchBar from "../../components/molecules/SearchBar/SearchBar";
 
 function Home() {
   const { userData } = useSelector(userSelector);
@@ -23,19 +23,7 @@ function Home() {
     navigate(ROUTES.EDIT_PROFILE);
   }
 
-  return (
-    <main className="p-4">
-      <section className="p-4">
-        {userData && <h1 className="text-xl">Hello {userData.username && userData.username}</h1>}
-        <button type="button" onClick={logout}>
-          Logout
-        </button>
-        <button type="button" onClick={editProfile}>
-          Edit Profile
-        </button>
-      </section>
-    </main>
-  );
+  return <SearchBar />;
 }
 
 export default withLayout(Home);

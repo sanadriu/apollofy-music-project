@@ -185,36 +185,27 @@ describe("track-schema", () => {
   });
 
   describe("6. Genres", () => {
-    test("6.1. Genres must be an array of ObjectId", async () => {
-      expect.assertions(3);
+    test("6.1. Genres must be an array of String", async () => {
+      expect.assertions(2);
 
-      const idGenre = new Types.ObjectId().toString();
+      const genre = faker.music.genre();
 
-      const validTrack01 = {
+      const validAlbum01 = {
         ...sample,
-        genres: [idGenre],
+        genres: [genre],
       };
 
-      const validTrack02 = {
+      const validAlbum02 = {
         ...sample,
-        genres: idGenre,
+        genres: genre,
       };
 
-      const invalidTrack = {
-        ...sample,
-        genres: ["foo"],
-      };
-
-      await TrackModel.create(validTrack01).then((createdTrack) => {
-        expect(createdTrack.genres[0].toString()).toBe(idGenre);
+      await TrackModel.create(validAlbum01).then((createdTrack) => {
+        expect(createdTrack.genres).toEqual([genre]);
       });
 
-      await TrackModel.create(validTrack02).then((createdTrack) => {
-        expect(createdTrack.genres[0].toString()).toBe(idGenre);
-      });
-
-      await TrackModel.create(invalidTrack).catch((error) => {
-        expect(error.errors["genres.0"].kind).toBe("[ObjectId]");
+      await TrackModel.create(validAlbum02).then((createdTrack) => {
+        expect(createdTrack.genres).toEqual([genre]);
       });
     });
   });
