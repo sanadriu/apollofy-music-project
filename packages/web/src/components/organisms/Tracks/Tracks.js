@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from "react-query";
 
-import tracksApi from '../../../api/api-tracks';
+import tracksApi from "../../../api/api-tracks";
 import { useTracks } from "../../../hooks/useTracks";
 
 import TrackDetail from "../../molecules/TrackDetail";
@@ -19,22 +19,22 @@ export default function Tracks() {
   useEffect(() => {
     if (currentPage < maxTrackPage) {
       const nextPage = currentPage + 1;
-      queryClient.prefetchQuery(
-        ["tracks", nextPage],
-        () => tracksApi.getTracks(currentLimit, nextPage)
-      )
+      queryClient.prefetchQuery(["tracks", nextPage], () =>
+        tracksApi.getTracks(currentLimit, nextPage),
+      );
     }
-  }, [currentPage, queryClient])
+  }, [currentPage, queryClient]);
 
   console.log(tracks);
 
   if (isLoading) return <h3>Loading...</h3>;
-  if (isError) return (
-    <>
-      <h3>Oops, something went wrong</h3>
-      <p>{error}</p>
-    </>
-  )
+  if (isError)
+    return (
+      <>
+        <h3>Oops, something went wrong</h3>
+        <p>{error}</p>
+      </>
+    );
 
   return (
     <>
@@ -48,15 +48,23 @@ export default function Tracks() {
         ))}
       </ul>
       <div className="pages">
-        <button type="button" disabled={currentPage <= 1} onClick={() => {
-          setCurrentPage((prevValue) => prevValue - 1)
-        }}>
+        <button
+          type="button"
+          disabled={currentPage <= 1}
+          onClick={() => {
+            setCurrentPage((prevValue) => prevValue - 1);
+          }}
+        >
           Previous page
         </button>
         <span>Page {currentPage}</span>
-        <button type="button" disabled={currentPage >= maxTrackPage} onClick={() => {
-          setCurrentPage((prevValue) => prevValue + 1)
-        }}>
+        <button
+          type="button"
+          disabled={currentPage >= maxTrackPage}
+          onClick={() => {
+            setCurrentPage((prevValue) => prevValue + 1);
+          }}
+        >
           Next page
         </button>
       </div>

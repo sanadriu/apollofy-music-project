@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from "react-query";
 
-import { queryKeys } from '../queries/constants';
-import genresApi from '../api/api-genres';
+import { queryKeys } from "../queries/constants";
+import genresApi from "../api/api-genres";
 
 export function useGenres() {
   const fallback = [];
