@@ -6,8 +6,18 @@ const getTrack = async (trackId) => {
   return http.get(`${baseUrl}/tracks/${trackId}`);
 }
 
+// const getTracks = async (limitNum = 10, pageNum = 1, genreName = '') => {
+//   return http.get(`${baseUrl}/tracks?limit=${limitNum}&page=${pageNum}&genre=${genreName}`);
+// }
+
 const getTracks = async (limitNum = 10, pageNum = 1, genreName = '') => {
-  return http.get(`${baseUrl}/tracks?limit=${limitNum}&page=${pageNum}&genre=${genreName}`);
+  return http.get(`${baseUrl}/tracks`, {
+    params: {
+      limit: limitNum,
+      page: pageNum,
+      genre: genreName
+    }
+  });
 }
 
 const setTrack = async (authToken, track) => {

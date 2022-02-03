@@ -7,7 +7,7 @@ const TrackDetail = ({ track }) => {
   return (
     <>
       <div>{track.title}</div>
-      <div>{track.user}</div>
+      <div>{track.user.username}</div>
     </>
   );
 }
@@ -23,7 +23,7 @@ TrackDetail.propTypes = {
     url: PropTypes.string.isRequired,
     duration: PropTypes.number.isRequired,
     released_date: PropTypes.string.isRequired,
-    genres: PropTypes.arrayOf(PropTypes.object),
+    genres: PropTypes.arrayOf(PropTypes.string),
     liked_by: PropTypes.arrayOf(PropTypes.object),
     num_plays: PropTypes.number.isRequired,
     num_likes: PropTypes.number.isRequired,

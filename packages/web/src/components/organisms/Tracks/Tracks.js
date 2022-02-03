@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useQueryClient } from 'react-query';
 
 import tracksApi from '../../../api/api-tracks';
@@ -10,23 +11,26 @@ const maxTrackPage = 10;
 const currentLimit = 10;
 
 export default function Tracks() {
+  const params = useParams();
+  const selectedGenre = params ? params.genre : '';
+
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTrack, setSelectedTrack] = useState(null);
+  const [currentGenre, setSelectedGenre] = useState(selectedGenre);
 
   const queryClient = useQueryClient();
-  const { data: tracks, isError, error, isLoading } = useTracks({ currentLimit, currentPage });
+  const { data: tracks, isError, error, isLoading } = useTracks(currentLimit, currentPage, currentGenre);
 
   useEffect(() => {
     if (currentPage < maxTrackPage) {
       const nextPage = currentPage + 1;
+      const nextGenre = (!currentGenre) ? '' : currentGenre;
       queryClient.prefetchQuery(
-        ["tracks", nextPage],
-        () => tracksApi.getTracks(currentLimit, nextPage)
+        ["tracks", nextPage, nextGenre],
+        () => tracksApi.getTracks(currentLimit, nextPage, currentGenre)
       )
     }
-  }, [currentPage, queryClient])
-
-  console.log(tracks);
+  }, [currentPage, currentGenre, queryClient])
 
   if (isLoading) return <h3>Loading...</h3>;
   if (isError) return (

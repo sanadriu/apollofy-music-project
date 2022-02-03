@@ -10,8 +10,8 @@ console.log(`Environment mode: ${mode}`);
 
 connect()
   .then(() => {
-    //return seed();
-    return Promise.resolve();
+    return seed();
+    // return Promise.resolve();
   })
   .then(() => {
     app.listen(config.app.port, () => {
