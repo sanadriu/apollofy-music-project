@@ -1,8 +1,9 @@
 import { createSelector } from "reselect";
-import api, { updateNewUser } from "../api";
+
+import api from "../api";
 import * as authService from "../services/auth";
-import * as API from "../api";
-import { fetchSuccess, saveUserData } from "./user";
+import usersApi from "../api/api-users";
+import { saveUserData } from "./user";
 
 // action types
 
@@ -90,8 +91,8 @@ export function signUpWithEmailRequest(email, password, details) {
       const token = await authService.getCurrentUserToken();
 
       await api.signUp({ Authorization: `Bearer ${token}` });
-      await updateNewUser(token, details);
-      const user = await API.getUser(token);
+      await usersApi.updateNewUser(token, details);
+      const user = await usersApi.getCurrentUser(token);
       dispatch(saveUserData(user.data.data));
 
       return dispatch(signUpSuccess());
@@ -110,8 +111,7 @@ export function signInWithEmailRequest(email, password) {
       const token = await authService.getCurrentUserToken();
 
       await api.signUp({ Authorization: `Bearer ${token}` });
-      const user = await API.getUser(token);
-      dispatch(fetchSuccess());
+      const user = await usersApi.getCurrentUser(token);
       dispatch(saveUserData(user.data.data));
       return dispatch(signInSuccess());
     } catch (error) {

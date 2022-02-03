@@ -16,8 +16,7 @@ const CardLink = styled(Link)`
   }
 `;
 
-export default function PlaylistHomeCard(props) {
-  const { playlist } = props;
+export default function PlaylistHomeCard({ playlist }) {
   const Card = styled.div`
     padding: 1rem;
     border-radius: 1.3rem;
@@ -33,7 +32,7 @@ export default function PlaylistHomeCard(props) {
         <CardLink to={`/playlists/${playlist.id}`}>
           <SmallText>{playlist.title}</SmallText>
         </CardLink>
-        <HomeSmallText>{playlist.followed_by.lenght} listeners</HomeSmallText>
+        <HomeSmallText>{playlist.followed_by.length} listeners</HomeSmallText>
       </FlexColumn>
     </Card>
   );
@@ -42,7 +41,7 @@ export default function PlaylistHomeCard(props) {
 PlaylistHomeCard.propTypes = {
   playlist: PropTypes.exact({
     id: PropTypes.string.isRequired,
-    user: PropTypes.object.isRequired,
+    user: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     color: PropTypes.string,

@@ -1,29 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
+import { useQueryClient } from 'react-query';
 
 import tracksApi from "../../../api/api-tracks";
 import { useTracks } from "../../../hooks/useTracks";
 
 import TrackDetail from "../../molecules/TrackDetail";
 
-const maxTrackPage = 10;
-const currentLimit = 10;
-
 export default function Tracks() {
+  const params = useParams();
+  const selectedGenre = params ? params.genre : undefined;
+
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTrack, setSelectedTrack] = useState(null);
+  const [currentGenre, setSelectedGenre] = useState(selectedGenre);
 
   const queryClient = useQueryClient();
-  const { data: tracks, isError, error, isLoading } = useTracks({ currentLimit, currentPage });
+  const { data: tracks, isError, error, isLoading } = useTracks(currentPage, currentGenre);
+
+  const maxTrackPage = tracks?.data?.pages;
 
   useEffect(() => {
     if (currentPage < maxTrackPage) {
       const nextPage = currentPage + 1;
-      queryClient.prefetchQuery(["tracks", nextPage], () =>
-        tracksApi.getTracks(currentLimit, nextPage),
-      );
+      const nextGenre = (!currentGenre) ? undefined : currentGenre;
+      queryClient.prefetchQuery(
+        ["tracks", nextPage, nextGenre],
+        () => tracksApi.getTracks(nextPage, nextGenre)
+      )
     }
-  }, [currentPage, queryClient]);
+  }, [currentPage, currentGenre, maxTrackPage, queryClient])
 
   if (isLoading) return <h3>Loading...</h3>;
   if (isError)

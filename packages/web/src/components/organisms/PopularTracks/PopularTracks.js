@@ -20,13 +20,22 @@ const TracksList = styled(SectionLayout)`
   gap: 1rem;
 `;
 
-const maxTrackPage = 10;
-const currentLimit = 10;
+// const maxTrackPage = 10;
+// const currentLimit = 10;
 
 export default function PopularTracks() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: tracks, isError, error, isLoading } = useTracks({ currentLimit, currentPage });
+  const { data: tracks, isError, error, isLoading } = useTracks(currentPage);
+
+  if (isLoading) return <h3>Loading...</h3>;
+  if (isError)
+    return (
+      <>
+        <h3>Oops, something went wrong</h3>
+        <p>{error}</p>
+      </>
+    );
 
   return (
     <SectionLayout>

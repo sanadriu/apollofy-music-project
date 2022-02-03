@@ -40,6 +40,7 @@ function createSampleTrack(users = [], genres = []) {
     color: faker.commerce.color(),
     genres: getRandomItems(genres, 2),
     url: faker.internet.url(),
+    num_plays: faker.datatype.number({ min: 0, max: 1000000 }),
     thumbnails: {
       url_default: faker.image.imageUrl(),
       url_medium: faker.image.imageUrl(),
@@ -58,7 +59,7 @@ function createSampleAlbum(users = [], genres = []) {
   return {
     user: user,
     title: faker.name.title(),
-    year: faker.date.past().getFullYear(),
+    released_date: faker.date.past().toISOString().substring(0, 10),
     genres: getRandomItems(genres, 2),
     thumbnails: {
       url_default: faker.image.imageUrl(),

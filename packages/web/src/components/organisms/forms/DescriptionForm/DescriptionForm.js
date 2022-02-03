@@ -14,10 +14,7 @@ import {
   signUpRequest,
   signUpWithEmailRequest,
   setCurrentUser,
-  signUpSuccess,
 } from "../../../../redux/auth";
-import { getCurrentUserToken } from "../../../../services/auth";
-import { updateNewUser } from "../../../../api";
 
 const DescriptionArea = styled.textarea`
   width: 22rem;

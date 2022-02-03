@@ -5,9 +5,14 @@ const { filterUserTracks } = require("./utils");
 
 async function getAlbums(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc", limit = 10, genre } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", limit = 10, genre, track } = req.query;
 
-    const pages = await Album.getNumPages(limit);
+    const filter = {
+      ...(genre && { genres: { $in: [genre] } }),
+      ...(track && { tracks: { $in: [track] } }),
+    };
+
+    const pages = await Album.getNumPages(limit, filter);
 
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
@@ -36,7 +41,7 @@ async function getAlbums(req, res, next) {
       });
     }
 
-    const dbRes = await Album.getAlbums({ page, sort, order, limit, genre });
+    const dbRes = await Album.getAlbums({ page, sort, order, limit, filter });
 
     return res.status(200).send({
       data: dbRes,
