@@ -6,12 +6,14 @@ const StyledImageTrack = styled.div`
   display: flex;
   width: 10%;
   max-height: 50px;
+  max-width:50px;
   object-fit: cover;
 `;
 
 const StyledImage = styled.img`
   object-fit: cover;
-  border-radius: 0.8rem
+  border-radius: 0.8rem;
+  min-width:50px;
 `;
 
 const ProfileTrackImage = () => {

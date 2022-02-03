@@ -15,26 +15,35 @@ const StyledProfilePage = styled.div`
 const StyledMostListened = styled.div`
   margin-top: 1rem;
   font-weight: bold;
+  letter-spacing: 4px;
+  font-style: oblique;
+  font-variant: small-caps;
 `;
 
 const StyledAlbums = styled.div`
   margin: 1rem 0;
   font-weight: bold;
+  letter-spacing: 4px;
+  font-style: oblique;
+  font-variant: small-caps;
 `;
 const StyledPlaylists = styled.div`
   margin: 1rem 0;
   font-weight: bold;
+  letter-spacing: 4px;
+  font-style: oblique;
+  font-variant: small-caps;
 `;
 
 const ProfilePage = () => {
   return (
     <StyledProfilePage>
       <ProfileGroupButtons />
-      <ProfileMain />
+      <ProfileMain data={[]} />
       <StyledMostListened>Most Listened</StyledMostListened>
       <ProfileUserTracks />
       <ButtonPlaySuffle />
-      <StyledAlbums>Albums</StyledAlbums>
+      <StyledAlbums >Albums</StyledAlbums>
       <ProfileUserCards data={[]} />
       <StyledPlaylists>Playlists</StyledPlaylists>
       <ProfileUserCards data={[]} />
