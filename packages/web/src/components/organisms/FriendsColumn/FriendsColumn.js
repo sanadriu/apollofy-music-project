@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
@@ -9,6 +9,7 @@ import { FlexColumn } from "../../atoms/FlexColumn/FlexColumn";
 import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
 import { rightSideBar } from "../../atoms/RightSideBar/RightSideBar";
 import FriendInfo from "../../molecules/FriendInfo/FriendInfo";
+import AddFriendsModal from "../modal/AddFriendsModal";
 
 const FriendsColumnLayout = styled(rightSideBar)`
   height: auto;
@@ -16,6 +17,11 @@ const FriendsColumnLayout = styled(rightSideBar)`
 
 export default function FriendsColumn() {
   const { userData } = useSelector(userSelector);
+  const [isOpen, setOpen] = useState(false);
+
+  const handleModal = () => {
+    setOpen(!isOpen);
+  };
 
   return (
     <FriendsColumnLayout>
@@ -31,7 +37,8 @@ export default function FriendsColumn() {
         ) : (
           <HomeSmallText>You do not follow anyone yet</HomeSmallText>
         )}
-        <PrimaryButton>Add Friends</PrimaryButton>
+        <PrimaryButton onClick={handleModal}>Add Friends</PrimaryButton>
+        <AddFriendsModal isOpen={isOpen} handleModal={handleModal} />
       </FlexColumn>
     </FriendsColumnLayout>
   );
