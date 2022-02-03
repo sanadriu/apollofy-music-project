@@ -34,7 +34,7 @@ function createSampleTrack(users = [], genres = []) {
 
   return {
     user,
-    title: faker.name.title(),
+    title: faker.lorem.sentence(4),
     duration: faker.datatype.number({ min: 0, max: 600 }),
     released_date: faker.date.past().toISOString().substring(0, 10),
     color: faker.commerce.color(),
@@ -58,7 +58,7 @@ function createSampleAlbum(users = [], genres = []) {
 
   return {
     user: user,
-    title: faker.name.title(),
+    title: faker.lorem.sentence(4),
     released_date: faker.date.past().toISOString().substring(0, 10),
     genres: getRandomItems(genres, 2),
     thumbnails: {
@@ -78,7 +78,7 @@ function createSamplePlaylist(users = []) {
 
   return {
     user,
-    title: faker.name.title(),
+    title: faker.lorem.sentence(4),
     description: faker.lorem.paragraphs(1).substring(0, 250),
     color: faker.commerce.color(),
     thumbnails: {
