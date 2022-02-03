@@ -8,6 +8,7 @@ export const FETCH_SUCCESS = "FETCH_SUCCESS";
 export const SAVE_USER_DATA = "SAVE_USER_DATA";
 export const SUBMIT_USER_DATA = "SUBMIT_USER_DATA";
 export const USER_LOGGED_OUT = "USER_LOGGED_OUT";
+export const FOLLOW_USER = "FOLLOW_USER";
 
 // User Action
 
@@ -28,6 +29,10 @@ export const userLoggedOut = () => ({
   type: USER_LOGGED_OUT,
 });
 
+export const followUser = (userId) => ({
+  type: FOLLOW_USER,
+  payload: userId,
+});
 // User Reducer
 
 export const UserInitialState = {
@@ -64,6 +69,14 @@ const UserReducer = (state = UserInitialState, action) => {
         ...state,
         fetchSuccess: false,
         userData: null,
+      };
+    case FOLLOW_USER:
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          followed_users: [...state.userData.followed_users, payload],
+        },
       };
     default:
       return { ...state };
