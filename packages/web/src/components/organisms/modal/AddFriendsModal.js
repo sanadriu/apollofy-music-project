@@ -1,16 +1,15 @@
 import * as React from "react";
-import { styled, Box } from "@mui/system";
+import styled from "styled-components";
+import { Box } from "@mui/system";
 import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
-import { authSelector, resetAuthState, sendPasswordResetEmail } from "../../../redux/auth";
-
 import { FlexColumn } from "../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../atoms/MiddleTitle/MiddleTitle";
-import { PrimaryButton } from "../../atoms/buttons/PrimaryButton";
-import { RegisterInput } from "../../atoms/RegisterInput/RegisterInput";
 import { SmallText } from "../../atoms/SmallText/SmallText";
+import { useUsers } from "../../../hooks/useUsers";
+import UserDetail from "../../molecules/UserDetail/UserDetail";
 
 const StyledModal = styled(ModalUnstyled)`
   position: fixed;
@@ -22,6 +21,7 @@ const StyledModal = styled(ModalUnstyled)`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: scroll;
 `;
 
 const Backdrop = styled("div")`
@@ -46,6 +46,9 @@ const style = {
 
 export default function AddFriendsModal({ isOpen, handleModal }) {
   const dispatch = useDispatch();
+  const { data: users } = useUsers();
+
+  const userList = users?.data?.data;
 
   const handleClose = () => handleModal();
 
@@ -67,6 +70,10 @@ export default function AddFriendsModal({ isOpen, handleModal }) {
             Find your next favourite music
           </MiddleTitle>
           <SmallText>The more users you follow, the more music you discover</SmallText>
+          {userList &&
+            userList.map((user) => {
+              return <UserDetail key={user.id} user={user} />;
+            })}
         </FlexColumn>
       </Box>
     </StyledModal>
