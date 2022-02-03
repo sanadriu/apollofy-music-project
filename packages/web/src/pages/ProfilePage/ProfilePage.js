@@ -1,10 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import ButtonPlaySuffle from "../../components/atoms/ButtonPlayShuffle/ButtonPlayShuffle";
 import withLayout from "../../components/hoc/withLayout";
 import ProfileGroupButtons from "../../components/molecules/ProfileGroupButtons/ProfileGroupButtons";
 import ProfileMain from "../../components/organisms/ProfileMain/ProfileMain";
-import ProfileUserAlbums from "../../components/organisms/ProfileUserAlbums/ProfileUserAlbums";
+import ProfileUserCards from "../../components/organisms/ProfileUserCards/ProfileUserCards";
 import ProfileUserTracks from "../../components/organisms/ProfileUserTracks/ProfileUserTracks";
+
+const StyledProfilePage = styled.div`
+  max-width: 900px;
+  overflow: hidden;
+`;
 
 const StyledMostListened = styled.div`
   margin-top: 1rem;
@@ -22,15 +28,17 @@ const StyledPlaylists = styled.div`
 
 const ProfilePage = () => {
   return (
-    <>
+    <StyledProfilePage>
       <ProfileGroupButtons />
       <ProfileMain />
       <StyledMostListened>Most Listened</StyledMostListened>
       <ProfileUserTracks />
+      <ButtonPlaySuffle />
       <StyledAlbums>Albums</StyledAlbums>
-      <ProfileUserAlbums />
+      <ProfileUserCards data={[]} />
       <StyledPlaylists>Playlists</StyledPlaylists>
-    </>
+      <ProfileUserCards data={[]} />
+    </StyledProfilePage>
   );
 };
 

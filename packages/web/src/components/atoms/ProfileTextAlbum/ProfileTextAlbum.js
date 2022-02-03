@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const StyledImageText = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
+  padding-top:1px;
 `;
 
 
