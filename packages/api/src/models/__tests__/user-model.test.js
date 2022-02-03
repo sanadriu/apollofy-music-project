@@ -315,9 +315,7 @@ describe("user-schema", () => {
       try {
         await UserModel.create(user);
       } catch (error) {
-        expect(error.errors["thumbnails.url_default"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_default"].properties.type).toBe("user defined");
       }
     });
   });
@@ -357,9 +355,7 @@ describe("user-schema", () => {
       try {
         await UserModel.create(user);
       } catch (error) {
-        expect(error.errors["thumbnails.url_medium"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_medium"].properties.type).toBe("user defined");
       }
     });
   });
@@ -399,9 +395,7 @@ describe("user-schema", () => {
       try {
         await UserModel.create(user);
       } catch (error) {
-        expect(error.errors["thumbnails.url_large"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_large"].properties.type).toBe("user defined");
       }
     });
   });
@@ -537,7 +531,7 @@ describe("user-schema", () => {
     });
   });
 
-  describe("15. followers", () => {
+  describe("15. Followers", () => {
     test("15.1. Followers must be an array of String", async () => {
       expect.assertions(2);
 
@@ -545,20 +539,20 @@ describe("user-schema", () => {
 
       const validUser01 = {
         ...createSampleUser(),
-        followers: [idUser],
+        followed_by: [idUser],
       };
 
       const validUser02 = {
         ...createSampleUser(),
-        followers: idUser,
+        followed_by: idUser,
       };
 
       await UserModel.create(validUser01).then((createdUser) => {
-        expect(createdUser.followers[0].toString()).toBe(idUser);
+        expect(createdUser.followed_by[0].toString()).toBe(idUser);
       });
 
       await UserModel.create(validUser02).then((createdUser) => {
-        expect(createdUser.followers[0].toString()).toBe(idUser);
+        expect(createdUser.followed_by[0].toString()).toBe(idUser);
       });
     });
   });
@@ -571,9 +565,7 @@ describe("user-schema", () => {
 
       const user = {
         ...sample,
-        liked_albums: Array.from({ length }, () =>
-          new Types.ObjectId().toString(),
-        ),
+        liked_albums: Array.from({ length }, () => new Types.ObjectId().toString()),
       };
 
       const createdUser = await UserModel.create(user);
@@ -591,10 +583,7 @@ describe("user-schema", () => {
 
       const createdUser = await UserModel.create(user);
 
-      expect(createdUser).toHaveProperty(
-        "num_liked_albums",
-        createdUser.liked_albums.length,
-      );
+      expect(createdUser).toHaveProperty("num_liked_albums", createdUser.liked_albums.length);
     });
   });
 
@@ -606,9 +595,7 @@ describe("user-schema", () => {
 
       const user = {
         ...sample,
-        liked_tracks: Array.from({ length }, () =>
-          new Types.ObjectId().toString(),
-        ),
+        liked_tracks: Array.from({ length }, () => new Types.ObjectId().toString()),
       };
 
       const createdUser = await UserModel.create(user);
@@ -626,10 +613,7 @@ describe("user-schema", () => {
 
       const createdUser = await UserModel.create(user);
 
-      expect(createdUser).toHaveProperty(
-        "num_liked_tracks",
-        createdUser.liked_tracks.length,
-      );
+      expect(createdUser).toHaveProperty("num_liked_tracks", createdUser.liked_tracks.length);
     });
   });
 
@@ -641,9 +625,7 @@ describe("user-schema", () => {
 
       const user = {
         ...sample,
-        followed_playlists: Array.from({ length }, () =>
-          new Types.ObjectId().toString(),
-        ),
+        followed_playlists: Array.from({ length }, () => new Types.ObjectId().toString()),
       };
 
       const createdUser = await UserModel.create(user);
@@ -694,22 +676,19 @@ describe("user-schema", () => {
 
       const createdUser = await UserModel.create(user);
 
-      expect(createdUser).toHaveProperty(
-        "num_followed_users",
-        createdUser.followed_users.length,
-      );
+      expect(createdUser).toHaveProperty("num_followed_users", createdUser.followed_users.length);
     });
   });
 
   describe("20. Number of followers", () => {
-    test("20.1. Value depends on the length of the 'followers' array", async () => {
+    test("20.1. Value depends on the length of the 'followed_by' array", async () => {
       expect.assertions(1);
 
       const length = 2;
 
       const user = {
         ...sample,
-        followers: Array.from({ length }, () => getRandomSequence(28)),
+        followed_by: Array.from({ length }, () => getRandomSequence(28)),
       };
 
       const createdUser = await UserModel.create(user);
@@ -727,10 +706,7 @@ describe("user-schema", () => {
 
       const createdUser = await UserModel.create(user);
 
-      expect(createdUser).toHaveProperty(
-        "num_followers",
-        createdUser.followers.length,
-      );
+      expect(createdUser).toHaveProperty("num_followers", createdUser.followed_by.length);
     });
   });
 });
