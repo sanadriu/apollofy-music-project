@@ -1,13 +1,38 @@
 import React from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+import { SmallText } from "../../atoms/SmallText/SmallText";
+
+const GenreTitle = styled(SmallText)`
+  margin-top: auto;
+  font-size: 1rem;
+`;
 
 const GenreDetail = ({ genre }) => {
+  const GenreLayout = styled.div`
+    cursor: pointer;
+    height: 6rem;
+    border-radius: 1.3rem;
+    padding: 0.3rem;
+    display: flex;
+    justify-content: center;
+    border: 1px solid lightgray;
+    text-align: center;
+    background-image: linear-gradient(lightgray, lightgray), url(${genre.thumbnails.url_default});
+    background-size: cover;
+
+    &:hover {
+      color: white;
+      background-image: url(${genre.thumbnails.url_default});
+      background-blend-mode: overlay;
+    }
+  `;
   return (
-    <>
-      <div>{genre.name}</div>
-    </>
+    <GenreLayout>
+      <GenreTitle>{genre.name}</GenreTitle>
+    </GenreLayout>
   );
-}
+};
 
 export default GenreDetail;
 

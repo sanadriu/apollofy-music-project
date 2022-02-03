@@ -7,8 +7,6 @@ import AlbumDetail from "../../molecules/AlbumDetail";
 export default function Albums() {
   const albums = useAlbums();
 
-  console.log(albums)
-
   const [selectedAlbum, setSelectedAlbum] = useState(null);
 
   return (

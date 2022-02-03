@@ -58,10 +58,12 @@ export default function MenuBar() {
     setOpen(false);
   };
 
-  const logout = () => {
-    dispatch(signOut());
+  const logout = async () => {
+    await dispatch(signOut());
+    navigate(ROUTES.LOGIN);
     dispatch(userLoggedOut());
   };
+
   const editProfile = async () => {
     navigate(ROUTES.EDIT_PROFILE);
   };

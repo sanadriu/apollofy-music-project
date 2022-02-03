@@ -25,8 +25,6 @@ export default function Tracks() {
     }
   }, [currentPage, queryClient]);
 
-  console.log(tracks);
-
   if (isLoading) return <h3>Loading...</h3>;
   if (isError)
     return (

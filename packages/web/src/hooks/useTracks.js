@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { queryKeys } from "../queries/constants";
 import tracksApi from "../api/api-tracks";
 
-export function useTracks({ currentLimit, currentPage }) {
+export function useTracks({ currentLimit = 10, currentPage = 1 }) {
   const fallback = [];
   const {
     data = fallback,

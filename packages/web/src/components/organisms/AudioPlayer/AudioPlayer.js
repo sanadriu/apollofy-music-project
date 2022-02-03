@@ -4,7 +4,7 @@ import { AudioPlayerControlSprite, AudioPlayer } from "react-audio-player-pro";
 import reactAudioPlayerProStyle from "react-audio-player-pro/dist/style.css";
 
 const AudioWrapper = styled(AudioPlayer)`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100vw;
   border: 2px solid lightgray;
@@ -44,7 +44,7 @@ export function ExampleAudioPlayer() {
         // string - wrapper's class name, optional, deafult: ''
         className="reproduction-bar"
         // callback function - called on did mount, optional, default: noop
-        onDidMount={console.log}
+        onDidMount={console.log("hello")}
         // default player state, optional
         defaultState={{
           // boolean - is player muted, optional, default: false
