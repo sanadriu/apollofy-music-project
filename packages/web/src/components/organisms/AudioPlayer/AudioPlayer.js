@@ -4,7 +4,7 @@ import { AudioPlayerControlSprite, AudioPlayer } from "react-audio-player-pro";
 import reactAudioPlayerProStyle from "react-audio-player-pro/dist/style.css";
 
 const AudioWrapper = styled(AudioPlayer)`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100vw;
   border: 2px solid lightgray;

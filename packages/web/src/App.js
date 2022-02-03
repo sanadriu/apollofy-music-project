@@ -24,6 +24,7 @@ import { authSelector, syncSignIn, signOut } from "./redux/auth";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
