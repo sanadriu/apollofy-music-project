@@ -10,7 +10,7 @@ console.log(`Environment mode: ${mode}`);
 
 connect()
   .then(() => {
-    // return seed();
+    return seed();
     return Promise.resolve();
   })
   .then(() => {
