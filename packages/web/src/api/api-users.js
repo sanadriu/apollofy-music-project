@@ -19,9 +19,7 @@ export function deleteUser(authToken) {
 }
 
 export function updateUser(authToken, update) {
-  return http.patch({
-    url: `${baseUrl}`,
-    data: update,
+  return http.patch(`${baseUrl}/users/me`, update, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
@@ -29,9 +27,7 @@ export function updateUser(authToken, update) {
 }
 
 export function updateNewUser(authToken, updatedUser) {
-  return http.patch({
-    url: `http://localhost:4000/users/me`,
-    data: updatedUser,
+  return http.patch(`${baseUrl}/users/me`, updatedUser, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },

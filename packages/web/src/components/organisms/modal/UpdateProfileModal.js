@@ -42,7 +42,6 @@ export default function UpdateProfileModal({
   const [updatedBirthday, setUpdatedBirthday] = React.useState(null);
 
   const setTargetValue = (target) => {
-    console.log(updatedEmail, updatedUsername, updatedBirthday);
     if (email) {
       setUpdatedEmail({ email: target.value });
       setUpdatedUsername(null);
@@ -62,7 +61,7 @@ export default function UpdateProfileModal({
 
   const sendUpdate = async () => {
     if (password) {
-      auth.sendPasswordResetEmail(auth.currentUser.email);
+      await auth.sendPasswordResetEmail(auth.currentUser.email);
       return;
     }
 

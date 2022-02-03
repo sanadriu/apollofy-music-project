@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
@@ -12,7 +13,8 @@ import MenuList from "@mui/material/MenuList";
 import { signOut } from "../../../redux/auth";
 import { SmallText } from "../../atoms/SmallText/SmallText";
 import { rightSideBar } from "../../atoms/RightSideBar/RightSideBar";
-import { userSelector } from "../../../redux/user";
+import { userLoggedOut, userSelector } from "../../../redux/user";
+import * as ROUTES from "../../../routes";
 
 const MenuLayout = styled(rightSideBar)`
   height: 3rem;
@@ -42,6 +44,7 @@ export default function MenuBar() {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -57,6 +60,10 @@ export default function MenuBar() {
 
   const logout = () => {
     dispatch(signOut());
+    dispatch(userLoggedOut());
+  };
+  const editProfile = async () => {
+    navigate(ROUTES.EDIT_PROFILE);
   };
 
   function handleListKeyDown(event) {
@@ -122,7 +129,7 @@ export default function MenuBar() {
                   onKeyDown={(e) => handleListKeyDown(e)}
                 >
                   <MenuItem onClick={(e) => handleClose(e)}>Profile</MenuItem>
-                  <MenuItem onClick={(e) => handleClose(e)}>My account</MenuItem>
+                  <MenuItem onClick={() => editProfile()}>My account</MenuItem>
                   <MenuItem onClick={() => logout()}>Logout</MenuItem>
                 </MenuList>
               </ClickAwayListener>
