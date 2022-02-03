@@ -1,16 +1,60 @@
 import React from "react";
+import styled from "styled-components";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+
+import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
+import { DetailText } from "../../atoms/DetailText/DetailText";
+
+const TrackLayout = styled.div`
+  display: flex;
+  gap: 1rem;
+  padding: 0.3rem;
+  border-radius: 1.3rem;
+
+  &:hover {
+    background-color: darkgray;
+  }
+`;
+
+const TrackPicture = styled.img`
+  max-width: 3rem;
+  max-height: 3rem;
+  margin: 0;
+  border-radius: 0.3rem;
+`;
+
+const TrackFlex = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding-left: 0.5rem;
+`;
+
+const TrackLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    color: white;
+  }
+`;
 
 const TrackDetail = ({ track }) => {
-  console.log(track);
-
   return (
-    <>
-      <div>{track.title}</div>
-      <div>{track.user}</div>
-    </>
+    <TrackLayout>
+      <TrackPicture alt="Track's Thumbnail" src={track.thumbnails.url_default} />
+      <TrackFlex>
+        <TrackLink to={`/albums/${track.genres}`}>
+          <HomeSmallText>{track.title}</HomeSmallText>
+        </TrackLink>
+        <TrackLink to={`/users/${track.user.id}`}>
+          <DetailText>{track.user.username}</DetailText>
+        </TrackLink>
+      </TrackFlex>
+    </TrackLayout>
   );
-}
+};
 
 export default TrackDetail;
 

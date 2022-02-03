@@ -8,6 +8,8 @@ import withLayout from "../../components/hoc/withLayout";
 import { authSelector, signOut } from "../../redux/auth";
 import { fetchSuccess, userLoggedOut } from "../../redux/user";
 import SearchBar from "../../components/molecules/SearchBar/SearchBar";
+import PlaylistCarousel from "../../components/organisms/PlaylistCarousel/PlaylistCarousel";
+import PopularTracks from "../../components/organisms/PopularTracks/PopularTracks";
 
 function Home() {
   const { currentUser } = useSelector(authSelector);
@@ -24,7 +26,13 @@ function Home() {
     navigate(ROUTES.EDIT_PROFILE);
   }
 
-  return <SearchBar />;
+  return (
+    <>
+      <SearchBar />
+      <PlaylistCarousel />
+      <PopularTracks />
+    </>
+  );
 }
 
 export default withLayout(Home);
