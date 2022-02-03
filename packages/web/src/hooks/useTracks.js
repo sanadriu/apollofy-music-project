@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from "react-query";
 
-import { queryKeys } from '../queries/constants';
-import tracksApi from '../api/api-tracks';
+import { queryKeys } from "../queries/constants";
+import tracksApi from "../api/api-tracks";
 
 export function useTracks(currentPage = 1, currentGenre = undefined, currentLimit = 10, sort = undefined, order = 'desc') {
   const fallback = [];
