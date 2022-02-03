@@ -26,15 +26,16 @@ const TracksList = styled(SectionLayout)`
 export default function PopularTracks() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: tracks, isError, error, isLoading } = useTracks({ currentPage });
+  const { data: tracks, isError, error, isLoading } = useTracks(currentPage);
 
   if (isLoading) return <h3>Loading...</h3>;
-  if (isError) return (
-    <>
-      <h3>Oops, something went wrong</h3>
-      <p>{error}</p>
-    </>
-  )
+  if (isError)
+    return (
+      <>
+        <h3>Oops, something went wrong</h3>
+        <p>{error}</p>
+      </>
+    );
 
   return (
     <SectionLayout>
