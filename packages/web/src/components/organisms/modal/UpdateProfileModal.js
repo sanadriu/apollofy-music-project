@@ -8,7 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import styled from "styled-components";
 import { auth, getCurrentUserToken } from "../../../services/auth";
-import { updateUser } from "../../../api/api-users";
+import usersApi from "../../../api/api-users";
 
 // eslint-disable-next-line react/prop-types
 const TextField = styled.input`
@@ -45,7 +45,7 @@ export default function UpdateProfileModal({
     const userToken = await getCurrentUserToken();
 
     if (userToken) {
-      updateUser(userToken, updatedUsername, updatedEmail);
+      usersApi.updateUser(userToken, updatedUsername, updatedEmail);
     }
   };
 

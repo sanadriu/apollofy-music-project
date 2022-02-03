@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import styled from "styled-components";
-import { deleteUser } from "../../api/api-users";
+import usersApi from "../../api/api-users";
 
 import ConfirmationDialogue from "../../components/organisms/ConfirmationDialogue";
 import UpdateProfileModal from "../../components/organisms/modal/UpdateProfileModal";
@@ -53,7 +53,7 @@ const EditProfile = () => {
   async function deleteMyProfile() {
     const userToken = await getCurrentUserToken();
 
-    const response = await deleteUser(userToken);
+    const response = await usersApi.deleteUser(userToken);
 
     if (response) {
       setOpen(false);
