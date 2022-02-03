@@ -52,9 +52,9 @@ describe("album-schema", () => {
         user: ` ${user} `,
       };
 
-      const createdTrack = await AlbumModel.create(album);
+      const createdAlbum = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty("user", user);
+      expect(createdAlbum).toHaveProperty("user", user);
     });
   });
 
@@ -81,9 +81,9 @@ describe("album-schema", () => {
         title: ` ${title} `,
       };
 
-      const createdTrack = await AlbumModel.create(album);
+      const createdAlbum = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty("title", title);
+      expect(createdAlbum).toHaveProperty("title", title);
     });
   });
 
@@ -170,12 +170,12 @@ describe("album-schema", () => {
         tracks: ["foo"],
       };
 
-      await AlbumModel.create(validAlbum01).then((createdTrack) => {
-        expect(createdTrack.tracks[0].toString()).toBe(idTrack);
+      await AlbumModel.create(validAlbum01).then((createdAlbum) => {
+        expect(createdAlbum.tracks[0].toString()).toBe(idTrack);
       });
 
-      await AlbumModel.create(validAlbum02).then((createdTrack) => {
-        expect(createdTrack.tracks[0].toString()).toBe(idTrack);
+      await AlbumModel.create(validAlbum02).then((createdAlbum) => {
+        expect(createdAlbum.tracks[0].toString()).toBe(idTrack);
       });
 
       await AlbumModel.create(invalidAlbum).catch((error) => {
@@ -200,12 +200,12 @@ describe("album-schema", () => {
         liked_by: idUser,
       };
 
-      await AlbumModel.create(validAlbum01).then((createdTrack) => {
-        expect(createdTrack.liked_by[0]).toBe(idUser);
+      await AlbumModel.create(validAlbum01).then((createdAlbum) => {
+        expect(createdAlbum.liked_by[0]).toBe(idUser);
       });
 
-      await AlbumModel.create(validAlbum02).then((createdTrack) => {
-        expect(createdTrack.liked_by[0]).toBe(idUser);
+      await AlbumModel.create(validAlbum02).then((createdAlbum) => {
+        expect(createdAlbum.liked_by[0]).toBe(idUser);
       });
     });
   });
@@ -224,9 +224,9 @@ describe("album-schema", () => {
         },
       };
 
-      const createdTrack = await AlbumModel.create(album);
+      const createdAlbum = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty("thumbnails.url_default", url);
+      expect(createdAlbum).toHaveProperty("thumbnails.url_default", url);
     });
 
     test("7.2. Thumbnail URL must be valid", async () => {
@@ -264,9 +264,9 @@ describe("album-schema", () => {
         },
       };
 
-      const createdTrack = await AlbumModel.create(album);
+      const createdAlbum = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty("thumbnails.url_medium", url);
+      expect(createdAlbum).toHaveProperty("thumbnails.url_medium", url);
     });
 
     test("8.2. Thumbnail URL must be valid", async () => {
@@ -304,9 +304,9 @@ describe("album-schema", () => {
         },
       };
 
-      const createdTrack = await AlbumModel.create(album);
+      const createdAlbum = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty("thumbnails.url_large", url);
+      expect(createdAlbum).toHaveProperty("thumbnails.url_large", url);
     });
 
     test("9.2. Thumbnail URL must be valid", async () => {
@@ -341,9 +341,9 @@ describe("album-schema", () => {
         liked_by: Array.from({ length }, () => getRandomSequence(28)),
       };
 
-      const createdTrack = await AlbumModel.create(album);
+      const createdAlbum = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty("num_likes", length);
+      expect(createdAlbum).toHaveProperty("num_likes", length);
     });
 
     test("10.2. Value is readonly / cannot be overwritten (virtual)", async () => {
@@ -354,9 +354,9 @@ describe("album-schema", () => {
         num_likes: 1000,
       };
 
-      const createdTrack = await AlbumModel.create(album);
+      const createdAlbum = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty("num_likes", createdTrack.liked_by.length);
+      expect(createdAlbum).toHaveProperty("num_likes", createdAlbum.liked_by.length);
     });
   });
 
@@ -371,9 +371,9 @@ describe("album-schema", () => {
         tracks: Array.from({ length }, () => new Types.ObjectId().toString()),
       };
 
-      const createdTrack = await AlbumModel.create(album);
+      const createdAlbum = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty("num_tracks", length);
+      expect(createdAlbum).toHaveProperty("num_tracks", length);
     });
 
     test("11.2. Value is readonly / cannot be overwritten (virtual)", async () => {
@@ -384,9 +384,9 @@ describe("album-schema", () => {
         num_tracks: 1000,
       };
 
-      const createdTrack = await AlbumModel.create(album);
+      const createdAlbum = await AlbumModel.create(album);
 
-      expect(createdTrack).toHaveProperty("num_tracks", createdTrack.tracks.length);
+      expect(createdAlbum).toHaveProperty("num_tracks", createdAlbum.tracks.length);
     });
   });
 });

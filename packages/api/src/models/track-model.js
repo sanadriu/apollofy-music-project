@@ -151,12 +151,11 @@ TrackSchema.statics.getTrack = function (id, options = {}) {
 };
 
 TrackSchema.statics.getTracks = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc", limit = 10, genre } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, filter } = options;
 
   const start = (page - 1) * limit;
 
   const populate = getPopulate();
-  const filter = genre ? { genres: { $in: [genre] } } : {};
 
   return this.find(filter)
     .notDeleted()

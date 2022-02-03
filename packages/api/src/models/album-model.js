@@ -15,11 +15,6 @@ const AlbumSchema = new Schema(
       trim: true,
       maxlength: 50,
     },
-    year: {
-      type: Number,
-      required: true,
-      trim: true,
-    },
     released_date: {
       type: String,
       trim: true,
@@ -147,12 +142,11 @@ AlbumSchema.statics.getAlbum = function (id, options = {}) {
 };
 
 AlbumSchema.statics.getAlbums = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc", limit = 10, genre } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, filter = {} } = options;
 
   const start = (page - 1) * limit;
 
   const populate = getPopulate();
-  const filter = genre ? { genres: { $in: [genre] } } : {};
 
   return this.find(filter)
     .notDeleted()
@@ -163,12 +157,12 @@ AlbumSchema.statics.getAlbums = function (options = {}) {
 };
 
 AlbumSchema.statics.createAlbum = function (idUser, data) {
-  const { title, year, genres, tracks, thumbnails } = data;
+  const { title, released_date, genres, tracks, thumbnails } = data;
 
   return this.create({
     user: idUser,
     title,
-    year,
+    released_date,
     genres,
     tracks,
     thumbnails,
@@ -176,11 +170,11 @@ AlbumSchema.statics.createAlbum = function (idUser, data) {
 };
 
 AlbumSchema.statics.updateAlbum = function (id, data) {
-  const { title, year, genres, tracks, thumbnails } = data;
+  const { title, released_date, genres, tracks, thumbnails } = data;
 
   return this.findOneAndUpdate(
     { _id: id, deleted_at: { $exists: false } },
-    { $set: { title, year, genres, tracks, thumbnails } },
+    { $set: { title, released_date, genres, tracks, thumbnails } },
     { new: true, runValidators: true },
   );
 };
