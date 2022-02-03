@@ -109,24 +109,6 @@ AlbumSchema.query.notDeleted = function () {
 
 /* Population Object */
 
-const limitedPopulate = [
-  {
-    path: "user",
-    match: { deleted_at: { $exists: false } },
-    select: "username",
-  },
-  {
-    path: "tracks",
-    match: { deleted_at: { $exists: false } },
-    select: "title",
-  },
-  {
-    path: "liked_by",
-    match: { deleted_at: { $exists: false } },
-    select: "username",
-  },
-];
-
 function getPopulate(extend) {
   return [
     {
