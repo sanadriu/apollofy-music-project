@@ -43,19 +43,16 @@ function deleteUser(authToken) {
   });
 }
 
-function updateUser(authToken, username, email) {
-  return http.patch(`${baseUrl}/users/me`, {
+export function updateUser(authToken, update) {
+  return http.patch(`${baseUrl}/users/me`, update, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
-    data: { username: username && username, email: email && email },
   });
 }
 
-function updateNewUser(authToken, updatedUser) {
-  return http.patch({
-    url: `${baseUrl}/users/me`,
-    data: updatedUser,
+export function updateNewUser(authToken, updatedUser) {
+  return http.patch(`${baseUrl}/users/me`, updatedUser, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },

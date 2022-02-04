@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
@@ -9,10 +10,10 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 
-import { signOut } from "../../../redux/auth";
 import { SmallText } from "../../atoms/SmallText/SmallText";
 import { rightSideBar } from "../../atoms/RightSideBar/RightSideBar";
-import { authSelector } from "../../../redux/auth";
+import { authSelector, signOut } from "../../../redux/auth";
+import * as ROUTES from "../../../routes";
 
 const MenuLayout = styled(rightSideBar)`
   height: 3rem;
@@ -42,6 +43,7 @@ export default function MenuBar() {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -55,8 +57,14 @@ export default function MenuBar() {
     setOpen(false);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await dispatch(signOut());
+    navigate(ROUTES.LOGIN);
     dispatch(signOut());
+  };
+
+  const editProfile = async () => {
+    navigate(ROUTES.EDIT_PROFILE);
   };
 
   function handleListKeyDown(event) {
@@ -69,7 +77,8 @@ export default function MenuBar() {
   }
 
   const prevOpen = useRef(open);
-  React.useEffect(() => {
+
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
@@ -87,7 +96,7 @@ export default function MenuBar() {
             : "https://res.cloudinary.com/stringifiers/image/upload/v1643731517/gidnkoxyrdltjkklfkcw.jpg"
         }
       />
-      <ProfileName>{currentUser?.username}</ProfileName>
+      <ProfileName>{currentUser?.email}</ProfileName>
       <Button
         ref={anchorRef}
         id="composition-button"
@@ -122,7 +131,7 @@ export default function MenuBar() {
                   onKeyDown={(e) => handleListKeyDown(e)}
                 >
                   <MenuItem onClick={(e) => handleClose(e)}>Profile</MenuItem>
-                  <MenuItem onClick={(e) => handleClose(e)}>My account</MenuItem>
+                  <MenuItem onClick={() => editProfile()}>My account</MenuItem>
                   <MenuItem onClick={() => logout()}>Logout</MenuItem>
                 </MenuList>
               </ClickAwayListener>

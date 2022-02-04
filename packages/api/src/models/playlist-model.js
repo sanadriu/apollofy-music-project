@@ -1,5 +1,6 @@
 const { Schema, Types, model } = require("mongoose");
 const { isURL } = require("validator");
+const { populate } = require("./user-model");
 
 const PlaylistSchema = new Schema(
   {
@@ -97,24 +98,36 @@ PlaylistSchema.query.notDeleted = function () {
   return this.where({ deleted_at: { $exists: false } });
 };
 
-/* Population Object */
+/* Statics */
 
-function getPopulate(extend = false) {
-  return [
+PlaylistSchema.statics.getNumPages = function (filter = {}) {
+  const limit = 10;
+
+  return this.countDocuments(filter)
+    .notDeleted()
+    .then((count) => {
+      return Math.floor(count / limit) + (count % limit ? 1 : 0);
+    });
+};
+
+PlaylistSchema.statics.getPlaylist = function (id, extend = false) {
+  const populate = [
     {
       path: "user",
       match: { deleted_at: { $exists: false } },
-      select: extend ? "username firstname lastname thumbnails" : "username",
+      select: extend ? "username firstname lastname thumbnails" : "id",
     },
     {
       path: "tracks",
       match: { deleted_at: { $exists: false } },
-      select: extend ? "title url duration color release_date num_likes num_plays user" : "title",
+      select: extend
+        ? "user title url duration genres color release_date num_likes num_plays"
+        : "id",
       ...(extend && {
         populate: {
           path: "user",
           match: { deleted_at: { $exists: false } },
-          select: extend ? "username firstname lastname thumbnails" : "username",
+          select: extend ? "username firstname lastname thumbnails" : "id",
         },
       }),
     },
@@ -149,11 +162,8 @@ PlaylistSchema.statics.getPlaylists = function (options = {}) {
 
   const start = (page - 1) * limit;
 
-  const populate = getPopulate();
-
   return this.find()
     .notDeleted()
-    .populate(populate)
     .sort({ [sort]: order })
     .skip(start)
     .limit(limit);
@@ -214,18 +224,16 @@ PlaylistSchema.statics.getFollowed = async function (id, idUser) {
   return await this.switchValueInList(id, "followed_by", idUser);
 };
 
-PlaylistSchema.statics.getUserPlaylists = function (idUser, options = {}) {
+PlaylistSchema.statics.getUserPlaylists = function (idUser, options) {
   const { page = 1, sort = "created_at", order = "asc", extend = false } = options;
 
   const limit = 10;
   const start = (page - 1) * limit;
 
-  const populate = getPopulate(extend);
-
   return this.find({ user: idUser })
     .notDeleted()
     .select("-user")
-    .populate(populate)
+    .populate({ path: "tracks followed_by" })
     .sort({ [sort]: order })
     .skip(start)
     .limit(limit);

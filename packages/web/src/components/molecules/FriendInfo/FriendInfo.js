@@ -18,7 +18,7 @@ const Layout = styled.div`
   }
 `;
 
-const ProfilePicture = styled.img`
+export const ProfilePicture = styled.img`
   width: 3rem;
   border-radius: 50%;
 `;

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import styled from "styled-components";
+import withLayout from "../../components/hoc/withLayout";
 import usersApi from "../../api/api-users";
 
 import ConfirmationDialogue from "../../components/organisms/ConfirmationDialogue";
@@ -15,6 +16,7 @@ const MainDiv = styled.div`
   display: flex;
   flex-direction: column;
   margin: auto;
+  margin-top: 2rem;
 `;
 
 const InputDiv = styled.div`
@@ -24,11 +26,13 @@ const InputDiv = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
-const InputLabel = styled.label`
-  display: InlIne-block;
-  margin-bottom: 0.5rem;
+const InputLabel = styled.span`
+  background-color: #e5e5e5;
+  padding: 0.5rem;
+  border-radius: 9999px;
 `;
 
 const InputField = styled.span`
@@ -44,12 +48,20 @@ const InputField = styled.span`
 
 const InsideDiv = styled.div`
   display: flex;
-  flex-direction: row;
+
+  align-items: center;
+`;
+
+const ImageThumb = styled.img`
+  width: 5rem;
+  height: 5rem;
+  border-radius: 100%;
 `;
 
 const EditProfile = () => {
-  const { userData } = useSelector((state) => state.entities.user);
+  const { currentUser } = useSelector((state) => state.entities.auth);
 
+  const profilePicture = currentUser.thumbnails?.url_default;
   async function deleteMyProfile() {
     const userToken = await getCurrentUserToken();
 
@@ -65,6 +77,8 @@ const EditProfile = () => {
   const [email, setEmailModal] = useState(false);
   const [password, setPasswordModal] = useState(false);
   const [username, setUsernameModal] = useState(false);
+  const [birthDate, setBirthdayModal] = useState(false);
+  const [profilePic, setProfilePicModal] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -77,19 +91,44 @@ const EditProfile = () => {
   return (
     <MainDiv>
       <h2>Update Your Profile</h2>
+      <InputDiv>
+        <InsideDiv>
+          <ImageThumb src={profilePicture} />{" "}
+        </InsideDiv>
+        <InsideDiv>
+          <Button
+            type="button"
+            size="small"
+            onClick={() => {
+              setEmailModal(false);
+              setOpenProfileModal(true);
+              setPasswordModal(false);
+              setUsernameModal(false);
+              setBirthdayModal(false);
+              setProfilePicModal(true);
+            }}
+          >
+            Change Profile Picture
+          </Button>
+        </InsideDiv>
+      </InputDiv>
 
       <InputDiv>
-        <InputLabel htmlFor="email-Input">Email</InputLabel>
         <InsideDiv>
-          <InputField>{userData.email}</InputField>
+          <InputLabel htmlFor="email-Input">Email</InputLabel>
+        </InsideDiv>
+        <InsideDiv>
+          <InputField>{currentUser.email}</InputField>
           <Button
             type="button"
             size="small"
             onClick={() => {
               setEmailModal(true);
+              setOpenProfileModal(true);
               setPasswordModal(false);
               setUsernameModal(false);
-              setOpenProfileModal(true);
+              setBirthdayModal(false);
+              setProfilePicModal(false);
             }}
           >
             Update Your Email
@@ -100,18 +139,41 @@ const EditProfile = () => {
       <InputDiv>
         <InputLabel htmlFor="username">Username</InputLabel>
         <InsideDiv>
-          <InputField>{userData.username}</InputField>
+          <InputField>{currentUser.username}</InputField>
           <Button
             type="button"
             size="small"
             onClick={() => {
               setUsernameModal(true);
+              setOpenProfileModal(true);
               setPasswordModal(false);
               setEmailModal(false);
-              setOpenProfileModal(true);
+              setBirthdayModal(false);
+              setProfilePicModal(false);
             }}
           >
             Update Your Username
+          </Button>
+        </InsideDiv>
+      </InputDiv>
+
+      <InputDiv>
+        <InputLabel htmlFor="birth_date">Birthday</InputLabel>
+        <InsideDiv>
+          <InputField>{currentUser.birth_date}</InputField>
+          <Button
+            type="button"
+            size="small"
+            onClick={() => {
+              setBirthdayModal(true);
+              setOpenProfileModal(true);
+              setUsernameModal(false);
+              setPasswordModal(false);
+              setEmailModal(false);
+              setProfilePicModal(false);
+            }}
+          >
+            Change Your Birthday
           </Button>
         </InsideDiv>
       </InputDiv>
@@ -125,9 +187,11 @@ const EditProfile = () => {
             size="small"
             onClick={() => {
               setPasswordModal(true);
+              setOpenProfileModal(true);
               setUsernameModal(false);
               setEmailModal(false);
-              setOpenProfileModal(true);
+              setBirthdayModal(false);
+              setProfilePicModal(false);
             }}
           >
             Update Your Password
@@ -150,10 +214,12 @@ const EditProfile = () => {
         email={email}
         password={password}
         username={username}
+        birthDay={birthDate}
+        profilePic={profilePic}
         handleClose={handleClose}
       />
     </MainDiv>
   );
 };
 
-export default EditProfile;
+export default withLayout(EditProfile);

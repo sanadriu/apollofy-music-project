@@ -2,13 +2,7 @@ import React from "react";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  authSelector,
-  setNameEmailAndPassword,
-  signInSuccess,
-  signInWithEmailRequest,
-  signInRequest,
-} from "../../../../redux/auth";
+import { authSelector, signInWithEmailRequest } from "../../../../redux/auth";
 import SignInSchema from "../../../../schemas/SignInSchema";
 import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
@@ -28,7 +22,7 @@ export default function SigninForm() {
       validationSchema={SignInSchema}
       onSubmit={async ({ email, password }, { setSubmitting }) => {
         setSubmitting(true);
-        await dispatch(signInWithEmailRequest(email, password));
+        dispatch(signInWithEmailRequest(email, password));
         setSubmitting(false);
       }}
     >

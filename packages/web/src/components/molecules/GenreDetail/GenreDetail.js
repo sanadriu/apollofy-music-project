@@ -38,7 +38,7 @@ export default GenreDetail;
 
 GenreDetail.propTypes = {
   genre: PropTypes.exact({
-    id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     thumbnails: PropTypes.exact({
       url_default: PropTypes.string,

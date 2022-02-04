@@ -230,8 +230,8 @@ export function signInWithEmailRequest(email, password) {
       const token = await authService.getCurrentUserToken();
 
       await api.signUp({ Authorization: `Bearer ${token}` });
-      const user = await usersApi.getCurrentUser(token);
-      dispatch(currentUserAdded(user.data.data));
+      const currentUser = await usersApi.getCurrentUser(token);
+      dispatch(currentUserAdded(currentUser.data.data));
 
       return dispatch(signInSuccess());
     } catch (error) {
@@ -256,7 +256,7 @@ export function syncSignIn() {
       return dispatch(signUpError(response.errorMessage));
     }
 
-    return dispatch(signUpSuccess(response.data));
+    return dispatch(signInSuccess(response.data));
   };
 }
 

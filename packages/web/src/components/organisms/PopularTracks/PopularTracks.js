@@ -28,7 +28,6 @@ export default function PopularTracks() {
   const { data: tracks, isError, error, isLoading } = useTracks(currentPage, undefined, undefined, sort);
 
   const handlePlayButton = (track) => {
-    console.log(track);
     setSelectedTrack(track);
   }
 

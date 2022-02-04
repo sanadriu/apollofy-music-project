@@ -38,19 +38,23 @@ const audioTrackList = [
 ];
 
 export function ExampleAudioPlayer() {
-  const { tracklist } = useSelector(tracksSelector);
+  const tracks = useSelector(tracksSelector);
 
-  console.log(tracklist)
+  // console.log(tracks)
+
   return (
     <>
       <AudioPlayerControlSprite />
       <AudioWrapper
         // Array<TrackType> - list of track, see `audioTrackList` above, required
         trackList={audioTrackList}
+
         // string - wrapper's class name, optional, deafult: ''
         className="reproduction-bar"
+
         // callback function - called on did mount, optional, default: noop
-        onDidMount={console.log}
+        // onDidMount={console.log("autoplay not working")}
+
         // default player state, optional
         defaultState={{
           // boolean - is player muted, optional, default: false

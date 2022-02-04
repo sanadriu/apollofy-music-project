@@ -3,7 +3,6 @@ const albumController = require("./album-controller");
 const playlistController = require("./playlist-controller");
 const trackController = require("./track-controller");
 const genreController = require("./genre-controller");
-const searchController = require("./search-controller");
 
 module.exports = {
   userController,
@@ -12,5 +11,4 @@ module.exports = {
 
   trackController,
   genreController,
-  searchController,
 };

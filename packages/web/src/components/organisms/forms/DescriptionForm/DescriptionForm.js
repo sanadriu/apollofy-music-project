@@ -37,7 +37,7 @@ export default function DescriptionForm() {
         thumbnails: {
           url_default: currentUser.pictureLink,
         },
-        birth_date: currentUser.birth_date.toISOString().substring(0, 10),
+        birth_date: currentUser.birth_date?.toISOString().substring(0, 10),
         description: value,
       };
 

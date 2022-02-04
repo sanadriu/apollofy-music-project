@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from "react-query";
 
-import { queryKeys } from '../queries/constants';
-import albumsApi from '../api/api-albums';
+import { queryKeys } from "../queries/constants";
+import albumsApi from "../api/api-albums";
 
 export function useAlbums() {
   const fallback = [];

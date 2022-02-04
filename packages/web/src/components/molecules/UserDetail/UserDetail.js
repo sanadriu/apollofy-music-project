@@ -1,14 +1,94 @@
 import React from "react";
+import styled from "styled-components";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import GroupIcon from "@mui/icons-material/Group";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+
+import { DetailText } from "../../atoms/DetailText/DetailText";
+
+const UserLayout = styled.div`
+  display: flex;
+  gap: 1rem;
+  padding: 0.3rem;
+  border-radius: 1.3rem;
+  width: 100%;
+
+  &:hover {
+    background-color: darkgray;
+  }
+`;
+
+const UserPicture = styled.img`
+  max-width: 3rem;
+  max-height: 3rem;
+  margin: 0;
+  border-radius: 0.3rem;
+`;
+
+const UserFlex = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding-left: 0.5rem;
+  flex-grow: 1;
+`;
+
+const UserLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    color: white;
+  }
+`;
+
+const StyledNumUser = styled.div`
+  font-family: ${({ theme }) => theme.fonts.primary};
+  margin-left: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  width: 20%;
+`;
+
+const StyledNumber = styled.div`
+  padding-left: 0.5rem;
+  font-weight: 500;
+`;
+
+const FollowButton = styled.button`
+  border-radius: 1.3rem;
+  background-color: purple;
+  border: none;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #9e607e;
+  }
+`;
 
 const UserDetail = ({ user }) => {
-
   return (
-    <>
-      <div>{user.username}</div>
-    </>
+    <UserLayout>
+      {/* <UserPicture alt={`${user.username}`} src={user?.thumbnails?.url_default} /> */}
+      <UserFlex>
+        <UserLink to={`/user-profile/${user.id}`}>
+          <DetailText>{user.username}</DetailText>
+        </UserLink>
+      </UserFlex>
+      <StyledNumUser>
+        <GroupIcon />
+        <StyledNumber>{user?.followers?.lenght}</StyledNumber>
+      </StyledNumUser>
+      <FollowButton>
+        <PersonAddIcon />
+      </FollowButton>
+    </UserLayout>
   );
-}
+};
 
 export default UserDetail;
 

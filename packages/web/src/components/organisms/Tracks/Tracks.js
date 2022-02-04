@@ -34,12 +34,13 @@ export default function Tracks() {
   }, [currentPage, currentGenre, maxTrackPage, queryClient])
 
   if (isLoading) return <h3>Loading...</h3>;
-  if (isError) return (
-    <>
-      <h3>Oops, something went wrong</h3>
-      <p>{error}</p>
-    </>
-  )
+  if (isError)
+    return (
+      <>
+        <h3>Oops, something went wrong</h3>
+        <p>{error}</p>
+      </>
+    );
 
   return (
     <>
@@ -53,15 +54,23 @@ export default function Tracks() {
         ))}
       </ul>
       <div className="pages">
-        <button type="button" disabled={currentPage <= 1} onClick={() => {
-          setCurrentPage((prevValue) => prevValue - 1)
-        }}>
+        <button
+          type="button"
+          disabled={currentPage <= 1}
+          onClick={() => {
+            setCurrentPage((prevValue) => prevValue - 1);
+          }}
+        >
           Previous page
         </button>
         <span>Page {currentPage}</span>
-        <button type="button" disabled={currentPage >= maxTrackPage} onClick={() => {
-          setCurrentPage((prevValue) => prevValue + 1)
-        }}>
+        <button
+          type="button"
+          disabled={currentPage >= maxTrackPage}
+          onClick={() => {
+            setCurrentPage((prevValue) => prevValue + 1);
+          }}
+        >
           Next page
         </button>
       </div>
