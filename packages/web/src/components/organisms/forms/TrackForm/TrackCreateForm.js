@@ -55,6 +55,7 @@ function TrackCreateForm() {
   } = useGenres();
 
   const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -87,14 +88,6 @@ function TrackCreateForm() {
     setFieldValue,
     setFieldError,
   } = formik;
-
-  console.log(
-    fetchGenresIsLoading,
-    fetchGenresIsError,
-    fetchGenresIsSuccess,
-    fetchGenresError,
-    fetchGenresResponse,
-  );
 
   return (
     <Container as="main">
