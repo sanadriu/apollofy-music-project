@@ -145,13 +145,13 @@ PlaylistSchema.statics.getPlaylist = function (id, options = {}) {
 };
 
 PlaylistSchema.statics.getPlaylists = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc", limit = 10 } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, filter } = options;
 
   const start = (page - 1) * limit;
 
-  const populate = getPopulate();
+  const populate = getPopulate(filter);
 
-  return this.find()
+  return this.find(filter)
     .notDeleted()
     .populate(populate)
     .sort({ [sort]: order })
