@@ -14,10 +14,14 @@ const MainLayout = styled.main`
   padding: 2rem 1rem 0 1rem;
   justify-content: space-between;
   margin-bottom: 6rem;
+  width: 100%;
 `;
 
 const PageContent = styled.div`
-  flex-basis: 60%;
+  width: 60%;
+  @media only screen and (max-width: 1000px) {
+    width:95%
+  }
 `;
 
 function withLayout(WrappedComponent) {

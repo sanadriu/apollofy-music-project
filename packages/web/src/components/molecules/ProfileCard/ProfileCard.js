@@ -31,12 +31,12 @@ const ProfileCard = ({ title, date, thumbnails }) => {
   return (
     <StyledCard
       sx={{
-        maxWidth: 150,
-        minWidth: 130,
+        maxWidth:200,
+        minWidth: 100,
         margin: 1,
         padding: 1,
-        width: "20%",
         display: "block",
+        borderRadius: "1.3rem" ,
       }}
     >
       <CardActionArea>
@@ -45,7 +45,7 @@ const ProfileCard = ({ title, date, thumbnails }) => {
           height="100"
           src="https://images.pexels.com/photos/10931590/pexels-photo-10931590.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
           alt="album image"
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: "1.1rem" }}
         />
         <StyledIcon />
         <CardContent>

@@ -1,6 +1,5 @@
 const { model } = require("mongoose");
 const models = require("../models");
-const { getRandomItems } = require("../utils");
 const {
   createSampleUser,
   createSampleGenre,
@@ -12,47 +11,37 @@ const {
 async function seedUserCollection(length = 1) {
   const users = Array.from({ length }, () => createSampleUser());
 
-  await models.User.insertMany(users);
+  return await models.User.insertMany(users).then((docs) => docs.map(({ id }) => id));
 }
 
 async function seedGenreCollection(length = 1) {
   const genres = Array.from({ length }, () => createSampleGenre());
 
-  await models.Genre.insertMany(genres);
+  return await models.Genre.insertMany(genres).then((docs) => docs.map(({ name }) => name));
 }
 
-async function seedTrackCollection(length = 1) {
-  const users = (await models.User.find()).map((user) => user.id);
-
+async function seedAlbumCollection(length = 1, users = [], genres = []) {
   if (users.length === 0) throw new Error("User list must not be empty");
-
-  const genres = (await models.Genre.find()).map((genre) => genre.id);
-
-  const tracks = Array.from({ length }, () => createSampleTrack(users, genres));
-
-  await models.Track.insertMany(tracks);
-}
-
-async function seedAlbumCollection(length = 1) {
-  const users = (await models.User.find()).map((user) => user.id);
-
-  if (users.length === 0) throw new Error("User list must not be empty");
-
-  const genres = (await models.Genre.find()).map((genre) => genre.id);
 
   const albums = Array.from({ length }, () => createSampleAlbum(users, genres));
 
-  await models.Album.insertMany(albums);
+  return await models.Album.insertMany(albums).then((docs) => docs.map(({ id }) => id));
 }
 
-async function seedPlaylistCollection(length = 1) {
-  const users = (await models.User.find()).map((user) => user.id);
-
+async function seedPlaylistCollection(length = 1, users = []) {
   if (users.length === 0) throw new Error("User list must not be empty");
 
   const playlists = Array.from({ length }, () => createSamplePlaylist(users));
 
-  await models.Playlist.insertMany(playlists);
+  return await models.Playlist.insertMany(playlists).then((docs) => docs.map(({ id }) => id));
+}
+
+async function seedTrackCollection(length = 1, users = [], genres = []) {
+  if (users.length === 0) throw new Error("User list must not be empty");
+
+  const tracks = Array.from({ length }, () => createSampleTrack(users, genres));
+
+  return await models.Track.insertMany(tracks).then((docs) => docs.map(({ id }) => id));
 }
 
 async function seedAlbumsWithTracks() {
@@ -94,11 +83,12 @@ async function seedCollections() {
   const numAlbums = 12;
   const numPlaylists = 12;
 
-  await seedUserCollection(numUsers);
-  await seedGenreCollection(numGenres);
-  await seedAlbumCollection(numAlbums);
-  await seedTrackCollection(numTracks);
-  await seedPlaylistCollection(numPlaylists);
+  const users = await seedUserCollection(numUsers);
+  const genres = await seedGenreCollection(numGenres);
+
+  await seedAlbumCollection(numAlbums, users, genres);
+  await seedTrackCollection(numTracks, users, genres);
+  await seedPlaylistCollection(numPlaylists, users);
   await seedAlbumsWithTracks();
   await seedPlaylistsWithTracks();
 }
@@ -112,27 +102,3 @@ module.exports = {
   deleteCollections,
   seedCollections,
 };
-
-// async function seedAlbumCollection(length = 1, users = [], genres = []) {
-//   if (users.length === 0) throw new Error("User list must not be empty");
-
-//   const albums = Array.from({ length }, () => createSampleAlbum(users, genres));
-
-//   return await models.Album.insertMany(albums).then((docs) => docs.map(({ id }) => id));
-// }
-
-// async function seedPlaylistCollection(length = 1, users = []) {
-//   if (users.length === 0) throw new Error("User list must not be empty");
-
-//   const playlists = Array.from({ length }, () => createSamplePlaylist(users));
-
-//   return await models.Playlist.insertMany(playlists).then((docs) => docs.map(({ id }) => id));
-// }
-
-// async function seedTrackCollection(length = 1, users = [], genres = []) {
-//   if (users.length === 0) throw new Error("User list must not be empty");
-
-//   const tracks = Array.from({ length }, () => createSampleTrack(users, genres));
-
-//   return await models.Track.insertMany(tracks).then((docs) => docs.map(({ id }) => id));
-// }

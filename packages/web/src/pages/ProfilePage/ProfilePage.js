@@ -8,8 +8,11 @@ import ProfileUserCards from "../../components/organisms/ProfileUserCards/Profil
 import ProfileUserTracks from "../../components/organisms/ProfileUserTracks/ProfileUserTracks";
 
 const StyledProfilePage = styled.div`
-  max-width: 900px;
+  //max-width: 900px;
   overflow: hidden;
+  @media only screen and (max-width: 1000px) {
+    padding-right: 2rem;
+  }
 `;
 
 const StyledMostListened = styled.div`

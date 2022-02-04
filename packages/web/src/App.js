@@ -19,6 +19,7 @@ import Genres from "./pages/Genres";
 import Albums from "./pages/Albums";
 import TracksByGenre from "./pages/TracksByGenre";
 import Users from "./pages/Users";
+import Switch from "./components/atoms/Switch";
 
 import { onAuthStateChanged } from "./services/auth";
 import { authSelector, syncSignIn, signOut } from "./redux/auth";
@@ -26,6 +27,7 @@ import { authSelector, syncSignIn, signOut } from "./redux/auth";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
+import TrackForm from "./components/organisms/forms/TrackForm/TrackForm";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
@@ -77,6 +79,7 @@ function App() {
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+            <Route path="track-form-test" element={<TrackForm />} />
             {isAuthenticated && (
               <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
                 <Route path={ROUTES.HOME} exact element={<Home />} />
