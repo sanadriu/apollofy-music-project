@@ -81,6 +81,7 @@
     "react-audio-player-pro": "^1.1.19",
     "react-device-detect": "^2.1.2",
     "react-dom": "^17.0.2",
+    "react-drag-drop-files": "^2.3.1",
     "react-helmet": "^6.1.0",
     "react-intl": "^5.24.4",
     "react-query": "^3.34.12",

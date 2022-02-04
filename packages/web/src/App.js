@@ -67,7 +67,7 @@ function App() {
           <Route path={ROUTES.LOGIN} element={<Login />} />
           <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
           <Route path={ROUTES.USER_PROFILE} element={<ProfilePage />} />
-          <Route path="track-form-test" element={TrackForm} />
+          <Route path="track-form-test" element={<TrackForm />} />
           {isAuthenticated && (
             <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
               <Route path={ROUTES.HOME} exact element={<Home />} />
