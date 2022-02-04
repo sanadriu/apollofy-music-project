@@ -26,6 +26,10 @@ const GenreDetail = ({ genre }) => {
       background-image: url(${genre.thumbnails.url_default});
       background-blend-mode: overlay;
     }
+
+    @media only screen and (max-width: 600px) {
+      height: 3.5rem;
+    }
   `;
   return (
     <GenreLayout>

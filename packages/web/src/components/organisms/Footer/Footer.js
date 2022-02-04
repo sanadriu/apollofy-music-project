@@ -10,10 +10,16 @@ const FooterText = styled(HomeSmallText)`
   margin-bottom: 0.5rem;
 `;
 
+const FooterLayout = styled.div`
+  @media only screen and (max-width: 992px) {
+    display: none;
+  }
+`;
+
 export default function Footer() {
   //   const navigate = useNavigate();
   return (
-    <div>
+    <FooterLayout>
       <FooterText>
         For developers, try out our <PurpleLink>API</PurpleLink>
       </FooterText>
@@ -23,6 +29,6 @@ export default function Footer() {
         </PurpleLink>
       </FooterText>
       <FooterText>&#174; The Stringifiers</FooterText>
-    </div>
+    </FooterLayout>
   );
 }

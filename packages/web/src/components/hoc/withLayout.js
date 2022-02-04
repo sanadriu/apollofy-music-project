@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import styled from "styled-components";
 
 import { FlexColumn } from "../atoms/FlexColumn/FlexColumn";
@@ -10,10 +11,21 @@ import MenuBar from "../organisms/MenuBar/MenuBar";
 
 const MainLayout = styled.main`
   display: flex;
-  gap: 1.5rem;
-  padding: 2rem 1rem 0 1rem;
+  gap: 2rem;
+  padding: 1rem 1rem 0 1rem;
   justify-content: space-between;
   margin-bottom: 6rem;
+
+  @media only screen and (max-width: 992px) {
+    padding: 1rem 0;
+    gap: 0.5rem;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  @media only screen and (max-width: 600px) {
+    padding: 1rem;
+  }
 `;
 
 const PageContent = styled.div`
@@ -24,18 +36,33 @@ function withLayout(WrappedComponent) {
   function WrapperComponent({ ...props }) {
     return (
       <>
-        <MainLayout>
-          <ControlBar />
-          <PageContent>
-            <WrappedComponent {...props} />
-          </PageContent>
-          <FlexColumn>
-            <MenuBar />
-            <FriendsColumn />
-            <Footer />
-          </FlexColumn>
-        </MainLayout>
-        <ExampleAudioPlayer />
+        {isBrowser && (
+          <>
+            <MainLayout>
+              <ControlBar />
+              <PageContent>
+                <WrappedComponent {...props} />
+              </PageContent>
+              <FlexColumn>
+                <MenuBar />
+                <FriendsColumn />
+                <Footer />
+              </FlexColumn>
+            </MainLayout>
+            <ExampleAudioPlayer />
+          </>
+        )}
+        {isMobile && (
+          <>
+            <MainLayout>
+              <PageContent>
+                <WrappedComponent {...props} />
+              </PageContent>
+            </MainLayout>
+            <ExampleAudioPlayer />
+            <ControlBar />
+          </>
+        )}
       </>
     );
   }

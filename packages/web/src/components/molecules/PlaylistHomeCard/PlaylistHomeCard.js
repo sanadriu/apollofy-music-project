@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-// import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
 import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
 import { SmallText } from "../../atoms/SmallText/SmallText";
@@ -22,16 +22,18 @@ const CardLayout = styled(FlexColumn)`
   min-height: 90%;
 `;
 
-// const HoverIcon = styled(PlayCircleIcon)`
-//   color: purple;
-//   align-self: right;
-//   display: hidden;
+const HoverIcon = styled(PlayCircleIcon)`
+  position: absolute;
+  color: purple;
+  visibility: hidden;
+  transition: 1ms all;
+  width: 3rem;
 
-//   ${CardLayout}:hover {
-//     display: block;
-//     color: black;
-//   }
-// `;
+  ${CardLayout}:hover {
+    transition: 1ms all;
+    visibility: visible;
+  }
+`;
 
 export default function PlaylistHomeCard(props) {
   const { playlist } = props;
@@ -42,13 +44,14 @@ export default function PlaylistHomeCard(props) {
     max-width: 12rem;
     background-image: linear-gradient(white, ${playlist.color}),
       url(${playlist.thumbnails.url_default});
+    // background-blend-mode: overlay;
     background-size: cover;
     border: 1px solid darkgray;
+    transition: 0.2s;
 
     &:hover {
       color: white;
       background-image: url(${playlist.thumbnails.url_default});
-      background-blend-mode: overlay;
     }
   `;
   return (
@@ -58,6 +61,7 @@ export default function PlaylistHomeCard(props) {
         <CardLink to={`/playlists/${playlist.id}`}>
           <SmallText>{playlist.title}</SmallText>
         </CardLink>
+        <HoverIcon />
         <HomeSmallText>{playlist.followed_by.lenght} listeners</HomeSmallText>
       </CardLayout>
     </Card>

@@ -31,6 +31,10 @@ function Home() {
   const TracksLayout = styled.div`
     display: flex;
     gap: 1rem;
+
+    @media only screen and (max-width: 600px) {
+      flex-direction: column-reverse;
+    }
   `;
 
   return (

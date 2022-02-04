@@ -51,6 +51,10 @@ const StyledNumTrack = styled.div`
   align-items: center;
   font-size: 0.8rem;
   width: 20%;
+
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
 `;
 
 const StyledNumber = styled.div`

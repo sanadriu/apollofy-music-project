@@ -18,10 +18,18 @@ const TracksList = styled(SectionLayout)`
   padding: 1rem;
   width: 30rem;
   gap: 1rem;
+
+  @media only screen and (max-width: 600px) {
+    margin-top: 1rem;
+    width: 100%;
+  }
 `;
 
-// const maxTrackPage = 10;
-// const currentLimit = 10;
+const TracksText = styled(SmallText)`
+  @media only screen and (max-width: 600px) {
+    margin: auto;
+  }
+`;
 
 export default function PopularTracks() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,7 +47,7 @@ export default function PopularTracks() {
 
   return (
     <SectionLayout>
-      <SmallText>Popular Tracks</SmallText>
+      <TracksText>Popular Tracks</TracksText>
       <TracksList>
         {tracks?.data?.data?.map((track) => (
           <TrackDetail key={track.id} track={track} />
