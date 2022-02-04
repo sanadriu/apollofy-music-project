@@ -32,9 +32,9 @@ export function useSetTrack() {
   const mutation = useMutation((data) => {
     const authToken = authService.getCurrentUserToken();
 
-    if (authToken) return tracksApi.setTrack(data, authToken);
+    if (authToken) return tracksApi.setTrack(authToken, data);
 
-    return Promise.reject("User authentication required");
+    return Promise.reject(new Error("User authentication required"));
   });
 
   return mutation;

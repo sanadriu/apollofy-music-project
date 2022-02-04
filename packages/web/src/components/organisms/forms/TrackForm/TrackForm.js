@@ -27,6 +27,7 @@ const initialValues = {
   genres: [],
   url_track: "",
   url_image: "",
+  duration: 0,
 };
 
 const genres = ["Rock", "Pop", "Hip Hop", "Haroon Metal"];
@@ -47,10 +48,15 @@ function TrackForm() {
         released_date: values.released_date,
         genres: values.genres,
         url: values.url_track,
+        duration: values.duration,
         thumbnails: {
           url_default: values.url_image,
         },
       };
+
+      console.log(data);
+
+      mutate(data);
     },
   });
 
@@ -60,7 +66,6 @@ function TrackForm() {
     touched,
     isValid,
     isValidating,
-    isSubmitting,
     handleBlur,
     handleChange,
     handleSubmit,
@@ -68,15 +73,19 @@ function TrackForm() {
     setFieldError,
   } = formik;
 
-  console.log(values);
-
   return (
     <Container as="main">
       <MiddleTitle>Add new track</MiddleTitle>
       {isSuccess && (
-        <Alert severity={response?.success ? "success" : "error"}>{response.message}</Alert>
+        <Alert sx={{ mb: 2 }} severity={response.data.success ? "success" : "error"}>
+          {response.data.message}
+        </Alert>
       )}
-      {isError && <Alert variant="danger text-center">{error.message}</Alert>}
+      {isError && (
+        <Alert sx={{ mb: 2 }} severity="error">
+          {error.message}
+        </Alert>
+      )}
       <form onSubmit={handleSubmit}>
         <Box
           sx={{
@@ -180,6 +189,7 @@ function TrackForm() {
               uploadResource(file, "video")
                 .then((res) => {
                   setFieldValue("url_track", res.data.url);
+                  setFieldValue("duration", res.data.duration);
                 })
                 .catch((err) => {
                   setFieldError("url_track", err.message);
@@ -192,7 +202,12 @@ function TrackForm() {
             <FormHelperText style={{ color: "#d32f2f" }}>{errors.url_track}</FormHelperText>
           )}
         </Box>
-        <LoadingButton disabled={!isValid} loading={isValidating || isLoading} variant="contained">
+        <LoadingButton
+          type="submit"
+          disabled={!isValid}
+          loading={isValidating || isLoading}
+          variant="contained"
+        >
           Add new track
         </LoadingButton>
       </form>

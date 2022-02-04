@@ -59,7 +59,7 @@ function App() {
 
   return (
     <ThemeProvider theme={themeMode}>
-      <>
+      <QueryClientProvider client={queryClient}>
         <GlobalStyles />
         <Switch theme={theme} toggleTheme={themeToggler} />
         <Routes>
@@ -84,7 +84,7 @@ function App() {
             </Route>
           )}
         </Routes>
-      </>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }
