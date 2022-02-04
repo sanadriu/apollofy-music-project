@@ -56,13 +56,13 @@ export default function PlaylistHomeCard(props) {
   `;
   return (
     <Card>
-      <HomeSmallText>{playlist.tracks.length} Tracks</HomeSmallText>
+      <HomeSmallText>{playlist.num_tracks} Tracks</HomeSmallText>
       <CardLayout>
         <CardLink to={`/playlists/${playlist.id}`}>
           <SmallText>{playlist.title}</SmallText>
         </CardLink>
         <HoverIcon />
-        <HomeSmallText>{playlist.followed_by.lenght} listeners</HomeSmallText>
+        <HomeSmallText>{playlist.num_followers} listeners</HomeSmallText>
       </CardLayout>
     </Card>
   );

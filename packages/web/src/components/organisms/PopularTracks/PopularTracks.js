@@ -11,7 +11,7 @@ export const SectionLayout = styled.div`
   flex-direction: column;
 `;
 
-const TracksList = styled(SectionLayout)`
+export const TracksList = styled(SectionLayout)`
   margin-top: 0;
   background-color: lightgray;
   border-radius: 1.3rem;
