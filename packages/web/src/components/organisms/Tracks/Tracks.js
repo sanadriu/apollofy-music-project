@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQueryClient } from 'react-query';
 
 import tracksApi from '../../../api/api-tracks';
-import { useTracks } from "../../../hooks/useTracks";
+import { useTracks, usePrefetchTracks } from "../../../hooks/useTracks";
 
 import TrackDetail from "../../molecules/TrackDetail";
 
@@ -24,6 +24,8 @@ export default function Tracks() {
     if (currentPage < maxTrackPage) {
       const nextPage = currentPage + 1;
       const nextGenre = (!currentGenre) ? undefined : currentGenre;
+
+      // usePrefetchTracks(nextPage, nextGenre)
       queryClient.prefetchQuery(
         ["tracks", nextPage, nextGenre],
         () => tracksApi.getTracks(nextPage, nextGenre)

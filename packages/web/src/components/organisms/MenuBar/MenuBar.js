@@ -12,7 +12,7 @@ import MenuList from "@mui/material/MenuList";
 import { signOut } from "../../../redux/auth";
 import { SmallText } from "../../atoms/SmallText/SmallText";
 import { rightSideBar } from "../../atoms/RightSideBar/RightSideBar";
-import { userSelector } from "../../../redux/user";
+import { authSelector } from "../../../redux/auth";
 
 const MenuLayout = styled(rightSideBar)`
   height: 3rem;
@@ -38,7 +38,7 @@ const ProfileName = styled(SmallText)`
 `;
 
 export default function MenuBar() {
-  const { userData } = useSelector(userSelector);
+  const { currentUser } = useSelector(authSelector);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -82,12 +82,12 @@ export default function MenuBar() {
       <ProfilePicture
         alt="Profile Picture"
         src={
-          userData?.thumbnails?.url_default
-            ? userData.thumbnails.url_default
+          currentUser?.thumbnails?.url_default
+            ? currentUser.thumbnails.url_default
             : "https://res.cloudinary.com/stringifiers/image/upload/v1643731517/gidnkoxyrdltjkklfkcw.jpg"
         }
       />
-      <ProfileName>{userData?.username}</ProfileName>
+      <ProfileName>{currentUser?.username}</ProfileName>
       <Button
         ref={anchorRef}
         id="composition-button"

@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { AudioPlayerControlSprite, AudioPlayer } from "react-audio-player-pro";
 import reactAudioPlayerProStyle from "react-audio-player-pro/dist/style.css";
+import { useSelector } from "react-redux";
+
+import { tracksSelector } from "../../../redux/tracks";
 
 const AudioWrapper = styled(AudioPlayer)`
   position: fixed;
@@ -35,6 +38,9 @@ const audioTrackList = [
 ];
 
 export function ExampleAudioPlayer() {
+  const { tracklist } = useSelector(tracksSelector);
+
+  console.log(tracklist)
   return (
     <>
       <AudioPlayerControlSprite />

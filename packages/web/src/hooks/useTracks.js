@@ -21,9 +21,9 @@ export function useTracks(currentPage = 1, currentGenre = undefined, currentLimi
   return { data, isError, error, isLoading };
 }
 
-export function usePrefetchTracks(nextPage, currentGenre = undefined, currentLimit = 10, sort = undefined, order = 'desc') {
+export async function usePrefetchTracks(nextPage, currentGenre = undefined, currentLimit = 10, sort = undefined, order = 'desc') {
   const queryClient = useQueryClient();
-  queryClient.prefetchQuery(
+  await queryClient.prefetchQuery(
     [queryKeys.tracks, nextPage, currentGenre],
     () => tracksApi.getTracks(nextPage, currentGenre, currentLimit, sort, order)
   )

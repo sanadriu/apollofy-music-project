@@ -20,13 +20,17 @@ const TracksList = styled(SectionLayout)`
   gap: 1rem;
 `;
 
-// const maxTrackPage = 10;
-// const currentLimit = 10;
-
 export default function PopularTracks() {
+  const [selectedTrack, setSelectedTrack] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const sort = "num_plays";
 
-  const { data: tracks, isError, error, isLoading } = useTracks(currentPage);
+  const { data: tracks, isError, error, isLoading } = useTracks(currentPage, undefined, undefined, sort);
+
+  const handlePlayButton = (track) => {
+    console.log(track);
+    setSelectedTrack(track);
+  }
 
   if (isLoading) return <h3>Loading...</h3>;
   if (isError)
@@ -42,7 +46,7 @@ export default function PopularTracks() {
       <SmallText>Popular Tracks</SmallText>
       <TracksList>
         {tracks?.data?.data?.map((track) => (
-          <TrackDetail key={track.id} track={track} />
+          <TrackDetail key={track.id} track={track} handlePlayButton={handlePlayButton} />
         ))}
       </TracksList>
     </SectionLayout>

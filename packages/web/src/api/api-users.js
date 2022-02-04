@@ -18,6 +18,12 @@ const getUser = async (userId) => {
   });
 }
 
+const setCurrentUser = async (user) => {
+  return http.get(`${baseUrl}/users`, {
+    data: user,
+  });
+}
+
 const getUsers = async (page, limit, sort, order) => {
   return http.get(`${baseUrl}/users`, {
     params: {
@@ -59,6 +65,7 @@ function updateNewUser(authToken, updatedUser) {
 const usersApi = {
   getCurrentUser,
   getUser,
+  setCurrentUser,
   getUsers,
   updateUser,
   updateNewUser,
