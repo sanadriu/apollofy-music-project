@@ -79,14 +79,14 @@ export default function MenuBar() {
 
   return (
     <MenuLayout>
-      <ProfilePicture
+      {/* <ProfilePicture
         alt="Profile Picture"
         src={
           userData?.thumbnails?.url_default
             ? userData.thumbnails.url_default
             : "https://res.cloudinary.com/stringifiers/image/upload/v1643731517/gidnkoxyrdltjkklfkcw.jpg"
         }
-      />
+      /> */}
       <ProfileName>{userData?.username}</ProfileName>
       <Button
         ref={anchorRef}

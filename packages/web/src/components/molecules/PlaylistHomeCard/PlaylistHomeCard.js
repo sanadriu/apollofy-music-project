@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+// import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
 import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
 import { SmallText } from "../../atoms/SmallText/SmallText";
@@ -16,6 +17,22 @@ const CardLink = styled(Link)`
   }
 `;
 
+const CardLayout = styled(FlexColumn)`
+  justify-content: space-between;
+  min-height: 90%;
+`;
+
+// const HoverIcon = styled(PlayCircleIcon)`
+//   color: purple;
+//   align-self: right;
+//   display: hidden;
+
+//   ${CardLayout}:hover {
+//     display: block;
+//     color: black;
+//   }
+// `;
+
 export default function PlaylistHomeCard(props) {
   const { playlist } = props;
   const Card = styled.div`
@@ -23,18 +40,26 @@ export default function PlaylistHomeCard(props) {
     border-radius: 1.3rem;
     height: 15rem;
     max-width: 12rem;
-    background-color: ${playlist.color};
+    background-image: linear-gradient(white, ${playlist.color}),
+      url(${playlist.thumbnails.url_default});
+    background-size: cover;
     border: 1px solid darkgray;
+
+    &:hover {
+      color: white;
+      background-image: url(${playlist.thumbnails.url_default});
+      background-blend-mode: overlay;
+    }
   `;
   return (
     <Card>
       <HomeSmallText>{playlist.tracks.length} Tracks</HomeSmallText>
-      <FlexColumn>
+      <CardLayout>
         <CardLink to={`/playlists/${playlist.id}`}>
           <SmallText>{playlist.title}</SmallText>
         </CardLink>
         <HomeSmallText>{playlist.followed_by.lenght} listeners</HomeSmallText>
-      </FlexColumn>
+      </CardLayout>
     </Card>
   );
 }

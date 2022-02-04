@@ -11,7 +11,7 @@ import MenuBar from "../organisms/MenuBar/MenuBar";
 const MainLayout = styled.main`
   display: flex;
   gap: 1.5rem;
-  padding: 2rem 2rem 0 2rem;
+  padding: 2rem 1rem 0 1rem;
   justify-content: space-between;
   margin-bottom: 6rem;
 `;
