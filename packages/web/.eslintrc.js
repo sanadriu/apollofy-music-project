@@ -31,6 +31,9 @@ module.exports = {
     "jest/globals": true,
   },
   rules: {
+    "prefer-promise-reject-errors": "off",
+    "prefer-arrow-callback": "off",
+    "import/order": "off",
     "react/jsx-filename-extension": "off",
     "import/prefer-default-export": "off",
     "prefer-destructuring": "off",

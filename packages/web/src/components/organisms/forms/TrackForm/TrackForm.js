@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-
+import validationSchema from "../../../../schemas/TrackSchema";
 import {
   Alert,
   Box,
@@ -13,11 +13,13 @@ import {
   Container,
   MenuItem,
   Typography,
+  FormHelperText,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { uploadResource } from "../../../../api/api-cloudinary";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import withLayout from "../../../hoc/withLayout";
+import { useSetTrack } from "../../../../hooks/useTracks";
 
 const initialValues = {
   title: "",
@@ -28,29 +30,27 @@ const initialValues = {
 };
 
 const genres = ["Rock", "Pop", "Hip Hop", "Haroon Metal"];
-const allowedImageExt = ["jpg", "jpeg", "png", "svg"];
+const allowedImageExt = ["jpg", "jpeg", "png"];
 const allowedAudioExt = ["mp4"];
 
 function TrackForm() {
-  const [audioFile, setAudioFile] = useState();
-  const [imageFile, setImageFile] = useState();
+  const { isLoading, isError, isSuccess, error, data: response, mutate } = useSetTrack();
 
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues,
-    // validationSchema: {},
+    validationSchema,
     enableReinitialize: true,
-    onSubmit: (values, actions) => {
-      const { setSubmitting } = actions;
+    onSubmit: (values) => {
       const data = {
         title: values.title,
         released_date: values.released_date,
         genres: values.genres,
-        url: [values.image],
+        url: values.url_track,
+        thumbnails: {
+          url_default: values.url_image,
+        },
       };
-
-      // setSubmitting(true);
-      // createTrack(data).finally(() => setSubmitting(false));
     },
   });
 
@@ -73,8 +73,10 @@ function TrackForm() {
   return (
     <Container as="main">
       <MiddleTitle>Add new track</MiddleTitle>
-      {/* {status === "done" && <Alert severity={success ? "success" : "error"}>{message}</Alert>}
-      {status === "error" && <Alert variant="danger text-center">{error.message}</Alert>} */}
+      {isSuccess && (
+        <Alert severity={response?.success ? "success" : "error"}>{response.message}</Alert>
+      )}
+      {isError && <Alert variant="danger text-center">{error.message}</Alert>}
       <form onSubmit={handleSubmit}>
         <Box
           sx={{
@@ -141,63 +143,56 @@ function TrackForm() {
             ))}
           </Select>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            gap: { xs: 0, md: 2 },
-          }}
-        >
-          <Box sx={{ mb: 3 }}>
-            <InputLabel sx={{ mb: 1 }} htmlFor="input_track_cover">
-              Cover image file
-            </InputLabel>
-            <FileUploader
-              handleChange={(file) => {
-                setImageFile(file);
-
-                uploadResource(file, "image").then((res) => {
+        <Box sx={{ mb: 3 }}>
+          <InputLabel sx={{ mb: 1 }} htmlFor="input_track_cover">
+            Cover image file
+          </InputLabel>
+          <FileUploader
+            handleChange={(file) => {
+              uploadResource(file, "image")
+                .then((res) => {
                   setFieldValue("url_image", res.data.url);
+                })
+                .catch((err) => {
+                  setFieldError("url_image", err.message);
                 });
-              }}
-              name="input_track_cover"
-              types={allowedImageExt}
-            />
-          </Box>
-          {values?.url_image && (
-            <Box>
-              <Typography sx={{ color: "rgba(0, 0, 0, 0.6)", mb: 1 }}>
-                Cover image preview
-              </Typography>
-              <img style={{ width: "6rem", height: "6rem" }} src={values.url_image} alt="preview" />
-            </Box>
+            }}
+            name="input_track_cover"
+            types={allowedImageExt}
+          />
+          {touched.url_image && errors.url_image && (
+            <FormHelperText style={{ color: "#d32f2f" }}>{errors.url_image}</FormHelperText>
           )}
         </Box>
+
+        {values?.url_image && (
+          <Box>
+            <Typography sx={{ color: "rgba(0, 0, 0, 0.6)", mb: 1 }}>Cover image preview</Typography>
+            <img style={{ width: "6rem", height: "6rem" }} src={values.url_image} alt="preview" />
+          </Box>
+        )}
         <Box sx={{ mb: 3 }}>
           <InputLabel sx={{ mb: 1 }} htmlFor="input_audio_file">
             Track file
           </InputLabel>
           <FileUploader
             handleChange={(file) => {
-              setAudioFile(file);
-
               uploadResource(file, "video")
                 .then((res) => {
-                  setFieldValue("url_track", res.data);
+                  setFieldValue("url_track", res.data.url);
                 })
                 .catch((err) => {
-                  setFieldError(err.message);
+                  setFieldError("url_track", err.message);
                 });
             }}
             name="input_audio_file"
             types={allowedAudioExt}
           />
+          {touched.url_track && errors.url_track && (
+            <FormHelperText style={{ color: "#d32f2f" }}>{errors.url_track}</FormHelperText>
+          )}
         </Box>
-        <LoadingButton
-          disabled={!isValid}
-          loading={isValidating || isSubmitting}
-          variant="contained"
-        >
+        <LoadingButton disabled={!isValid} loading={isValidating || isLoading} variant="contained">
           Add new track
         </LoadingButton>
       </form>
