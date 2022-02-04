@@ -1,19 +1,21 @@
 import { Box } from "@mui/system";
+import PropTypes from "prop-types";
 import React from "react";
 import ProfileCard from "../../molecules/ProfileCard/ProfileCard";
 
-const ProfileUserCards = () => {
+
+const ProfileUserCards = ({ data }) => {
   return (
     <Box
       sx={{
         display: "flex",
         flexWrap: "wrap",
-        justifyContent: 'flex-start',
+        justifyContent: "flex-start",
         maxHeight: "210px",
-        overflow: 'hidden'
+        overflow: "hidden",
       }}
     >
-      <ProfileCard />
+      <ProfileCard title="" date="" thumbnails="" />
       <ProfileCard />
       <ProfileCard />
       <ProfileCard />
@@ -21,6 +23,14 @@ const ProfileUserCards = () => {
       <ProfileCard />
     </Box>
   );
+};
+
+ProfileUserCards.propTypes = {
+  data: PropTypes.array,
+};
+
+ProfileUserCards.defaultProps = {
+  data: [],
 };
 
 export default ProfileUserCards;

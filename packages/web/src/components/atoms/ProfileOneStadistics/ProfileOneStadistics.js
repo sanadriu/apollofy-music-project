@@ -1,26 +1,89 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import PersonIcon from "@mui/icons-material/Person";
+import AlbumIcon from "@mui/icons-material/Album";
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
 
 const StadisticsDiv = styled.div`
   width: 33%;
-  display: inline-block;
+  display: flex;
+  justify-content:center;
+  align-item:center;
+  min-width: 50px;
 `;
 
 const SpanText = styled.div`
   margin-left: 0.5em;
   display: inline;
+  @media only screen and (max-width: 1000px) {
+    display: none;
+  }
 `;
 
-const ProfileOneStadistics = ({ count, text}) => {
-  return (
-    <StadisticsDiv>
-      <b>{count}</b>
-      <SpanText>{text}</SpanText>
-    </StadisticsDiv>
-  );
-};
+const StyledTracks = styled(MusicNoteIcon)`
+  margin-left: 5px;
+  display: none;
+  @media only screen and (max-width: 1000px) {
+    display: block;
+  }
+`;
 
+const StyledFollowers = styled(PersonIcon)`
+  margin-left: 5px;
+  display: none;
+  @media only screen and (max-width: 1000px) {
+    display: block;
+  }
+`;
+
+const StyledAlbums = styled(AlbumIcon)`
+  margin-left: 5px;
+  display: none;
+  @media only screen and (max-width: 1000px) {
+    
+    display: block;
+  }
+`;
+
+const StyledCount = styled.span`
+  font-weight: bold;
+  text-align:center;
+`;
+
+const ProfileOneStadistics = ({ count, text }) => {
+  switch (text) {
+    case "Songs":
+      return (
+        <StadisticsDiv>
+          <StyledCount>{count}</StyledCount>
+          <StyledTracks />
+          <SpanText>{text}</SpanText>
+        </StadisticsDiv>
+      );
+
+    case "Followers":
+      return (
+        <StadisticsDiv>
+          <StyledCount>{count}</StyledCount>
+          <StyledFollowers />
+          <SpanText>{text}</SpanText>
+        </StadisticsDiv>
+      );
+
+    case "Albums":
+      return (
+        <StadisticsDiv>
+          <StyledCount>{count}</StyledCount>
+          <StyledAlbums />
+          <SpanText>{text}</SpanText>
+        </StadisticsDiv>
+      );
+
+    default:
+      return "";
+  }
+};
 
 ProfileOneStadistics.propTypes = {
   count: PropTypes.number,
@@ -29,8 +92,7 @@ ProfileOneStadistics.propTypes = {
 
 ProfileOneStadistics.defaultProps = {
   count: 0,
-  text: 'Property',
+  text: "Property",
 };
-
 
 export default ProfileOneStadistics;
