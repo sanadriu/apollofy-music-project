@@ -3,9 +3,13 @@ const { Playlist, User } = require("../models");
 
 async function getPlaylists(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc", limit = 10 } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", limit = 10, user } = req.query;
 
-    const pages = await Playlist.getNumPages(limit);
+    const filter = {
+      ...(user && { user }),
+    };
+
+    const pages = await Playlist.getNumPages(limit, filter);
 
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
@@ -34,7 +38,7 @@ async function getPlaylists(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylists({ page, sort, order, limit });
+    const dbRes = await Playlist.getPlaylists({ page, sort, order, limit, filter });
 
     return res.status(200).send({
       data: dbRes,

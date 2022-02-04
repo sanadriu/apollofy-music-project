@@ -3,17 +3,11 @@ const { Track, User } = require("../models");
 
 async function getTracks(req, res, next) {
   try {
-    const {
-      page = 1,
-      sort = "created_at",
-      order = "asc",
-      limit = 10,
-      extend = false,
-      genre,
-    } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", limit = 10, genre, user } = req.query;
 
     const filter = {
       ...(genre && { genres: { $in: [genre] } }),
+      ...(user && { user }),
     };
 
     const pages = await Track.getNumPages(limit, filter);
