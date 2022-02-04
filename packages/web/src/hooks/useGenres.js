@@ -1,18 +1,18 @@
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from "react-query";
 
-import { queryKeys } from '../queries/constants';
-import genresApi from '../api/api-genres';
+import { queryKeys } from "../queries/constants";
+import genresApi from "../api/api-genres";
 
 export function useGenres() {
-  const fallback = [];
-  const { data = fallback } = useQuery(queryKeys.genres, () => genresApi.getGenres(), {
+  const query = useQuery(queryKeys.genres, () => genresApi.getGenres(), {
     staleTime: 600000, // 10 minutes
     cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
-  return data;
+
+  return query;
 }
 
 export function usePrefetchGenres() {
