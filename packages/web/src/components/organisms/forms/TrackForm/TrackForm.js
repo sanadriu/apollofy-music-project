@@ -177,7 +177,18 @@ function TrackForm() {
         {values?.url_image && (
           <Box>
             <Typography sx={{ color: "rgba(0, 0, 0, 0.6)", mb: 1 }}>Cover image preview</Typography>
-            <img style={{ width: "6rem", height: "6rem" }} src={values.url_image} alt="preview" />
+            <img
+              style={{
+                width: "10rem",
+                height: "10rem",
+                objectFit: "contain",
+                padding: "0.25rem",
+                borderRadius: "0.25rem",
+                boxShadow: "0 0 0.25rem rgba(0, 0, 0, 0.5)",
+              }}
+              src={values.url_image}
+              alt="preview"
+            />
           </Box>
         )}
         <Box sx={{ mb: 3 }}>
