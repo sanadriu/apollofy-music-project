@@ -7,17 +7,20 @@ const StyledNumber = styled.div`
   font-weight: 400;
   font-size: 2rem;
   display: flex;
-  justify-content:center;
-  align-items:center;
-  width:10%;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  @media only screen and (max-width: 1000px) {
+    display: none;
+  }
 `;
 
 const ProfileNumTrack = () => {
   return (
-    <StyledNumber><div>1</div></StyledNumber>
+    <StyledNumber>
+      <div>1</div>
+    </StyledNumber>
   );
 };
-
-
 
 export default ProfileNumTrack;

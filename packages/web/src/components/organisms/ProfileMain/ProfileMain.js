@@ -8,7 +8,7 @@ import ProfileStadistics from "../../molecules/ProfileStadistics/ProfileStadisti
 const ProfileContent = styled.div`
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: column;
   margin: auto;
   border-radius: 1.3rem;
   background: #eeeee4;
@@ -19,12 +19,11 @@ const AvatarDiv = styled.div`
   justify-content: center;
   align-items: center;
   min-width: 215px;
-  width: 30%;
+  width: 100%;
 `;
 
 const DescriptionDiv = styled.div`
   padding: 1rem;
-  width: 70%;
 `;
 
 const ProfileMain = () => {

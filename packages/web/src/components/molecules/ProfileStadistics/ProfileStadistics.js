@@ -4,6 +4,8 @@ import ProfileOneStadistics from "../../atoms/ProfileOneStadistics/ProfileOneSta
 
 const StadisticsDiv = styled.div`
   margin-bottom: 1rem;
+  display:flex;
+  flex-wrap: wrap;
 `;
 
 const ProfileStadistics = () => {
