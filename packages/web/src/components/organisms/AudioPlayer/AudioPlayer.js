@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { AudioPlayerControlSprite, AudioPlayer } from "react-audio-player-pro";
+import { AudioPlayerControlSprite, AudioPlayer, PlayListPanel } from "react-audio-player-pro";
 import reactAudioPlayerProStyle from "react-audio-player-pro/dist/style.css";
 import { useSelector } from "react-redux";
 
@@ -13,44 +13,45 @@ const AudioWrapper = styled(AudioPlayer)`
   border: 2px solid lightgray;
 `;
 
-const audioTrackList = [
-  {
-    // string - path to audio file, required
-    src: "/path/to/audio/file",
-
-    // React$Node - custom content instead of title, optional, deafult: <title> or <src>
-    // content: <CustomContent />,
-
-    // MediaMetadata - media meta data, see `mediaMetadata` above
-    // https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/MediaMetadata
-    // optional
-    mediaMetadata: {
-      title: "Lesser Faith",
-      artist: "J. Syreus Bach",
-      album: "Ability to Break ~ Energetic Tracks",
-      artwork: [
-        { src: "/path/to/image/64px/64px", sizes: "64x64", type: "image/png" },
-        { src: "/path/to/image/128px/128px", sizes: "128x128", type: "image/png" },
-      ],
-    },
-  },
-  // other tracks here...
-];
-
 export function ExampleAudioPlayer() {
-  const { tracklist } = useSelector(tracksSelector);
+  const tracks = useSelector(tracksSelector);
 
-  console.log(tracklist)
+  const audioTrackList = [];
+  let audioTrack;
+
+  tracks?.list.map((track) => {
+    audioTrack = {}
+
+    audioTrack = {
+      src: track.url || null,
+      mediaMetadata: {
+        title: track.title || null,
+        artist: track.user.username || null,
+        album: track.album || null,
+        artwork: [
+          { src: track.thumbnails.url_default || null, sizes: "64x64", type: "image/png" },
+          { src: track.thumbnails.url_medium || null, sizes: "64x64", type: "image/png" },
+        ],
+      }
+    };
+
+    return audioTrackList.push(audioTrack)
+  })
+
   return (
     <>
       <AudioPlayerControlSprite />
+      <PlayListPanel />
       <AudioWrapper
         // Array<TrackType> - list of track, see `audioTrackList` above, required
         trackList={audioTrackList}
+
         // string - wrapper's class name, optional, deafult: ''
         className="reproduction-bar"
+
         // callback function - called on did mount, optional, default: noop
         onDidMount={console.log}
+
         // default player state, optional
         defaultState={{
           // boolean - is player muted, optional, default: false
@@ -63,7 +64,7 @@ export function ExampleAudioPlayer() {
           isShuffleOn: false,
 
           // boolean - is track list open, optional, default: true
-          isTrackListOpen: false,
+          isTrackListOpen: true,
 
           // string: 'none' | 'all' | 'one' - repeating state, optional, default: 'none'
           repeatingState: "none",

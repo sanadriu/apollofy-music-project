@@ -4,6 +4,9 @@ import styled from "styled-components";
 import { FlexColumn } from "../atoms/FlexColumn/FlexColumn";
 import ControlBar from "../molecules/ControlBar/ControlBar";
 import { ExampleAudioPlayer } from "../organisms/AudioPlayer/AudioPlayer";
+// import { Player } from "../organisms/AudioPlayer/AudioPlayer2";
+// import { Player } from "../organisms/AudioPlayer/AudioPlayer3";
+import Demo from "../organisms/AudioPlayer/AudioPlayer4";
 import Footer from "../organisms/Footer/Footer";
 import FriendsColumn from "../organisms/FriendsColumn/FriendsColumn";
 import MenuBar from "../organisms/MenuBar/MenuBar";
@@ -35,7 +38,8 @@ function withLayout(WrappedComponent) {
             <Footer />
           </FlexColumn>
         </MainLayout>
-        <ExampleAudioPlayer />
+        {/* <ExampleAudioPlayer /> */}
+        <Demo />
       </>
     );
   }
