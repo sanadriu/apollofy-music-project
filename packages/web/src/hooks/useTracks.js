@@ -74,10 +74,16 @@ export function useDeleteTrack() {
   return mutation;
 }
 
-export function useMyTracks({ currentLimit, currentPage }) {
+export function useMyTracks({ page, sort, order, limit, extend }) {
   const query = useQuery(
     ["my-tracks", id],
-    () => tracksApi.getMyTracks({ currentLimit, currentPage }),
+    () => {
+      const authToken = authService.getCurrentUserToken();
+
+      if (authToken) return tracksApi.getMyTracks(authToken, { page, sort, order, limit, extend });
+
+      return Promise.reject(new Error("User authentication required"));
+    },
     {
       staleTime: 600000, // 10 minutes
       cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)

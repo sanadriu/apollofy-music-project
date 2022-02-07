@@ -69,3 +69,27 @@ export function useDeletePlaylist() {
 
   return mutation;
 }
+
+export function useMyPlaylists({ page, sort, order, limit, extend }) {
+  const query = useQuery(
+    ["my-playlists", id],
+    () => {
+      const authToken = authService.getCurrentUserToken();
+
+      if (authToken)
+        return playlistsApi.getMyPlaylists(authToken, { page, sort, order, limit, extend });
+
+      return Promise.reject(new Error("User authentication required"));
+    },
+    {
+      staleTime: 600000, // 10 minutes
+      cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
+      keepPreviousData: true,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  );
+
+  return query;
+}

@@ -4,42 +4,57 @@ const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
 const getAlbum = async (albumId) => {
   return http.get(`${baseUrl}/albums/${albumId}`);
-}
+};
 
 const getAlbums = async (limitNum = 10, pageNum = 1) => {
   return http.get(`${baseUrl}/albums?limit=${limitNum}&page=${pageNum}`);
-}
+};
 
-const setAlbum = async (authToken, album) => {
-  return http.post(`${baseUrl}/albums`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`
-    },
-    data: album
-  });
-}
+const getMyAlbums = async (authToken, params = {}) => {
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, extend = false } = params;
 
-const updateAlbum = async (authToken, album) => {
-  return http.post(`${baseUrl}/albums/${album.id}`, {
+  return http.get(`${baseUrl}/me/albums`, {
     headers: {
-      Authorization: `Bearer ${authToken}`
+      Authorization: `Bearer ${authToken}`,
     },
-    data: album
+    params: {
+      page,
+      sort,
+      order,
+      limit,
+      extend,
+    },
   });
-}
+};
 
-const deleteAlbum = async (authToken, albumId) => {
-  return http.post(`${baseUrl}/albums/${albumId}`, {
+const setAlbum = async (authToken, data) => {
+  return http.post(`${baseUrl}/albums`, data, {
     headers: {
-      Authorization: `Bearer ${authToken}`
+      Authorization: `Bearer ${authToken}`,
     },
-    data: albumId
   });
-}
+};
+
+const updateAlbum = async (authToken, id, data) => {
+  return http.patch(`${baseUrl}/albums/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+};
+
+const deleteAlbum = async (authToken, id) => {
+  return http.delete(`${baseUrl}/albums/${id}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+};
 
 const albumsApi = {
   getAlbum,
   getAlbums,
+  getMyAlbums,
   setAlbum,
   updateAlbum,
   deleteAlbum,
