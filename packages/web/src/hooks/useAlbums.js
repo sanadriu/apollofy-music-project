@@ -1,21 +1,98 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { queryKeys } from "../queries/constants";
 import albumsApi from "../api/api-albums";
+import * as authService from "../services/auth";
 
-export function useAlbums() {
+export function useAlbums(currentPage = 1, currentLimit = 10, sort = undefined, order = 'desc') {
   const fallback = [];
-  const { data = fallback } = useQuery(queryKeys.albums, () => albumsApi.getAlbums(), {
+  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
+    [queryKeys.albums, currentLimit, currentPage],
+    () => albumsApi.getAlbums(currentLimit, currentPage),
+    {
+      staleTime: 600000, // 10 minutes
+      cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  );
+
+  return { data, isError, error, isLoading, isSuccess };
+}
+
+export function usePrefetchAlbums() {
+  const queryClient = useQueryClient();
+  queryClient.prefetchQuery(queryKeys.albums, albumsApi.getAlbums);
+}
+
+export function useFetchAlbum(id) {
+  const query = useQuery(queryKeys.albums, () => albumsApi.getAlbum(id), {
     staleTime: 600000, // 10 minutes
     cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
-  return data;
+
+  return query;
 }
 
-export function usePrefetchAlbums() {
-  const queryClient = useQueryClient();
-  queryClient.prefetchQuery(queryKeys.albums, albumsApi.getAlbums);
+export function useSetAlbum() {
+  const mutation = useMutation((data) => {
+    const authToken = authService.getCurrentUserToken();
+
+    if (authToken) return albumsApi.setAlbum(authToken, data);
+
+    return Promise.reject(new Error("User authentication required"));
+  });
+
+  return mutation;
+}
+
+export function useUpdateAlbum() {
+  const mutation = useMutation((id, data) => {
+    const authToken = authService.getCurrentUserToken();
+
+    if (authToken) return albumsApi.updateAlbum(authToken, id, data);
+
+    return Promise.reject(new Error("User authentication required"));
+  });
+
+  return mutation;
+}
+
+export function useDeleteAlbum() {
+  const mutation = useMutation((id) => {
+    const authToken = authService.getCurrentUserToken();
+
+    if (authToken) return albumsApi.deleteAlbum(authToken, id);
+
+    return Promise.reject(new Error("User authentication required"));
+  });
+
+  return mutation;
+}
+
+export function useMyAlbums({ page, sort, order, limit, extend }) {
+  const query = useQuery(
+    ["my-albums", page, sort, order, limit, extend],
+    () => {
+      const authToken = authService.getCurrentUserToken();
+
+      if (authToken) return albumsApi.getMyAlbums(authToken, { page, sort, order, limit, extend });
+
+      return Promise.reject(new Error("User authentication required"));
+    },
+    {
+      staleTime: 600000, // 10 minutes
+      cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
+      keepPreviousData: true,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  );
+
+  return query;
 }

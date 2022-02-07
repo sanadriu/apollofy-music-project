@@ -59,9 +59,9 @@ const ImageThumb = styled.img`
 `;
 
 const EditProfile = () => {
-  const { currentUser } = useSelector((state) => state.entities.auth);
+  const { currentUser } = useSelector((state) => state?.entities.auth);
+  const profilePicture = currentUser.thumbnails.url_default;
 
-  const profilePicture = currentUser.thumbnails?.url_default;
   async function deleteMyProfile() {
     const userToken = await getCurrentUserToken();
 
@@ -100,12 +100,13 @@ const EditProfile = () => {
             type="button"
             size="small"
             onClick={() => {
-              setEmailModal(false);
               setOpenProfileModal(true);
+              setProfilePicModal(true);
+
+              setEmailModal(false);
               setPasswordModal(false);
               setUsernameModal(false);
               setBirthdayModal(false);
-              setProfilePicModal(true);
             }}
           >
             Change Profile Picture
@@ -125,6 +126,7 @@ const EditProfile = () => {
             onClick={() => {
               setEmailModal(true);
               setOpenProfileModal(true);
+
               setPasswordModal(false);
               setUsernameModal(false);
               setBirthdayModal(false);
@@ -146,6 +148,7 @@ const EditProfile = () => {
             onClick={() => {
               setUsernameModal(true);
               setOpenProfileModal(true);
+
               setPasswordModal(false);
               setEmailModal(false);
               setBirthdayModal(false);
@@ -167,6 +170,7 @@ const EditProfile = () => {
             onClick={() => {
               setBirthdayModal(true);
               setOpenProfileModal(true);
+
               setUsernameModal(false);
               setPasswordModal(false);
               setEmailModal(false);
@@ -188,6 +192,7 @@ const EditProfile = () => {
             onClick={() => {
               setPasswordModal(true);
               setOpenProfileModal(true);
+
               setUsernameModal(false);
               setEmailModal(false);
               setBirthdayModal(false);

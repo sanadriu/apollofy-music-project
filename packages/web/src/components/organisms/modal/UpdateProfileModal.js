@@ -12,12 +12,7 @@ import styled from "styled-components";
 
 import { auth, getCurrentUserToken } from "../../../services/auth";
 import { updateUser } from "../../../api/api-users";
-import {
-  currentUserAdded,
-  editProfileRequest,
-  editProfileSuccess,
-  setCurrentUser,
-} from "../../../redux/auth";
+import { currentUserAdded } from "../../../redux/auth";
 
 // eslint-disable-next-line react/prop-types
 const TextField = styled.input`
@@ -45,30 +40,18 @@ export default function UpdateProfileModal({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [updatedEmail, setUpdatedEmail] = React.useState(null);
-  const [updatedUsername, setUpdatedUsername] = React.useState(null);
-  const [updatedBirthday, setUpdatedBirthday] = React.useState(null);
+  const [update, setUpdate] = React.useState(null);
   const [fileLoading, setFileLoading] = React.useState(false);
-  const [newProfileLink, setNewProfieLink] = React.useState("");
 
   const setTargetValue = (target) => {
     if (email) {
-      setUpdatedEmail({ email: target.value });
-      setUpdatedUsername(null);
-      setUpdatedBirthday(null);
-      setFileLoading(false);
+      setUpdate({ email: target.value });
     }
     if (username) {
-      setUpdatedEmail(null);
-      setUpdatedBirthday(null);
-      setUpdatedUsername({ username: target.value });
-      setFileLoading(false);
+      setUpdate({ username: target.value });
     }
     if (birthDay) {
-      setUpdatedEmail(null);
-      setUpdatedUsername(null);
-      setUpdatedBirthday({ birth_date: target.value });
-      setFileLoading(false);
+      setUpdate({ birth_date: target.value });
     }
   };
 
@@ -81,21 +64,13 @@ export default function UpdateProfileModal({
     const userToken = await getCurrentUserToken();
 
     if (userToken) {
-      const res = await updateUser(
-        userToken,
-        (updatedUsername && updatedUsername) ||
-          (updatedEmail && updatedEmail) ||
-          (updatedBirthday && updatedBirthday) ||
-          (newProfileLink && newProfileLink),
-      );
-      dispatch(editProfileRequest);
+      const res = await updateUser(userToken, update);
 
       if (res) {
         dispatch(currentUserAdded(res.data.data));
+        handleClose();
       }
     }
-
-    handleClose();
   };
 
   async function uploadImage(files) {
@@ -111,7 +86,7 @@ export default function UpdateProfileModal({
     );
 
     if (res) {
-      setNewProfieLink({ thumbnails: { url_default: res.data.secure_url } });
+      setUpdate({ thumbnails: { url_default: res.data.secure_url } });
       setFileLoading(false);
     }
   }

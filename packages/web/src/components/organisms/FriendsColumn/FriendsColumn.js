@@ -13,6 +13,10 @@ import AddFriendsModal from "../modal/AddFriendsModal";
 
 const FriendsColumnLayout = styled(rightSideBar)`
   height: auto;
+
+  @media only screen and (max-width: 992px) {
+    display: none;
+  }
 `;
 
 export default function FriendsColumn() {

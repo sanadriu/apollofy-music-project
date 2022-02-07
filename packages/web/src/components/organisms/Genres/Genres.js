@@ -6,7 +6,7 @@ import { useGenres } from "../../../hooks/useGenres";
 import GenreDetail from "../../molecules/GenreDetail";
 
 export default function Genres() {
-  const genres = useGenres();
+  const { data: genres } = useGenres();
   const navigate = useNavigate();
 
   const handleClick = (genre) => {

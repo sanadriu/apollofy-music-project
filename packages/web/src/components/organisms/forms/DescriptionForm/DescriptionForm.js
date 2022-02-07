@@ -41,7 +41,7 @@ export default function DescriptionForm() {
         description: value,
       };
 
-      dispatch(setCurrentUser(updatedCurrentUser));
+      // dispatch(setCurrentUser(updatedCurrentUser));
 
       try {
         dispatch(

@@ -5,14 +5,15 @@ import genresApi from "../api/api-genres";
 
 export function useGenres() {
   const fallback = [];
-  const { data = fallback } = useQuery(queryKeys.genres, () => genresApi.getGenres(), {
+  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(queryKeys.genres, () => genresApi.getGenres(), {
     staleTime: 600000, // 10 minutes
     cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
-  return data;
+
+  return { data, isError, error, isLoading, isSuccess };
 }
 
 export function usePrefetchGenres() {

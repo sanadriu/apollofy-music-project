@@ -4,8 +4,11 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { useDispatch } from "react-redux";
 
 import { DetailText } from "../../atoms/DetailText/DetailText";
+import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
+import { followUser } from "../../../redux/user";
 
 const UserLayout = styled.div`
   display: flex;
@@ -71,19 +74,25 @@ const FollowButton = styled.button`
 `;
 
 const UserDetail = ({ user }) => {
+  const dispatch = useDispatch();
+
+  const handleFollow = (userId) => {
+    dispatch(followUser(userId));
+  };
   return (
     <UserLayout>
       {/* <UserPicture alt={`${user.username}`} src={user?.thumbnails?.url_default} /> */}
       <UserFlex>
         <UserLink to={`/user-profile/${user.id}`}>
+          <HomeSmallText>{`${user.firstname} ${user.lastname}`}</HomeSmallText>
           <DetailText>{user.username}</DetailText>
         </UserLink>
       </UserFlex>
       <StyledNumUser>
         <GroupIcon />
-        <StyledNumber>{user?.followers?.lenght}</StyledNumber>
+        <StyledNumber>{user.followed_by?.length}</StyledNumber>
       </StyledNumUser>
-      <FollowButton>
+      <FollowButton onClick={() => handleFollow(user.id)}>
         <PersonAddIcon />
       </FollowButton>
     </UserLayout>
@@ -107,7 +116,7 @@ UserDetail.propTypes = {
     num_liked_tracks: PropTypes.number,
     followed_playlists: PropTypes.arrayOf(PropTypes.object),
     followed_users: PropTypes.arrayOf(PropTypes.object),
-    followers: PropTypes.arrayOf(PropTypes.object),
+    followed_by: PropTypes.arrayOf(PropTypes.object),
     num_followed_playlists: PropTypes.number,
     num_followed_users: PropTypes.number,
     num_followers: PropTypes.number,

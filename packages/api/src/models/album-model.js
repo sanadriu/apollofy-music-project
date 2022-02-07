@@ -109,17 +109,17 @@ function getPopulate(extend) {
     {
       path: "user",
       match: { deleted_at: { $exists: false } },
-      select: extend ? "username firstname lastname thumbnails" : "id",
+      select: "username",
     },
     {
       path: "tracks",
       match: { deleted_at: { $exists: false } },
-      select: "name",
+      select: extend ? "title url duration color release_date num_likes num_plays" : "title",
     },
     {
       path: "liked_by",
       match: { deleted_at: { $exists: false } },
-      select: extend ? "username" : "id",
+      select: "username",
     },
   ];
 }
@@ -150,6 +150,7 @@ AlbumSchema.statics.getAlbums = function (options = {}) {
 
   return this.find(filter)
     .notDeleted()
+    .populate(populate)
     .sort({ [sort]: order })
     .skip(start)
     .limit(limit);
@@ -210,29 +211,13 @@ AlbumSchema.statics.getLiked = async function (id, idUser) {
   return await this.switchValueInList(id, "liked_by", idUser);
 };
 
-AlbumSchema.statics.getUserAlbums = function (idUser, options) {
+AlbumSchema.statics.getUserAlbums = function (idUser, options = {}) {
   const { page = 1, sort = "created_at", order = "asc", extend = false } = options;
 
   const limit = 10;
   const start = (page - 1) * limit;
 
-  const populate = [
-    {
-      path: "tracks",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "title url duration genres color release_date num_likes num_plays" : "id",
-    },
-    {
-      path: "genres",
-      match: { deleted_at: { $exists: false } },
-      select: "name",
-    },
-    {
-      path: "liked_by",
-      match: { deleted_at: { $exists: false } },
-      select: extend ? "username" : "id",
-    },
-  ];
+  const populate = getPopulate(extend);
 
   return this.find({ user: idUser })
     .notDeleted()

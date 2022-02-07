@@ -8,9 +8,13 @@ function createSampleUser() {
     firstname: faker.name.firstName(),
     lastname: faker.name.lastName(),
     username: faker.internet.userName(),
-    url_avatar: faker.image.imageUrl(),
     description: faker.lorem.paragraphs(1).substring(0, 250),
     birth_date: faker.date.past(18).toISOString().substring(0, 10),
+    thumbnails: {
+      url_default: faker.image.imageUrl(),
+      url_medium: faker.image.imageUrl(),
+      url_large: faker.image.imageUrl(),
+    },
   };
 }
 
@@ -34,7 +38,7 @@ function createSampleTrack(users = [], genres = []) {
 
   return {
     user,
-    title: faker.name.title(),
+    title: faker.lorem.sentence(4),
     duration: faker.datatype.number({ min: 0, max: 600 }),
     released_date: faker.date.past().toISOString().substring(0, 10),
     color: faker.commerce.color(),
@@ -58,7 +62,7 @@ function createSampleAlbum(users = [], genres = []) {
 
   return {
     user: user,
-    title: faker.name.title(),
+    title: faker.lorem.sentence(4),
     released_date: faker.date.past().toISOString().substring(0, 10),
     genres: getRandomItems(genres, 2),
     thumbnails: {
@@ -78,7 +82,7 @@ function createSamplePlaylist(users = []) {
 
   return {
     user,
-    title: faker.name.title(),
+    title: faker.lorem.sentence(4),
     description: faker.lorem.paragraphs(1).substring(0, 250),
     color: faker.commerce.color(),
     thumbnails: {

@@ -1,11 +1,15 @@
 const { Types } = require("mongoose");
-const { Playlist } = require("../models");
+const { Playlist, User } = require("../models");
 
 async function getPlaylists(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc", limit = 10 } = req.query;
+    const { page = 1, sort = "created_at", order = "asc", limit = 10, user } = req.query;
 
-    const pages = await Playlist.getNumPages(limit);
+    const filter = {
+      ...(user && { user }),
+    };
+
+    const pages = await Playlist.getNumPages(limit, filter);
 
     if (isNaN(page) || page <= 0) {
       return res.status(400).send({
@@ -34,7 +38,7 @@ async function getPlaylists(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylists({ page, sort, order, limit });
+    const dbRes = await Playlist.getPlaylists({ page, sort, order, limit, filter });
 
     return res.status(200).send({
       data: dbRes,
@@ -60,7 +64,7 @@ async function getSinglePlaylist(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylist(idPlaylist, extend);
+    const dbRes = await Playlist.getPlaylist(idPlaylist, { extend });
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -111,7 +115,7 @@ async function updatePlaylist(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylist(idPlaylist);
+    const dbRes = await Playlist.findById(idPlaylist).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -156,7 +160,7 @@ async function deletePlaylist(req, res, next) {
       });
     }
 
-    const dbRes = await Playlist.getPlaylist(idPlaylist);
+    const dbRes = await Playlist.findById(idPlaylist).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -182,6 +186,48 @@ async function deletePlaylist(req, res, next) {
       data: null,
       success: true,
       message: "Playlist deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function followPlaylist(req, res, next) {
+  try {
+    const { uid } = req.user;
+    const { idPlaylist } = req.params;
+
+    if (!Types.ObjectId.isValid(idPlaylist)) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong playlist ID",
+      });
+    }
+
+    if (!(await User.getUser(uid))) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (!(await Playlist.getPlaylist(idPlaylist))) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Playlist not found",
+      });
+    }
+
+    await User.followPlaylist(uid, idPlaylist);
+    await Playlist.getFollowed(idPlaylist, uid);
+
+    return res.status(200).send({
+      data: null,
+      success: true,
+      message: "Operation done successfully",
     });
   } catch (error) {
     next(error);
@@ -221,7 +267,7 @@ async function getUserPlaylists(req, res, next) {
       pages,
     });
   } catch (message) {
-    next(message);
+    next(error);
   }
 }
 
@@ -231,5 +277,6 @@ module.exports = {
   createPlaylist,
   updatePlaylist,
   deletePlaylist,
+  followPlaylist,
   getUserPlaylists,
 };

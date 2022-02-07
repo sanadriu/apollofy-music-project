@@ -21,7 +21,21 @@ export default function PlaylistCarousel() {
     slidesToShow: 3,
     slidesToScroll: 3,
     arrows: true,
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: true,
+          dots: true,
+        },
+      },
+    ],
   };
+
+  console.log(playlists)
+
   return (
     <Layout>
       <Slider {...settings}>

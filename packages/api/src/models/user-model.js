@@ -1,5 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
-
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const { isEmail, isDate, isURL } = require("validator");
 const { getHash } = require("../services/crypto");
 
@@ -91,7 +91,7 @@ const UserSchema = new Schema(
       type: [String],
       ref: "user",
     },
-    followers: {
+    followed_by: {
       type: [String],
       ref: "user",
     },
@@ -136,7 +136,7 @@ UserSchema.virtual("num_followed_users").get(function () {
 });
 
 UserSchema.virtual("num_followers").get(function () {
-  return this.followers?.length;
+  return this.followed_by?.length;
 });
 
 /* Query Helpers */
@@ -145,34 +145,24 @@ UserSchema.query.notDeleted = function () {
   return this.where({ deleted_at: { $exists: false } });
 };
 
-/* Statics */
-
-UserSchema.statics.getNumPages = function () {
-  const limit = 10;
-
-  return this.countDocuments()
-    .notDeleted()
-    .then((count) => {
-      return Math.floor(count / limit) + (count % limit ? 1 : 0);
-    });
-};
+/* Population Object */
 
 function getPopulate(extend) {
   return [
     {
       path: "liked_albums",
       match: { deleted_at: { $exists: false } },
-      select: extend ? "title" : "id",
+      select: "title",
     },
     {
       path: "liked_tracks",
       match: { deleted_at: { $exists: false } },
-      select: extend ? "title" : "id",
+      select: "title",
     },
     {
       path: "followed_playlists",
       match: { deleted_at: { $exists: false } },
-      select: extend ? "title" : "id",
+      select: "title",
     },
     {
       path: "followed_users",
@@ -180,7 +170,7 @@ function getPopulate(extend) {
       select: extend ? "username firstname lastname thumbnails" : "username",
     },
     {
-      path: "followers",
+      path: "followed_by",
       match: { deleted_at: { $exists: false } },
       select: extend ? "username firstname lastname thumbnails" : "username",
     },
@@ -210,6 +200,8 @@ UserSchema.statics.getUsers = function (options = {}) {
 
   const start = (page - 1) * limit;
 
+  const populate = getPopulate();
+
   return this.find()
     .notDeleted()
     .populate(populate)
@@ -228,12 +220,23 @@ UserSchema.statics.updateUser = function (id, data) {
   );
 };
 
-UserSchema.statics.deleteUser = function (id) {
+UserSchema.statics.deleteUser = async function (id) {
+  const user = await this.findById(id).notDeleted();
+
+  if (!user) return null;
+
   return this.findOneAndUpdate(
     { _id: id, deleted_at: { $exists: false } },
     {
-      $set: { deleted_at: Date.now(), _id: getHash(id) },
-      $unset: { username: "", firstname: "", lastname: "", email: "" },
+      $set: { deleted_at: Date.now() },
+      $unset: {
+        username: getHash(user.username),
+        firstname: getHash(user.firstname),
+        lastname: getHash(user.lastname),
+        description: getHash(user.description),
+        email: getHash(user.email),
+        thumbnails: getHash(user.thumbnails),
+      },
     },
     { new: true },
   );
@@ -276,7 +279,7 @@ UserSchema.statics.followPlaylist = async function (id, idPlaylist) {
 };
 
 UserSchema.statics.getFollowed = async function (id, idFollower) {
-  return await this.switchValueInList(id, "followers", idFollower);
+  return await this.switchValueInList(id, "followed_by", idFollower);
 };
 
 const User = model("user", UserSchema);

@@ -10,6 +10,7 @@ albumRouter.get("/:idAlbum", albumController.getSingleAlbum);
 albumRouter.post("/", authMiddleware, albumController.createAlbum);
 albumRouter.patch("/:idAlbum", authMiddleware, albumController.updateAlbum);
 albumRouter.delete("/:idAlbum", authMiddleware, albumController.deleteAlbum);
+albumRouter.patch("/:idAlbum/like/", authMiddleware, albumController.likeAlbum);
 
 module.exports = {
   albumRouter,

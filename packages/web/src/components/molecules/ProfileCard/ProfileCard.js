@@ -1,14 +1,35 @@
 import React from "react";
-
+import PropTypes from "prop-types";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
+import styled from "styled-components";
 
-const ProfileCard = () => {
+const StyledCard = styled(Card)`
+  position: relative;
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const StyledIcon = styled(PlayCircleIcon)`
+  position: absolute;
+  top:20%;
+  left:40%;
+  color: white;
+  visibility: hidden;
+  transition: 1ms all;
+  ${StyledCard}:hover & {
+    transition: 1ms all;
+    visibility: visible;
+  }
+`;
+const ProfileCard = ({ title, date, thumbnails }) => {
   return (
-    <Card
+    <StyledCard
       sx={{
         maxWidth: 150,
         minWidth: 130,
@@ -16,7 +37,6 @@ const ProfileCard = () => {
         padding: 1,
         width: "20%",
         display: "block",
-        "&:hover": { opacity: "0.8" },
       }}
     >
       <CardActionArea>
@@ -27,17 +47,30 @@ const ProfileCard = () => {
           alt="album image"
           sx={{ borderRadius: 1 }}
         />
+        <StyledIcon />
         <CardContent>
           <Typography variant="body4" component="div">
             Titulo
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" >
             2022
           </Typography>
         </CardContent>
       </CardActionArea>
-    </Card>
+    </StyledCard>
   );
+};
+
+ProfileCard.propTypes = {
+  title: PropTypes.string,
+  date: PropTypes.object,
+  thumbnails: PropTypes.object,
+};
+
+ProfileCard.defaultProps = {
+  title: "",
+  date: new Date(),
+  thumbnails: {},
 };
 
 export default ProfileCard;
