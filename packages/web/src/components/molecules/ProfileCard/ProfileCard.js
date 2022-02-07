@@ -9,7 +9,8 @@ import { CardActionArea } from "@mui/material";
 import styled from "styled-components";
 
 const StyledCard = styled(Card)`
-  position: relative;
+ position: relative;
+ overflow: hidden;
   &:hover {
     opacity: 0.8;
   }
@@ -17,7 +18,7 @@ const StyledCard = styled(Card)`
 
 const StyledIcon = styled(PlayCircleIcon)`
   position: absolute;
-  top:20%;
+  top:25%;
   left:40%;
   color: white;
   visibility: hidden;
@@ -27,33 +28,36 @@ const StyledIcon = styled(PlayCircleIcon)`
     visibility: visible;
   }
 `;
+
 const ProfileCard = ({ title, date, thumbnails }) => {
+
   return (
     <StyledCard
       sx={{
-        maxWidth: 150,
-        minWidth: 130,
+        minWidth:160,
+        height:250,
+        overflow: "hidden",
         margin: 1,
         padding: 1,
-        width: "20%",
         display: "block",
+        borderRadius: "1.3rem",
       }}
     >
       <CardActionArea>
         <CardMedia
           component="img"
-          height="100"
-          src="https://images.pexels.com/photos/10931590/pexels-photo-10931590.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+          height="150"
+          src={thumbnails}
           alt="album image"
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: "1.1rem" }}
         />
         <StyledIcon />
         <CardContent>
-          <Typography variant="body4" component="div">
-            Titulo
+          <Typography variant="body4" component="div" sx={{maxHeight: 100,overflow: "hidden", textOverflow:"ellipsis",whiteSpace: "nowrap", fontWeight: "bold"}}>
+            {title}
           </Typography>
           <Typography variant="body2" color="text.secondary" >
-            2022
+            {date.getFullYear()}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -64,13 +68,13 @@ const ProfileCard = ({ title, date, thumbnails }) => {
 ProfileCard.propTypes = {
   title: PropTypes.string,
   date: PropTypes.object,
-  thumbnails: PropTypes.object,
+  thumbnails: PropTypes.string,
 };
 
 ProfileCard.defaultProps = {
   title: "",
   date: new Date(),
-  thumbnails: {},
+  thumbnails: "",
 };
 
 export default ProfileCard;

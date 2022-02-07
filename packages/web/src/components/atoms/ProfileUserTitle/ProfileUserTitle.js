@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { Typography } from "@mui/material";
 import ButtonFollow from "../ButtonFollow/ButtonFollow";
 
 const StyledTitleUser = styled.div`
@@ -11,14 +11,14 @@ const StyledTitleUser = styled.div`
   padding-bottom: 1rem;
 `;
 
-const ProfileUserTitle = ({ title }) => {
+const ProfileUserTitle = ({ title,id }) => {
   return (
     <StyledTitleUser>
       <div>
         <Typography variant="h3">{title}</Typography>
       </div>
       <div>
-        <ButtonFollow />
+        <ButtonFollow id={id}/>
       </div>
     </StyledTitleUser>
   );
@@ -26,9 +26,11 @@ const ProfileUserTitle = ({ title }) => {
 
 ProfileUserTitle.propTypes = {
   title: PropTypes.string,
+  id: PropTypes.string
 };
 
 ProfileUserTitle.defaultProps = {
   title: "",
+  id: ""
 };
 export default ProfileUserTitle;

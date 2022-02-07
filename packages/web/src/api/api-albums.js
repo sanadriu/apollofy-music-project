@@ -6,8 +6,14 @@ const getAlbum = async (albumId) => {
   return http.get(`${baseUrl}/albums/${albumId}`);
 };
 
-const getAlbums = async (limitNum = 10, pageNum = 1) => {
-  return http.get(`${baseUrl}/albums?limit=${limitNum}&page=${pageNum}`);
+const getAlbums = async (limitNum = 10, pageNum = 1, userId) => {
+  return http.get(`${baseUrl}/albums`, {
+    params: {
+      limit: limitNum,
+      page: pageNum,
+      user: userId,
+    },
+  });
 };
 
 const getMyAlbums = async (authToken, params = {}) => {

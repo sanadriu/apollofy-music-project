@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const Bar = styled.nav`
-  width: 2.5rem;
+  //width: 2.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

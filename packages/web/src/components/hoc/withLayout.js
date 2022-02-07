@@ -29,7 +29,10 @@ const MainLayout = styled.main`
 `;
 
 const PageContent = styled.div`
-  flex-basis: 60%;
+  width: 60%;
+  @media only screen and (max-width: 1000px) {
+    width:95%
+  }
 `;
 
 function withLayout(WrappedComponent) {

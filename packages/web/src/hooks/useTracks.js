@@ -4,11 +4,11 @@ import { queryKeys } from "../queries/constants";
 import tracksApi from "../api/api-tracks";
 import * as authService from "../services/auth";
 
-export function useTracks(currentPage = 1, currentGenre = undefined, currentLimit = 10, sort = undefined, order = 'desc') {
+export function useTracks(currentPage = 1, currentGenre = undefined, currentLimit = 10, sort = undefined, order = 'desc', userId = undefined) {
   const fallback = [];
   const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
     [queryKeys.tracks, currentPage, currentGenre],
-    () => tracksApi.getTracks(currentPage, currentGenre, currentLimit, sort, order),
+    () => tracksApi.getTracks(currentPage, currentGenre, currentLimit, sort, order, userId),
     {
       staleTime: 600000, // 10 minutes
       cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
@@ -29,6 +29,23 @@ export async function usePrefetchTracks(nextPage, currentGenre = undefined, curr
   )
 }
 
+export function useUserTracks(currentPage = 1, currentGenre = undefined, currentLimit = 10, sort = undefined, order = 'desc', userId = undefined) {
+  const fallback = [];
+  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
+    [queryKeys.tracks, currentPage, userId],
+    () => tracksApi.getTracks(currentPage, currentGenre, currentLimit, sort, order, userId),
+    {
+      staleTime: 600000, // 10 minutes
+      cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  );
+
+  return { data, isError, error, isLoading, isSuccess };
+}
+
 export function useFetchTrack(id) {
   const query = useQuery(["track", id], () => tracksApi.getTrack(id), {
     staleTime: 600000, // 10 minutes
@@ -46,8 +63,6 @@ export function useSetTrack() {
   const mutation = useMutation(async (data) => {
     const authToken = await authService.getCurrentUserToken();
 
-    console.log(authToken);
-
     if (authToken) return tracksApi.setTrack(authToken, data);
 
     return Promise.reject(new Error("User authentication required"));
@@ -59,8 +74,6 @@ export function useSetTrack() {
 export function useUpdateTrack() {
   const mutation = useMutation(async (track) => {
     const authToken = await authService.getCurrentUserToken();
-
-    console.log(track)
 
     if (authToken) return tracksApi.updateTrack(authToken, track);
 

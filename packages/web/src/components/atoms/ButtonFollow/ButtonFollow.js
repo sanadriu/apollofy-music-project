@@ -1,17 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import { purple, lime } from "@mui/material/colors";
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 
 const ColorButton = styled(Button)`
   color: white;
-  background: #9c27b0;
-  &:hover{
-    background: #9c27b0;
-  }
+  background: #9c27b0 !important;
+  margin-top: 1rem;
   @media only screen and (max-width: 500px) {
     width: 20px;
   }
@@ -19,26 +17,47 @@ const ColorButton = styled(Button)`
 
 const StyledSpan = styled.span`
   @media only screen and (max-width: 500px) {
-    width: 20px;
+    margin: 0 !important;
     display: none;
   }
 `;
 
-const ButtonFollow = () => {
+const StyledIcon = styled(StarOutlineIcon)`
+  @media only screen and (max-width: 500px) {
+    margin-left: 11px;
+    border-radius: 100%;
+  }
+`;
+
+function followUser(id) {
+  try {
+    console.log('userID:'.id);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const ButtonFollow = ({ id }) => {
+
   return (
-    <Stack spacing={2} direction="row">
+    <Stack spacing={2} direction="row" onClick={() => followUser(id)}>
       <ColorButton
         variant="contained"
-        sx={{ borderRadius: "100px", color: "white",width: "10px" }}
-        startIcon={<StarOutlineIcon />}
+        sx={{ borderRadius: "100px", color: "white" }}
+        startIcon={<StyledIcon />}
       >
         <StyledSpan>Seguir</StyledSpan>
       </ColorButton>
-      {/* <ColorButton variant="contained" sx={{ borderRadius: "100px",color:"white" }}startIcon={<StarIcon />}>
-        Seguir
-      </ColorButton> */}
     </Stack>
   );
+};
+
+ButtonFollow.propTypes = {
+  id: PropTypes.string
+};
+
+ButtonFollow.defaultProps = {
+  id: ""
 };
 
 export default ButtonFollow;

@@ -112,6 +112,7 @@ UserDetail.propTypes = {
     birth_date: PropTypes.string.isRequired,
     liked_albums: PropTypes.arrayOf(PropTypes.object),
     liked_tracks: PropTypes.arrayOf(PropTypes.object),
+    followed_by: PropTypes.arrayOf(PropTypes.object),
     num_liked_albums: PropTypes.number,
     num_liked_tracks: PropTypes.number,
     followed_playlists: PropTypes.arrayOf(PropTypes.object),

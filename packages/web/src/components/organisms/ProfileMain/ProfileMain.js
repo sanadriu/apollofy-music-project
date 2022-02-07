@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import ProfileImage from "../../atoms/ProfileImage/ProfileImage";
 import ProfileUserDescription from "../../atoms/ProfileUserDescription/ProfileUserDescription";
@@ -12,6 +13,7 @@ const ProfileContent = styled.div`
   margin: auto;
   border-radius: 1.3rem;
   background: #eeeee4;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 
 const AvatarDiv = styled.div`
@@ -26,23 +28,31 @@ const DescriptionDiv = styled.div`
   padding: 1rem;
 `;
 
-const ProfileMain = () => {
+const ProfileMain = ({ user, albums, tracks }) => {
   return (
     <ProfileContent>
       <AvatarDiv>
-        <ProfileImage />
+        <ProfileImage image={user?.thumbnails?.url_default} />
       </AvatarDiv>
       <DescriptionDiv>
-        <ProfileUserTitle title='Chanel' />
-        <ProfileStadistics />
-        <ProfileUserDescription
-          description="Consequat in ipsum Lorem ea est exercitation. Aute Lorem velit amet culpa laborum laborum
-      incididunt cupidatat. Ullamco sunt aliqua excepteur Lorem adipisicing veniam ad mollit
-      voluptate."
-        />
+        <ProfileUserTitle title={user?.firstname} id={user?.id}/>
+        <ProfileStadistics tracks={tracks} followers={user?.num_followers} albums={albums} />
+        <ProfileUserDescription description={user?.description} />
       </DescriptionDiv>
     </ProfileContent>
   );
+};
+
+ProfileMain.propTypes = {
+  user: PropTypes.object,
+  albums: PropTypes.number,
+  tracks: PropTypes.number,
+};
+
+ProfileMain.defaultProps = {
+  user: {},
+  albums: 0,
+  tracks: 0,
 };
 
 export default ProfileMain;
