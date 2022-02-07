@@ -2,9 +2,9 @@ import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { useSetTrack } from "../../../../hooks/useTracks";
+import { useFetchAlbum, useUpdateAlbum, useUpdateAlbum } from "../../../../hooks/useAlbums";
 import { useGenres } from "../../../../hooks/useGenres";
-import validationSchema from "../../../../schemas/TrackSchema";
+import validationSchema from "../../../../schemas/AlbumSchema";
 import {
   Box,
   Alert,
@@ -23,27 +23,43 @@ import { LoadingButton } from "@mui/lab";
 import { uploadResource } from "../../../../api/api-cloudinary";
 import withLayout from "../../../hoc/withLayout";
 
-const initialValues = {
-  title: "",
-  released_date: "",
-  genres: [],
-  url_track: "",
-  url_image: "",
-  duration: 0,
-};
+function initialValues(responseData = {}) {
+  return {
+    title: responseData.title,
+    released_date: responseData.released_date,
+    genres: responseData.genres,
+    tracks: responseData.tracks,
+    url_image: responseData.thumbnails?.url_default,
+  };
+}
 
 const allowedImageExt = ["jpg", "jpeg", "png"];
-const allowedAudioExt = ["mp4"];
 
-function TrackCreateForm() {
+function AlbumCreateForm() {
   const {
-    isLoading: setTrackIsLoading,
-    isError: setTrackIsError,
-    isSuccess: setTrackIsSuccess,
-    error: setTrackError,
-    data: setTrackResponse,
+    isLoading: updateAlbumIsLoading,
+    isError: updateAlbumIsError,
+    isSuccess: updateAlbumIsSuccess,
+    error: updateAlbumError,
+    data: updateAlbumResponse,
     mutate,
-  } = useSetTrack();
+  } = useUpdateAlbum();
+
+  const {
+    isLoading: fetchAlbumIsLoading,
+    isError: fetchAlbumIsError,
+    isSuccess: fetchAlbumIsSuccess,
+    error: fetchAlbumError,
+    data: fetchAlbumResponse,
+  } = useFetchAlbum(id);
+
+  const {
+    isLoading: fetchMyTracksIsLoading,
+    isError: fetchMyTracksIsError,
+    isSuccess: fetchMyTracksIsSuccess,
+    error: fetchMyTracksError,
+    data: fetchMyTracksResponse,
+  } = useMyTracks();
 
   const {
     isLoading: fetchGenresIsLoading,
@@ -56,7 +72,7 @@ function TrackCreateForm() {
   // const navigate = useNavigate();
 
   const formik = useFormik({
-    initialValues,
+    initialValues = initialValues(response),
     validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
@@ -64,7 +80,7 @@ function TrackCreateForm() {
         title: values.title,
         released_date: values.released_date,
         genres: values.genres,
-        url: values.url_track,
+        url: values.url_album,
         duration: values.duration,
         thumbnails: {
           url_default: values.url_image,
@@ -90,29 +106,31 @@ function TrackCreateForm() {
 
   return (
     <Container as="main">
-      <Typography sx={{ fontSize: "2rem", fontWeight: "light", mb: 2 }}>Add track</Typography>
-      {setTrackIsSuccess && (
-        <Alert sx={{ mb: 2 }} severity={setTrackResponse.data.success ? "success" : "error"}>
-          {setTrackResponse.data.message}
+      <Typography sx={{ fontSize: "2rem", fontWeight: "light", mb: 2 }}>Add album</Typography>
+      {updateAlbumIsSuccess && (
+        <Alert sx={{ mb: 2 }} severity={updateAlbumResponse.data.success ? "success" : "error"}>
+          {updateAlbumResponse.data.message}
         </Alert>
       )}
-      {setTrackIsError && (
+      {updateAlbumIsError && (
         <Alert sx={{ mb: 2 }} severity="error">
-          {setTrackError.message}
+          {updateAlbumError.message}
         </Alert>
       )}
-      {fetchGenresIsError && (
+      {(fetchAlbumIsError || fetchGenresIsError || fetchMyTracksIsError) && (
         <Alert sx={{ mb: 2 }} severity="error" variant="filled">
           <AlertTitle>Something went wrong</AlertTitle>
-          {fetchGenresError.message || "Site is unable to reach the server"}
+          {fetchAlbumIsError && <Box>Album request: {fetchAlbumError?.message}</Box>}
+          {fetchGenresIsError && <Box>Genres request: {fetchGenresError?.message}</Box>}
+          {fetchMyTracksIsError && <Box>Tracks request: {fetchMyTracksError?.message}</Box>}
         </Alert>
       )}
-      {fetchGenresIsLoading && (
+      {(fetchAlbumIsLoading || fetchGenresIsLoading || fetchMyTracksIsLoading ) && (
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", py: "4rem" }}>
           <CircularProgress size={128} />
         </Box>
       )}
-      {fetchGenresIsSuccess && (
+      {fetchAlbumIsSuccess && fetchGenresIsSuccess && fetchMyTracksIsSuccess && (
         <form onSubmit={handleSubmit}>
           <Box
             sx={{
@@ -123,7 +141,7 @@ function TrackCreateForm() {
           >
             <Box sx={{ flexGrow: 1, mb: 3 }}>
               <InputLabel sx={{ mb: 1 }} htmlFor="input_title">
-                Track title
+                Album title
               </InputLabel>
               <TextField
                 fullWidth
@@ -178,8 +196,30 @@ function TrackCreateForm() {
               ))}
             </Select>
           </Box>
+          <Box sx={{ flexGrow: 1, mb: 3 }}>
+            <InputLabel sx={{ mb: 1 }} htmlFor="input_tracks">
+              Track(s)
+            </InputLabel>
+            <Select
+              fullWidth
+              id="input_tracks"
+              name="tracks"
+              multiple
+              value={values.tracks}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={Boolean(touched.tracks && errors.tracks)}
+              input={<Input />}
+            >
+              {fetchMyTracksResponse.data.data.map((track) => (
+                <MenuItem key={track.title} value={track.id}>
+                  {track.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
           <Box sx={{ mb: 3 }}>
-            <InputLabel sx={{ mb: 1 }} htmlFor="input_track_cover">
+            <InputLabel sx={{ mb: 1 }} htmlFor="input_album_cover">
               Cover image file
             </InputLabel>
             <FileUploader
@@ -192,7 +232,7 @@ function TrackCreateForm() {
                     setFieldError("url_image", err.message);
                   });
               }}
-              name="input_track_cover"
+              name="input_album_cover"
               types={allowedImageExt}
             />
             {touched.url_image && errors.url_image && (
@@ -221,41 +261,13 @@ function TrackCreateForm() {
               <Typography sx={{ fontSize: "0.9rem", mb: 3 }}>{values.url_image}</Typography>
             </Box>
           )}
-          <Box sx={{ mb: 3 }}>
-            <InputLabel sx={{ mb: 1 }} htmlFor="input_audio_file">
-              Track file
-            </InputLabel>
-            <FileUploader
-              handleChange={(file) => {
-                uploadResource(file, "video")
-                  .then((res) => {
-                    setFieldValue("url_track", res.data.url);
-                    setFieldValue("duration", res.data.duration);
-                  })
-                  .catch((err) => {
-                    setFieldError("url_track", err.message);
-                  });
-              }}
-              name="input_audio_file"
-              types={allowedAudioExt}
-            />
-            {touched.url_track && errors.url_track && (
-              <FormHelperText style={{ color: "#d32f2f" }}>{errors.url_track}</FormHelperText>
-            )}
-          </Box>
-          {values?.url_track && (
-            <Box>
-              <Typography sx={{ color: "rgba(0, 0, 0, 0.6)", mb: 1 }}>Track file URL</Typography>
-              <Typography sx={{ fontSize: "0.9rem", mb: 3 }}>{values.url_track}</Typography>
-            </Box>
-          )}
           <LoadingButton
             type="submit"
             disabled={!isValid}
-            loading={isValidating || setTrackIsLoading}
+            loading={isValidating || updateAlbumIsLoading}
             variant="contained"
           >
-            Add track
+            Add album
           </LoadingButton>
         </form>
       )}
@@ -263,4 +275,4 @@ function TrackCreateForm() {
   );
 }
 
-export default withLayout(TrackCreateForm);
+export default withLayout(AlbumCreateForm);

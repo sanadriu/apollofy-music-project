@@ -2,9 +2,9 @@ import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { useSetTrack } from "../../../../hooks/useTracks";
+import { useSetAlbum } from "../../../../hooks/useAlbums";
 import { useGenres } from "../../../../hooks/useGenres";
-import validationSchema from "../../../../schemas/TrackSchema";
+import validationSchema from "../../../../schemas/AlbumSchema";
 import {
   Box,
   Alert,
@@ -27,23 +27,29 @@ const initialValues = {
   title: "",
   released_date: "",
   genres: [],
-  url_track: "",
+  tracks: [],
   url_image: "",
-  duration: 0,
 };
 
 const allowedImageExt = ["jpg", "jpeg", "png"];
-const allowedAudioExt = ["mp4"];
 
-function TrackCreateForm() {
+function AlbumCreateForm() {
   const {
-    isLoading: setTrackIsLoading,
-    isError: setTrackIsError,
-    isSuccess: setTrackIsSuccess,
-    error: setTrackError,
-    data: setTrackResponse,
+    isLoading: setAlbumIsLoading,
+    isError: setAlbumIsError,
+    isSuccess: setAlbumIsSuccess,
+    error: setAlbumError,
+    data: setAlbumResponse,
     mutate,
-  } = useSetTrack();
+  } = useSetAlbum();
+
+  const {
+    isLoading: fetchMyTracksIsLoading,
+    isError: fetchMyTracksIsError,
+    isSuccess: fetchMyTracksIsSuccess,
+    error: fetchMyTracksError,
+    data: fetchMyTracksResponse,
+  } = useMyTracks();
 
   const {
     isLoading: fetchGenresIsLoading,
@@ -64,7 +70,7 @@ function TrackCreateForm() {
         title: values.title,
         released_date: values.released_date,
         genres: values.genres,
-        url: values.url_track,
+        url: values.url_album,
         duration: values.duration,
         thumbnails: {
           url_default: values.url_image,
@@ -90,29 +96,30 @@ function TrackCreateForm() {
 
   return (
     <Container as="main">
-      <Typography sx={{ fontSize: "2rem", fontWeight: "light", mb: 2 }}>Add track</Typography>
-      {setTrackIsSuccess && (
-        <Alert sx={{ mb: 2 }} severity={setTrackResponse.data.success ? "success" : "error"}>
-          {setTrackResponse.data.message}
+      <Typography sx={{ fontSize: "2rem", fontWeight: "light", mb: 2 }}>Add album</Typography>
+      {setAlbumIsSuccess && (
+        <Alert sx={{ mb: 2 }} severity={setAlbumResponse.data.success ? "success" : "error"}>
+          {setAlbumResponse.data.message}
         </Alert>
       )}
-      {setTrackIsError && (
+      {setAlbumIsError && (
         <Alert sx={{ mb: 2 }} severity="error">
-          {setTrackError.message}
+          {setAlbumError.message}
         </Alert>
       )}
-      {fetchGenresIsError && (
+      {(fetchGenresIsError || fetchMyTracksIsError) && (
         <Alert sx={{ mb: 2 }} severity="error" variant="filled">
           <AlertTitle>Something went wrong</AlertTitle>
-          {fetchGenresError.message || "Site is unable to reach the server"}
+          {fetchGenresIsError && <Box>Genres request: {fetchGenresError?.message}</Box>}
+          {fetchMyTracksIsError && <Box>Tracks request: {fetchMyTracksError?.message}</Box>}
         </Alert>
       )}
-      {fetchGenresIsLoading && (
+      {(fetchGenresIsLoading || fetchMyTracksIsLoading) && (
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", py: "4rem" }}>
           <CircularProgress size={128} />
         </Box>
       )}
-      {fetchGenresIsSuccess && (
+      {fetchGenresIsSuccess && fetchMyTracksIsSuccess && (
         <form onSubmit={handleSubmit}>
           <Box
             sx={{
@@ -123,7 +130,7 @@ function TrackCreateForm() {
           >
             <Box sx={{ flexGrow: 1, mb: 3 }}>
               <InputLabel sx={{ mb: 1 }} htmlFor="input_title">
-                Track title
+                Album title
               </InputLabel>
               <TextField
                 fullWidth
@@ -178,8 +185,30 @@ function TrackCreateForm() {
               ))}
             </Select>
           </Box>
+          <Box sx={{ flexGrow: 1, mb: 3 }}>
+            <InputLabel sx={{ mb: 1 }} htmlFor="input_tracks">
+              Track(s)
+            </InputLabel>
+            <Select
+              fullWidth
+              id="input_tracks"
+              name="tracks"
+              multiple
+              value={values.tracks}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={Boolean(touched.tracks && errors.tracks)}
+              input={<Input />}
+            >
+              {fetchMyTracksResponse.data.data.map((track) => (
+                <MenuItem key={track.title} value={track.title}>
+                  {track.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
           <Box sx={{ mb: 3 }}>
-            <InputLabel sx={{ mb: 1 }} htmlFor="input_track_cover">
+            <InputLabel sx={{ mb: 1 }} htmlFor="input_album_cover">
               Cover image file
             </InputLabel>
             <FileUploader
@@ -192,7 +221,7 @@ function TrackCreateForm() {
                     setFieldError("url_image", err.message);
                   });
               }}
-              name="input_track_cover"
+              name="input_album_cover"
               types={allowedImageExt}
             />
             {touched.url_image && errors.url_image && (
@@ -221,41 +250,13 @@ function TrackCreateForm() {
               <Typography sx={{ fontSize: "0.9rem", mb: 3 }}>{values.url_image}</Typography>
             </Box>
           )}
-          <Box sx={{ mb: 3 }}>
-            <InputLabel sx={{ mb: 1 }} htmlFor="input_audio_file">
-              Track file
-            </InputLabel>
-            <FileUploader
-              handleChange={(file) => {
-                uploadResource(file, "video")
-                  .then((res) => {
-                    setFieldValue("url_track", res.data.url);
-                    setFieldValue("duration", res.data.duration);
-                  })
-                  .catch((err) => {
-                    setFieldError("url_track", err.message);
-                  });
-              }}
-              name="input_audio_file"
-              types={allowedAudioExt}
-            />
-            {touched.url_track && errors.url_track && (
-              <FormHelperText style={{ color: "#d32f2f" }}>{errors.url_track}</FormHelperText>
-            )}
-          </Box>
-          {values?.url_track && (
-            <Box>
-              <Typography sx={{ color: "rgba(0, 0, 0, 0.6)", mb: 1 }}>Track file URL</Typography>
-              <Typography sx={{ fontSize: "0.9rem", mb: 3 }}>{values.url_track}</Typography>
-            </Box>
-          )}
           <LoadingButton
             type="submit"
             disabled={!isValid}
-            loading={isValidating || setTrackIsLoading}
+            loading={isValidating || setAlbumIsLoading}
             variant="contained"
           >
-            Add track
+            Add album
           </LoadingButton>
         </form>
       )}
@@ -263,4 +264,4 @@ function TrackCreateForm() {
   );
 }
 
-export default withLayout(TrackCreateForm);
+export default withLayout(AlbumCreateForm);

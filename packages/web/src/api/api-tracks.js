@@ -10,6 +10,14 @@ const getTracks = async (limitNum = 10, pageNum = 1, genreName = "") => {
   return http.get(`${baseUrl}/tracks?limit=${limitNum}&page=${pageNum}&genre=${genreName}`);
 };
 
+const getMyTracks = async (authToken, limitNum = 10, pageNum = 1, genreName = "") => {
+  return http.get(`${baseUrl}/tracks?limit=${limitNum}&page=${pageNum}&genre=${genreName}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+};
+
 const setTrack = async (authToken, track) => {
   return http.post(`${baseUrl}/tracks`, track, {
     headers: {
@@ -39,6 +47,7 @@ const deleteTrack = async (authToken, trackId) => {
 const tracksApi = {
   getTrack,
   getTracks,
+  getMyTracks,
   setTrack,
   updateTrack,
   deleteTrack,

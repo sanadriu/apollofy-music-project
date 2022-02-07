@@ -73,3 +73,20 @@ export function useDeleteTrack() {
 
   return mutation;
 }
+
+export function useMyTracks({ currentLimit, currentPage }) {
+  const query = useQuery(
+    ["my-tracks", id],
+    () => tracksApi.getMyTracks({ currentLimit, currentPage }),
+    {
+      staleTime: 600000, // 10 minutes
+      cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
+      keepPreviousData: true,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  );
+
+  return query;
+}

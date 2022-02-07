@@ -22,7 +22,7 @@ export function usePrefetchPlaylists() {
 }
 
 export function useFetchPlaylist(id) {
-  const query = useQuery(["track", id], () => playlistApi.getPlaylist(id), {
+  const query = useQuery(["track", id], () => playlistsApi.getPlaylist(id), {
     staleTime: 600000, // 10 minutes
     cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
     keepPreviousData: true,
