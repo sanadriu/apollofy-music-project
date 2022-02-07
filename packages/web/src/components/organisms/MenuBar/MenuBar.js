@@ -95,9 +95,8 @@ export default function MenuBar() {
             ? currentUser.thumbnails.url_default
             : "https://res.cloudinary.com/stringifiers/image/upload/v1643731517/gidnkoxyrdltjkklfkcw.jpg"
         }
-      />
-      <ProfileName>{currentUser?.email}</ProfileName>
       /> */}
+      <ProfileName>{currentUser?.username}</ProfileName>
       <Button
         ref={anchorRef}
         id="composition-button"

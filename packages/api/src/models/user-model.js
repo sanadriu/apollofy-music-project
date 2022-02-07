@@ -91,7 +91,7 @@ const UserSchema = new Schema(
       type: [String],
       ref: "user",
     },
-    followers: {
+    followed_by: {
       type: [String],
       ref: "user",
     },
@@ -136,7 +136,7 @@ UserSchema.virtual("num_followed_users").get(function () {
 });
 
 UserSchema.virtual("num_followers").get(function () {
-  return this.followers?.length;
+  return this.followed_by?.length;
 });
 
 /* Query Helpers */
@@ -180,7 +180,7 @@ function getPopulate(extend) {
       select: extend ? "username firstname lastname thumbnails" : "username",
     },
     {
-      path: "followers",
+      path: "followed_by",
       match: { deleted_at: { $exists: false } },
       select: extend ? "username firstname lastname thumbnails" : "username",
     },
@@ -276,7 +276,7 @@ UserSchema.statics.followPlaylist = async function (id, idPlaylist) {
 };
 
 UserSchema.statics.getFollowed = async function (id, idFollower) {
-  return await this.switchValueInList(id, "followers", idFollower);
+  return await this.switchValueInList(id, "followed_by", idFollower);
 };
 
 const User = model("user", UserSchema);

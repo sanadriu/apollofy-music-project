@@ -19,7 +19,7 @@ import Genres from "./pages/Genres";
 import Albums from "./pages/Albums";
 import TracksByGenre from "./pages/TracksByGenre";
 import Users from "./pages/Users";
-import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import ProfilePage from "./pages/ProfilePage";
 
 import { onAuthStateChanged } from "./services/auth";
 import { authSelector, syncSignIn, signOut } from "./redux/auth";
@@ -27,6 +27,9 @@ import { authSelector, syncSignIn, signOut } from "./redux/auth";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
+import TrackCreateForm from "./components/organisms/forms/TrackForm/TrackCreateForm";
+import TrackUpdateForm from "./components/organisms/forms/TrackForm/TrackUpdateForm";
+import Switch from "./components/atoms/Switch";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
@@ -68,7 +71,6 @@ function App() {
           <GlobalStyles />
           <Routes>
             <Route path="albums" element={<Albums />} />
-            <Route path="profile/:profileId" element={<ProfilePage />} />
             <Route path="playlists/:playlistId" element={<Playlists />} />
             <Route path="tracks" element={<Tracks />} />
             <Route path="genres" element={<Genres />} />
@@ -77,6 +79,9 @@ function App() {
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+            <Route path={ROUTES.USER_PROFILE} element={<ProfilePage />} />
+            <Route path="track/add" element={<TrackCreateForm />} />
+            <Route path="track/update/:id" element={<TrackUpdateForm />} />
             {isAuthenticated && (
               <Route element={<PrivateWrapper auth={{ isAuthenticated }} />}>
                 <Route path={ROUTES.HOME} exact element={<Home />} />

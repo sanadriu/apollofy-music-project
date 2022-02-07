@@ -5,11 +5,20 @@ const { filterUserTracks } = require("./utils");
 
 async function getAlbums(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc", limit = 10, genre, track } = req.query;
+    const {
+      page = 1,
+      sort = "created_at",
+      order = "asc",
+      limit = 10,
+      genre,
+      track,
+      user,
+    } = req.query;
 
     const filter = {
       ...(genre && { genres: { $in: [genre] } }),
       ...(track && { tracks: { $in: [track] } }),
+      ...(user && { user }),
     };
 
     const pages = await Album.getNumPages(limit, filter);

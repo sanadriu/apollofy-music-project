@@ -4,7 +4,7 @@ const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
 const getTrack = async (trackId) => {
   return http.get(`${baseUrl}/tracks/${trackId}`);
-}
+};
 
 const getTracks = async (page, genre, limit, sort, order) => {
   return http.get(`${baseUrl}/tracks`, {
@@ -19,38 +19,37 @@ const getTracks = async (page, genre, limit, sort, order) => {
 }
 
 const setTrack = async (authToken, track) => {
-  return http.post(`${baseUrl}/tracks`, {
+  return http.post(`${baseUrl}/tracks`, track, {
     headers: {
-      Authorization: `Bearer ${authToken}`
+      Authorization: `Bearer ${authToken}`,
     },
-    data: track
   });
-}
+};
 
 const updateTrack = async (authToken, track) => {
   return http.post(`${baseUrl}/tracks/${track.id}`, {
     headers: {
-      Authorization: `Bearer ${authToken}`
+      Authorization: `Bearer ${authToken}`,
     },
-    data: track
+    data: track,
   });
-}
+};
 
 const deleteTrack = async (authToken, trackId) => {
   return http.post(`${baseUrl}/tracks/${trackId}`, {
     headers: {
-      Authorization: `Bearer ${authToken}`
+      Authorization: `Bearer ${authToken}`,
     },
-    data: trackId
+    data: trackId,
   });
-}
+};
 
 const tracksApi = {
   getTrack,
   getTracks,
   setTrack,
   updateTrack,
-  deleteTrack
+  deleteTrack,
 };
 
 export default tracksApi;
