@@ -12,22 +12,28 @@ const rotate = keyframes`
 
 const GradientBG = styled.div`
   width: 100%;
-  background-image: url("assets/svg/music-pattern.svg");
+  background-image: url("assets/svg/whole-bg.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   flex-basis: 40%;
   z-index: -2;
+  overflow: hidden;
+  border-right: 4px solid black;
 `;
 
 const RotatingSymbols = styled.div`
-  width: auto;
-  height: 100%;
-  background-image: url("assets/svg/Symbols.svg");
+  width: 135%;
+  border-radius: 50%;
+  height: 135%;
+  background-image: url("assets/svg/music-pattern.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 110rem 110rem;
   margin: auto;
+  position: relative;
+  left: -15%;
+  top: -18%;
   z-index: -1;
 
   animation: ${rotate} 25s linear infinite;
@@ -35,8 +41,8 @@ const RotatingSymbols = styled.div`
 
 const Logo = styled.img`
   position: absolute;
-  top: 10rem;
-  left: 5rem;
+  top: 7rem;
+  left: 4rem;
   z-index: 999;
   margin: auto;
   width: 35%;
