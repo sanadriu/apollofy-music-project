@@ -1,5 +1,5 @@
 const { Types } = require("mongoose");
-const { Album } = require("../models");
+const { Album, User } = require("../models");
 
 const { filterUserTracks } = require("./utils");
 
@@ -76,7 +76,7 @@ async function getSingleAlbum(req, res, next) {
       });
     }
 
-    const dbRes = await Album.getAlbum(idAlbum, extend);
+    const dbRes = await Album.getAlbum(idAlbum, { extend });
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -129,7 +129,7 @@ async function updateAlbum(req, res, next) {
       });
     }
 
-    const dbRes = await Album.getAlbum(idAlbum);
+    const dbRes = await Album.findById(idAlbum).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -176,7 +176,7 @@ async function deleteAlbum(req, res, next) {
       });
     }
 
-    const dbRes = await Album.getAlbum(idAlbum);
+    const dbRes = await Album.findById(idAlbum).notDeleted();
 
     if (dbRes === null) {
       return res.status(404).send({
@@ -207,6 +207,49 @@ async function deleteAlbum(req, res, next) {
     next(error);
   }
 }
+
+async function likeAlbum(req, res, next) {
+  try {
+    const { uid } = req.user;
+    const { idAlbum } = req.params;
+
+    if (!Types.ObjectId.isValid(idAlbum)) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong album ID",
+      });
+    }
+
+    if (!(await User.getUser(uid))) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (!(await Album.getAlbum(idAlbum))) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "Album not found",
+      });
+    }
+
+    await User.likeAlbum(uid, idAlbum);
+    await Album.getLiked(idAlbum, uid);
+
+    return res.status(200).send({
+      data: null,
+      success: true,
+      message: "Operation done successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function getUserAlbums(req, res, next) {
   try {
     const { page = 1, sort = "created_at", order = "asc", limit = 10, extend = false } = req.query;
@@ -251,5 +294,6 @@ module.exports = {
   createAlbum,
   updateAlbum,
   deleteAlbum,
+  likeAlbum,
   getUserAlbums,
 };

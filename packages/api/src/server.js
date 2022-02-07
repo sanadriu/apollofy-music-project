@@ -13,6 +13,7 @@ const {
   playlistRouter,
   trackRouter,
   genreRouter,
+  searchRouter,
 } = require("./routes");
 
 const app = express();
@@ -28,7 +29,7 @@ app.use("/albums", albumRouter);
 app.use("/playlists", playlistRouter);
 app.use("/tracks", trackRouter);
 app.use("/genres", genreRouter);
-//app.use("/search",searchRouter);
+app.use("/search",searchRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send({
