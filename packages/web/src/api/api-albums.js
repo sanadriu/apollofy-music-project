@@ -27,24 +27,26 @@ const getMyAlbums = async (authToken, params = {}) => {
   });
 };
 
-const setAlbum = async (authToken, data) => {
-  return http.post(`${baseUrl}/albums`, data, {
+const setAlbum = async (authToken, album) => {
+  return http.post(`${baseUrl}/albums`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
+    data: album,
   });
 };
 
-const updateAlbum = async (authToken, id, data) => {
-  return http.patch(`${baseUrl}/albums/${id}`, data, {
+const updateAlbum = async (authToken, id, album) => {
+  return http.patch(`${baseUrl}/albums/${id}`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
+    data: album,
   });
 };
 
-const deleteAlbum = async (authToken, id) => {
-  return http.delete(`${baseUrl}/albums/${id}`, {
+const deleteAlbum = async (authToken, albumId) => {
+  return http.delete(`${baseUrl}/albums/${albumId}`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },

@@ -20,6 +20,8 @@ import Albums from "./pages/Albums";
 import TracksByGenre from "./pages/TracksByGenre";
 import Users from "./pages/Users";
 import ProfilePage from "./pages/ProfilePage";
+import Statistics from "./pages/Statistics";
+import Switch from "./components/atoms/Switch";
 
 import { onAuthStateChanged } from "./services/auth";
 import { authSelector, syncSignIn, signOut } from "./redux/auth";
@@ -29,7 +31,6 @@ import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 import TrackCreateForm from "./components/organisms/forms/TrackForm/TrackCreateForm";
 import TrackUpdateForm from "./components/organisms/forms/TrackForm/TrackUpdateForm";
-import Switch from "./components/atoms/Switch";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
@@ -75,6 +76,7 @@ function App() {
             <Route path="tracks" element={<Tracks />} />
             <Route path="genres" element={<Genres />} />
             <Route path="users" element={<Users />} />
+            <Route path="stats" element={<Statistics />} />
             <Route path="tracks/:genre" element={<TracksByGenre />} />
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
