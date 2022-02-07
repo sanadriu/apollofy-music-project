@@ -1,10 +1,10 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { queryKeys } from "../queries/constants";
 import albumsApi from "../api/api-albums";
 import * as authService from "../services/auth";
 
-export function useAlbums() {
+export function useAlbums(currentPage = 1, currentLimit = 10, sort = undefined, order = 'desc') {
   const fallback = [];
   const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
     [queryKeys.albums, currentLimit, currentPage],
