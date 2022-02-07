@@ -22,8 +22,6 @@ export function useAlbums(currentPage = 1, currentLimit = 10, sort = undefined, 
 }
 
 export function useUserAlbums(currentPage = 1, currentLimit = 10, sort = undefined, order = 'desc', userId = undefined) {
-  console.log(userId);
-
   const fallback = [];
   const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
     [queryKeys.albums, currentPage, userId],

@@ -13,7 +13,7 @@ export const SectionLayout = styled.div`
 
 export const TracksList = styled(SectionLayout)`
   margin-top: 0;
-  background-color: lightgray;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
   border-radius: 1.3rem;
   padding: 1rem;
   width: 30rem;

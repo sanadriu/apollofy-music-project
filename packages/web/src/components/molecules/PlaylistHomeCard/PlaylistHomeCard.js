@@ -35,27 +35,23 @@ const HoverIcon = styled(PlayCircleIcon)`
   }
 `;
 
-export default function PlaylistHomeCard(props) {
-  const { playlist } = props;
-  const Card = styled.div`
+const Card = styled.div`
     padding: 1rem;
     border-radius: 1.3rem;
     height: 15rem;
     max-width: 12rem;
-    background-image: linear-gradient(white, ${playlist.color}),
-      url(${playlist.thumbnails.url_default});
-    // background-blend-mode: overlay;
     background-size: cover;
-    border: 1px solid darkgray;
     transition: 0.2s;
-
-    &:hover {
-      color: white;
-      background-image: url(${playlist.thumbnails.url_default});
-    }
   `;
+
+export default function PlaylistHomeCard(props) {
+  const { playlist } = props;
+
   return (
-    <Card>
+    <Card
+      style={{
+        backgroundColor: `${playlist.color}`
+      }}>
       <HomeSmallText>{playlist.num_tracks} Tracks</HomeSmallText>
       <CardLayout>
         <CardLink to={`/playlists/${playlist.id}`}>
@@ -71,7 +67,7 @@ export default function PlaylistHomeCard(props) {
 PlaylistHomeCard.propTypes = {
   playlist: PropTypes.exact({
     id: PropTypes.string.isRequired,
-    user: PropTypes.string.isRequired,
+    user: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     color: PropTypes.string,

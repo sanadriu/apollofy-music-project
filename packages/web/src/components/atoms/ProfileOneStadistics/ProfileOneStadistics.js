@@ -7,8 +7,8 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 
 const StadisticsDiv = styled.div`
   display: flex;
-  justify-content:center;
-  align-item:center;
+  justify-content: center;
+  align-item: center;
   min-width: 50px;
 `;
 
@@ -16,7 +16,8 @@ const SpanText = styled.div`
   margin-left: 0.5em;
   margin-right:0.5rem;
   display: inline;
-  @media only screen and (max-width: 600px) {
+  color: ${({ theme }) => theme.colors.text};
+  @media only screen and (max-width: 1000px) {
     display: none;
   }
 `;
@@ -24,13 +25,15 @@ const SpanText = styled.div`
 const StyledTracks = styled(MusicNoteIcon)`
   margin-left: 5px;
   display: none;
-  @media only screen and (max-width: 500px) {
+  color: ${({ theme }) => theme.colors.text};
+  @media only screen and (max-width: 1000px) {
     display: block;
   }
 `;
 
 const StyledFollowers = styled(PersonIcon)`
   margin-left: 5px;
+  color: ${({ theme }) => theme.colors.text};
   display: none;
   @media only screen and (max-width: 500px) {
     display: block;
@@ -40,14 +43,19 @@ const StyledFollowers = styled(PersonIcon)`
 const StyledAlbums = styled(AlbumIcon)`
   margin-left: 5px;
   display: none;
+<<<<<<< HEAD
   @media only screen and (max-width: 500px) {
+=======
+  @media only screen and (max-width: 1000px) {
+>>>>>>> 74f0463d9dcb24d459a8c8801d99a1319c03f13b
     display: block;
   }
 `;
 
 const StyledCount = styled.span`
+  color: ${({ theme }) => theme.colors.text};
   font-weight: bold;
-  text-align:center;
+  text-align: center;
 `;
 
 const ProfileOneStadistics = ({ count, text }) => {

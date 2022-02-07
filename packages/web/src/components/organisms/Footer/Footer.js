@@ -1,16 +1,16 @@
-import { TableFooter } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
 import { PurpleLink } from "../../atoms/PurpleLink/PurpleLink";
 
 const FooterText = styled(HomeSmallText)`
-  color: lightgray;
+  color: ${({ theme }) => theme.colors.text};
   margin-bottom: 0.5rem;
+  font-weight: 300;
 `;
 
 const FooterLayout = styled.div`
+  line-height: initial;
   @media only screen and (max-width: 992px) {
     display: none;
   }

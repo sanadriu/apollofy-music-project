@@ -2,6 +2,7 @@ import * as React from "react";
 import { styled, Box } from "@mui/system";
 import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
+import { ModalBox } from "./AddFriendsModal";
 
 const StyledModal = styled(ModalUnstyled)`
   position: fixed;
@@ -26,15 +27,6 @@ const Backdrop = styled("div")`
   -webkit-tap-highlight-color: transparent;
 `;
 
-const style = {
-  width: 500,
-  bgcolor: "white",
-  borderRadius: "0.3rem",
-  p: 2,
-  px: 4,
-  pb: 3,
-};
-
 export default function SignInModal({ signinIsOpen, handleModal, children }) {
   const handleClose = () => handleModal();
 
@@ -46,7 +38,7 @@ export default function SignInModal({ signinIsOpen, handleModal, children }) {
       onClose={handleClose}
       BackdropComponent={Backdrop}
     >
-      <Box sx={style}>{children}</Box>
+      <ModalBox>{children}</ModalBox>
     </StyledModal>
   );
 }

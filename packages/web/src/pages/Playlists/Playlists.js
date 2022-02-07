@@ -17,10 +17,9 @@ const PlaylistContent = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
   gap: 0.3rem;
-  margin: auto;
-  margin-bottom: 2rem;
+  margin: 1rem auto 2rem;
   border-radius: 1.3rem;
-  background: #eeeee4;
+  background: ${({ theme }) => theme.colors.background.secondary};
 `;
 
 const PictureDiv = styled.div`

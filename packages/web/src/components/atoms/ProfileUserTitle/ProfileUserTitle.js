@@ -9,6 +9,7 @@ const StyledTitleUser = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-bottom: 1rem;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const ProfileUserTitle = ({ title,id }) => {
