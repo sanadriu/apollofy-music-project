@@ -43,8 +43,10 @@ export function useFetchTrack(id) {
 }
 
 export function useSetTrack() {
-  const mutation = useMutation((data) => {
-    const authToken = authService.getCurrentUserToken();
+  const mutation = useMutation(async (data) => {
+    const authToken = await authService.getCurrentUserToken();
+
+    console.log(authToken);
 
     if (authToken) return tracksApi.setTrack(authToken, data);
 
@@ -55,10 +57,12 @@ export function useSetTrack() {
 }
 
 export function useUpdateTrack() {
-  const mutation = useMutation((id, data) => {
-    const authToken = authService.getCurrentUserToken();
+  const mutation = useMutation(async (track) => {
+    const authToken = await authService.getCurrentUserToken();
 
-    if (authToken) return tracksApi.updateTrack(authToken, id, data);
+    console.log(track)
+
+    if (authToken) return tracksApi.updateTrack(authToken, track);
 
     return Promise.reject(new Error("User authentication required"));
   });
@@ -67,8 +71,8 @@ export function useUpdateTrack() {
 }
 
 export function useDeleteTrack() {
-  const mutation = useMutation((id) => {
-    const authToken = authService.getCurrentUserToken();
+  const mutation = useMutation(async (id) => {
+    const authToken = await authService.getCurrentUserToken();
 
     if (authToken) return tracksApi.deleteTrack(authToken, id);
 
@@ -81,8 +85,8 @@ export function useDeleteTrack() {
 export function useMyTracks({ page, sort, order, limit, extend }) {
   const query = useQuery(
     ["my-tracks", page, sort, order, limit, extend],
-    () => {
-      const authToken = authService.getCurrentUserToken();
+    async () => {
+      const authToken = await authService.getCurrentUserToken();
 
       if (authToken) return tracksApi.getMyTracks(authToken, { page, sort, order, limit, extend });
 
