@@ -75,7 +75,7 @@ export function useDeleteAlbum() {
 
 export function useMyAlbums({ page, sort, order, limit, extend }) {
   const query = useQuery(
-    ["my-albums", id],
+    ["my-albums", page, sort, order, limit, extend],
     () => {
       const authToken = authService.getCurrentUserToken();
 

@@ -72,7 +72,7 @@ export function useDeletePlaylist() {
 
 export function useMyPlaylists({ page, sort, order, limit, extend }) {
   const query = useQuery(
-    ["my-playlists", id],
+    ["my-playlists", page, sort, order, limit, extend],
     () => {
       const authToken = authService.getCurrentUserToken();
 

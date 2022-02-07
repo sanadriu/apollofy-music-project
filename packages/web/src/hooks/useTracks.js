@@ -76,7 +76,7 @@ export function useDeleteTrack() {
 
 export function useMyTracks({ page, sort, order, limit, extend }) {
   const query = useQuery(
-    ["my-tracks", id],
+    ["my-tracks", page, sort, order, limit, extend],
     () => {
       const authToken = authService.getCurrentUserToken();
 
