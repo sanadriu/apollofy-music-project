@@ -207,15 +207,18 @@ function TrackCreateForm() {
               <img
                 style={{
                   width: "10rem",
-                  height: "10rem",
+                  marginBottom: "1rem",
+                  aspectRatio: "4/3",
                   objectFit: "contain",
-                  padding: "0.25rem",
+                  objectPosition: "center",
                   borderRadius: "0.25rem",
                   boxShadow: "0 0 0.25rem rgba(0, 0, 0, 0.5)",
                 }}
                 src={values.url_image}
                 alt="preview"
               />
+              <Typography sx={{ color: "rgba(0, 0, 0, 0.6)", mb: 1 }}>Cover image URL</Typography>
+              <Typography sx={{ fontSize: "0.9rem", mb: 3 }}>{values.url_image}</Typography>
             </Box>
           )}
           <Box sx={{ mb: 3 }}>
@@ -240,6 +243,12 @@ function TrackCreateForm() {
               <FormHelperText style={{ color: "#d32f2f" }}>{errors.url_track}</FormHelperText>
             )}
           </Box>
+          {values?.url_track && (
+            <Box>
+              <Typography sx={{ color: "rgba(0, 0, 0, 0.6)", mb: 1 }}>Track file URL</Typography>
+              <Typography sx={{ fontSize: "0.9rem", mb: 3 }}>{values.url_track}</Typography>
+            </Box>
+          )}
           <LoadingButton
             type="submit"
             disabled={!isValid}
