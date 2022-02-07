@@ -58,7 +58,7 @@ const StyledNumber = styled.div`
   font-weight: 500;
 `;
 
-const TrackDetail = ({ track }) => {
+const TrackDetail = ({ track, handlePlayButton }) => {
   return (
     <TrackLayout>
       <TrackPicture alt="Track's Thumbnail" src={track.thumbnails.url_default} />
@@ -74,7 +74,7 @@ const TrackDetail = ({ track }) => {
         <HeadphonesIcon sx={{ color: "purple" }} />
         <StyledNumber>{track.num_plays}</StyledNumber>
       </StyledNumTrack>
-      <ProfilePlayTrack />
+      <ProfilePlayTrack track={track} handlePlayButton={handlePlayButton} />
     </TrackLayout>
   );
 };
@@ -82,6 +82,7 @@ const TrackDetail = ({ track }) => {
 export default TrackDetail;
 
 TrackDetail.propTypes = {
+  handlePlayButton: PropTypes.func,
   track: PropTypes.exact({
     id: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
@@ -105,6 +106,7 @@ TrackDetail.propTypes = {
 };
 
 TrackDetail.defaultProps = {
+  handlePlayButton: null,
   track: {
     id: null,
     user: {},

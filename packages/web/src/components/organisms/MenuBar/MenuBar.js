@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,10 +10,9 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 
-import { signOut } from "../../../redux/auth";
 import { SmallText } from "../../atoms/SmallText/SmallText";
 import { rightSideBar } from "../../atoms/RightSideBar/RightSideBar";
-import { userLoggedOut, userSelector } from "../../../redux/user";
+import { authSelector, signOut } from "../../../redux/auth";
 import * as ROUTES from "../../../routes";
 
 const MenuLayout = styled(rightSideBar)`
@@ -40,7 +39,7 @@ const ProfileName = styled(SmallText)`
 `;
 
 export default function MenuBar() {
-  const { userData } = useSelector(userSelector);
+  const { currentUser } = useSelector(authSelector);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -61,7 +60,7 @@ export default function MenuBar() {
   const logout = async () => {
     await dispatch(signOut());
     navigate(ROUTES.LOGIN);
-    dispatch(userLoggedOut());
+    dispatch(signOut());
   };
 
   const editProfile = async () => {
@@ -78,7 +77,8 @@ export default function MenuBar() {
   }
 
   const prevOpen = useRef(open);
-  React.useEffect(() => {
+
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
@@ -91,12 +91,12 @@ export default function MenuBar() {
       <ProfilePicture
         alt="Profile Picture"
         src={
-          userData?.thumbnails?.url_default
-            ? userData.thumbnails.url_default
+          currentUser?.thumbnails?.url_default
+            ? currentUser.thumbnails.url_default
             : "https://res.cloudinary.com/stringifiers/image/upload/v1643731517/gidnkoxyrdltjkklfkcw.jpg"
         }
       />
-      <ProfileName>{userData?.username}</ProfileName>
+      <ProfileName>{currentUser?.username}</ProfileName>
       <Button
         ref={anchorRef}
         id="composition-button"

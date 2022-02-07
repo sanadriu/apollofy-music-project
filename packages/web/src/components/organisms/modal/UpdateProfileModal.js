@@ -9,9 +9,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import styled from "styled-components";
+
 import { auth, getCurrentUserToken } from "../../../services/auth";
 import { updateUser } from "../../../api/api-users";
-import { saveUserData } from "../../../redux/user";
+import { setCurrentUser } from "../../../redux/auth";
 
 // eslint-disable-next-line react/prop-types
 const TextField = styled.input`
@@ -78,13 +79,13 @@ export default function UpdateProfileModal({
       const res = await updateUser(
         userToken,
         (updatedUsername && updatedUsername) ||
-          (updatedEmail && updatedEmail) ||
-          (updatedBirthday && updatedBirthday) ||
-          (newProfileLink && newProfileLink),
+        (updatedEmail && updatedEmail) ||
+        (updatedBirthday && updatedBirthday) ||
+        (newProfileLink && newProfileLink),
       );
 
       if (res) {
-        dispatch(saveUserData(res.data.data));
+        dispatch(setCurrentUser(res.data.data));
       }
     }
 
@@ -102,6 +103,7 @@ export default function UpdateProfileModal({
       "https://api.cloudinary.com/v1_1/stringifiers/image/upload",
       formData,
     );
+
     if (res) {
       setNewProfieLink({ thumbnails: { url_default: res.data.secure_url } });
       setFileLoading(false);

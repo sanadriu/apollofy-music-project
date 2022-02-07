@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-import { userSelector } from "../../../redux/user";
+import { authSelector } from "../../../redux/auth";
 
 import { PrimaryButton } from "../../atoms/buttons/PrimaryButton";
 import { FlexColumn } from "../../atoms/FlexColumn/FlexColumn";
@@ -16,7 +16,7 @@ const FriendsColumnLayout = styled(rightSideBar)`
 `;
 
 export default function FriendsColumn() {
-  const { userData } = useSelector(userSelector);
+  const { currentUser } = useSelector(authSelector);
   const [isOpen, setOpen] = useState(false);
 
   const handleModal = () => {
@@ -26,15 +26,13 @@ export default function FriendsColumn() {
   return (
     <FriendsColumnLayout>
       <FlexColumn>
-        {userData?.followed_users && userData?.followed_users[0] ? (
-          userData.followed_users.map((friend) => {
-            return (
-              <FriendInfo
-                key={friend.id}
-                profilePicture={friend.thumbnails.url_default}
-                name={friend.username}
-              />
-            );
+        {currentUser?.followed_users && currentUser?.followed_users[0] ? (
+          currentUser.followed_users.map((friend) => {
+            <FriendInfo
+              key={friend.id}
+              profilePicture={friend.thumbnails.url_default}
+              name={friend.username}
+            />;
           })
         ) : (
           <HomeSmallText>You do not follow anyone yet</HomeSmallText>

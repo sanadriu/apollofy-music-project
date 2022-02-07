@@ -59,9 +59,9 @@ const ImageThumb = styled.img`
 `;
 
 const EditProfile = () => {
-  const { userData } = useSelector((state) => state.entities.user);
+  const { currentUser } = useSelector((state) => state.entities.auth);
 
-  const profilePicture = userData.thumbnails.url_default;
+  const profilePicture = currentUser.thumbnails?.url_default;
   async function deleteMyProfile() {
     const userToken = await getCurrentUserToken();
 
@@ -118,7 +118,7 @@ const EditProfile = () => {
           <InputLabel htmlFor="email-Input">Email</InputLabel>
         </InsideDiv>
         <InsideDiv>
-          <InputField>{userData.email}</InputField>
+          <InputField>{currentUser.email}</InputField>
           <Button
             type="button"
             size="small"
@@ -139,7 +139,7 @@ const EditProfile = () => {
       <InputDiv>
         <InputLabel htmlFor="username">Username</InputLabel>
         <InsideDiv>
-          <InputField>{userData.username}</InputField>
+          <InputField>{currentUser.username}</InputField>
           <Button
             type="button"
             size="small"
@@ -160,7 +160,7 @@ const EditProfile = () => {
       <InputDiv>
         <InputLabel htmlFor="birth_date">Birthday</InputLabel>
         <InsideDiv>
-          <InputField>{userData.birth_date}</InputField>
+          <InputField>{currentUser.birth_date}</InputField>
           <Button
             type="button"
             size="small"

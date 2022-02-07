@@ -15,11 +15,10 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import faker from "faker";
 
 import withLayout from "../../components/hoc/withLayout";
 import { FlexColumn } from "../../components/atoms/FlexColumn/FlexColumn";
-import albumsApi from "../../api/api-albums";
+
 import { useAlbums } from "../../hooks/useAlbums";
 import { useUsers } from "../../hooks/useUsers";
 import { usePlaylists } from "../../hooks/usePlaylists";
@@ -82,8 +81,6 @@ const Statistics = () => {
         (songsChart && tracksData),
     );
   }, [albumChart, playlistsChart, songsChart, userChart]);
-
-  console.log(statsArray);
 
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
