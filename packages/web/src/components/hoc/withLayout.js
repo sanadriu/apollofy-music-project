@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
+import { isBrowser, isMobile } from "react-device-detect";
 import styled from "styled-components";
 
 import { FlexColumn } from "../atoms/FlexColumn/FlexColumn";
@@ -32,6 +32,11 @@ const PageContent = styled.div`
   flex-basis: 60%;
 `;
 
+const RightFlex = styled(FlexColumn)`
+  display: flex;
+  justify-content: flex-start;
+`;
+
 function withLayout(WrappedComponent) {
   function WrapperComponent({ ...props }) {
     return (
@@ -43,11 +48,11 @@ function withLayout(WrappedComponent) {
               <PageContent>
                 <WrappedComponent {...props} />
               </PageContent>
-              <FlexColumn>
+              <RightFlex>
                 <MenuBar />
                 <FriendsColumn />
                 <Footer />
-              </FlexColumn>
+              </RightFlex>
             </MainLayout>
             <ExampleAudioPlayer />
           </>

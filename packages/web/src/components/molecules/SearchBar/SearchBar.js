@@ -14,10 +14,14 @@ const SearchButton = styled(IconButton)`
 const SearchInput = styled.input`
   width: 100%;
   height: 2rem;
-  background-color: lightgray;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
   border: none;
   padding-left: 1rem;
   outline: none;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.text};
+  }
 `;
 
 const Layout = styled.form`
@@ -28,10 +32,11 @@ const Layout = styled.form`
   justify-content: space-between;
   border-radius: 1.3rem;
   margin-top: 1rem;
-  background-color: lightgray;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
 `;
 
 const SearchIconStyled = styled(SearchIcon)`
+  color: ${({ theme }) => theme.colors.text};
   border-radius: 50%;
   &:hover {
     background-color: inherit;

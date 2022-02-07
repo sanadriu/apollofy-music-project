@@ -42,15 +42,12 @@ export default function PlaylistHomeCard(props) {
     border-radius: 1.3rem;
     height: 15rem;
     max-width: 12rem;
-    background-image: linear-gradient(white, ${playlist.color}),
-      url(${playlist.thumbnails.url_default});
-    // background-blend-mode: overlay;
+    background-color: ${playlist.color};
     background-size: cover;
-    border: 1px solid darkgray;
     transition: 0.2s;
 
     &:hover {
-      color: white;
+      color: ${({ theme }) => theme.colors.body};
       background-image: url(${playlist.thumbnails.url_default});
     }
   `;

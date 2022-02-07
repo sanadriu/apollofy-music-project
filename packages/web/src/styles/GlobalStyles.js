@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
 
@@ -14,6 +14,7 @@ export const GlobalStyles = createGlobalStyle`
         margin: 0;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        background-color: ${({ theme }) => theme.colors.background.primary};
     }
 
     article,
@@ -724,4 +725,4 @@ export const GlobalStyles = createGlobalStyle`
         }
     }
 
-`
+`;

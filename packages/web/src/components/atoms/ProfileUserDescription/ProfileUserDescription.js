@@ -4,20 +4,15 @@ import PropTypes from "prop-types";
 
 const StyledDescription = styled.p`
   font-family: ${({ theme }) => theme.fonts.primary};
-  color: ${({ theme }) => theme.colors.body};
+  color: ${({ theme }) => theme.colors.text};
   font-weight: 400;
   font-size: 0.9rem;
-  line-height:1rem;
+  line-height: 1rem;
 `;
 
-const ProfileUserDescription = ({description}) => {
-  return (
-    <StyledDescription>
-      {description}
-    </StyledDescription>
-  );
+const ProfileUserDescription = ({ description }) => {
+  return <StyledDescription>{description}</StyledDescription>;
 };
-
 
 ProfileUserDescription.propTypes = {
   description: PropTypes.string,
@@ -26,6 +21,5 @@ ProfileUserDescription.propTypes = {
 ProfileUserDescription.defaultProps = {
   description: "",
 };
-
 
 export default ProfileUserDescription;

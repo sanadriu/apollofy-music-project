@@ -27,6 +27,7 @@ import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import Toggle from "./components/atoms/Switch";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
@@ -65,6 +66,7 @@ function App() {
     <ThemeProvider theme={themeMode}>
       <QueryClientProvider client={queryClient}>
         <>
+          <Toggle theme={theme} toggleTheme={themeToggler} />
           <GlobalStyles />
           <Routes>
             <Route path="albums" element={<Albums />} />

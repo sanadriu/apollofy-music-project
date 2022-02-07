@@ -3,16 +3,16 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import { userSelector } from "../../../redux/user";
-
-import { PrimaryButton } from "../../atoms/buttons/PrimaryButton";
+import Button from "../../atoms/buttons/Button";
 import { FlexColumn } from "../../atoms/FlexColumn/FlexColumn";
 import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
-import { rightSideBar } from "../../atoms/RightSideBar/RightSideBar";
+import { RightSideBar } from "../../atoms/RightSideBar/RightSideBar";
 import FriendInfo from "../../molecules/FriendInfo/FriendInfo";
 import AddFriendsModal from "../modal/AddFriendsModal";
 
-const FriendsColumnLayout = styled(rightSideBar)`
+const FriendsColumnLayout = styled(RightSideBar)`
   height: auto;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
 
   @media only screen and (max-width: 992px) {
     display: none;
@@ -41,7 +41,9 @@ export default function FriendsColumn() {
         ) : (
           <HomeSmallText>You do not follow anyone yet</HomeSmallText>
         )}
-        <PrimaryButton onClick={handleModal}>Add Friends</PrimaryButton>
+        <Button onClick={handleModal} btnColor="#B04AFF" type="block">
+          Add Friends
+        </Button>
         <AddFriendsModal isOpen={isOpen} handleModal={handleModal} />
       </FlexColumn>
     </FriendsColumnLayout>

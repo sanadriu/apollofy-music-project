@@ -8,14 +8,15 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 const StadisticsDiv = styled.div`
   width: 33%;
   display: flex;
-  justify-content:center;
-  align-item:center;
+  justify-content: center;
+  align-item: center;
   min-width: 50px;
 `;
 
 const SpanText = styled.div`
   margin-left: 0.5em;
   display: inline;
+  color: ${({ theme }) => theme.colors.text};
   @media only screen and (max-width: 1000px) {
     display: none;
   }
@@ -24,6 +25,7 @@ const SpanText = styled.div`
 const StyledTracks = styled(MusicNoteIcon)`
   margin-left: 5px;
   display: none;
+  color: ${({ theme }) => theme.colors.text};
   @media only screen and (max-width: 1000px) {
     display: block;
   }
@@ -31,6 +33,7 @@ const StyledTracks = styled(MusicNoteIcon)`
 
 const StyledFollowers = styled(PersonIcon)`
   margin-left: 5px;
+  color: ${({ theme }) => theme.colors.text};
   display: none;
   @media only screen and (max-width: 1000px) {
     display: block;
@@ -41,14 +44,14 @@ const StyledAlbums = styled(AlbumIcon)`
   margin-left: 5px;
   display: none;
   @media only screen and (max-width: 1000px) {
-    
     display: block;
   }
 `;
 
 const StyledCount = styled.span`
+  color: ${({ theme }) => theme.colors.text};
   font-weight: bold;
-  text-align:center;
+  text-align: center;
 `;
 
 const ProfileOneStadistics = ({ count, text }) => {

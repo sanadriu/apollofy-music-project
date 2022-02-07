@@ -15,7 +15,7 @@ const TrackLayout = styled.div`
   border-radius: 1.3rem;
 
   &:hover {
-    background-color: darkgray;
+    background-color: ${({ theme }) => theme.colors.background.secondary_hover};
   }
 `;
 
@@ -39,7 +39,7 @@ const TrackLink = styled(Link)`
   color: inherit;
 
   &:hover {
-    color: white;
+    color: ${({ theme }) => theme.colors.label};
   }
 `;
 
@@ -60,6 +60,7 @@ const StyledNumTrack = styled.div`
 const StyledNumber = styled.div`
   padding-left: 0.5rem;
   font-weight: 500;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const TrackDetail = ({ track }) => {

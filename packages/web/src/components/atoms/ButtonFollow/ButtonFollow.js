@@ -8,9 +8,9 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 
 const ColorButton = styled(Button)`
   color: white;
-  background: #9c27b0;
-  &:hover{
-    background: #9c27b0;
+  background: ${({ theme }) => theme.colors.label};
+  &:hover {
+    background: purple;
   }
   @media only screen and (max-width: 500px) {
     width: 20px;
@@ -29,7 +29,7 @@ const ButtonFollow = () => {
     <Stack spacing={2} direction="row">
       <ColorButton
         variant="contained"
-        sx={{ borderRadius: "100px", color: "white",width: "10px" }}
+        sx={{ borderRadius: "100px", color: "white" }}
         startIcon={<StarOutlineIcon />}
       >
         <StyledSpan>Seguir</StyledSpan>

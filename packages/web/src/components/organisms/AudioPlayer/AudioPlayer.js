@@ -1,13 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import { AudioPlayerControlSprite, AudioPlayer } from "react-audio-player-pro";
-import reactAudioPlayerProStyle from "react-audio-player-pro/dist/style.css";
 
 const AudioWrapper = styled(AudioPlayer)`
   position: fixed;
   bottom: 0;
   width: 100vw;
-  border: 2px solid lightgray;
+  border: 2px solid ${({ theme }) => theme.colors.border};
+  max-height: 6rem;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
+  color: ${({ theme }) => theme.colors.text};
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  button {
+    background-color: ${({ theme }) => theme.colors.background.secondary};
+    border: none;
+  }
 
   @media only screen and (max-width: 992px) {
     bottom: 4.3rem;

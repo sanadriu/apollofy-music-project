@@ -11,6 +11,7 @@ import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
 import { RegisterInput } from "../../../atoms/RegisterInput/RegisterInput";
+import Button from "../../../atoms/buttons/Button";
 
 export default function AccountForm() {
   const dispatch = useDispatch();
@@ -39,53 +40,22 @@ export default function AccountForm() {
         <Form className="formik">
           <FlexColumn>
             <MiddleTitle>Create your account</MiddleTitle>
-            <Field
-              as={RegisterInput}
-              type="text"
-              name="name"
-              placeholder="Username"
-            />
-            <ErrorMessage
-              className="errorMessage"
-              name="name"
-              component="div"
-            />
-            <Field
-              as={RegisterInput}
-              type="text"
-              name="email"
-              placeholder="Email"
-            />
-            <ErrorMessage
-              className="errorMessage"
-              name="email"
-              component="div"
-            />
-            <Field
-              as={RegisterInput}
-              type="password"
-              name="password"
-              placeholder="Password"
-            />
-            <ErrorMessage
-              className="errorMessage"
-              name="password"
-              component="div"
-            />
+            <Field as={RegisterInput} type="text" name="name" placeholder="Username" />
+            <ErrorMessage className="errorMessage" name="name" component="div" />
+            <Field as={RegisterInput} type="text" name="email" placeholder="Email" />
+            <ErrorMessage className="errorMessage" name="email" component="div" />
+            <Field as={RegisterInput} type="password" name="password" placeholder="Password" />
+            <ErrorMessage className="errorMessage" name="password" component="div" />
             <Field
               as={RegisterInput}
               type="password"
               name="passwordConfirmation"
               placeholder="Confirm password"
             />
-            <ErrorMessage
-              className="errorMessage"
-              name="passwordConfirmation"
-              component="div"
-            />
-            <PrimaryButton type="submit" disabled={isSubmitting}>
+            <ErrorMessage className="errorMessage" name="passwordConfirmation" component="div" />
+            <Button btnColor="#B04AFF" type="submit" disabled={isSubmitting}>
               Submit
-            </PrimaryButton>
+            </Button>
           </FlexColumn>
         </Form>
       )}

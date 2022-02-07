@@ -34,6 +34,7 @@ const MainFlex = styled.div`
 const Title = styled.h1`
   font-size: 4rem;
   text-align: center;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const ResetButton = styled.button`
@@ -44,9 +45,17 @@ const ResetButton = styled.button`
   background-color: white;
   cursor: pointer;
   &:hover {
-    background-color: #b04aff;
+    background-color: ${({ theme }) => theme.colors.label};
     color: white;
   }
+`;
+
+const Subtitle = styled.span`
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const Section = styled.section`
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 export default function Login() {
@@ -100,6 +109,7 @@ export default function Login() {
       <LoginBoard />
       <FlexColumn>
         <Title>What&apos;s rocking right now</Title>
+        <Subtitle>Join today</Subtitle>
         <Button btnColor="black" type="outline" onClick={(e) => handleLoginWithGoogle(e)}>
           Sign up with Google
         </Button>
@@ -117,22 +127,22 @@ export default function Login() {
             {currentModal === 4 ? <DescriptionForm /> : null}
           </>
         </RegisterModal>
-        <span>Already have an account?</span>
+        <Subtitle>Already have an account?</Subtitle>
         <Button btnColor="black" type="outline" onClick={handleSignIn} disabled={isSigningUp}>
           Sign in
         </Button>
         <SignInModal signinIsOpen={signinIsOpen} handleModal={handleSignIn}>
           <SigninForm />
         </SignInModal>
-        {signUpError && <section className="mt-4">{signUpError}</section>}
-        <section className="mt-4">
-          <hr className="mt-1 mb-4" />
+        {signUpError && <Section>{signUpError}</Section>}
+        <Section>
+          <hr />
           <ResetButton onClick={handleResetPassModal}>Reset password</ResetButton>
           <ResetPassModal
             resetPassModalIsOpen={resetPassModalIsOpen}
             handleResetPassModal={handleResetPassModal}
           />
-        </section>
+        </Section>
       </FlexColumn>
     </MainFlex>
   );

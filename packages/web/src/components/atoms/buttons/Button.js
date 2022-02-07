@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -7,7 +7,7 @@ const StyledButton = styled.button`
   font-weight: 400;
   font-size: 1rem;
   line-height: 2;
-  height: 50px;
+  padding: 0.2rem;
   transition: all 200ms linear;
   border-radius: 4px;
   width: 300px;
@@ -19,68 +19,83 @@ const StyledButton = styled.button`
   border: none;
   cursor: pointer;
   outline: 0;
+
+  &:hover {
+    background-color: darken(0.2, ${({ theme }) => theme.colors.label});
+  }
 `;
 
-const Button = ({ children, onClick, btnColor = 'black', labelColor, disabled, type, style, ...props }) => {
+const Button = ({
+  children,
+  onClick,
+  btnColor = "black",
+  labelColor,
+  disabled,
+  type,
+  style,
+  ...props
+}) => {
   const [hover, setHover] = useState(false);
-  const toggleHover = () => { setHover(!hover); };
+  const toggleHover = () => {
+    setHover(!hover);
+  };
 
   const commonStyles = {
     backgroundColor: btnColor,
-    color: labelColor || 'white'
+    color: labelColor || "white",
   };
 
   const outlineStyles = {
     border: `1px solid ${btnColor}`,
     color: btnColor,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   };
 
   const outlineHoverStyle = {
-    color: labelColor || 'white',
-    backgroundColor: btnColor
+    color: labelColor || "white",
+    // backgroundColor: `darken(0.2, ${btnColor})`,
   };
 
   const roundedStyle = {
     backgroundColor: btnColor,
-    color: labelColor || 'white',
-    borderRadius: '25px'
+    color: labelColor || "white",
+    borderRadius: "25px",
   };
 
   const disabledStyle = {
-    cursor: 'default',
+    cursor: "default",
     backgroundColor: btnColor,
-    color: labelColor || 'white',
-    opacity: 0.4
+    color: labelColor || "white",
+    opacity: 0.4,
   };
 
   const blockStyles = {
-    width: '95%',
-    margin: '0 auto'
+    width: "100%",
+    margin: "0 auto",
   };
 
   let btnStyle;
 
   switch (type) {
-    case 'rounded':
+    case "rounded":
       btnStyle = roundedStyle;
       break;
-    case 'submit':
-    case 'block':
+    case "submit":
+    case "block":
       btnStyle = blockStyles;
       break;
-    case 'outline':
+    case "outline":
       if (hover) {
         btnStyle = outlineHoverStyle;
-      }
-      else {
+      } else {
         btnStyle = outlineStyles;
       }
       break;
     default:
       btnStyle = {
         backgroundColor: btnColor,
-        color: labelColor || 'white'
+        color: labelColor || "white",
+        width: "90%",
       };
       break;
   }
@@ -96,9 +111,9 @@ const Button = ({ children, onClick, btnColor = 'black', labelColor, disabled, t
       onMouseLeave={toggleHover}
       {...props}
       type="button"
-      onClick={!disabled ? onClick : () => { }}
+      onClick={!disabled ? onClick : () => {}}
     >
-      {children || 'button'}
+      {children || "button"}
     </StyledButton>
   );
 };
@@ -122,7 +137,5 @@ Button.defaultProps = {
   style: {},
   type: null,
 };
-
-
 
 export default Button;

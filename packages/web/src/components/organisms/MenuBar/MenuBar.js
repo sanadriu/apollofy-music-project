@@ -11,11 +11,12 @@ import MenuList from "@mui/material/MenuList";
 
 import { signOut } from "../../../redux/auth";
 import { SmallText } from "../../atoms/SmallText/SmallText";
-import { rightSideBar } from "../../atoms/RightSideBar/RightSideBar";
+import { RightSideBar } from "../../atoms/RightSideBar/RightSideBar";
 import { userSelector } from "../../../redux/user";
 
-const MenuLayout = styled(rightSideBar)`
+const MenuLayout = styled(RightSideBar)`
   height: 3rem;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
 `;
 
 const Button = styled.button`
@@ -35,6 +36,10 @@ const ProfilePicture = styled.img`
 
 const ProfileName = styled(SmallText)`
   margin-top: 0.4rem;
+`;
+
+const MenuLogo = styled(KeyboardArrowDownIcon)`
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 export default function MenuBar() {
@@ -96,7 +101,7 @@ export default function MenuBar() {
         aria-haspopup="true"
         onClick={() => handleToggle()}
       >
-        <KeyboardArrowDownIcon />
+        <MenuLogo />
       </Button>
       <Popper
         open={open}
