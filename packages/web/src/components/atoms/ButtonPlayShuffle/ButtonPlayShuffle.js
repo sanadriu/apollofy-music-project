@@ -7,6 +7,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 const ColorButton = styled(Button)({
   color: lime,
+  marginTop:"1rem",
   backgroundColor: purple[500],
   "&:hover": {
     backgroundColor: purple[700],

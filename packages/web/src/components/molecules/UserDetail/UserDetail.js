@@ -90,7 +90,7 @@ const UserDetail = ({ user }) => {
       </UserFlex>
       <StyledNumUser>
         <GroupIcon />
-        <StyledNumber>{user.followers.length}</StyledNumber>
+        <StyledNumber>{user.followed_by?.length}</StyledNumber>
       </StyledNumUser>
       <FollowButton onClick={() => handleFollow(user.id)}>
         <PersonAddIcon />
@@ -112,11 +112,11 @@ UserDetail.propTypes = {
     birth_date: PropTypes.string.isRequired,
     liked_albums: PropTypes.arrayOf(PropTypes.object),
     liked_tracks: PropTypes.arrayOf(PropTypes.object),
+    followed_by: PropTypes.arrayOf(PropTypes.object),
     num_liked_albums: PropTypes.number,
     num_liked_tracks: PropTypes.number,
     followed_playlists: PropTypes.arrayOf(PropTypes.object),
     followed_users: PropTypes.arrayOf(PropTypes.object),
-    followers: PropTypes.arrayOf(PropTypes.object),
     num_followed_playlists: PropTypes.number,
     num_followed_users: PropTypes.number,
     num_followers: PropTypes.number,

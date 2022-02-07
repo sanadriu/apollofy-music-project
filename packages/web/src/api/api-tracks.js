@@ -6,14 +6,15 @@ const getTrack = async (trackId) => {
   return http.get(`${baseUrl}/tracks/${trackId}`);
 }
 
-const getTracks = async (page, genre, limit, sort, order) => {
+const getTracks = async (page, genre, limit, sort, order, userId) => {
   return http.get(`${baseUrl}/tracks`, {
     params: {
       limit: limit,
       page: page,
       genre: genre,
       sort: sort,
-      order: order
+      order: order,
+      user: userId
     },
   });
 }

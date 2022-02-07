@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material";
+import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
@@ -36,15 +37,23 @@ const StyledTypography = styled(Typography)`
 `;
 
 
-const ProfileImage = () => {
+const ProfileImage = ({image}) => {
   return (
     <MainDiv md={{ borderRadius: 0, width: "10px" }}>
       <ImageProfile
         alt="profile image"
-        src="https://i.picsum.photos/id/1011/5472/3648.jpg?hmac=Koo9845x2akkVzVFX3xxAc9BCkeGYA9VRVfLE4f0Zzk"
+        src={image}
       />
       <StyledTypography variant="h3">Chanel</StyledTypography>
     </MainDiv>
   );
+};
+
+ProfileImage.propTypes = {
+  image: PropTypes.string,
+};
+
+ProfileImage.defaultProps = {
+  image: "",
 };
 export default ProfileImage;

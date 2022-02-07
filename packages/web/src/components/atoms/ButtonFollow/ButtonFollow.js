@@ -1,14 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import { purple, lime } from "@mui/material/colors";
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import axios from "axios";
 
 const ColorButton = styled(Button)`
   color: white;
   background: #9c27b0 !important;
+  margin-top: 1rem;
   @media only screen and (max-width: 500px) {
     width: 20px;
   }
@@ -28,18 +30,37 @@ const StyledIcon = styled(StarOutlineIcon)`
   }
 `;
 
-const ButtonFollow = () => {
+function followUser(id){
+  try {
+    console.log('userID:'.id);
+  } catch (error) {
+    console.log(error);
+  }
+  
+}
+
+const ButtonFollow = ({id}) => {
+  console.log(id);
   return (
-    <Stack spacing={2} direction="row">
+    <Stack spacing={2} direction="row" onClick={() => followUser(id)}>
       <ColorButton
         variant="contained"
         sx={{ borderRadius: "100px", color: "white" }}
         startIcon={<StyledIcon />}
+        
       >
         <StyledSpan>Seguir</StyledSpan>
       </ColorButton>
     </Stack>
   );
+};
+
+ButtonFollow.propTypes = {
+  id: PropTypes.string
+};
+
+ButtonFollow.defaultProps = {
+  id: ""
 };
 
 export default ButtonFollow;

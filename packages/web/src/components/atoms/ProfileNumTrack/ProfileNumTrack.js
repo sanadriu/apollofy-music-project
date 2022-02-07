@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledNumber = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
@@ -15,12 +16,20 @@ const StyledNumber = styled.div`
   }
 `;
 
-const ProfileNumTrack = () => {
+const ProfileNumTrack = ({index}) => {
   return (
     <StyledNumber>
-      <div>1</div>
+      <div>{index + 1}</div>
     </StyledNumber>
   );
+};
+
+ProfileNumTrack.propTypes = {
+  index: PropTypes.number
+};
+
+ProfileNumTrack.defaultProps = {
+  index: 1
 };
 
 export default ProfileNumTrack;

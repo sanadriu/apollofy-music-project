@@ -70,7 +70,7 @@ function App() {
           <GlobalStyles />
           <Routes>
             <Route path="albums" element={<Albums />} />
-            <Route path="user-profile" element={<ProfilePage />} />
+            <Route path="profile/:profileId" element={<ProfilePage />} />
             <Route path="playlists" element={<Playlists />} />
             <Route path="tracks" element={<Tracks />} />
             <Route path="genres" element={<Genres />} />

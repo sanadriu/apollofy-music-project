@@ -6,7 +6,6 @@ import AlbumIcon from "@mui/icons-material/Album";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 
 const StadisticsDiv = styled.div`
-  width: 33%;
   display: flex;
   justify-content:center;
   align-item:center;
@@ -15,8 +14,9 @@ const StadisticsDiv = styled.div`
 
 const SpanText = styled.div`
   margin-left: 0.5em;
+  margin-right:0.5rem;
   display: inline;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 600px) {
     display: none;
   }
 `;
@@ -24,7 +24,7 @@ const SpanText = styled.div`
 const StyledTracks = styled(MusicNoteIcon)`
   margin-left: 5px;
   display: none;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 500px) {
     display: block;
   }
 `;
@@ -32,7 +32,7 @@ const StyledTracks = styled(MusicNoteIcon)`
 const StyledFollowers = styled(PersonIcon)`
   margin-left: 5px;
   display: none;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 500px) {
     display: block;
   }
 `;
@@ -40,8 +40,7 @@ const StyledFollowers = styled(PersonIcon)`
 const StyledAlbums = styled(AlbumIcon)`
   margin-left: 5px;
   display: none;
-  @media only screen and (max-width: 1000px) {
-    
+  @media only screen and (max-width: 500px) {
     display: block;
   }
 `;

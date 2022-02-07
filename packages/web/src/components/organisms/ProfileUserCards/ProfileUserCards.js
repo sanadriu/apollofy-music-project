@@ -5,16 +5,15 @@ import Slider from "react-slick";
 import ProfileCard from "../../molecules/ProfileCard/ProfileCard";
 
 const Layout = styled.div`
-  //max-width: 80rem;
   margin: auto;
-  width: 90%;
 `;
 
 const ProfileUserCards = ({ data }) => {
+ 
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
@@ -25,7 +24,7 @@ const ProfileUserCards = ({ data }) => {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          infinite: true,
+          infinite: false,
           dots: true
         }
       },
@@ -50,12 +49,7 @@ const ProfileUserCards = ({ data }) => {
   return (
     <Layout>
       <Slider {...settings}>
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
+        {data?.map((item) => (<ProfileCard key={item.id} title={item.title} data={item.created_at} thumbnails={item.thumbnails.url_default}/>))}
       </Slider>
     </Layout>
   );
