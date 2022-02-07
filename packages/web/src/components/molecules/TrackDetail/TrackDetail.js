@@ -1,20 +1,92 @@
 import React from "react";
+import styled from "styled-components";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import HeadphonesIcon from "@mui/icons-material/Headphones";
 
-const TrackDetail = ({ track }) => {
-  console.log(track);
+import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
+import { DetailText } from "../../atoms/DetailText/DetailText";
+import ProfilePlayTrack from "../../atoms/ProfilePlayTrack/ProfilePlayTrack";
 
+const TrackLayout = styled.div`
+  display: flex;
+  gap: 1rem;
+  padding: 0.3rem;
+  border-radius: 1.3rem;
+
+  &:hover {
+    background-color: darkgray;
+  }
+`;
+
+const TrackPicture = styled.img`
+  max-width: 3rem;
+  max-height: 3rem;
+  margin: 0;
+  border-radius: 0.3rem;
+`;
+
+const TrackFlex = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding-left: 0.5rem;
+  flex-grow: 1;
+`;
+
+const TrackLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    color: white;
+  }
+`;
+
+const StyledNumTrack = styled.div`
+  font-family: ${({ theme }) => theme.fonts.primary};
+  margin-left: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  width: 20%;
+
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
+`;
+
+const StyledNumber = styled.div`
+  padding-left: 0.5rem;
+  font-weight: 500;
+`;
+
+const TrackDetail = ({ track, handlePlayButton }) => {
   return (
-    <>
-      <div>{track.title}</div>
-      <div>{track.user}</div>
-    </>
+    <TrackLayout>
+      <TrackPicture alt="Track's Thumbnail" src={track.thumbnails.url_default} />
+      <TrackFlex>
+        <TrackLink to={`/albums/${track.genres}`}>
+          <HomeSmallText>{track.title}</HomeSmallText>
+        </TrackLink>
+        <TrackLink to={`/users/${track.user.id}`}>
+          <DetailText>{track.user.username}</DetailText>
+        </TrackLink>
+      </TrackFlex>
+      <StyledNumTrack>
+        <HeadphonesIcon sx={{ color: "purple" }} />
+        <StyledNumber>{track.num_plays}</StyledNumber>
+      </StyledNumTrack>
+      <ProfilePlayTrack track={track} handlePlayButton={handlePlayButton} />
+    </TrackLayout>
   );
-}
+};
 
 export default TrackDetail;
 
 TrackDetail.propTypes = {
+  handlePlayButton: PropTypes.func,
   track: PropTypes.exact({
     id: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
@@ -23,7 +95,7 @@ TrackDetail.propTypes = {
     url: PropTypes.string.isRequired,
     duration: PropTypes.number.isRequired,
     released_date: PropTypes.string.isRequired,
-    genres: PropTypes.arrayOf(PropTypes.object),
+    genres: PropTypes.arrayOf(PropTypes.string),
     liked_by: PropTypes.arrayOf(PropTypes.object),
     num_plays: PropTypes.number.isRequired,
     num_likes: PropTypes.number.isRequired,
@@ -38,6 +110,7 @@ TrackDetail.propTypes = {
 };
 
 TrackDetail.defaultProps = {
+  handlePlayButton: null,
   track: {
     id: null,
     user: {},

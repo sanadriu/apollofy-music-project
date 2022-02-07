@@ -14,10 +14,7 @@ import {
   signUpRequest,
   signUpWithEmailRequest,
   setCurrentUser,
-  signUpSuccess,
 } from "../../../../redux/auth";
-import { getCurrentUserToken } from "../../../../services/auth";
-import { updateNewUser } from "../../../../api";
 
 const DescriptionArea = styled.textarea`
   width: 22rem;
@@ -40,7 +37,7 @@ export default function DescriptionForm() {
         thumbnails: {
           url_default: currentUser.pictureLink,
         },
-        birth_date: currentUser.birth_date.toISOString().substring(0, 10),
+        birth_date: currentUser.birth_date?.toISOString().substring(0, 10),
         description: value,
       };
 

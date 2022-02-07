@@ -35,7 +35,7 @@ function initialValues(responseData = {}) {
 }
 
 const allowedImageExt = ["jpg", "jpeg", "png"];
-const allowedAudioExt = ["mp4"];
+const allowedAudioExt = ["mp3"];
 
 function TrackUpdateForm() {
   const { id } = useParams();

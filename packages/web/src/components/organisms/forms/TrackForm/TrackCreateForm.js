@@ -33,7 +33,7 @@ const initialValues = {
 };
 
 const allowedImageExt = ["jpg", "jpeg", "png"];
-const allowedAudioExt = ["mp4"];
+const allowedAudioExt = ["mp3"];
 
 function TrackCreateForm() {
   const {

@@ -5,13 +5,13 @@ module.exports = {
   parser: "babel-eslint",
   extends: [
     "eslint:recommended",
-    "plugin:jest/recommended",
+    // "plugin:jest/recommended",
     "prettier",
     "prettier/prettier",
     "prettier/standard",
     "plugin:node/recommended",
   ],
-  plugins: ["jest"],
+  // plugins: ["jest"],
   parserOptions: {
     sourceType: "module",
     ecmaVersion: 2020,
@@ -19,7 +19,7 @@ module.exports = {
   env: {
     commonjs: true,
     node: true,
-    "jest/globals": true,
+    // "jest/globals": true,
   },
   rules: {
     "prefer-destructuring": "off",

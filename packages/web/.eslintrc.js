@@ -7,7 +7,7 @@ module.exports = {
     "airbnb",
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:jest/recommended",
+    // "plugin:jest/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:jsx-a11y/recommended",
@@ -28,7 +28,7 @@ module.exports = {
     commonjs: true,
     es6: true,
     node: true,
-    "jest/globals": true,
+    // "jest/globals": true,
   },
   rules: {
     "prefer-promise-reject-errors": "off",

@@ -16,10 +16,12 @@ userRouter.delete("/me", authMiddleware, userController.deleteUser);
 userRouter.get("/me/tracks", authMiddleware, trackController.getUserTracks);
 userRouter.get("/me/albums", authMiddleware, albumController.getUserAlbums);
 userRouter.get("/me/playlists", authMiddleware, playlistController.getUserPlaylists);
-
+userRouter.patch("/me/like-album/:idAlbum", authMiddleware, userController.likeAlbum);
+userRouter.patch("/me/like-track/:idTrack", authMiddleware, userController.likeTrack);
+userRouter.patch("/me/follow-playlist/:idPlaylist", authMiddleware, userController.followPlaylist);
+userRouter.patch("/me/follow-user/:idUser", authMiddleware, userController.followUser);
 userRouter.get("/", userController.getUsers);
 userRouter.get("/:idUser", userController.getSingleUser);
-userRouter.patch("/:idUser/follow", authMiddleware, userController.followUser);
 
 module.exports = {
   userRouter,

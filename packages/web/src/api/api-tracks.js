@@ -6,9 +6,17 @@ const getTrack = async (trackId) => {
   return http.get(`${baseUrl}/tracks/${trackId}`);
 };
 
-const getTracks = async (limitNum = 10, pageNum = 1, genreName = "") => {
-  return http.get(`${baseUrl}/tracks?limit=${limitNum}&page=${pageNum}&genre=${genreName}`);
-};
+const getTracks = async (page, genre, limit, sort, order) => {
+  return http.get(`${baseUrl}/tracks`, {
+    params: {
+      limit: limit,
+      page: page,
+      genre: genre,
+      sort: sort,
+      order: order
+    },
+  });
+}
 
 const getMyTracks = async (authToken, params = {}) => {
   const { page = 1, sort = "created_at", order = "asc", limit = 10, extend = false } = params;

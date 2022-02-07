@@ -5,7 +5,8 @@ import playlistsApi from "../api/api-playlists";
 import * as authService from "../services/auth";
 
 export function usePlaylists() {
-  const query = useQuery(queryKeys.playlists, () => playlistsApi.getPlaylists(), {
+  const fallback = [];
+  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(queryKeys.playlists, () => playlistsApi.getPlaylists(), {
     staleTime: 600000, // 10 minutes
     cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
     refetchOnMount: false,
@@ -13,7 +14,7 @@ export function usePlaylists() {
     refetchOnReconnect: false,
   });
 
-  return query;
+  return { data, isError, error, isLoading, isSuccess };
 }
 
 export function usePrefetchPlaylists() {

@@ -27,7 +27,6 @@ const Layout = styled.form`
   display: flex;
   justify-content: space-between;
   border-radius: 1.3rem;
-  border: 1px solid darkgray;
   margin-top: 1rem;
   background-color: lightgray;
 `;
@@ -47,8 +46,6 @@ export default function SearchBar() {
 
   function handleSearch(e) {
     e.preventDefault();
-
-    console.log(search);
   }
   return (
     <Layout>

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 import { useGenres } from "../../../hooks/useGenres";
 
@@ -6,14 +7,17 @@ import GenreDetail from "../../molecules/GenreDetail";
 
 export default function Genres() {
   const genres = useGenres();
+  const navigate = useNavigate();
 
-  const [selectedGenre, setSelectedGenre] = useState(null);
+  const handleClick = (genre) => {
+    navigate(`/tracks/${genre.name}`);
+  }
 
   return (
     <ul>
       {genres?.data?.data?.map((genre) => (
         <li key={genre?.id}>
-          <button type="button" onClick={() => setSelectedGenre(genre)}>
+          <button type="button" onClick={() => handleClick(genre)}>
             <GenreDetail genre={genre} />
           </button>
         </li>

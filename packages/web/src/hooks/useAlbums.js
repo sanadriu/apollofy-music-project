@@ -5,8 +5,9 @@ import albumsApi from "../api/api-albums";
 import * as authService from "../services/auth";
 
 export function useAlbums() {
-  const query = useQuery(
-    ["albums", currentLimit, currentPage],
+  const fallback = [];
+  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
+    [queryKeys.albums, currentLimit, currentPage],
     () => albumsApi.getAlbums(currentLimit, currentPage),
     {
       staleTime: 600000, // 10 minutes
@@ -17,7 +18,7 @@ export function useAlbums() {
     },
   );
 
-  return query;
+  return { data, isError, error, isLoading, isSuccess };
 }
 
 export function usePrefetchAlbums() {

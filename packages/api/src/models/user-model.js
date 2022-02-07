@@ -1,5 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
-const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
+
 const { isEmail, isDate, isURL } = require("validator");
 const { getHash } = require("../services/crypto");
 
@@ -145,24 +145,34 @@ UserSchema.query.notDeleted = function () {
   return this.where({ deleted_at: { $exists: false } });
 };
 
-/* Population Object */
+/* Statics */
+
+UserSchema.statics.getNumPages = function () {
+  const limit = 10;
+
+  return this.countDocuments()
+    .notDeleted()
+    .then((count) => {
+      return Math.floor(count / limit) + (count % limit ? 1 : 0);
+    });
+};
 
 function getPopulate(extend) {
   return [
     {
       path: "liked_albums",
       match: { deleted_at: { $exists: false } },
-      select: "title",
+      select: extend ? "title" : "id",
     },
     {
       path: "liked_tracks",
       match: { deleted_at: { $exists: false } },
-      select: "title",
+      select: extend ? "title" : "id",
     },
     {
       path: "followed_playlists",
       match: { deleted_at: { $exists: false } },
-      select: "title",
+      select: extend ? "title" : "id",
     },
     {
       path: "followed_users",
@@ -200,8 +210,6 @@ UserSchema.statics.getUsers = function (options = {}) {
 
   const start = (page - 1) * limit;
 
-  const populate = getPopulate();
-
   return this.find()
     .notDeleted()
     .populate(populate)
@@ -220,23 +228,12 @@ UserSchema.statics.updateUser = function (id, data) {
   );
 };
 
-UserSchema.statics.deleteUser = async function (id) {
-  const user = await this.findById(id).notDeleted();
-
-  if (!user) return null;
-
+UserSchema.statics.deleteUser = function (id) {
   return this.findOneAndUpdate(
     { _id: id, deleted_at: { $exists: false } },
     {
-      $set: { deleted_at: Date.now() },
-      $unset: {
-        username: getHash(user.username),
-        firstname: getHash(user.firstname),
-        lastname: getHash(user.lastname),
-        description: getHash(user.description),
-        email: getHash(user.email),
-        thumbnails: getHash(user.thumbnails),
-      },
+      $set: { deleted_at: Date.now(), _id: getHash(id) },
+      $unset: { username: "", firstname: "", lastname: "", email: "" },
     },
     { new: true },
   );

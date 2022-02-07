@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+const log = require("../logger");
 
 const firebaseCertConfig = {
   type: process.env.FB_CERT_TYPE,
@@ -29,7 +30,10 @@ function verifyIdToken(token) {
 
 function getAuthToken(headers = {}) {
   return new Promise(function (resolve, reject) {
-    if (!headers.authorization || !headers.authorization.startsWith("Bearer ")) {
+    if (
+      !headers.authorization ||
+      !headers.authorization.startsWith("Bearer ")
+    ) {
       reject(new Error("Missing authorization header"));
     }
 

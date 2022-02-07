@@ -12,7 +12,7 @@ import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { SmallText } from "../../../atoms/SmallText/SmallText";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
 
-import { authSelector, setPictureLink } from "../../../../redux/auth";
+import { authSelector } from "../../../../redux/auth";
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const Input = styled("input")({
@@ -34,7 +34,7 @@ export default function ProfilePictureForm() {
     // if (value) dispatch(setProfilePicture(value));
 
     dispatch(nextModal(currentModal + 1));
-    dispatch(setPictureLink(pictureLink));
+    // dispatch(setPictureLink(pictureLink));
   }
 
   function uploadImage(files) {
@@ -47,7 +47,6 @@ export default function ProfilePictureForm() {
       .post("https://api.cloudinary.com/v1_1/stringifiers/image/upload", formData)
       .then((res) => {
         setLink(res.data.secure_url);
-        console.log(res.data.secure_url);
       });
   }
 
