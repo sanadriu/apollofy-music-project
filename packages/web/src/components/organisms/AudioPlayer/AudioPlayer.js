@@ -11,6 +11,11 @@ const AudioWrapper = styled(AudioPlayer)`
   bottom: 0;
   width: 100vw;
   border: 2px solid lightgray;
+
+  @media only screen and (max-width: 992px) {
+    bottom: 4.3rem;
+    width: 100vw;
+  }
 `;
 
 const audioTrackList = [

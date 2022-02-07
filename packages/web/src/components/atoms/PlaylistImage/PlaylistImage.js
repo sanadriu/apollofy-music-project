@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const MainDiv = styled.div`
   margin-left: 1rem;
@@ -10,7 +11,7 @@ const MainDiv = styled.div`
   position: relative;
 `;
 
-const ImageProfile = styled.img`
+const PlaylistPic = styled.img`
   height: 200px;
   border-radius: 30px 30px 30px 30px;
   width: 100%;
@@ -35,16 +36,24 @@ const StyledTypography = styled(Typography)`
   } */
 `;
 
-
-const ProfileImage = () => {
+const PlaylistImage = ({ picture, title }) => {
   return (
     <MainDiv md={{ borderRadius: 0, width: "10px" }}>
-      <ImageProfile
-        alt="profile image"
-        src="https://i.picsum.photos/id/1011/5472/3648.jpg?hmac=Koo9845x2akkVzVFX3xxAc9BCkeGYA9VRVfLE4f0Zzk"
-      />
-      <StyledTypography variant="h3">Chanel</StyledTypography>
+      <PlaylistPic alt="profile image" src={picture} />
+      {/* <StyledTypography variant="h3">{title}</StyledTypography> */}
     </MainDiv>
   );
 };
-export default ProfileImage;
+
+PlaylistImage.propTypes = {
+  picture: PropTypes.string,
+  title: PropTypes.string,
+};
+
+PlaylistImage.defaultProps = {
+  picture:
+    "https://i.picsum.photos/id/1011/5472/3648.jpg?hmac=Koo9845x2akkVzVFX3xxAc9BCkeGYA9VRVfLE4f0Zzk",
+  title: "Untitled",
+};
+
+export default PlaylistImage;

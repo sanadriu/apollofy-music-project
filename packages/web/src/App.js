@@ -19,6 +19,7 @@ import Genres from "./pages/Genres";
 import Albums from "./pages/Albums";
 import TracksByGenre from "./pages/TracksByGenre";
 import Users from "./pages/Users";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 import { onAuthStateChanged } from "./services/auth";
 import { authSelector, syncSignIn, signOut } from "./redux/auth";
@@ -26,7 +27,6 @@ import { authSelector, syncSignIn, signOut } from "./redux/auth";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
-import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
@@ -69,7 +69,7 @@ function App() {
           <Routes>
             <Route path="albums" element={<Albums />} />
             <Route path="user-profile" element={<ProfilePage />} />
-            <Route path="playlists" element={<Playlists />} />
+            <Route path="playlists/:playlistId" element={<Playlists />} />
             <Route path="tracks" element={<Tracks />} />
             <Route path="genres" element={<Genres />} />
             <Route path="users" element={<Users />} />

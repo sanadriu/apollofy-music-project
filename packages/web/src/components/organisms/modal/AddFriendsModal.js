@@ -35,6 +35,12 @@ const Backdrop = styled("div")`
   -webkit-tap-highlight-color: transparent;
 `;
 
+const FriendList = styled(FlexColumn)`
+  width: 100%;
+  padding: 0;
+  gap: 0;
+`;
+
 const style = {
   width: 500,
   bgcolor: "white",
@@ -65,16 +71,13 @@ export default function AddFriendsModal({ isOpen, handleModal }) {
       BackdropComponent={Backdrop}
     >
       <Box sx={style}>
-        <FlexColumn>
-          <MiddleTitle className="text-2xl font-bold mb-6">
-            Find your next favourite music
-          </MiddleTitle>
-          <SmallText>The more users you follow, the more music you discover</SmallText>
+        <FriendList>
+          <MiddleTitle className="text-2xl font-bold mb-6">Some partners in music</MiddleTitle>
           {userList &&
             userList.map((user) => {
               return <UserDetail key={user.id} user={user} />;
             })}
-        </FlexColumn>
+        </FriendList>
       </Box>
     </StyledModal>
   );

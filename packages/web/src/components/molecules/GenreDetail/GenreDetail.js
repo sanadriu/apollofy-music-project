@@ -18,13 +18,17 @@ const GenreDetail = ({ genre }) => {
     justify-content: center;
     border: 1px solid lightgray;
     text-align: center;
-    background-image: linear-gradient(lightgray, lightgray), url(${genre.thumbnails.url_default});
+    background-image: linear-gradient(white, lightgray), url(${genre.thumbnails.url_default});
     background-size: cover;
 
     &:hover {
       color: white;
       background-image: url(${genre.thumbnails.url_default});
       background-blend-mode: overlay;
+    }
+
+    @media only screen and (max-width: 600px) {
+      height: 3.5rem;
     }
   `;
   return (

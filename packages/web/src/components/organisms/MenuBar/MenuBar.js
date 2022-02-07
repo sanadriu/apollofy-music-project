@@ -111,7 +111,7 @@ export default function MenuBar() {
         open={open}
         anchorEl={anchorRef.current}
         role={undefined}
-        placement="bottom-start"
+        placement="bottom-end"
         transition
         disablePortal
       >
@@ -129,6 +129,7 @@ export default function MenuBar() {
                   id="composition-menu"
                   aria-labelledby="composition-button"
                   onKeyDown={(e) => handleListKeyDown(e)}
+                  sx={{ width: "18rem", borderRadius: "1.3rem" }}
                 >
                   <MenuItem onClick={(e) => handleClose(e)}>Profile</MenuItem>
                   <MenuItem onClick={() => editProfile()}>My account</MenuItem>
