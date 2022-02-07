@@ -21,7 +21,6 @@ import TracksByGenre from "./pages/TracksByGenre";
 import Users from "./pages/Users";
 import ProfilePage from "./pages/ProfilePage";
 import Statistics from "./pages/Statistics";
-import Switch from "./components/atoms/Switch";
 
 import { onAuthStateChanged } from "./services/auth";
 import { authSelector, syncSignIn, signOut } from "./redux/auth";
