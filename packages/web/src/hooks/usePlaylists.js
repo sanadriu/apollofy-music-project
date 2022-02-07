@@ -62,7 +62,7 @@ export function useDeletePlaylist() {
   const mutation = useMutation((id) => {
     const authToken = authService.getCurrentUserToken();
 
-    if (authToken) return playlistsApi.updatePlaylist(authToken, id);
+    if (authToken) return playlistsApi.deletePlaylist(authToken, id);
 
     return Promise.reject(new Error("User authentication required"));
   });

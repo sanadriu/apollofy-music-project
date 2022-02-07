@@ -65,7 +65,7 @@ export function useDeleteAlbum() {
   const mutation = useMutation((id) => {
     const authToken = authService.getCurrentUserToken();
 
-    if (authToken) return albumsApi.updateAlbum(authToken, id);
+    if (authToken) return albumsApi.deleteAlbum(authToken, id);
 
     return Promise.reject(new Error("User authentication required"));
   });

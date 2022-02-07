@@ -66,7 +66,7 @@ export function useDeleteTrack() {
   const mutation = useMutation((id) => {
     const authToken = authService.getCurrentUserToken();
 
-    if (authToken) return tracksApi.updateTrack(authToken, id);
+    if (authToken) return tracksApi.deleteTrack(authToken, id);
 
     return Promise.reject(new Error("User authentication required"));
   });
