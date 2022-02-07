@@ -21,7 +21,6 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { uploadResource } from "../../../../api/api-cloudinary";
-import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import withLayout from "../../../hoc/withLayout";
 
 const initialValues = {
@@ -54,7 +53,7 @@ function TrackCreateForm() {
     data: fetchGenresResponse,
   } = useGenres();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues,
@@ -91,7 +90,7 @@ function TrackCreateForm() {
 
   return (
     <Container as="main">
-      <MiddleTitle>Add new track</MiddleTitle>
+      <Typography sx={{ fontSize: "2rem", fontWeight: "light", mb: 2 }}>Add track</Typography>
       {setTrackIsSuccess && (
         <Alert sx={{ mb: 2 }} severity={setTrackResponse.data.success ? "success" : "error"}>
           {setTrackResponse.data.message}
@@ -104,8 +103,8 @@ function TrackCreateForm() {
       )}
       {fetchGenresIsError && (
         <Alert sx={{ mb: 2 }} severity="error" variant="filled">
-          <AlertTitle>{fetchGenresError.message}</AlertTitle>
-          Site is unable to reach the server
+          <AlertTitle>Somwthing went wrong</AlertTitle>
+          {fetchGenresError.message || "Site is unable to reach the server"}
         </Alert>
       )}
       {fetchGenresIsLoading && (
@@ -165,7 +164,6 @@ function TrackCreateForm() {
               fullWidth
               id="input_genres"
               name="genres"
-              fullWidth
               multiple
               value={values.genres}
               onChange={handleChange}
@@ -248,7 +246,7 @@ function TrackCreateForm() {
             loading={isValidating || setTrackIsLoading}
             variant="contained"
           >
-            Add new track
+            Add track
           </LoadingButton>
         </form>
       )}

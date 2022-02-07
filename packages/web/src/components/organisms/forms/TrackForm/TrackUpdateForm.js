@@ -21,19 +21,18 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { uploadResource } from "../../../../api/api-cloudinary";
-import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import withLayout from "../../../hoc/withLayout";
 
-const initialValues = function (responseData = {}) {
+function initialValues(responseData = {}) {
   return {
     title: responseData.title,
     released_date: responseData.released_date,
     genres: responseData.released_date,
     url_track: responseData.url,
-    url_image: responseData.thumbnails.url,
+    url_image: responseData.thumbnails?.url,
     duration: responseData.duration,
   };
-};
+}
 
 const allowedImageExt = ["jpg", "jpeg", "png"];
 const allowedAudioExt = ["mp4"];
@@ -54,6 +53,7 @@ function TrackUpdateForm() {
     isLoading: fetchTrackIsLoading,
     isError: fetchTrackIsError,
     isSuccess: fetchTrackIsSuccess,
+    error: fetchTrackError,
     data: fetchTrackResponse,
   } = useFetchTrack(id);
 
@@ -61,10 +61,11 @@ function TrackUpdateForm() {
     isLoading: fetchGenresIsLoading,
     isError: fetchGenresIsError,
     isSuccess: fetchGenresIsSuccess,
+    error: fetchGenresError,
     data: fetchGenresResponse,
   } = useGenres();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: initialValues(fetchTrackResponse?.data?.data),
@@ -99,9 +100,11 @@ function TrackUpdateForm() {
     setFieldError,
   } = formik;
 
+  console.log(fetchGenresResponse?.data?.data);
+
   return (
     <Container as="main">
-      <MiddleTitle>Add new track</MiddleTitle>
+      <Typography sx={{ fontSize: "2rem", fontWeight: "light", mb: 2 }}>Update track</Typography>
       {updateTrackIsSuccess && (
         <Alert sx={{ mb: 2 }} severity={updateTrackResponse.data.success ? "success" : "error"}>
           {updateTrackResponse.data.message}
@@ -112,159 +115,157 @@ function TrackUpdateForm() {
           {updateTrackError.message}
         </Alert>
       )}
-      {fetchGenresIsError ||
-        (fetchTrackIsError && (
-          <Alert sx={{ mb: 2 }} severity="error" variant="filled">
-            <AlertTitle>Network error</AlertTitle>
-            Site is unable to reach the server
-          </Alert>
-        ))}
-      {fetchGenresIsLoading ||
-        (fetchTrackIsLoading && (
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", py: "4rem" }}>
-            <CircularProgress size={128} />
-          </Box>
-        ))}
-      {fetchGenresIsSuccess ||
-        (fetchTrackIsSuccess && (
-          <form onSubmit={handleSubmit}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "column", md: "row" },
-                gap: { xs: 0, md: 2 },
-              }}
-            >
-              <Box sx={{ flexGrow: 1, mb: 3 }}>
-                <InputLabel sx={{ mb: 1 }} htmlFor="input_title">
-                  Track title
-                </InputLabel>
-                <TextField
-                  fullWidth
-                  size="small"
-                  id="input_title"
-                  name="title"
-                  type="text"
-                  value={values.title}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(touched.title && errors.title)}
-                  helperText={errors.title}
-                />
-              </Box>
-              <Box sx={{ flexGrow: 1, mb: 3 }}>
-                <InputLabel sx={{ mb: 1 }} htmlFor="input_released_date">
-                  Release date
-                </InputLabel>
-                <TextField
-                  fullWidth
-                  size="small"
-                  id="input_released_date"
-                  name="released_date"
-                  type="date"
-                  value={values.released_date}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(touched.released_date && errors.released_date)}
-                  helperText={errors.released_date}
-                />
-              </Box>
-            </Box>
+      {(fetchGenresIsError || fetchTrackIsError) && (
+        <Alert sx={{ mb: 2 }} severity="error" variant="filled">
+          <AlertTitle>Something went wrong</AlertTitle>
+          {fetchGenresIsError && <Box>Genres request: {fetchGenresError?.message}</Box>}
+          {fetchTrackIsError && <Box>Track request: {fetchTrackError?.message}</Box>}
+        </Alert>
+      )}
+      {(fetchGenresIsLoading || fetchTrackIsLoading) && (
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", py: "4rem" }}>
+          <CircularProgress size={128} />
+        </Box>
+      )}
+      {fetchGenresIsSuccess && fetchTrackIsSuccess && (
+        <form onSubmit={handleSubmit}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              gap: { xs: 0, md: 2 },
+            }}
+          >
             <Box sx={{ flexGrow: 1, mb: 3 }}>
-              <InputLabel sx={{ mb: 1 }} htmlFor="input_genres">
-                Genre(s)
+              <InputLabel sx={{ mb: 1 }} htmlFor="input_title">
+                Track title
               </InputLabel>
-              <Select
+              <TextField
                 fullWidth
-                id="input_genres"
-                name="genres"
-                fullWidth
-                multiple
-                value={values.genres}
+                size="small"
+                id="input_title"
+                name="title"
+                type="text"
+                value={values.title}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(touched.genres && errors.genres)}
-                input={<Input />}
-              >
-                {fetchGenresResponse.data.data.map((genre) => (
+                error={Boolean(touched.title && errors.title)}
+                helperText={errors.title}
+              />
+            </Box>
+            <Box sx={{ flexGrow: 1, mb: 3 }}>
+              <InputLabel sx={{ mb: 1 }} htmlFor="input_released_date">
+                Release date
+              </InputLabel>
+              <TextField
+                fullWidth
+                size="small"
+                id="input_released_date"
+                name="released_date"
+                type="date"
+                value={values.released_date}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(touched.released_date && errors.released_date)}
+                helperText={errors.released_date}
+              />
+            </Box>
+          </Box>
+          <Box sx={{ flexGrow: 1, mb: 3 }}>
+            <InputLabel sx={{ mb: 1 }} htmlFor="input_genres">
+              Genre(s)
+            </InputLabel>
+            <Select
+              fullWidth
+              id="input_genres"
+              name="genres"
+              multiple
+              value={values.genres}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={Boolean(touched.genres && errors.genres)}
+              input={<Input />}
+            >
+              {fetchGenresResponse.data?.data &&
+                fetchGenresResponse.data.data.map((genre) => (
                   <MenuItem key={genre.name} value={genre.name}>
                     {genre.name}
                   </MenuItem>
                 ))}
-              </Select>
-            </Box>
-            <Box sx={{ mb: 3 }}>
-              <InputLabel sx={{ mb: 1 }} htmlFor="input_track_cover">
-                Cover image file
-              </InputLabel>
-              <FileUploader
-                handleChange={(file) => {
-                  uploadResource(file, "image")
-                    .then((res) => {
-                      setFieldValue("url_image", res.data.url);
-                    })
-                    .catch((err) => {
-                      setFieldError("url_image", err.message);
-                    });
-                }}
-                name="input_track_cover"
-                types={allowedImageExt}
-              />
-              {touched.url_image && errors.url_image && (
-                <FormHelperText style={{ color: "#d32f2f" }}>{errors.url_image}</FormHelperText>
-              )}
-            </Box>
-            {values?.url_image && (
-              <Box>
-                <Typography sx={{ color: "rgba(0, 0, 0, 0.6)", mb: 1 }}>
-                  Cover image preview
-                </Typography>
-                <img
-                  style={{
-                    width: "10rem",
-                    height: "10rem",
-                    objectFit: "contain",
-                    padding: "0.25rem",
-                    borderRadius: "0.25rem",
-                    boxShadow: "0 0 0.25rem rgba(0, 0, 0, 0.5)",
-                  }}
-                  src={values.url_image}
-                  alt="preview"
-                />
-              </Box>
+            </Select>
+          </Box>
+          <Box sx={{ mb: 3 }}>
+            <InputLabel sx={{ mb: 1 }} htmlFor="input_track_cover">
+              Cover image file
+            </InputLabel>
+            <FileUploader
+              handleChange={(file) => {
+                uploadResource(file, "image")
+                  .then((res) => {
+                    setFieldValue("url_image", res.data.url);
+                  })
+                  .catch((err) => {
+                    setFieldError("url_image", err.message);
+                  });
+              }}
+              name="input_track_cover"
+              types={allowedImageExt}
+            />
+            {touched.url_image && errors.url_image && (
+              <FormHelperText style={{ color: "#d32f2f" }}>{errors.url_image}</FormHelperText>
             )}
-            <Box sx={{ mb: 3 }}>
-              <InputLabel sx={{ mb: 1 }} htmlFor="input_audio_file">
-                Track file
-              </InputLabel>
-              <FileUploader
-                handleChange={(file) => {
-                  uploadResource(file, "video")
-                    .then((res) => {
-                      setFieldValue("url_track", res.data.url);
-                      setFieldValue("duration", res.data.duration);
-                    })
-                    .catch((err) => {
-                      setFieldError("url_track", err.message);
-                    });
+          </Box>
+          {values?.url_image && (
+            <Box>
+              <Typography sx={{ color: "rgba(0, 0, 0, 0.6)", mb: 1 }}>
+                Cover image preview
+              </Typography>
+              <img
+                style={{
+                  width: "10rem",
+                  height: "10rem",
+                  objectFit: "contain",
+                  padding: "0.25rem",
+                  borderRadius: "0.25rem",
+                  boxShadow: "0 0 0.25rem rgba(0, 0, 0, 0.5)",
                 }}
-                name="input_audio_file"
-                types={allowedAudioExt}
+                src={values.url_image}
+                alt="preview"
               />
-              {touched.url_track && errors.url_track && (
-                <FormHelperText style={{ color: "#d32f2f" }}>{errors.url_track}</FormHelperText>
-              )}
             </Box>
-            <LoadingButton
-              type="submit"
-              disabled={!isValid}
-              loading={isValidating || updateTrackIsLoading}
-              variant="contained"
-            >
-              Add new track
-            </LoadingButton>
-          </form>
-        ))}
+          )}
+          <Box sx={{ mb: 3 }}>
+            <InputLabel sx={{ mb: 1 }} htmlFor="input_audio_file">
+              Track file
+            </InputLabel>
+            <FileUploader
+              handleChange={(file) => {
+                uploadResource(file, "video")
+                  .then((res) => {
+                    setFieldValue("url_track", res.data.url);
+                    setFieldValue("duration", res.data.duration);
+                  })
+                  .catch((err) => {
+                    setFieldError("url_track", err.message);
+                  });
+              }}
+              name="input_audio_file"
+              types={allowedAudioExt}
+            />
+            {touched.url_track && errors.url_track && (
+              <FormHelperText style={{ color: "#d32f2f" }}>{errors.url_track}</FormHelperText>
+            )}
+          </Box>
+          <LoadingButton
+            type="submit"
+            disabled={!isValid}
+            loading={isValidating || updateTrackIsLoading}
+            variant="contained"
+          >
+            Add new track
+          </LoadingButton>
+        </form>
+      )}
     </Container>
   );
 }
