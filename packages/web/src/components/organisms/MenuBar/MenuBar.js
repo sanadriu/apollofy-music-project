@@ -88,7 +88,7 @@ export default function MenuBar() {
 
   return (
     <MenuLayout>
-      <ProfilePicture
+      {/* <ProfilePicture
         alt="Profile Picture"
         src={
           currentUser?.thumbnails?.url_default
@@ -97,6 +97,7 @@ export default function MenuBar() {
         }
       />
       <ProfileName>{currentUser?.email}</ProfileName>
+      /> */}
       <Button
         ref={anchorRef}
         id="composition-button"
