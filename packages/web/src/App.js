@@ -27,6 +27,7 @@ import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import Statistics from "./pages/Statistics";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
@@ -73,6 +74,7 @@ function App() {
             <Route path="tracks" element={<Tracks />} />
             <Route path="genres" element={<Genres />} />
             <Route path="users" element={<Users />} />
+            <Route path="stats" element={<Statistics />} />
             <Route path="tracks/:genre" element={<TracksByGenre />} />
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />

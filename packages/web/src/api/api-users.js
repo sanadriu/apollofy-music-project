@@ -16,7 +16,7 @@ const getUser = async (userId) => {
       id: userId,
     },
   });
-}
+};
 
 const getUsers = async (page, limit, sort, order) => {
   return http.get(`${baseUrl}/users`, {
@@ -24,10 +24,10 @@ const getUsers = async (page, limit, sort, order) => {
       limit: limit,
       page: page,
       sort: sort,
-      order: order
+      order: order,
     },
   });
-}
+};
 
 function deleteUser(authToken) {
   return http.delete(`${baseUrl}/users/me`, {
