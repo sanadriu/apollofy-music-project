@@ -17,7 +17,7 @@ import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 
 import DateOfBirthSchema from "../../../../schemas/DateOfBirthSchema";
 
-// import { setDateOfBirth } from '../../../../redux/auth';
+import { dateOfBirthAdded } from "../../../../redux/auth";
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const dateSchema = {
@@ -32,10 +32,8 @@ export default function BirthDayForm() {
     <Formik
       initialValues={dateSchema}
       validationSchema={DateOfBirthSchema}
-      onSubmit={values => {
-        // console.log(values);
-        // if (values.date) dispatch(setDateOfBirth(values.date));
-
+      onSubmit={(values) => {
+        if (values.date) dispatch(dateOfBirthAdded(values.date.toISOString().substring(0, 10)));
         dispatch(nextModal(currentModal + 1));
       }}
       render={(props) => (

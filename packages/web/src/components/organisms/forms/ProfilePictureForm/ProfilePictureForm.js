@@ -12,7 +12,7 @@ import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { SmallText } from "../../../atoms/SmallText/SmallText";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
 
-import { authSelector } from "../../../../redux/auth";
+import { authSelector, pictureLinkAdded } from "../../../../redux/auth";
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 const Input = styled("input")({
@@ -34,20 +34,18 @@ export default function ProfilePictureForm() {
     // if (value) dispatch(setProfilePicture(value));
 
     dispatch(nextModal(currentModal + 1));
-    // dispatch(setPictureLink(pictureLink));
+    dispatch(pictureLinkAdded(pictureLink));
   }
 
   function uploadImage(files) {
     const formData = new FormData();
 
     formData.append("file", files[0]);
-    formData.append("upload_preset", "crm5jzoc");
+    formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
 
-    axios
-      .post("https://api.cloudinary.com/v1_1/stringifiers/image/upload", formData)
-      .then((res) => {
-        setLink(res.data.secure_url);
-      });
+    axios.post(`${process.env.REACT_APP_CLOUDINARY_URL}/image/upload`, formData).then((res) => {
+      setLink(res.data.secure_url);
+    });
   }
 
   return (

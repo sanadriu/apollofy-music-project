@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { createSelector } from 'reselect';
+import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
 
 import api from "../api";
 import * as authService from "../services/auth";
@@ -28,20 +28,20 @@ const slice = createSlice({
   },
   reducers: {
     signUpRequest: (auth, action) => {
-      auth.isSigningUp = true
-      auth.signUpError = null
+      auth.isSigningUp = true;
+      auth.signUpError = null;
     },
 
     signUpSuccess: (auth, action) => {
-      auth.isAuthenticated = true
-      auth.isSigningUp = false
-      auth.currentUserisSigningIn = false
-      auth.signUpError = null
+      auth.isAuthenticated = true;
+      auth.isSigningUp = false;
+      auth.currentUserisSigningIn = false;
+      auth.signUpError = null;
     },
 
     signUpError: (auth, action) => {
-      auth.isSigningUp = false
-      auth.signUpError = action.payload
+      auth.isSigningUp = false;
+      auth.signUpError = action.payload;
     },
 
     signInRequest: (auth, action) => {
@@ -57,7 +57,7 @@ const slice = createSlice({
 
     signInError: (auth, action) => {
       auth.isSigningIn = false;
-      auth.signInError = action.payload
+      auth.signInError = action.payload;
     },
 
     signOutRequest: (auth, action) => {
@@ -110,18 +110,18 @@ const slice = createSlice({
     // },
 
     editProfileRequest: (auth, action) => {
-      auth.isEditingProfile = true
-      auth.editProfileError = null
+      auth.isEditingProfile = true;
+      auth.editProfileError = null;
     },
 
     editProfileSuccess: (auth, action) => {
-      auth.isEditingProfile = false
-      auth.editProfileError = null
+      auth.isEditingProfile = false;
+      auth.editProfileError = null;
     },
 
     editProfileError: (auth, action) => {
-      auth.isEditingProfile = false
-      auth.editProfileError = action.payload
+      auth.isEditingProfile = false;
+      auth.editProfileError = action.payload;
     },
 
     setNameEmailAndPassword: (auth, action) => {
@@ -143,8 +143,8 @@ const slice = createSlice({
     currentUserAdded: (auth, action) => {
       auth.currentUser = action.payload;
     },
-  }
-})
+  },
+});
 
 export const {
   signUpRequest,
@@ -347,7 +347,4 @@ export function setCurrentUser(user) {
 
 export const selectAuthState = (state) => state.entities.auth;
 
-export const authSelector = createSelector(
-  [selectAuthState],
-  (auth) => auth
-);
+export const authSelector = createSelector([selectAuthState], (auth) => auth);
