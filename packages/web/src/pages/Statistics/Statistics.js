@@ -68,7 +68,7 @@ const Statistics = () => {
     if (array) {
       array.forEach((title) => {
         setArray((list) => [...list, title?.title || title.name]);
-        setLikes((list) => [...list, title?.num_likes || title.num_followers]);
+        setLikes((list) => [...list, title?.num_likes || title?.num_followers || title?.num_plays]);
       });
     }
   };

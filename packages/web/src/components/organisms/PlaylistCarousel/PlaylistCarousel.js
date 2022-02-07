@@ -1,10 +1,10 @@
 import React from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
-import "./PlaylistCarousel.css";
-
 import PlaylistHomeCard from "../../molecules/PlaylistHomeCard/PlaylistHomeCard";
 import { usePlaylists } from "../../../hooks/usePlaylists";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Layout = styled.div`
   max-width: 45rem;
