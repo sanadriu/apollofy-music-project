@@ -72,13 +72,8 @@ const Statistics = () => {
   };
 
   useEffect(() => {
-    createArray(
-      (chart === "Albums" && albumsList) ||
-        (chart === "Playlists" && playlistsList) ||
-        (chart === "Users" && usersList) ||
-        (chart === "Songs" && tracksList),
-    );
-  }, [chart]);
+    createArray(usersList);
+  }, []);
 
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -91,6 +86,7 @@ const Statistics = () => {
       title: {
         display: true,
         text:
+          (chart === "" && "Most Popular Users") ||
           (chart === "Users" && "Most Popular Users") ||
           (chart === "Albums" && "Most Popular Albums") ||
           (chart === "Songs" && "Most Popular Songs") ||
@@ -122,6 +118,7 @@ const Statistics = () => {
             type="button"
             onClick={() => {
               setChart("Users");
+              createArray(usersList);
             }}
           >
             <GroupsIcon fontSize="large" />
@@ -133,6 +130,7 @@ const Statistics = () => {
             type="button"
             onClick={() => {
               setChart("Songs");
+              createArray(tracksList);
             }}
           >
             <MusicNoteIcon fontSize="large" />
@@ -144,6 +142,7 @@ const Statistics = () => {
             type="button"
             onClick={() => {
               setChart("Albums");
+              createArray(albumsList);
             }}
           >
             <AlbumIcon fontSize="large" />
@@ -155,6 +154,7 @@ const Statistics = () => {
             type="button"
             onClick={() => {
               setChart("Playlists");
+              createArray(playlistsList);
             }}
           >
             <LibraryMusicIcon fontSize="large" />

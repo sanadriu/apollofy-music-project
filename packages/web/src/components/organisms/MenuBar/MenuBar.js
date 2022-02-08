@@ -67,6 +67,10 @@ export default function MenuBar() {
     navigate(ROUTES.EDIT_PROFILE);
   };
 
+  const showProfile = async () => {
+    navigate(ROUTES.USER_PROFILE);
+  };
+
   function handleListKeyDown(event) {
     if (event.key === "Tab") {
       event.preventDefault();
@@ -127,7 +131,7 @@ export default function MenuBar() {
                   onKeyDown={(e) => handleListKeyDown(e)}
                   sx={{ width: "18rem", borderRadius: "1.3rem" }}
                 >
-                  <MenuItem onClick={(e) => handleClose(e)}>Profile</MenuItem>
+                  <MenuItem onClick={() => showProfile()}>Profile</MenuItem>
                   <MenuItem onClick={() => editProfile()}>My account</MenuItem>
                   <MenuItem onClick={() => logout()}>Logout</MenuItem>
                 </MenuList>
