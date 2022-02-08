@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledImageTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
@@ -14,17 +15,26 @@ const StyledImage = styled.img`
   object-fit: cover;
   border-radius: 0.8rem;
   min-width:50px;
+  min-height: 50px;
 `;
 
-const ProfileTrackImage = () => {
+const ProfileTrackImage = ({data}) => {
   return (
     <StyledImageTrack>
       <StyledImage
-        src="https://images.pexels.com/photos/6759350/pexels-photo-6759350.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+        src={data?.thumbnails?.url_default}
         alt="image song"
       />
     </StyledImageTrack>
   );
+};
+
+ProfileTrackImage.propTypes = {
+  data: PropTypes.object
+};
+
+ProfileTrackImage.defaultProps = {
+  data: {}
 };
 
 export default ProfileTrackImage;

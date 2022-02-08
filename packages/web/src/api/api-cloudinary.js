@@ -4,7 +4,6 @@ const url = process.env.REACT_APP_CLOUDINARY_URL;
 const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
 
 export function uploadResource(file, resourceType) {
-  console.log(file);
   const formData = new FormData();
 
   formData.append("file", file);

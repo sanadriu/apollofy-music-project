@@ -6,14 +6,15 @@ const getTrack = async (trackId) => {
   return http.get(`${baseUrl}/tracks/${trackId}`);
 };
 
-const getTracks = async (page, genre, limit, sort, order) => {
+const getTracks = async (page, genre, limit, sort, order, userId) => {
   return http.get(`${baseUrl}/tracks`, {
     params: {
       limit: limit,
       page: page,
       genre: genre,
       sort: sort,
-      order: order
+      order: order,
+      user: userId
     },
   });
 }
@@ -35,16 +36,16 @@ const getMyTracks = async (authToken, params = {}) => {
   });
 };
 
-const setTrack = async (authToken, data) => {
-  return http.post(`${baseUrl}/tracks`, data, {
+const setTrack = async (authToken, track) => {
+  return http.post(`${baseUrl}/tracks`, track, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
   });
 };
 
-const updateTrack = async (authToken, id, data) => {
-  return http.patch(`${baseUrl}/tracks/${id}`, data, {
+const updateTrack = async (authToken, track) => {
+  return http.patch(`${baseUrl}/tracks/${track.id}`, track, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },

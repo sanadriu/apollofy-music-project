@@ -16,13 +16,17 @@ const GenreDetail = ({ genre }) => {
     padding: 0.3rem;
     display: flex;
     justify-content: center;
-    border: 1px solid lightgray;
+    border: 1px solid ${({ theme }) => theme.colors.border};
     text-align: center;
-    background-image: linear-gradient(white, lightgray), url(${genre.thumbnails.url_default});
+    background-image: linear-gradient(
+        ${({ theme }) => theme.colors.body},
+        ${({ theme }) => theme.colors.background}
+      ),
+      url(${genre.thumbnails.url_default});
     background-size: cover;
 
     &:hover {
-      color: white;
+      color: ${({ theme }) => theme.colors.body};
       background-image: url(${genre.thumbnails.url_default});
       background-blend-mode: overlay;
     }
@@ -42,7 +46,7 @@ export default GenreDetail;
 
 GenreDetail.propTypes = {
   genre: PropTypes.exact({
-    _id: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     thumbnails: PropTypes.exact({
       url_default: PropTypes.string,

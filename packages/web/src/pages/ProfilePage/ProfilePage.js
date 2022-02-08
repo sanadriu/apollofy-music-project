@@ -1,15 +1,23 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+
 import ButtonPlaySuffle from "../../components/atoms/ButtonPlayShuffle/ButtonPlayShuffle";
 import withLayout from "../../components/hoc/withLayout";
 import ProfileGroupButtons from "../../components/molecules/ProfileGroupButtons/ProfileGroupButtons";
 import ProfileMain from "../../components/organisms/ProfileMain/ProfileMain";
 import ProfileUserCards from "../../components/organisms/ProfileUserCards/ProfileUserCards";
 import ProfileUserTracks from "../../components/organisms/ProfileUserTracks/ProfileUserTracks";
+import { useUserAlbums } from "../../hooks/useAlbums";
+import { useUserPlaylists } from "../../hooks/usePlaylists";
+import { useUserTracks } from "../../hooks/useTracks";
 
 const StyledProfilePage = styled.div`
-  max-width: 900px;
   overflow: hidden;
+  @media only screen and (max-width: 1000px) {
+    padding-right: 2rem;
+  }
 `;
 
 const StyledMostListened = styled.div`
@@ -36,17 +44,31 @@ const StyledPlaylists = styled.div`
 `;
 
 const ProfilePage = () => {
+  const [user, setUser] = useState(null);
+  const { profileId } = useParams();
+
+  const { data: albums } = useUserAlbums(undefined, undefined, undefined, undefined, profileId);
+  const { data: playlists } = useUserPlaylists(profileId);
+  const { data: tracks } = useUserTracks(1, undefined, 5, "num_plays", "desc", profileId);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get(`http://localhost:4000/users/${profileId}`);
+      setUser(data.data);
+    })();
+  }, [profileId]);
+
   return (
     <StyledProfilePage>
       <ProfileGroupButtons />
-      <ProfileMain data={[]} />
+      <ProfileMain user={user} albums={albums?.data?.length} tracks={tracks?.data?.data.length} />
+      <ButtonPlaySuffle />
       <StyledMostListened>Most Listened</StyledMostListened>
       <ProfileUserTracks />
-      <ButtonPlaySuffle />
-      <StyledAlbums >Albums</StyledAlbums>
-      <ProfileUserCards data={[]} />
+      <StyledAlbums>Albums</StyledAlbums>
+      <ProfileUserCards data={albums?.data?.data} />
       <StyledPlaylists>Playlists</StyledPlaylists>
-      <ProfileUserCards data={[]} />
+      <ProfileUserCards data={playlists?.data?.data} />
     </StyledProfilePage>
   );
 };

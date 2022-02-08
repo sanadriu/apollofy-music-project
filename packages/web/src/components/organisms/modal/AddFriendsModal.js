@@ -22,6 +22,7 @@ const StyledModal = styled(ModalUnstyled)`
   align-items: center;
   justify-content: center;
   overflow: scroll;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const Backdrop = styled("div")`
@@ -41,14 +42,12 @@ const FriendList = styled(FlexColumn)`
   gap: 0;
 `;
 
-const style = {
-  width: 500,
-  bgcolor: "white",
-  borderRadius: "0.3rem",
-  p: 2,
-  px: 4,
-  pb: 3,
-};
+export const ModalBox = styled(Box)`
+  width: 40%;
+  background-color: ${({ theme }) => theme.colors.background.primary};
+  border-radius: 1.3rem;
+  padding: 2rem;
+`;
 
 export default function AddFriendsModal({ isOpen, handleModal }) {
   const dispatch = useDispatch();
@@ -70,15 +69,15 @@ export default function AddFriendsModal({ isOpen, handleModal }) {
       onClose={handleClose}
       BackdropComponent={Backdrop}
     >
-      <Box sx={style}>
+      <ModalBox>
         <FriendList>
           <MiddleTitle className="text-2xl font-bold mb-6">Some partners in music</MiddleTitle>
           {userList &&
             userList.map((user) => {
-              return <UserDetail key={user.id} user={user} />;
+              return <UserDetail key={user?.id} user={user} />;
             })}
         </FriendList>
-      </Box>
+      </ModalBox>
     </StyledModal>
   );
 }

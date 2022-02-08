@@ -2,9 +2,6 @@ import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
 import { useNavigate, useParams } from "react-router-dom";
-import { useFetchTrack, useUpdateTrack } from "../../../../hooks/useTracks";
-import { useGenres } from "../../../../hooks/useGenres";
-import validationSchema from "../../../../schemas/TrackSchema";
 import {
   Box,
   Alert,
@@ -20,6 +17,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+
+import { useFetchTrack, useUpdateTrack } from "../../../../hooks/useTracks";
+import { useGenres } from "../../../../hooks/useGenres";
+import validationSchema from "../../../../schemas/TrackSchema";
 import { uploadResource } from "../../../../api/api-cloudinary";
 import withLayout from "../../../hoc/withLayout";
 
@@ -27,7 +28,7 @@ function initialValues(responseData = {}) {
   return {
     title: responseData.title,
     released_date: responseData.released_date,
-    genres: responseData.genres,
+    genres: responseData.genres instanceof Array ? responseData.genres : [responseData.genres],
     url_track: responseData.url,
     url_image: responseData.thumbnails?.url_default,
     duration: responseData.duration,
@@ -38,6 +39,7 @@ const allowedImageExt = ["jpg", "jpeg", "png"];
 const allowedAudioExt = ["mp3"];
 
 function TrackUpdateForm() {
+  // const [updatedTrack, setUpdatedTrack] = useState({})
   const { id } = useParams();
 
   const {
@@ -73,6 +75,7 @@ function TrackUpdateForm() {
     enableReinitialize: true,
     onSubmit: (values) => {
       const data = {
+        id: id,
         title: values.title,
         released_date: values.released_date,
         genres: values.genres,
@@ -184,7 +187,7 @@ function TrackUpdateForm() {
               error={Boolean(touched.genres && errors.genres)}
               input={<Input />}
             >
-              {fetchGenresResponse.data.data.map((genre) => (
+              {fetchGenresResponse?.data?.data.map((genre) => (
                 <MenuItem key={genre.name} value={genre.name}>
                   {genre.name}
                 </MenuItem>

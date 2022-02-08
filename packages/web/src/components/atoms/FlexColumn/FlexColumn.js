@@ -7,4 +7,7 @@ export const FlexColumn = styled.div`
   padding: 1rem;
   align-items: center;
   flex-grow: 1;
+  @media only screen and (max-width: 1000px) {
+    display: none;
+  }
 `;

@@ -21,6 +21,23 @@ export function useAlbums(currentPage = 1, currentLimit = 10, sort = undefined, 
   return { data, isError, error, isLoading, isSuccess };
 }
 
+export function useUserAlbums(currentPage = 1, currentLimit = 10, sort = undefined, order = 'desc', userId = undefined) {
+  const fallback = [];
+  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
+    [queryKeys.albums, currentPage, userId],
+    () => albumsApi.getAlbums(currentLimit, currentPage, userId),
+    {
+      staleTime: 600000, // 10 minutes
+      cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  );
+
+  return { data, isError, error, isLoading, isSuccess };
+}
+
 export function usePrefetchAlbums() {
   const queryClient = useQueryClient();
   queryClient.prefetchQuery(queryKeys.albums, albumsApi.getAlbums);

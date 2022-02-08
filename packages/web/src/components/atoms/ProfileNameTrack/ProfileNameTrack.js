@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledNameTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
@@ -9,17 +10,28 @@ const StyledNameTrack = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  @media only screen and (max-width: 500px) {
+    padding-left:1rem;
+  }
 `;
 
-const ProfileNameTrack = () => {
+const ProfileNameTrack = ({data}) => {
   return (
     <StyledNameTrack>
       <div>
-        <b>Song Title</b>
+        <b>{data?.title}</b>
       </div>
-      <div>Albums name</div>
     </StyledNameTrack>
   );
+};
+
+
+ProfileNameTrack.propTypes = {
+  data: PropTypes.object
+};
+
+ProfileNameTrack.defaultProps = {
+  data: {}
 };
 
 export default ProfileNameTrack;

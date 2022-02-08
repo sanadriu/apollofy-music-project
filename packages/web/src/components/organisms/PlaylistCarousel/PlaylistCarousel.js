@@ -34,8 +34,6 @@ export default function PlaylistCarousel() {
     ],
   };
 
-  console.log(playlists)
-
   return (
     <Layout>
       <Slider {...settings}>

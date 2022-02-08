@@ -30,6 +30,7 @@ import { lightTheme, darkTheme } from "./styles/Themes";
 import TrackCreateForm from "./components/organisms/forms/TrackForm/TrackCreateForm";
 import TrackUpdateForm from "./components/organisms/forms/TrackForm/TrackUpdateForm";
 import Statistics from "./pages/Statistics/Statistics";
+import Toggle from "./components/atoms/Switch";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
@@ -68,10 +69,13 @@ function App() {
     <ThemeProvider theme={themeMode}>
       <QueryClientProvider client={queryClient}>
         <>
+          <Toggle theme={theme} toggleTheme={themeToggler} />
           <GlobalStyles />
           <Routes>
             <Route path="albums" element={<Albums />} />
             <Route path="playlists/:playlistId" element={<Playlists />} />
+            <Route path="profile/:profileId" element={<ProfilePage />} />
+            <Route path="playlists" element={<Playlists />} />
             <Route path="tracks" element={<Tracks />} />
             <Route path="genres" element={<Genres />} />
             <Route path="users" element={<Users />} />

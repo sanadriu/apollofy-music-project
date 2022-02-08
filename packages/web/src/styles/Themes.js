@@ -1,33 +1,47 @@
 const media = {
-  smallMobile: '476px',
-  mobile: '576px',
-  phablet: '767px',
-  tablet: '992px',
-  desktop: '1200px',
-  bigDesktop: '1450px',
-}
+  smallMobile: "476px",
+  mobile: "576px",
+  phablet: "767px",
+  tablet: "992px",
+  desktop: "1200px",
+  bigDesktop: "1450px",
+};
 
 export const lightTheme = {
   colors: {
-    body: '#FFF',
-    text: '#363537',
-    toggleBorder: '#FFF',
-    background: '#363537',
+    label: "#B04AFF",
+    body: "#FFF",
+    text: "#363537",
+    toggleBorder: "#FFF",
+    background: {
+      primary: "#FFF",
+      secondary: "#f6f6f6",
+      secondary_hover: "#E7E7E7",
+    },
+    border: "lightgray",
   },
   media: media,
   fonts: {
-    primary: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif',
+    primary:
+      "Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif",
   },
-}
+};
 export const darkTheme = {
   colors: {
-    body: '#363537',
-    text: '#FAFAFA',
-    toggleBorder: '#6B8096',
-    background: '#999',
+    label: "#B04AFF",
+    body: "black",
+    text: "#FAFAFA",
+    toggleBorder: "#6B8096",
+    background: {
+      primary: "black",
+      secondary: "#0E0E0E",
+      secondary_hover: "#3a3a3a",
+    },
+    border: "#3a3a3a",
   },
   media: media,
   fonts: {
-    primary: 'Roboto,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif',
+    primary:
+      "Roboto,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif",
   },
-}
+};

@@ -6,8 +6,14 @@ const getPlaylist = async (playlistId) => {
   return http.get(`${baseUrl}/playlists/${playlistId}`);
 };
 
-const getPlaylists = async (limitNum = 10, pageNum = 1) => {
-  return http.get(`${baseUrl}/playlists?limit=${limitNum}&page=${pageNum}`);
+const getPlaylists = async (limitNum = 10, pageNum = 1, userId = undefined) => {
+  return http.get(`${baseUrl}/playlists`, {
+    params: {
+      limit: limitNum,
+      page: pageNum,
+      user: userId
+    },
+  });
 };
 
 const getMyPlaylists = async (authToken, params = {}) => {

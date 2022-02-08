@@ -4,17 +4,14 @@ import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  authSelector,
-  resetAuthState,
-  sendPasswordResetEmail,
-} from "../../../redux/auth";
+import { authSelector, resetAuthState, sendPasswordResetEmail } from "../../../redux/auth";
 
 import { FlexColumn } from "../../atoms/FlexColumn/FlexColumn";
 import { MiddleTitle } from "../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../atoms/buttons/PrimaryButton";
 import { RegisterInput } from "../../atoms/RegisterInput/RegisterInput";
 import { SmallText } from "../../atoms/SmallText/SmallText";
+import { ModalBox } from "./AddFriendsModal";
 
 const StyledModal = styled(ModalUnstyled)`
   position: fixed;
@@ -39,15 +36,6 @@ const Backdrop = styled("div")`
   -webkit-tap-highlight-color: transparent;
 `;
 
-const style = {
-  width: 500,
-  bgcolor: "white",
-  borderRadius: "0.3rem",
-  p: 2,
-  px: 4,
-  pb: 3,
-};
-
 function buttonText(loading, sent) {
   if (loading) {
     return "Sending...";
@@ -60,10 +48,7 @@ function buttonText(loading, sent) {
   return "Send password reset email";
 }
 
-export default function ResetPassModal({
-  resetPassModalIsOpen,
-  handleResetPassModal,
-}) {
+export default function ResetPassModal({ resetPassModalIsOpen, handleResetPassModal }) {
   const dispatch = useDispatch();
   const { isSendingPasswordReset, passwordResetError, passwordResetSent } =
     useSelector(authSelector);
@@ -93,14 +78,10 @@ export default function ResetPassModal({
       onClose={handleClose}
       BackdropComponent={Backdrop}
     >
-      <Box sx={style}>
+      <ModalBox>
         <FlexColumn>
-          <MiddleTitle className="text-2xl font-bold mb-6">
-            Reset your password
-          </MiddleTitle>
-          <SmallText>
-            You will receive an email and set a new password!
-          </SmallText>
+          <MiddleTitle className="text-2xl font-bold mb-6">Reset your password</MiddleTitle>
+          <SmallText>You will receive an email and set a new password!</SmallText>
           <form onSubmit={handleSubmit}>
             <FlexColumn>
               <RegisterInput
@@ -119,11 +100,9 @@ export default function ResetPassModal({
               </PrimaryButton>
             </FlexColumn>
           </form>
-          {passwordResetError && (
-            <section className="mt-4">{passwordResetError}</section>
-          )}
+          {passwordResetError && <section className="mt-4">{passwordResetError}</section>}
         </FlexColumn>
-      </Box>
+      </ModalBox>
     </StyledModal>
   );
 }
