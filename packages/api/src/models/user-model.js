@@ -1,5 +1,4 @@
 const { Schema, Types, model } = require("mongoose");
-const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const { isEmail, isDate, isURL } = require("validator");
 const { getHash } = require("../services/crypto");
 
