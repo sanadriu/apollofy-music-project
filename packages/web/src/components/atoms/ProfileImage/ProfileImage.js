@@ -9,6 +9,13 @@ const MainDiv = styled.div`
   padding-right: 1rem;
   padding-top: 1rem;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media only screen and (max-width: 1000px) {
+    height: 10rem;
+    width: 10rem;
+  }
 `;
 
 const ImageProfile = styled.img`
@@ -19,32 +26,32 @@ const ImageProfile = styled.img`
   &:hover {
     opacity: 0.7;
   }
+  @media only screen and (max-width: 1000px) {
+    height: 10rem;
+    width: 10rem;
+  }
 `;
 
-const StyledTypography = styled(Typography)`
-  position: absolute;
-  top: 10%;
-  left: 35%;
-  font-weight: bold;
-  visibility: hidden;
-  opacity: 1;
-  /* ${MainDiv}:hover & {
-    top: 40%;
-    letter-spacing: 5px;
-    transition: all 600ms ease-in-out;
-    visibility: visible;
-  } */
-`;
+// const StyledTypography = styled(Typography)`
+//   position: absolute;
+//   top: 10%;
+//   left: 35%;
+//   font-weight: bold;
+//   visibility: hidden;
+//   opacity: 1;
 
+//   /* ${MainDiv}:hover & {
+//     top: 40%;
+//     letter-spacing: 5px;
+//     transition: all 600ms ease-in-out;
+//     visibility: visible;
+//   } */
+// `;
 
-const ProfileImage = ({image}) => {
+const ProfileImage = ({ image }) => {
   return (
     <MainDiv md={{ borderRadius: 0, width: "10px" }}>
-      <ImageProfile
-        alt="profile image"
-        src={image}
-      />
-      <StyledTypography variant="h3">Chanel</StyledTypography>
+      <ImageProfile alt="profile image" src={image} />
     </MainDiv>
   );
 };

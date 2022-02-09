@@ -16,7 +16,6 @@ import { useUserTracks } from "../../hooks/useTracks";
 const StyledProfilePage = styled.div`
   overflow: hidden;
   @media only screen and (max-width: 1000px) {
-    padding-right: 2rem;
   }
 `;
 

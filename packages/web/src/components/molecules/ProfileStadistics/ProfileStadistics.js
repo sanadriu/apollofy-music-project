@@ -5,20 +5,20 @@ import ProfileOneStadistics from "../../atoms/ProfileOneStadistics/ProfileOneSta
 
 const StadisticsDiv = styled.div`
   margin-bottom: 1rem;
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 `;
 
-const ProfileStadistics = ({tracks,followers,albums}) => {
+const ProfileStadistics = ({ tracks, followers, albums }) => {
   return (
     <StadisticsDiv>
-      <ProfileOneStadistics count={tracks} text='Songs'/>
-      <ProfileOneStadistics count={followers} text='Followers'/>
-      <ProfileOneStadistics  count={albums} text='Albums'/>
+      <ProfileOneStadistics count={tracks} text="Songs" />
+      <ProfileOneStadistics count={followers} text="Followers" />
+      <ProfileOneStadistics count={albums} text="Albums" />
     </StadisticsDiv>
   );
 };
-
 
 ProfileStadistics.propTypes = {
   tracks: PropTypes.number,

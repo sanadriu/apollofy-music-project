@@ -24,14 +24,14 @@ const MainLayout = styled.main`
   }
 
   @media only screen and (max-width: 600px) {
-    padding: 1rem;
+    padding: 1rem 0;
   }
 `;
 
 const PageContent = styled.div`
   width: 60%;
   @media only screen and (max-width: 1000px) {
-    width:95%
+    width: 100%;
   }
 `;
 
