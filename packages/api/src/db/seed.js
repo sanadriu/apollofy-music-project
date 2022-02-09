@@ -1,5 +1,5 @@
 const { logger } = require("../services");
-const { deleteCollections, seedCollections } = require("./collections.old");
+const { deleteCollections, seedCollections } = require("./collections");
 
 async function seed() {
   try {

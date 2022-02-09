@@ -1,5 +1,5 @@
-const { model } = require("mongoose");
 const models = require("../models");
+const { getRandomItems } = require("../utils");
 const {
   createSampleUser,
   createSampleGenre,

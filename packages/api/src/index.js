@@ -10,7 +10,7 @@ async function init() {
   console.log(`Environment mode: ${mode}`);
 
   await connect();
-  // await seed();
+  await seed();
 
   app.listen(config.app.port, () => {
     console.log(`Server listening on ${config.app.port}`);
