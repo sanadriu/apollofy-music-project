@@ -9,6 +9,9 @@ import "slick-carousel/slick/slick-theme.css";
 const Layout = styled.div`
   max-width: 45rem;
   margin: auto;
+  padding: 2rem;
+  border-radius: 5rem;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
 `;
 
 export default function PlaylistCarousel() {

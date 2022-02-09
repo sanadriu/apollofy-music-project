@@ -36,22 +36,25 @@ const HoverIcon = styled(PlayCircleIcon)`
 `;
 
 const Card = styled.div`
-    padding: 1rem;
-    border-radius: 1.3rem;
-    height: 15rem;
-    max-width: 12rem;
-    background-size: cover;
-    transition: 0.2s;
-  `;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 1.3rem;
+  height: 13rem;
+  max-width: 12rem;
+  background-size: cover;
+  transition: 1s;
+  box-shadow: -10px 7px 6px 4px ${({ theme }) => theme.colors.background.secondary};
+  background: linear-gradient(
+    ${({ theme }) => theme.colors.background.gradient},
+    ${(props) => props.playlist.color}
+  );
+`;
 
 export default function PlaylistHomeCard(props) {
   const { playlist } = props;
 
   return (
-    <Card
-      style={{
-        backgroundColor: `${playlist.color}`
-      }}>
+    <Card playlist={playlist}>
       <HomeSmallText>{playlist.num_tracks} Tracks</HomeSmallText>
       <CardLayout>
         <CardLink to={`/playlists/${playlist.id}`}>

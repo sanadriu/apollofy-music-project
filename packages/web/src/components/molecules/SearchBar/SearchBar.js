@@ -18,9 +18,10 @@ const SearchInput = styled.input`
   border: none;
   padding-left: 1rem;
   outline: none;
+  border-radius: 10rem;
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.secondary};
   }
 `;
 
@@ -37,7 +38,7 @@ const Layout = styled.form`
 
 const SearchIconStyled = styled(SearchIcon)`
   color: ${({ theme }) => theme.colors.text};
-  border-radius: 50%;
+  border-radius: 100%;
   &:hover {
     background-color: inherit;
   }
