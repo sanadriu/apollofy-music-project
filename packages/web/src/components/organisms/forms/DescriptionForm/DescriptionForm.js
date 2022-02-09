@@ -30,9 +30,9 @@ export default function DescriptionForm() {
 
   function handleDescription() {
     if (value.length <= 250) {
-      dispatch(signUpRequest());
+
       const updatedCurrentUser = {
-        username: currentUser.name,
+        username: currentUser.username,
         email: currentUser.email,
         thumbnails: {
           url_default: currentUser.pictureLink,
@@ -41,19 +41,14 @@ export default function DescriptionForm() {
         description: value,
       };
 
-      dispatch(setCurrentUser(updatedCurrentUser));
+      dispatch(
+        signUpWithEmailRequest(
+          currentUser.email,
+          currentUser.password,
+          updatedCurrentUser,
+        ),
+      );
 
-      try {
-        dispatch(
-          signUpWithEmailRequest(
-            updatedCurrentUser.email,
-            currentUser.password,
-            updatedCurrentUser,
-          ),
-        );
-      } catch (err) {
-        alert(err.message);
-      }
     } else {
       toast.error("Your description is too long", {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -69,7 +64,7 @@ export default function DescriptionForm() {
       </SmallText>
       <DescriptionArea
         placeholder="Type a few lines about you..."
-        defaultValue={currentUser.description || ""}
+        defaultValue={currentUser?.description || ""}
         maxlength="250"
         onChange={(e) => setValue(e.target.value)}
       />

@@ -51,13 +51,21 @@ export function updateUser(authToken, update) {
   });
 }
 
-export function updateNewUser(authToken, updatedUser) {
-  return http.patch(`${baseUrl}/users/me`, updatedUser, {
+export function setUser(authToken, user) {
+  return http.post(`${baseUrl}/users/me`, user, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
   });
 }
+
+// export function updateNewUser(authToken, updatedUser) {
+//   return http.patch(`${baseUrl}/users/me`, updatedUser, {
+//     headers: {
+//       Authorization: `Bearer ${authToken}`,
+//     },
+//   });
+// }
 
 const usersApi = {
   getCurrentUser,
@@ -65,7 +73,8 @@ const usersApi = {
   setCurrentUser,
   getUsers,
   updateUser,
-  updateNewUser,
+  // updateNewUser,
+  setUser,
   deleteUser,
 };
 
