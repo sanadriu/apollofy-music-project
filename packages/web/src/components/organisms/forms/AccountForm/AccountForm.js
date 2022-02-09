@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,6 +11,7 @@ import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
 import { RegisterInput } from "../../../atoms/RegisterInput/RegisterInput";
 import Button from "../../../atoms/buttons/Button";
+import { Input } from "@mui/material";
 
 export default function AccountForm() {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ export default function AccountForm() {
         name: currentUser.name || "",
         email: currentUser.email || "",
         password: currentUser.password || "",
-        confirm_password: currentUser.confirm_password || "",
+        passwordConfirmation: currentUser.passwordConfirmation || "",
       }}
       validationSchema={AccountSchema}
       onSubmit={(values, { setSubmitting }) => {
@@ -53,9 +53,9 @@ export default function AccountForm() {
               placeholder="Confirm password"
             />
             <ErrorMessage className="errorMessage" name="passwordConfirmation" component="div" />
-            <Button btnColor="#B04AFF" type="submit" disabled={isSubmitting}>
+            <Input btnColor="#B04AFF" type="submit" disabled={isSubmitting}>
               Submit
-            </Button>
+            </Input>
           </FlexColumn>
         </Form>
       )}

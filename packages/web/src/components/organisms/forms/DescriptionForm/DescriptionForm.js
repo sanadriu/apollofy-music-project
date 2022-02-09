@@ -69,7 +69,7 @@ export default function DescriptionForm() {
       </SmallText>
       <DescriptionArea
         placeholder="Type a few lines about you..."
-        defaultValue={currentUser.description || ""}
+        defaultValue={currentUser?.description || ""}
         maxlength="250"
         onChange={(e) => setValue(e.target.value)}
       />
