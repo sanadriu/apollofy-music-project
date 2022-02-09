@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import api from "../api";
 import * as authService from "../services/auth";
 import usersApi from "../api/api-users";
+import { resetModal } from "./modal";
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
@@ -199,7 +200,7 @@ export function signUpWithFacebook() {
   };
 }
 
-export function signUpWithEmailRequest(email, password, details) {
+export function signUpWithEmailRequest(email, password, updatedUser) {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
 
@@ -208,10 +209,12 @@ export function signUpWithEmailRequest(email, password, details) {
 
       const token = await authService.getCurrentUserToken();
 
+      // const user = await api.signUp({ Authorization: `Bearer ${token}` });
       await api.signUp({ Authorization: `Bearer ${token}` });
-      await usersApi.updateNewUser(token, details);
-      const user = await usersApi.getCurrentUser(token);
-      dispatch(currentUserAdded(user.data.data));
+      await usersApi.updateUser(token, updatedUser);
+
+      // dispatch(currentUserAdded(user.data.data));
+      dispatch(resetModal());
 
       return dispatch(signUpSuccess());
     } catch (error) {
@@ -220,6 +223,8 @@ export function signUpWithEmailRequest(email, password, details) {
   };
 }
 
+//current user ahora es {}, hay que mirarlo
+
 export function signInWithEmailRequest(email, password) {
   return async function signInThunk(dispatch) {
     dispatch(signInRequest());
@@ -227,11 +232,13 @@ export function signInWithEmailRequest(email, password) {
     try {
       await authService.signInWithEmailAndPassword(email, password);
 
-      const token = await authService.getCurrentUserToken();
+      // const token = await authService.getCurrentUserToken();
 
-      await api.signUp({ Authorization: `Bearer ${token}` });
-      const currentUser = await usersApi.getCurrentUser(token);
-      dispatch(currentUserAdded(currentUser.data.data));
+      // await api.signIn({ Authorization: `Bearer ${token}` });
+
+      // const currentUser = await usersApi.getCurrentUser(token);
+
+      // dispatch(currentUserAdded(currentUser.data.data));
 
       return dispatch(signInSuccess());
     } catch (error) {
@@ -244,18 +251,13 @@ export function syncSignIn() {
   return async function syncSignInThunk(dispatch) {
     const token = await authService.getCurrentUserToken();
 
-    if (!token) {
-      return dispatch(signOutSuccess());
-    }
+    if (!token) return dispatch(signOutSuccess());
 
-    const response = await api.signUp({
-      Authorization: `Bearer ${token}`,
-    });
+    const response = await api.signIn({ Authorization: `Bearer ${token}` });
 
-    if (response.errorMessage) {
-      return dispatch(signUpError(response.errorMessage));
-    }
+    if (response.errorMessage) return dispatch(signInError(response.errorMessage));
 
+    dispatch(currentUserAdded(response.data.data));
     return dispatch(signInSuccess(response.data));
   };
 }
@@ -266,13 +268,9 @@ export function signOut() {
 
     const token = await authService.getCurrentUserToken();
 
-    if (!token) {
-      return dispatch(signOutSuccess());
-    }
+    if (!token) return dispatch(signOutSuccess());
 
-    const response = await api.signOut({
-      Authorization: `Bearer ${token}`,
-    });
+    const response = await api.signOut({ Authorization: `Bearer ${token}` });
 
     if (response.errorMessage) {
       return dispatch(signOutError(response.errorMessage));
@@ -340,6 +338,12 @@ export function setCurrentUser(user) {
     }
 
     return dispatch(currentUserAdded());
+  };
+}
+
+export function updateCurrentUser(updatedUser) {
+  return async function updateCurrentUserThunk(dispatch) {    
+    dispatch(currentUserAdded(updatedUser));
   };
 }
 
