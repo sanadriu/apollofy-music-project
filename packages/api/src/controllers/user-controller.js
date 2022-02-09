@@ -16,7 +16,7 @@ async function signUp(req, res, next) {
       });
     } else {
       const newUser = await User.create({
-        _id: uid,
+        id: uid,
         email: email,
         username: name,
       });

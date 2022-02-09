@@ -1,8 +1,6 @@
 function deepClone(obj) {
   if (obj instanceof Array) {
-    return obj.map((value) =>
-      value instanceof Object ? deepClone(value) : value,
-    );
+    return obj.map((value) => (value instanceof Object ? deepClone(value) : value));
   } else {
     const newObj = {};
 
@@ -15,14 +13,13 @@ function deepClone(obj) {
 }
 
 function shuffle(list = []) {
-  return list.sort(() => 0.5 - Math.random);
+  const clonedlist = [...list];
+
+  return clonedlist.sort(() => 0.5 - Math.random);
 }
 
 function getRandomSequence(length, chars = "AaBbCcDdEeFf0123456789") {
-  return Array.from(
-    { length },
-    () => chars[Math.floor(Math.random() * chars.length)],
-  ).join("");
+  return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
 }
 
 function getRandomItems(list = [], max = 1) {
@@ -31,7 +28,7 @@ function getRandomItems(list = [], max = 1) {
   if (max > clonedlist.length) return clonedlist;
   if (clonedlist.length === 0) return clonedlist;
 
-  const shuffledList = shuffle(list);
+  const shuffledList = shuffle(clonedlist);
   const length = Math.floor(Math.random() * max);
 
   return Array.from({ length }, (v, k) => shuffledList.pop());
