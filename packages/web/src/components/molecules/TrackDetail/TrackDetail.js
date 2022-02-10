@@ -3,6 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 
 import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
 import { DetailText } from "../../atoms/DetailText/DetailText";

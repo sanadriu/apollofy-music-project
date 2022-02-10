@@ -53,8 +53,8 @@ export default function ControlBar() {
       <Link to="/">
         {pathname === "/" ? <SelectedNavSVG src={HomeSVG} /> : <NavSVG src={HomeSVG} />}
       </Link>
-      <Link to="/profile">
-        {pathname === "/profile" ? <SelectedNavSVG src={ScoreSVG} /> : <NavSVG src={ScoreSVG} />}
+      <Link to="/tracks">
+        {pathname === "/tracks" ? <SelectedNavSVG src={ScoreSVG} /> : <NavSVG src={ScoreSVG} />}
       </Link>
       <Link to="/search">
         {pathname === "/search" ? <SelectedNavSVG src={SearchSVG} /> : <NavSVG src={SearchSVG} />}

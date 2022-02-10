@@ -17,12 +17,12 @@ import {
 import { Bar } from "react-chartjs-2";
 
 import withLayout from "../../components/hoc/withLayout";
-import { FlexColumn } from "../../components/atoms/FlexColumn/FlexColumn";
 
 import { useAlbums } from "../../hooks/useAlbums";
 import { useUsers } from "../../hooks/useUsers";
 import { usePlaylists } from "../../hooks/usePlaylists";
 import { useTracks } from "../../hooks/useTracks";
+import { FlexColumn } from "../../components/atoms/FlexColumn/FlexColumn";
 
 const NavBar = styled.nav`
   margin-top: 2rem;
@@ -31,6 +31,18 @@ const NavBar = styled.nav`
   justify-content: space-evenly;
   background-color: lightgrey;
   border-radius: 9999px;
+  @media only screen and (max-width: 1000px) {
+    margin-top: 5rem;
+  }
+`;
+
+const NameSpan = styled.span`
+  @media only screen and (max-width: 1000px) {
+    font-size: smaller;
+  }
+  @media only screen and (max-width: 550px) {
+    display: none;
+  }
 `;
 
 const ChartBody = styled.div`
@@ -40,6 +52,12 @@ const ChartBody = styled.div`
   border-radius: 50px;
   background-color: lightgray;
   padding: 1rem;
+`;
+
+const FlexCol = styled(FlexColumn)`
+  @media only screen and (max-width: 1000px) {
+    display: flex;
+  }
 `;
 
 const Statistics = () => {
@@ -60,12 +78,16 @@ const Statistics = () => {
   const { data: tracks } = useTracks(1, undefined, undefined, "num_plays");
   const tracksList = tracks?.data?.data;
 
+  function limit(string = "", max = 0) {
+    return string.substring(0, max);
+  }
+
   const createArray = (array) => {
     setArray([]);
     setLikes([]);
     if (array) {
       array.forEach((title) => {
-        setArray((list) => [...list, title?.title || title.name]);
+        setArray((list) => [...list, limit(title?.title, 10) || limit(title?.name, 10)]);
         setLikes((list) => [...list, title?.num_plays || title.num_followers || title?.num_likes]);
       });
     }
@@ -113,7 +135,7 @@ const Statistics = () => {
   return (
     <>
       <NavBar>
-        <FlexColumn>
+        <FlexCol>
           <Button
             type="button"
             onClick={() => {
@@ -122,10 +144,10 @@ const Statistics = () => {
             }}
           >
             <GroupsIcon fontSize="large" />
-            <span>Users</span>
+            <NameSpan>Users</NameSpan>
           </Button>
-        </FlexColumn>
-        <FlexColumn>
+        </FlexCol>
+        <FlexCol>
           <Button
             type="button"
             onClick={() => {
@@ -134,10 +156,10 @@ const Statistics = () => {
             }}
           >
             <MusicNoteIcon fontSize="large" />
-            <span>Songs</span>
+            <NameSpan>Songs</NameSpan>
           </Button>
-        </FlexColumn>
-        <FlexColumn>
+        </FlexCol>
+        <FlexCol>
           <Button
             type="button"
             onClick={() => {
@@ -146,10 +168,10 @@ const Statistics = () => {
             }}
           >
             <AlbumIcon fontSize="large" />
-            <span>Albums</span>
+            <NameSpan>Albums</NameSpan>
           </Button>
-        </FlexColumn>
-        <FlexColumn>
+        </FlexCol>
+        <FlexCol>
           <Button
             type="button"
             onClick={() => {
@@ -158,9 +180,9 @@ const Statistics = () => {
             }}
           >
             <LibraryMusicIcon fontSize="large" />
-            <span>Playlists</span>
+            <NameSpan>Playlists</NameSpan>
           </Button>
-        </FlexColumn>
+        </FlexCol>
       </NavBar>
       {statsArray && (
         <ChartBody>

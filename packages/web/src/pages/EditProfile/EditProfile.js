@@ -18,7 +18,6 @@ const MainDiv = styled.div`
   margin: auto;
   margin-top: 2rem;
 `;
-
 const InputDiv = styled.div`
   padding-right: 5px;
   padding-left: 5px;

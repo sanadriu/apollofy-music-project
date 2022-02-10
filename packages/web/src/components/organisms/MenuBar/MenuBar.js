@@ -63,6 +63,7 @@ const MenuLogo = styled(KeyboardArrowDownIcon)`
 
 const BackArrow = styled(ArrowBackIosIcon)`
   display: none;
+  cursor: pointer;
   @media only screen and (max-width: 1000px) {
     margin-top: 1rem;
     display: block;

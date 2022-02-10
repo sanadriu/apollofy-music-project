@@ -1,4 +1,5 @@
 import React from "react";
+import withLayout from "../../components/hoc/withLayout";
 import Tracks from "../../components/organisms/Tracks";
 
 function TracksPage() {
@@ -11,4 +12,4 @@ function TracksPage() {
   );
 }
 
-export default TracksPage;
+export default withLayout(TracksPage);

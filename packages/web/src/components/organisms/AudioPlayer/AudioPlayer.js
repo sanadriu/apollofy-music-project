@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { AudioPlayerControlSprite, AudioPlayer } from "react-audio-player-pro";
 import reactAudioPlayerProStyle from "react-audio-player-pro/dist/style.css";
@@ -11,7 +11,6 @@ const AudioWrapper = styled(AudioPlayer)`
   bottom: 0;
   width: 100vw;
   border: 2px solid ${({ theme }) => theme.colors.border};
-  max-height: 6rem;
   background-color: ${({ theme }) => theme.colors.background.secondary};
   color: ${({ theme }) => theme.colors.text};
 
@@ -31,55 +30,59 @@ const AudioWrapper = styled(AudioPlayer)`
   }
 `;
 
-const audioTrackList = [
-  {
-    // string - path to audio file, required
-    src: "/path/to/audio/file",
-
-    // React$Node - custom content instead of title, optional, deafult: <title> or <src>
-    // content: <CustomContent />,
-
-    // MediaMetadata - media meta data, see `mediaMetadata` above
-    // https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/MediaMetadata
-    // optional
-    mediaMetadata: {
-      title: "Lesser Faith",
-      artist: "J. Syreus Bach",
-      album: "Ability to Break ~ Energetic Tracks",
-      artwork: [
-        { src: "/path/to/image/64px/64px", sizes: "64x64", type: "image/png" },
-        { src: "/path/to/image/128px/128px", sizes: "128x128", type: "image/png" },
-      ],
-    },
-  },
-  // other tracks here...
-];
-
 export function ExampleAudioPlayer() {
-  const tracks = useSelector(tracksSelector);
+  const { list } = useSelector(tracksSelector);
 
-  // console.log(tracks)
+  const createList = () => {
+    return list.map((track) => ({
+      src: track.url,
+      mediaMetadata: {
+        title: track?.title,
+        artist: track?.user?.username,
+        album: track?.album ? track.album : "",
+        artwork: [
+          { src: track?.thumbnails?.url_default, sizes: "64x64", type: "image/png" },
+          { src: track?.thumbnails?.url_default, sizes: "128x128", type: "image/png" },
+        ],
+      },
+    }));
+  };
+
+  // const audioTrackList = createList();
+
+  // const audioTrackList = [
+  //   {
+  //     // string - path to audio file, required
+  //     src: "/path/to/audio/file",
+  //     mediaMetadata: {
+  //       title: "Lesser Faith",
+  //       artist: "J. Syreus Bach",
+  //       album: "Ability to Break ~ Energetic Tracks",
+  //       artwork: [
+  //         { src: "/path/to/image/64px/64px", sizes: "64x64", type: "image/png" },
+  //         { src: "/path/to/image/128px/128px", sizes: "128x128", type: "image/png" },
+  //       ],
+  //     },
+  //   },
+  //   // other tracks here...
+  // ];
 
   return (
     <>
       <AudioPlayerControlSprite />
       <AudioWrapper
         // Array<TrackType> - list of track, see `audioTrackList` above, required
-        trackList={audioTrackList}
-
+        trackList={createList()}
         // string - wrapper's class name, optional, deafult: ''
         className="reproduction-bar"
-
-        // callback function - called on did mount, optional, default: noop
-        // onDidMount={console.log("autoplay not working")}
-
+        // callback function - called on did mount, optional, default: noo
         // default player state, optional
         defaultState={{
           // boolean - is player muted, optional, default: false
           isMuted: false,
 
           // number - active song index, optional, default: 0
-          activeIndex: 0,
+          activeIndex: 1,
 
           // boolean - is shuffle on, optional, default: false
           isShuffleOn: false,

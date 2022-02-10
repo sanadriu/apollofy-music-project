@@ -20,7 +20,7 @@ const Home = () => {
 
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <PlaylistCarousel />
       <TracksLayout>
         <PopularTracks />

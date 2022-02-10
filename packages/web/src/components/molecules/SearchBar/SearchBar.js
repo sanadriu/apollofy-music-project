@@ -26,6 +26,7 @@ const SearchInput = styled.input`
 `;
 
 const Layout = styled.form`
+  width: 100%;
   height: 3rem;
   padding: 0.5rem;
   padding-left: 1rem;

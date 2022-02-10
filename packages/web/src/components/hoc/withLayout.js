@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import { FlexColumn } from "../atoms/FlexColumn/FlexColumn";
 import ControlBar from "../molecules/ControlBar/ControlBar";
+import SearchBar from "../molecules/SearchBar/SearchBar";
 import { ExampleAudioPlayer } from "../organisms/AudioPlayer/AudioPlayer";
 import Footer from "../organisms/Footer/Footer";
 import FriendsColumn from "../organisms/FriendsColumn/FriendsColumn";
@@ -49,6 +50,7 @@ function withLayout(WrappedComponent) {
             <MainLayout>
               <ControlBar />
               <PageContent>
+                <SearchBar />
                 <WrappedComponent {...props} />
               </PageContent>
               <RightFlex>
