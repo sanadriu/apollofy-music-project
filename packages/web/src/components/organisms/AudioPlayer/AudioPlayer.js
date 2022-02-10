@@ -15,6 +15,20 @@ const AudioWrapper = styled(AudioPlayer)`
   background-color: ${({ theme }) => theme.colors.background.secondary};
   color: ${({ theme }) => theme.colors.text};
 
+  div {
+    background-color: ${({ theme }) => theme.colors.background.secondary};
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  span {
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  input {
+    color: ${({ theme }) => theme.colors.text};
+    background-color: ${({ theme }) => theme.colors.text};
+  }
+
   svg {
     width: 1.5rem;
     height: 1.5rem;
@@ -66,10 +80,8 @@ export function ExampleAudioPlayer() {
       <AudioWrapper
         // Array<TrackType> - list of track, see `audioTrackList` above, required
         trackList={audioTrackList}
-
         // string - wrapper's class name, optional, deafult: ''
         className="reproduction-bar"
-
         // callback function - called on did mount, optional, default: noop
         // onDidMount={console.log("autoplay not working")}
 

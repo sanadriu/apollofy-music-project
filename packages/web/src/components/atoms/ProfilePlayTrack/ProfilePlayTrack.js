@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 
 // import { addToTrackList } from "../../../redux/tracks";
 import { addTrack } from "../../../redux/tracks";
+import Button from "../buttons/Button";
 
 const StyledPlayTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
@@ -24,16 +25,16 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
 
   const handlePlay = () => {
     dispatch(addTrack(track));
-  }
+  };
 
   return (
     <StyledPlayTrack>
       <FavoriteIcon sx={{ color: "purple" }} />
-      <button type="button" onClick={() => handlePlay(track)}>
+      <Button type="outline" onClick={() => handlePlay(track)}>
         <PlayCircleFilledSharpIcon
-          sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: 'pointer' } }}
+          sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: "pointer" } }}
         />
-      </button>
+      </Button>
     </StyledPlayTrack>
   );
 };
@@ -85,6 +86,5 @@ ProfilePlayTrack.defaultProps = {
     updated_at: null,
   },
 };
-
 
 export default ProfilePlayTrack;

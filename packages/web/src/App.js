@@ -20,6 +20,7 @@ import Albums from "./pages/Albums";
 import TracksByGenre from "./pages/TracksByGenre";
 import Users from "./pages/Users";
 import ProfilePage from "./pages/ProfilePage";
+import GenresPage from "./pages/Genres";
 import Statistics from "./pages/Statistics";
 import Switch from "./components/atoms/Switch";
 
@@ -76,6 +77,7 @@ function App() {
             <Route path="albums" element={<Albums />} />
             <Route path="playlists/:playlistId" element={<Playlists />} />
             <Route path="profile/:profileId" element={<ProfilePage />} />
+            <Route path="genres/:genre" element={<GenresPage />} />
             <Route path="playlists" element={<Playlists />} />
             <Route path="tracks" element={<Tracks />} />
             <Route path="genres" element={<Genres />} />

@@ -18,7 +18,7 @@ const UserLayout = styled.div`
   width: 100%;
 
   &:hover {
-    background-color: darkgray;
+    background-color: ${({ theme }) => theme?.colors?.background?.secondary_hover};
   }
 `;
 
@@ -47,7 +47,7 @@ const UserLink = styled(Link)`
 `;
 
 const StyledNumUser = styled.div`
-  font-family: ${({ theme }) => theme.fonts.primary};
+  font-family: ${({ theme }) => theme?.fonts?.primary};
   margin-left: 1rem;
   display: flex;
   justify-content: center;
@@ -63,13 +63,21 @@ const StyledNumber = styled.div`
 
 const FollowButton = styled.button`
   border-radius: 1.3rem;
-  background-color: purple;
+  background-color: ${({ theme }) => theme?.colors?.label};
   border: none;
   color: white;
   cursor: pointer;
+  align-items: center;
+  height: 2.1rem;
+  width: 2.1rem;
+  padding: 0.3rem;
+
+  svg {
+    width: 1.2rem;
+  }
 
   &:hover {
-    background-color: #9e607e;
+    background-color: purple;
   }
 `;
 
@@ -79,9 +87,10 @@ const UserDetail = ({ user }) => {
   const handleFollow = (userId) => {
     dispatch(followUser(userId));
   };
+  console.log(user);
   return (
     <UserLayout>
-      {/* <UserPicture alt={`${user.username}`} src={user?.thumbnails?.url_default} /> */}
+      <UserPicture alt={`${user?.username}`} src={user?.thumbnails?.url_default} />
       <UserFlex>
         <UserLink to={`/user-profile/${user.id}`}>
           <HomeSmallText>{`${user.firstname} ${user.lastname}`}</HomeSmallText>
@@ -146,7 +155,7 @@ UserDetail.defaultProps = {
     num_liked_tracks: null,
     followed_playlists: {},
     followed_users: {},
-    followers: {},
+    followed_by: {},
     num_followed_playlists: null,
     num_followed_users: null,
     num_followers: null,

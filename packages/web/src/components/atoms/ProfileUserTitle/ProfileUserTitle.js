@@ -12,14 +12,21 @@ const StyledTitleUser = styled.div`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-const ProfileUserTitle = ({ title,id }) => {
+const TitleText = styled(Typography)`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 40rem;
+`;
+
+const ProfileUserTitle = ({ title, id }) => {
   return (
     <StyledTitleUser>
       <div>
-        <Typography variant="h3">{title}</Typography>
+        <TitleText variant="h3">{title}</TitleText>
       </div>
       <div>
-        <ButtonFollow id={id}/>
+        <ButtonFollow id={id} />
       </div>
     </StyledTitleUser>
   );
@@ -27,11 +34,11 @@ const ProfileUserTitle = ({ title,id }) => {
 
 ProfileUserTitle.propTypes = {
   title: PropTypes.string,
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 ProfileUserTitle.defaultProps = {
   title: "",
-  id: ""
+  id: "",
 };
 export default ProfileUserTitle;

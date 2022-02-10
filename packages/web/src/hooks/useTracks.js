@@ -1,12 +1,26 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useState } from "react";
+import { useMutation, useQuery, useInfiniteQuery, useQueryClient } from "react-query";
 
 import { queryKeys } from "../queries/constants";
 import tracksApi from "../api/api-tracks";
 import * as authService from "../services/auth";
 
-export function useTracks(currentPage = 1, currentGenre = undefined, currentLimit = 10, sort = undefined, order = 'desc', userId = undefined) {
+export function useTracks(
+  currentPage = 1,
+  currentGenre = undefined,
+  currentLimit = 10,
+  sort = undefined,
+  order = "desc",
+  userId = undefined,
+) {
   const fallback = [];
-  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
+  const {
+    data = fallback,
+    isError,
+    error,
+    isLoading,
+    isSuccess,
+  } = useQuery(
     [queryKeys.tracks, currentPage, currentGenre],
     () => tracksApi.getTracks(currentPage, currentGenre, currentLimit, sort, order, userId),
     {
@@ -21,17 +35,60 @@ export function useTracks(currentPage = 1, currentGenre = undefined, currentLimi
   return { data, isError, error, isLoading, isSuccess };
 }
 
-export async function usePrefetchTracks(nextPage, currentGenre = undefined, currentLimit = 10, sort = undefined, order = 'desc') {
-  const queryClient = useQueryClient();
-  await queryClient.prefetchQuery(
-    [queryKeys.tracks, nextPage, currentGenre],
-    () => tracksApi.getTracks(nextPage, currentGenre, currentLimit, sort, order)
-  )
+export function useInfiniteTracks(
+  currentGenre = undefined,
+  currentLimit = 10,
+  sort = undefined,
+  order = "desc",
+  userId = undefined,
+) {
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetching, isError, error, isSuccess } =
+    useInfiniteQuery(
+      [queryKeys.tracks, currentPage, currentGenre],
+      ({ pageParam = 1 }) => {
+        // tracksApi.getTracks(pageParam);
+        // setCurrentPage(currentPage + 1);
+      },
+      {
+        // getNextPageParam: (lastPage) => currentPage <= lastPage.data.pages || undefined,
+      },
+    );
+
+  return { data, isError, error, isLoading, isSuccess, fetchNextPage, hasNextPage };
 }
 
-export function useUserTracks(currentPage = 1, currentGenre = undefined, currentLimit = 10, sort = undefined, order = 'desc', userId = undefined) {
+export async function usePrefetchTracks(
+  nextPage,
+  currentGenre = undefined,
+  currentLimit = 10,
+  sort = undefined,
+  order = "desc",
+) {
+  const queryClient = useQueryClient();
+  await queryClient.prefetchQuery([queryKeys.tracks, nextPage, currentGenre], () =>
+    tracksApi.getTracks(nextPage, currentGenre, currentLimit, sort, order),
+  );
+}
+
+export function useUserTracks(
+  currentPage = 1,
+  currentGenre = undefined,
+  currentLimit = 10,
+  sort = undefined,
+  order = "desc",
+  userId = undefined,
+) {
   const fallback = [];
-  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
+  const {
+    data = fallback,
+    isError,
+    error,
+    isLoading,
+    isSuccess,
+  } = useQuery(
     [queryKeys.tracks, currentPage, userId],
     () => tracksApi.getTracks(currentPage, currentGenre, currentLimit, sort, order, userId),
     {

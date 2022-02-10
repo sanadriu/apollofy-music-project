@@ -14,10 +14,14 @@ const getTracks = async (page, genre, limit, sort, order, userId) => {
       genre: genre,
       sort: sort,
       order: order,
-      user: userId
+      user: userId,
     },
   });
-}
+};
+
+const getInfiniteTracks = async (url) => {
+  return http.get(url);
+};
 
 const getMyTracks = async (authToken, params = {}) => {
   const { page = 1, sort = "created_at", order = "asc", limit = 10, extend = false } = params;
@@ -66,6 +70,7 @@ const tracksApi = {
   getMyTracks,
   setTrack,
   updateTrack,
+  getInfiniteTracks,
   deleteTrack,
 };
 

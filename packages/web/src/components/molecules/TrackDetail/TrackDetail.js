@@ -66,18 +66,18 @@ const StyledNumber = styled.div`
 const TrackDetail = ({ track, handlePlayButton }) => {
   return (
     <TrackLayout>
-      <TrackPicture alt="Track's Thumbnail" src={track.thumbnails.url_default} />
+      <TrackPicture alt="Track's Thumbnail" src={track?.thumbnails?.url_default} />
       <TrackFlex>
-        <TrackLink to={`/albums/${track.genres}`}>
-          <HomeSmallText>{track.title}</HomeSmallText>
+        <TrackLink to={`/albums/${track?.genres}`}>
+          <HomeSmallText>{track?.title}</HomeSmallText>
         </TrackLink>
-        <TrackLink to={`/users/${track.user.id}`}>
-          <DetailText>{track.user.username}</DetailText>
+        <TrackLink to={`/users/${track?.user?.id}`}>
+          <DetailText>{track?.user?.username}</DetailText>
         </TrackLink>
       </TrackFlex>
       <StyledNumTrack>
         <HeadphonesIcon sx={{ color: "purple" }} />
-        <StyledNumber>{track.num_plays}</StyledNumber>
+        <StyledNumber>{track?.num_plays}</StyledNumber>
       </StyledNumTrack>
       <ProfilePlayTrack track={track} handlePlayButton={handlePlayButton} />
     </TrackLayout>

@@ -72,10 +72,9 @@ export default function AddFriendsModal({ isOpen, handleModal }) {
       <ModalBox>
         <FriendList>
           <MiddleTitle className="text-2xl font-bold mb-6">Some partners in music</MiddleTitle>
-          {userList &&
-            userList.map((user) => {
-              return <UserDetail key={user?.id} user={user} />;
-            })}
+          {userList?.map((user) => {
+            return <UserDetail key={user?.id} user={user} />;
+          })}
         </FriendList>
       </ModalBox>
     </StyledModal>
