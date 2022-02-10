@@ -1,6 +1,22 @@
 import React from "react";
 import Player from "react-material-music-player"; // default export
+import styled from "styled-components";
+
+const ResponsiveDiv = styled.div`
+  width: "100vw";
+  position: "fixed";
+  bottom: 0;
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    width: "100vw";
+    position: "relative";
+    bottom: 2rem;
+  }
+`;
 
 export const ExampleAudioPlayer = () => {
-  return <Player sx={{ width: "100vw", position: "fixed", bottom: 0 }} disableDrawer />;
+  return (
+    <ResponsiveDiv>
+      <Player />
+    </ResponsiveDiv>
+  );
 };

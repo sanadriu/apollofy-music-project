@@ -20,7 +20,7 @@ const MenuLayout = styled(RightSideBar)`
   height: 3rem;
   background-color: ${({ theme }) => theme.colors.background.secondary};
   z-index: 1;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     max-width: 4.5rem;
     position: absolute;
     top: 1rem;
@@ -36,7 +36,7 @@ const Button = styled.button`
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: block;
 `;
 
@@ -44,7 +44,7 @@ const ProfilePicture = styled.img`
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: block;
     cursor: pointer;
   }
@@ -52,7 +52,7 @@ const ProfilePicture = styled.img`
 
 const ProfileName = styled(SmallText)`
   margin-top: 0.4rem;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: none;
   }
 `;
@@ -64,7 +64,7 @@ const MenuLogo = styled(KeyboardArrowDownIcon)`
 const BackArrow = styled(ArrowBackIosIcon)`
   display: none;
   cursor: pointer;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     margin-top: 1rem;
     display: block;
     position: absolute;

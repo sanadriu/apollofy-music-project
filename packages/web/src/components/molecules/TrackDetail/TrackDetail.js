@@ -53,7 +53,7 @@ const StyledNumTrack = styled.div`
   font-size: 0.8rem;
   width: 20%;
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     display: none;
   }
 `;

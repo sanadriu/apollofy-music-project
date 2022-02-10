@@ -11,12 +11,12 @@ const StyledNumber = styled.div`
   justify-content: center;
   align-items: center;
   width: 10%;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: none;
   }
 `;
 
-const ProfileNumTrack = ({index}) => {
+const ProfileNumTrack = ({ index }) => {
   return (
     <StyledNumber>
       <div>{index + 1}</div>
@@ -25,11 +25,11 @@ const ProfileNumTrack = ({index}) => {
 };
 
 ProfileNumTrack.propTypes = {
-  index: PropTypes.number
+  index: PropTypes.number,
 };
 
 ProfileNumTrack.defaultProps = {
-  index: 1
+  index: 1,
 };
 
 export default ProfileNumTrack;

@@ -31,7 +31,7 @@ const GenreDetail = ({ genre }) => {
       background-blend-mode: overlay;
     }
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
       height: 3.5rem;
     }
   `;

@@ -719,7 +719,7 @@ export const GlobalStyles = createGlobalStyle`
         content: "";
     }
 
-    @media only screen and (max-width: 480px) {
+    @media only screen and (max-width: ${({ theme }) => theme.media.smallMobile}) {
         html {
             font-size: 100%;
         }

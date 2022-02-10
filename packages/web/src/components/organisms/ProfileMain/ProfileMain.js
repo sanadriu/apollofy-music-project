@@ -12,7 +12,8 @@ const ProfileContent = styled.div`
   border-radius: 1.3rem;
   background: #eeeee4;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  @media only screen and (max-width: 1000px) {
+  (max-width: ${({ theme }) => theme.media.tablet})
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,7 +27,7 @@ const AvatarDiv = styled.div`
   align-items: center;
   min-width: 215px;
   width: 100%;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: flex;
     align-items: center;
     justify-content: center;

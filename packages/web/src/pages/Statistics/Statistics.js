@@ -31,16 +31,16 @@ const NavBar = styled.nav`
   justify-content: space-evenly;
   background-color: lightgrey;
   border-radius: 9999px;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     margin-top: 5rem;
   }
 `;
 
 const NameSpan = styled.span`
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     font-size: smaller;
   }
-  @media only screen and (max-width: 550px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.smallMobile}) {
     display: none;
   }
 `;
@@ -55,7 +55,7 @@ const ChartBody = styled.div`
 `;
 
 const FlexCol = styled(FlexColumn)`
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: flex;
   }
 `;

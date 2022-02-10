@@ -12,20 +12,20 @@ const ColorButton = styled(Button)`
   &:hover {
     background: purple;
   }
-  @media only screen and (max-width: 500px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     width: 20px;
   }
 `;
 
 const StyledSpan = styled.span`
-  @media only screen and (max-width: 500px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     margin: 0 !important;
     display: none;
   }
 `;
 
 const StyledIcon = styled(StarOutlineIcon)`
-  @media only screen and (max-width: 500px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     margin-left: 11px;
     border-radius: 100%;
   }
@@ -33,14 +33,13 @@ const StyledIcon = styled(StarOutlineIcon)`
 
 function followUser(id) {
   try {
-    console.log('userID:'.id);
+    console.log("userID:".id);
   } catch (error) {
     console.log(error);
   }
 }
 
 const ButtonFollow = ({ id }) => {
-
   return (
     <Stack spacing={2} direction="row" onClick={() => followUser(id)}>
       <ColorButton
@@ -55,11 +54,11 @@ const ButtonFollow = ({ id }) => {
 };
 
 ButtonFollow.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 ButtonFollow.defaultProps = {
-  id: ""
+  id: "",
 };
 
 export default ButtonFollow;

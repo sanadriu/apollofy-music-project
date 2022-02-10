@@ -12,7 +12,7 @@ const MainDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     height: 10rem;
     width: 10rem;
   }
@@ -26,7 +26,7 @@ const ImageProfile = styled.img`
   &:hover {
     opacity: 0.7;
   }
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     height: 10rem;
     width: 10rem;
   }

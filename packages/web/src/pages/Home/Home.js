@@ -13,7 +13,7 @@ const Home = () => {
     display: flex;
     gap: 1rem;
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
       flex-direction: column-reverse;
     }
   `;

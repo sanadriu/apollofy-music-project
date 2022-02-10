@@ -16,22 +16,20 @@ const MainLayout = styled.main`
   padding: 1rem 1rem 0 1rem;
   justify-content: space-between;
   margin-bottom: 6rem;
-
-  @media only screen and (max-width: 992px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     padding: 1rem 0;
     gap: 0.5rem;
     flex-direction: column;
     justify-content: center;
   }
-
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     padding: 1rem 0;
   }
 `;
 
 const PageContent = styled.div`
   width: 60%;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     width: 100%;
   }
 `;

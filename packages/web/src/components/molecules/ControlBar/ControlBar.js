@@ -17,7 +17,7 @@ const Bar = styled.nav`
   margin-top: 0.5rem;
   color: ${({ theme }) => theme.colors.text};
 
-  @media only screen and (max-width: 992px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     flex-direction: row;
     position: fixed;
     bottom: 0;

@@ -1,5 +1,5 @@
 const media = {
-  smallMobile: "476px",
+  smallMobile: "500px",
   mobile: "576px",
   phablet: "767px",
   tablet: "992px",
