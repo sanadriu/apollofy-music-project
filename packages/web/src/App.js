@@ -50,10 +50,12 @@ function App() {
     let unsubscribeFromAuth = null;
 
     unsubscribeFromAuth = onAuthStateChanged((user) => {
-      if (user && !hasMounted) {
-        dispatch(syncSignIn());
-      } else {
-        dispatch(signOut());
+      if (!hasMounted) {
+        if (user) {
+          dispatch(syncSignIn());
+        } else {
+          dispatch(signOut());
+        }
       }
     });
 

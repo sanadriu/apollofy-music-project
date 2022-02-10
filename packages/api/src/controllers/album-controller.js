@@ -44,6 +44,15 @@ async function getAlbums(req, res, next) {
         });
       }
 
+      if (count === 0) {
+        return res.status(200).send({
+          data: [],
+          success: true,
+          message: "No albums were found",
+          pages,
+        });
+      }
+
       if (page > pages) {
         return res.status(404).send({
           data: null,
@@ -65,7 +74,7 @@ async function getAlbums(req, res, next) {
     } else {
       return res.status(200).send({
         success: true,
-        message: "Albums fetched successfully",
+        message: "Request successful",
         count,
         pages,
       });
@@ -287,6 +296,15 @@ async function getUserAlbums(req, res, next) {
         });
       }
 
+      if (count === 0) {
+        return res.status(200).send({
+          data: [],
+          success: true,
+          message: "No albums were found",
+          pages,
+        });
+      }
+
       if (page > pages) {
         return res.status(404).send({
           data: null,
@@ -308,7 +326,7 @@ async function getUserAlbums(req, res, next) {
     } else {
       return res.status(200).send({
         success: true,
-        message: "Albums fetched successfully",
+        message: "Request successful",
         count,
         pages,
       });

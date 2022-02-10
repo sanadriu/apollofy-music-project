@@ -10,7 +10,7 @@ const {
 
 const userRouter = Router();
 
-userRouter.get("/me", authMiddleware, userController.getSelfUser);
+userRouter.get("/me", authMiddleware, userController.getUserProfile);
 userRouter.patch("/me", authMiddleware, userController.updateUser);
 userRouter.delete("/me", authMiddleware, userController.deleteUser);
 userRouter.get("/me/tracks", authMiddleware, trackController.getUserTracks);

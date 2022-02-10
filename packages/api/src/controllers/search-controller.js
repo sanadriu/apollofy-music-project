@@ -5,9 +5,10 @@ async function search(req, res, next) {
     const { q } = req.query;
 
     if (!q) {
-      res.status(400).send({
-        error: "Not found",
+      return res.status(404).send({
         data: null,
+        success: false,
+        message: "Not found",
       });
     }
 
@@ -22,14 +23,15 @@ async function search(req, res, next) {
     const albums = await Album.find({ title: { $regex: q, $options: "i" } }).where({
       deleted_at: { $exists: false },
     });
-    
+
     const users = await User.find({ username: { $regex: q, $options: "i" } }).where({
       deleted_at: { $exists: false },
     });
 
-    res.status(200).send({
-      success: true,
+    return res.status(200).send({
       data: { tracks, playlists, albums, users },
+      success: true,
+      message: "Request successful",
     });
   } catch (error) {
     next(error);
