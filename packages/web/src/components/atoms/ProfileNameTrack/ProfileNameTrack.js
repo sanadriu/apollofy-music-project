@@ -10,8 +10,8 @@ const StyledNameTrack = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  @media only screen and (max-width: 500px) {
-    padding-left:1rem;
+  @media only screen and (max-width: ${({ theme }) => theme.media.smallMobile}) {
+    padding-left: 1rem;
   }
 `;
 

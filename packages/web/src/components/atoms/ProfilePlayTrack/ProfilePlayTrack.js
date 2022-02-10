@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 import React from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
@@ -7,35 +8,76 @@ import FavoriteBorderSharpIcon from "@mui/icons-material/FavoriteBorderSharp";
 import PlayCircleFilledSharpIcon from "@mui/icons-material/PlayCircleFilledSharp";
 
 // import { addToTrackList } from "../../../redux/tracks";
-import { addTrack } from "../../../redux/tracks";
-import Button from "../buttons/Button";
+import { addTrack, playTrack } from "../../../redux/tracks";
+import PlaylistAdd from "@mui/icons-material/PlaylistAdd";
+import { Button } from "@mui/material";
+import { PlayerInterface, Track } from "react-material-music-player";
 
 const StyledPlayTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
   margin-left: 1rem;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   font-size: 0.8rem;
-  width: 10%;
+  width: 25%;
+  gap: 0.5rem;
+`;
+
+const PlayListButton = styled(Button)`
+  border: none;
+  background-color: transparent;
+`;
+
+const PlayButton = styled(Button)`
+  border: none;
+  background-color: transparent;
 `;
 
 const ProfilePlayTrack = ({ track, handlePlayButton }) => {
   const dispatch = useDispatch();
 
-  const handlePlay = () => {
+  const handleAdd = () => {
     dispatch(addTrack(track));
+
+    PlayerInterface.playLater([
+      new Track(
+        track.id,
+        track?.thumbnails?.url_default,
+        track?.title,
+        track?.user?.username,
+        track.url,
+      ),
+    ]);
+  };
+
+  const handlePlay = () => {
+    dispatch(playTrack(track));
+
+    PlayerInterface.play([
+      new Track(
+        track.id,
+        track?.thumbnails?.url_default,
+        track?.title,
+        track?.user?.username,
+        track.url,
+      ),
+    ]);
   };
 
   return (
     <StyledPlayTrack>
       <FavoriteIcon sx={{ color: "purple" }} />
-      <Button type="outline" onClick={() => handlePlay(track)}>
+      <PlayListButton type="button" onClick={() => handleAdd(track)}>
+        <PlaylistAdd sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: "pointer" } }} />
+      </PlayListButton>
+      <PlayButton type="button" onClick={() => handlePlay(track)}>
         <PlayCircleFilledSharpIcon
           sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: "pointer" } }}
         />
-      </Button>
-    </StyledPlayTrack>
+      </PlayButton>
+    </StyledPlayTrack >
   );
 };
 

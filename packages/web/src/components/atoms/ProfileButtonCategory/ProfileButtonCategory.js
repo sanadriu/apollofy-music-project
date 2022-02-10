@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
 import AlbumIcon from "@mui/icons-material/Album";
 
@@ -20,18 +20,17 @@ const ButtonCategory = styled.div`
     border: 1px solid #b04aff;
     color: white;
   }
-  @media only screen and (max-width: 1000px) {
-        width: auto;
-    }
-
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    width: auto;
+  }
 `;
 
 const StyledSpanCategory = styled.div`
   padding-left: 5px;
-  @media only screen and (max-width: 1000px) {
-        display: none;
-        width: 20px;
-    }
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    display: none;
+    width: 20px;
+  }
 `;
 
 const CategoryButton = ({ text }) => {

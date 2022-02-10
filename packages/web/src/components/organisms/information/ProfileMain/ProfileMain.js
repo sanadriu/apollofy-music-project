@@ -9,12 +9,17 @@ import ProfileStadistics from "../../../molecules/ProfileStadistics";
 
 const ProfileContent = styled.div`
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
-  margin: auto;
   border-radius: 1.3rem;
   background: #eeeee4;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  (max-width: ${({ theme }) => theme.media.tablet})
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
 `;
 
 const AvatarDiv = styled.div`
@@ -23,6 +28,16 @@ const AvatarDiv = styled.div`
   align-items: center;
   min-width: 215px;
   width: 100%;
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 5rem;
+    border-radius: 100%;
+
+    margin-top: 3rem;
+    padding: 1rem;
+  }
 `;
 
 const DescriptionDiv = styled.div`
@@ -36,7 +51,7 @@ const ProfileMain = ({ user, albums, tracks }) => {
         <ProfileImage image={user?.thumbnails?.url_default} />
       </AvatarDiv>
       <DescriptionDiv>
-        <ProfileUserTitle title={user?.firstname} id={user?.id} />
+        <ProfileUserTitle title={user?.username} id={user?.id} />
         <ProfileStadistics tracks={tracks} followers={user?.num_followers} albums={albums} />
         <ProfileUserDescription description={user?.description} />
       </DescriptionDiv>

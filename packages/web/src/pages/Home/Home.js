@@ -12,16 +12,16 @@ const TracksLayout = styled.div`
   display: flex;
   gap: 1rem;
 
-  @media only screen and (max-width: 600px) {
-    flex-direction: column-reverse;
-  }
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
+      flex-direction: column-reverse;
+    }
 `;
 
 const Home = () => {
 
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <PlaylistCarousel />
       <TracksLayout>
         <PopularTracks />

@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
 
 import ButtonFollow from "../ButtonFollow/ButtonFollow";
+import { useSelector } from "react-redux";
+import { authSelector } from "../../../redux/auth";
+import { useParams } from "react-router-dom";
 
 const StyledTitleUser = styled.div`
   display: flex;
@@ -13,22 +16,20 @@ const StyledTitleUser = styled.div`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-const TitleText = styled(Typography)`
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 40rem;
-`;
-
 const ProfileUserTitle = ({ title, id }) => {
+  const { currentUser } = useSelector(authSelector);
+  const { profileId } = useParams();
+
   return (
     <StyledTitleUser>
       <div>
-        <TitleText variant="h3">{title}</TitleText>
+        <Typography variant="h5">{title}</Typography>
       </div>
-      <div>
-        <ButtonFollow id={id} />
-      </div>
+      {currentUser.id !== profileId && (
+        <div>
+          <ButtonFollow id={id} />
+        </div>
+      )}
     </StyledTitleUser>
   );
 };

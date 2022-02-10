@@ -7,6 +7,7 @@ import FriendsColumn from "../organisms/information/FriendsColumn";
 import { ExampleAudioPlayer } from "../organisms/input-controls/AudioPlayer/AudioPlayer";
 import MenuBar from "../organisms/navigation/MenuBar";
 import ControlBar from "../molecules/ControlBar";
+import SearchBar from "../molecules/SearchBar/SearchBar";
 import FlexColumn from "../atoms/FlexColumn";
 
 const MainLayout = styled.main`
@@ -15,23 +16,21 @@ const MainLayout = styled.main`
   padding: 1rem 1rem 0 1rem;
   justify-content: space-between;
   margin-bottom: 6rem;
-
-  @media only screen and (max-width: 992px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     padding: 1rem 0;
     gap: 0.5rem;
     flex-direction: column;
     justify-content: center;
   }
-
-  @media only screen and (max-width: 600px) {
-    padding: 1rem;
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
+    padding: 1rem 0;
   }
 `;
 
 const PageContent = styled.div`
   width: 60%;
-  @media only screen and (max-width: 1000px) {
-    width:95%
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    width: 100%;
   }
 `;
 
@@ -49,6 +48,7 @@ function withLayout(WrappedComponent) {
             <MainLayout>
               <ControlBar />
               <PageContent>
+                <SearchBar />
                 <WrappedComponent {...props} />
               </PageContent>
               <RightFlex>

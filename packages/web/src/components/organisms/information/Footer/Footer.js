@@ -12,7 +12,7 @@ const FooterText = styled(HomeSmallText)`
 
 const FooterLayout = styled.footer`
   line-height: initial;
-  @media only screen and (max-width: 992px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: none;
   }
 `;

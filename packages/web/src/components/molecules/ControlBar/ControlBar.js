@@ -17,7 +17,7 @@ const Bar = styled.nav`
   margin-top: 0.5rem;
   color: ${({ theme }) => theme.colors.text};
 
-  @media only screen and (max-width: 992px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     flex-direction: row;
     position: fixed;
     bottom: 0;
@@ -53,8 +53,8 @@ export default function ControlBar() {
       <Link to="/">
         {pathname === "/" ? <SelectedNavSVG src={HomeSVG} /> : <NavSVG src={HomeSVG} />}
       </Link>
-      <Link to="/profile">
-        {pathname === "/profile" ? <SelectedNavSVG src={ScoreSVG} /> : <NavSVG src={ScoreSVG} />}
+      <Link to="/tracks">
+        {pathname === "/tracks" ? <SelectedNavSVG src={ScoreSVG} /> : <NavSVG src={ScoreSVG} />}
       </Link>
       <Link to="/search">
         {pathname === "/search" ? <SelectedNavSVG src={SearchSVG} /> : <NavSVG src={SearchSVG} />}

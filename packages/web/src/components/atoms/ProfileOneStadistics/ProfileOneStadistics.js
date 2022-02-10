@@ -14,10 +14,10 @@ const StadisticsDiv = styled.div`
 
 const SpanText = styled.div`
   margin-left: 0.5em;
-  margin-right:0.5rem;
+  margin-right: 0.5rem;
   display: inline;
   color: ${({ theme }) => theme.colors.text};
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: none;
   }
 `;
@@ -26,7 +26,7 @@ const StyledTracks = styled(MusicNoteIcon)`
   margin-left: 5px;
   display: none;
   color: ${({ theme }) => theme.colors.text};
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: block;
   }
 `;
@@ -35,7 +35,7 @@ const StyledFollowers = styled(PersonIcon)`
   margin-left: 5px;
   color: ${({ theme }) => theme.colors.text};
   display: none;
-  @media only screen and (max-width: 500px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: block;
   }
 `;
@@ -43,7 +43,7 @@ const StyledFollowers = styled(PersonIcon)`
 const StyledAlbums = styled(AlbumIcon)`
   margin-left: 5px;
   display: none;
-  @media only screen and (max-width: 500px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: block;
   }
 `;
@@ -52,6 +52,9 @@ const StyledCount = styled.span`
   color: ${({ theme }) => theme.colors.text};
   font-weight: bold;
   text-align: center;
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    display: block;
+  }
 `;
 
 const ProfileOneStadistics = ({ count, text }) => {

@@ -89,7 +89,7 @@ function App() {
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-            <Route path={ROUTES.USER_PROFILE} element={<Profile />} />
+            <Route path={`${ROUTES.USER_PROFILE}/:profileId`} element={<Profile />} />
             <Route path="track/add" element={<TrackCreateForm />} />
             <Route path="track/update/:id" element={<TrackUpdateForm />} />
             {isAuthenticated && (

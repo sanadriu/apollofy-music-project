@@ -1,5 +1,5 @@
 const media = {
-  smallMobile: "476px",
+  smallMobile: "500px",
   mobile: "576px",
   phablet: "767px",
   tablet: "992px",
@@ -15,8 +15,9 @@ export const lightTheme = {
     toggleBorder: "#FFF",
     background: {
       primary: "#FFF",
-      secondary: "#f6f6f6",
+      secondary: "#9000ff21",
       secondary_hover: "#E7E7E7",
+      gradient: "rgb(168 141 215 / 70%), rgb(0 167 239 / 63%)",
     },
     border: "lightgray",
   },
@@ -37,6 +38,7 @@ export const darkTheme = {
       primary: "black",
       secondary: "#0E0E0E",
       secondary_hover: "#3a3a3a",
+      gradient: "#4847475c,rgb(38 38 38 / 67%)",
     },
     border: "#3a3a3a",
   },

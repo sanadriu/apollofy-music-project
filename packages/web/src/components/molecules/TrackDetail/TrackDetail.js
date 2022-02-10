@@ -3,6 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 
 import HomeSmallText from "../../atoms/HomeSmallText";
 import DetailText from "../../atoms/DetailText";
@@ -52,7 +53,7 @@ const StyledNumTrack = styled.div`
   font-size: 0.8rem;
   width: 20%;
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     display: none;
   }
 `;

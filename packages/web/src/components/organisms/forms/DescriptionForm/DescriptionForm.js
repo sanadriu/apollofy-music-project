@@ -9,12 +9,7 @@ import MiddleTitle from "../../../atoms/MiddleTitle";
 import SmallText from "../../../atoms/SmallText";
 import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 
-import {
-  authSelector,
-  signUpRequest,
-  signUpWithEmailRequest,
-  setCurrentUser,
-} from "../../../../redux/auth";
+import { authSelector, signUpRequest, signUpWithEmailRequest } from "../../../../redux/auth";
 
 const DescriptionArea = styled.textarea`
   width: 22rem;
@@ -37,7 +32,7 @@ export default function DescriptionForm() {
         thumbnails: {
           url_default: currentUser.pictureLink,
         },
-        birth_date: currentUser.birth_date?.toISOString().substring(0, 10),
+        birth_date: currentUser.birth_date,
         description: value,
       };
 

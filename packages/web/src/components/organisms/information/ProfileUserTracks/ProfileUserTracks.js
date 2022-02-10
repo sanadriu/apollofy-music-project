@@ -20,7 +20,9 @@ const ProfileUserTracks = () => {
 
   return (
     <StyledUserTracks>
-      {tracks?.data?.data?.map((track, index) => (<ProfileUserTrack key={track.id} data={track} index={index} />))}
+      {tracks?.data?.data?.map((track, index) => (
+        <ProfileUserTrack key={track.id} data={track} index={index} />
+      ))}
     </StyledUserTracks>
   );
 };

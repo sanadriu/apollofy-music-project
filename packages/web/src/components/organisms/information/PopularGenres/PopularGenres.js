@@ -11,13 +11,13 @@ const GenresList = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     padding: 2rem;
   }
 `;
 
 const GenresText = styled(SmallText)`
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     margin: auto;
   }
 `;

@@ -8,6 +8,9 @@ const GroupButtons = styled.div`
   justify-content: flex-start;
   flex-wrap: wrap;
   padding: 0rem 0rem 1rem 0rem;
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    display: none;
+  }
 `;
 
 const ProfileGroupButtons = () => {

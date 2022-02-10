@@ -30,6 +30,18 @@ const NavBar = styled.nav`
   justify-content: space-evenly;
   background-color: lightgrey;
   border-radius: 9999px;
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    margin-top: 5rem;
+  }
+`;
+
+const NameSpan = styled.span`
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    font-size: smaller;
+  }
+  @media only screen and (max-width: ${({ theme }) => theme.media.smallMobile}) {
+    display: none;
+  }
 `;
 
 const ChartBody = styled.div`
@@ -41,46 +53,48 @@ const ChartBody = styled.div`
   padding: 1rem;
 `;
 
+const FlexCol = styled(FlexColumn)`
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    display: flex;
+  }
+`;
+
 const Statistics = () => {
-  const [userChart, setUserChart] = useState(true);
-  const [albumChart, setAlbumChart] = useState(false);
-  const [songsChart, setSongsChart] = useState(false);
-  const [playlistsChart, setPlaylistsChart] = useState(false);
+  const [chart, setChart] = useState("");
+
   const [statsArray, setArray] = useState([]);
   const [likes, setLikes] = useState([]);
 
-  const { data: albums } = useAlbums();
+  const { data: albums } = useAlbums(1, undefined, undefined, "num_likes");
   const albumsList = albums?.data?.data;
 
-  const { data: playlists } = usePlaylists();
+  const { data: playlists } = usePlaylists(1, undefined, undefined, "num_followers");
   const playlistsList = playlists?.data?.data;
 
-  const { data: users } = useUsers();
+  const { data: users } = useUsers(1, undefined, undefined, "num_followers");
   const usersList = users?.data?.data;
 
-  const sort = "num_plays";
-  const { data: tracks } = useTracks(1, undefined, undefined, sort);
+  const { data: tracks } = useTracks(1, undefined, undefined, "num_plays");
   const tracksList = tracks?.data?.data;
+
+  function limit(string = "", max = 0) {
+    return string.substring(0, max);
+  }
 
   const createArray = (array) => {
     setArray([]);
     setLikes([]);
     if (array) {
       array.forEach((title) => {
-        setArray((list) => [...list, title?.title || title.name]);
-        setLikes((list) => [...list, title?.num_plays || title.num_followers]);
+        setArray((list) => [...list, limit(title?.title, 10) || limit(title?.name, 10)]);
+        setLikes((list) => [...list, title?.num_plays || title.num_followers || title?.num_likes]);
       });
     }
   };
 
   useEffect(() => {
-    createArray(
-      (albumChart && albumsList) ||
-      (playlistsChart && playlistsList) ||
-      (userChart && usersList) ||
-      (songsChart && tracksList),
-    );
-  }, [albumChart, playlistsChart, songsChart, userChart]);
+    createArray(usersList);
+  }, []);
 
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -93,10 +107,11 @@ const Statistics = () => {
       title: {
         display: true,
         text:
-          (userChart && "Most Popular Users") ||
-          (albumChart && "Most Popular Albums") ||
-          (songsChart && "Most Popular Songs") ||
-          (playlistsChart && "Most followed Playlists"),
+          (chart === "" && "Most Popular Users") ||
+          (chart === "Users" && "Most Popular Users") ||
+          (chart === "Albums" && "Most Popular Albums") ||
+          (chart === "Songs" && "Most Popular Songs") ||
+          (chart === "Playlists" && "Most followed Playlists"),
       },
     },
   };
@@ -109,72 +124,64 @@ const Statistics = () => {
         label: "Likes",
         data: likes, // This is the array of number of followers or views
         backgroundColor:
-          (albumChart && "#0770f7b0") ||
-          (playlistsChart && "#00e106b3") ||
-          (userChart && "#fffb00b5") ||
-          (songsChart && "#6900ffc7"),
+          (chart === "User" && "#0770f7b0") ||
+          (chart === "Playlists" && "#00e106b3") ||
+          (chart === "Albums" && "#fffb00b5") ||
+          (chart === "Songs" && "#6900ffc7"),
       },
     ],
   };
   return (
     <>
       <NavBar>
-        <FlexColumn>
-          <GroupsIcon fontSize="large" />
+        <FlexCol>
           <Button
             type="button"
             onClick={() => {
-              setUserChart(true);
-              setSongsChart(false);
-              setAlbumChart(false);
-              setPlaylistsChart(false);
+              setChart("Users");
+              createArray(usersList);
             }}
           >
-            <span>Users</span>
+            <GroupsIcon fontSize="large" />
+            <NameSpan>Users</NameSpan>
           </Button>
-        </FlexColumn>
-        <FlexColumn>
-          <MusicNoteIcon fontSize="large" />
+        </FlexCol>
+        <FlexCol>
           <Button
             type="button"
             onClick={() => {
-              setUserChart(false);
-              setSongsChart(true);
-              setAlbumChart(false);
-              setPlaylistsChart(false);
+              setChart("Songs");
+              createArray(tracksList);
             }}
           >
-            <span>Songs</span>
+            <MusicNoteIcon fontSize="large" />
+            <NameSpan>Songs</NameSpan>
           </Button>
-        </FlexColumn>
-        <FlexColumn>
-          <AlbumIcon fontSize="large" />
+        </FlexCol>
+        <FlexCol>
           <Button
             type="button"
             onClick={() => {
-              setUserChart(false);
-              setSongsChart(false);
-              setAlbumChart(true);
-              setPlaylistsChart(false);
+              setChart("Albums");
+              createArray(albumsList);
             }}
           >
-            <span>Albums</span>
+            <AlbumIcon fontSize="large" />
+            <NameSpan>Albums</NameSpan>
           </Button>
-        </FlexColumn>
-        <FlexColumn>
-          <LibraryMusicIcon fontSize="large" />
+        </FlexCol>
+        <FlexCol>
           <Button
             type="button"
             onClick={() => {
-              setUserChart(false);
-              setSongsChart(false);
-              setAlbumChart(false);
-              setPlaylistsChart(true);
+              setChart("Playlists");
+              createArray(playlistsList);
             }}
           >
-            <span>Playlists</span>
+            <LibraryMusicIcon fontSize="large" />
+            <NameSpan>Playlists</NameSpan>
           </Button>
-        </FlexColumn>
+        </FlexCol>
       </NavBar>
       {statsArray && (
         <ChartBody>

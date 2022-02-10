@@ -14,7 +14,7 @@ const FriendsColumnLayout = styled(RightSideBar)`
   height: auto;
   background-color: ${({ theme }) => theme.colors.background.secondary};
 
-  @media only screen and (max-width: 992px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: none;
   }
 `;

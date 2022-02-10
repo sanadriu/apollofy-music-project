@@ -19,14 +19,14 @@ export const TracksList = styled(SectionLayout)`
   width: 30rem;
   gap: 1rem;
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     margin-top: 1rem;
     width: 100%;
   }
 `;
 
 const TracksText = styled(SmallText)`
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     margin: auto;
   }
 `;
@@ -36,11 +36,16 @@ export default function PopularTracks() {
   const [currentPage, setCurrentPage] = useState(1);
   const sort = "num_plays";
 
-  const { data: tracks, isError, error, isLoading } = useTracks(currentPage, undefined, undefined, sort);
+  const {
+    data: tracks,
+    isError,
+    error,
+    isLoading,
+  } = useTracks(currentPage, undefined, undefined, sort);
 
   const handlePlayButton = (track) => {
     setSelectedTrack(track);
-  }
+  };
 
   if (isLoading) return <h3>Loading...</h3>;
   if (isError)
