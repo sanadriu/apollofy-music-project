@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
-export const PurpleLink = styled.a`
+const PurpleLink = styled.a`
   text-decoration: none;
   color: ${({ theme }) => theme.colors.label};
 `;
+
+export default PurpleLink;

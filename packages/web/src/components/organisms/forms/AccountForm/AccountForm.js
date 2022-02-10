@@ -6,10 +6,10 @@ import { authSelector, updateCurrentUser } from "../../../../redux/auth";
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 import AccountSchema from "../../../../schemas/AccountSchema";
-import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
-import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
+import FlexColumn from "../../../atoms/FlexColumn";
+import MiddleTitle from "../../../atoms/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-import { RegisterInput } from "../../../atoms/RegisterInput/RegisterInput";
+import RegisterInput from "../../../atoms/RegisterInput";
 import Button from "../../../atoms/buttons/Button";
 import { Input } from "@mui/material";
 

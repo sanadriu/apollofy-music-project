@@ -6,7 +6,6 @@ const StyledImageText = styled.div`
   padding-top:1px;
 `;
 
-
 const ProfileTextAlbum = () => {
   return (
     <StyledImageText>

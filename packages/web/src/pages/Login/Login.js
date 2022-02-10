@@ -13,17 +13,17 @@ import {
 import { modalSelector, nextModal } from "../../redux/modal";
 
 import * as ROUTES from "../../routes";
-import { LoginBoard } from "../../components/organisms/LoginBoard/LoginBoard";
-import { FlexColumn } from "../../components/atoms/FlexColumn/FlexColumn";
-import RegisterModal from "../../components/organisms/modal/RegisterModal";
-import ResetPassModal from "../../components/organisms/modal/ResetPassModal";
+import LoginBoard from "../../components/organisms/information/LoginBoard";
+import RegisterModal from "../../components/organisms/modals/RegisterModal";
+import ResetPassModal from "../../components/organisms/modals/ResetPassModal";
+import SignInModal from "../../components/organisms/modals/SigninModal";
 import AccountForm from "../../components/organisms/forms/AccountForm/AccountForm";
 import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureForm/ProfilePictureForm";
 import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm2";
 import DescriptionForm from "../../components/organisms/forms/DescriptionForm/DescriptionForm";
-import Button from "../../components/atoms/buttons/Button";
-import SignInModal from "../../components/organisms/modal/SigninModal";
 import SigninForm from "../../components/organisms/forms/SigninForm/SigninForm";
+import FlexColumn from "../../components/atoms/FlexColumn";
+import Button from "../../components/atoms/buttons/Button";
 
 const MainFlex = styled.div`
   height: 100vh;

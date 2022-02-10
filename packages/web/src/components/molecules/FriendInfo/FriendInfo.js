@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { FlexColumn } from "../../atoms/FlexColumn/FlexColumn";
-import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
-import { DetailText } from "../../atoms/DetailText/DetailText";
+import FlexColumn from "../../atoms/FlexColumn";
+import HomeSmallText from "../../atoms/HomeSmallText";
+import DetailText from "../../atoms/DetailText";
 
 const Layout = styled.div`
   padding: 0.3rem;

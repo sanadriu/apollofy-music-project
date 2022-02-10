@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
-import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
-import { SmallText } from "../../../atoms/SmallText/SmallText";
-import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
+import FlexColumn from "../../../atoms/FlexColumn";
+import MiddleTitle from "../../../atoms/MiddleTitle";
+import SmallText from "../../../atoms/SmallText";
+import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 
 import {
   authSelector,

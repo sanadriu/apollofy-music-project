@@ -1,6 +1,6 @@
 import React from "react";
 
-import Genres from "../../components/organisms/Genres";
+import Genres from "../../components/organisms/information/Genres";
 
 function GenresPage() {
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import Users from "../../components/organisms/Users";
+import Users from "../../components/organisms/information/Users";
 
 function UsersPage() {
 
