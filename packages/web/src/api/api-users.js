@@ -10,21 +10,21 @@ function getCurrentUser(authToken) {
   });
 }
 
-const getUser = async (userId) => {
+function getUser(userId) {
   return http.get(`${baseUrl}/users`, {
     params: {
       id: userId,
     },
   });
-};
+}
 
-const setCurrentUser = async (user) => {
+function setCurrentUser(user) {
   return http.get(`${baseUrl}/users`, {
     data: user,
   });
 }
 
-const getUsers = async (page, limit, sort, order) => {
+function getUsers(page, limit, sort, order) {
   return http.get(`${baseUrl}/users`, {
     params: {
       limit: limit,
@@ -33,7 +33,7 @@ const getUsers = async (page, limit, sort, order) => {
       order: order,
     },
   });
-};
+}
 
 function deleteUser(authToken) {
   return http.delete(`${baseUrl}/users/me`, {
@@ -43,7 +43,7 @@ function deleteUser(authToken) {
   });
 }
 
-export function updateUser(authToken, update) {
+function updateUser(authToken, update) {
   return http.patch(`${baseUrl}/users/me`, update, {
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -51,7 +51,7 @@ export function updateUser(authToken, update) {
   });
 }
 
-export function setUser(authToken, user) {
+function setUser(authToken, user) {
   return http.post(`${baseUrl}/users/me`, user, {
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -59,21 +59,12 @@ export function setUser(authToken, user) {
   });
 }
 
-// export function updateNewUser(authToken, updatedUser) {
-//   return http.patch(`${baseUrl}/users/me`, updatedUser, {
-//     headers: {
-//       Authorization: `Bearer ${authToken}`,
-//     },
-//   });
-// }
-
 const usersApi = {
   getCurrentUser,
   getUser,
   setCurrentUser,
   getUsers,
   updateUser,
-  // updateNewUser,
   setUser,
   deleteUser,
 };

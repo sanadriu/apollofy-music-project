@@ -29,12 +29,7 @@ export function makeRequest(
     Accept: "application/json",
   },
 ) {
-  return async function request({
-    url = "/",
-    requestMethod = "GET",
-    body = {},
-    headers = {},
-  }) {
+  return async function request({ url = "/", requestMethod = "GET", body = {}, headers = {} }) {
     return normalizeResponse(
       httpClient({
         url: baseURL + url,

@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { createSelector } from 'reselect';
+import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
 
-import api from "../api";
-import * as authService from "../services/auth";
+import authApi from "../api/api-auth";
 import usersApi from "../api/api-users";
+import * as authService from "../services/auth";
 import { resetModal } from "./modal";
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
@@ -29,20 +29,20 @@ const slice = createSlice({
   },
   reducers: {
     signUpRequest: (auth, action) => {
-      auth.isSigningUp = true
-      auth.signUpError = null
+      auth.isSigningUp = true;
+      auth.signUpError = null;
     },
 
     signUpSuccess: (auth, action) => {
-      auth.isAuthenticated = true
-      auth.isSigningUp = false
-      auth.currentUserisSigningIn = false
-      auth.signUpError = null
+      auth.isAuthenticated = true;
+      auth.isSigningUp = false;
+      auth.currentUserisSigningIn = false;
+      auth.signUpError = null;
     },
 
     signUpError: (auth, action) => {
-      auth.isSigningUp = false
-      auth.signUpError = action.payload
+      auth.isSigningUp = false;
+      auth.signUpError = action.payload;
     },
 
     signInRequest: (auth, action) => {
@@ -58,7 +58,7 @@ const slice = createSlice({
 
     signInError: (auth, action) => {
       auth.isSigningIn = false;
-      auth.signInError = action.payload
+      auth.signInError = action.payload;
     },
 
     signOutRequest: (auth, action) => {
@@ -111,18 +111,18 @@ const slice = createSlice({
     // },
 
     editProfileRequest: (auth, action) => {
-      auth.isEditingProfile = true
-      auth.editProfileError = null
+      auth.isEditingProfile = true;
+      auth.editProfileError = null;
     },
 
     editProfileSuccess: (auth, action) => {
-      auth.isEditingProfile = false
-      auth.editProfileError = null
+      auth.isEditingProfile = false;
+      auth.editProfileError = null;
     },
 
     editProfileError: (auth, action) => {
-      auth.isEditingProfile = false
-      auth.editProfileError = action.payload
+      auth.isEditingProfile = false;
+      auth.editProfileError = action.payload;
     },
 
     setNameEmailAndPassword: (auth, action) => {
@@ -144,8 +144,8 @@ const slice = createSlice({
     currentUserAdded: (auth, action) => {
       auth.currentUser = action.payload;
     },
-  }
-})
+  },
+});
 
 export const {
   signUpRequest,
@@ -209,11 +209,12 @@ export function signUpWithEmailRequest(email, password, updatedUser) {
 
       const token = await authService.getCurrentUserToken();
 
-      // const user = await api.signUp({ Authorization: `Bearer ${token}` });
-      await api.signUp({ Authorization: `Bearer ${token}` });
+      await authApi.signUp(token);
       await usersApi.updateUser(token, updatedUser);
 
-      // dispatch(currentUserAdded(user.data.data));
+      const response = await authApi.signIn(token);
+
+      dispatch(currentUserAdded(response.data.data));
       dispatch(resetModal());
 
       return dispatch(signUpSuccess());
@@ -223,8 +224,6 @@ export function signUpWithEmailRequest(email, password, updatedUser) {
   };
 }
 
-//current user ahora es {}, hay que mirarlo
-
 export function signInWithEmailRequest(email, password) {
   return async function signInThunk(dispatch) {
     dispatch(signInRequest());
@@ -232,13 +231,11 @@ export function signInWithEmailRequest(email, password) {
     try {
       await authService.signInWithEmailAndPassword(email, password);
 
-      // const token = await authService.getCurrentUserToken();
+      const token = await authService.getCurrentUserToken();
 
-      // await api.signIn({ Authorization: `Bearer ${token}` });
+      const response = await authApi.signIn(token);
 
-      // const currentUser = await usersApi.getCurrentUser(token);
-
-      // dispatch(currentUserAdded(currentUser.data.data));
+      dispatch(currentUserAdded(response.data.data));
 
       return dispatch(signInSuccess());
     } catch (error) {
@@ -248,17 +245,24 @@ export function signInWithEmailRequest(email, password) {
 }
 
 export function syncSignIn() {
-  return async function syncSignInThunk(dispatch) {
-    const token = await authService.getCurrentUserToken();
+  return async function syncSignInThunk(dispatch, getState) {
+    dispatch(signInRequest());
 
-    if (!token) return dispatch(signOutSuccess());
+    try {
+      const token = await authService.getCurrentUserToken();
 
-    const response = await api.signIn({ Authorization: `Bearer ${token}` });
+      if (!token) return dispatch(signOutSuccess());
 
-    if (response.errorMessage) return dispatch(signInError(response.errorMessage));
+      const response = await authApi.signIn(token);
 
-    dispatch(currentUserAdded(response.data.data));
-    return dispatch(signInSuccess(response.data));
+      dispatch(currentUserAdded(response.data.data));
+
+      return dispatch(signInSuccess());
+    } catch (error) {
+      await authService.signOut();
+
+      return dispatch(signInError(error.message));
+    }
   };
 }
 
@@ -266,19 +270,19 @@ export function signOut() {
   return async function signOutThunk(dispatch) {
     dispatch(signOutRequest());
 
-    const token = await authService.getCurrentUserToken();
+    try {
+      const token = await authService.getCurrentUserToken();
 
-    if (!token) return dispatch(signOutSuccess());
+      if (!token) return dispatch(signOutSuccess());
 
-    const response = await api.signOut({ Authorization: `Bearer ${token}` });
+      await authApi.signOut(token);
 
-    if (response.errorMessage) {
-      return dispatch(signOutError(response.errorMessage));
+      await authService.signOut();
+
+      return dispatch(signOutSuccess());
+    } catch (error) {
+      return dispatch(signOutError(error.message));
     }
-
-    authService.signOut();
-
-    return dispatch(signOutSuccess());
   };
 }
 
@@ -342,7 +346,7 @@ export function setCurrentUser(user) {
 }
 
 export function updateCurrentUser(updatedUser) {
-  return async function updateCurrentUserThunk(dispatch) {    
+  return async function updateCurrentUserThunk(dispatch) {
     dispatch(currentUserAdded(updatedUser));
   };
 }
@@ -351,7 +355,4 @@ export function updateCurrentUser(updatedUser) {
 
 export const selectAuthState = (state) => state.entities.auth;
 
-export const authSelector = createSelector(
-  [selectAuthState],
-  (auth) => auth
-);
+export const authSelector = createSelector([selectAuthState], (auth) => auth);

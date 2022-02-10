@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, Outlet, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ThemeProvider } from "styled-components";
@@ -21,7 +21,6 @@ import TracksByGenre from "./pages/TracksByGenre";
 import Users from "./pages/Users";
 import ProfilePage from "./pages/ProfilePage";
 import Statistics from "./pages/Statistics";
-import Switch from "./components/atoms/Switch";
 
 import { onAuthStateChanged } from "./services/auth";
 import { authSelector, syncSignIn, signOut } from "./redux/auth";
@@ -41,6 +40,7 @@ const queryClient = new QueryClient();
 
 function App() {
   const dispatch = useDispatch();
+  const [hasMounted, setHasMounted] = useState(false);
   const [theme, themeToggler, mountedComponent] = useDarkMode();
   const { isAuthenticated } = useSelector(authSelector);
 
@@ -50,19 +50,21 @@ function App() {
     let unsubscribeFromAuth = null;
 
     unsubscribeFromAuth = onAuthStateChanged((user) => {
-      if (user) {
+      if (user && !hasMounted) {
         dispatch(syncSignIn());
       } else {
         dispatch(signOut());
       }
     });
 
+    setHasMounted(true);
+
     return () => {
       if (unsubscribeFromAuth) {
         unsubscribeFromAuth();
       }
     };
-  }, [dispatch]);
+  }, [dispatch, hasMounted]);
 
   if (!mountedComponent) return <div />;
 

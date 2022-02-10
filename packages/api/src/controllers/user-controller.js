@@ -1,5 +1,4 @@
 const { User } = require("../models");
-const { getUserProfile } = require("./utils");
 const { mode } = require("../config");
 const { auth } = mode === "test" ? require("../services/__mocks__") : require("../services");
 
@@ -7,25 +6,47 @@ async function signUp(req, res, next) {
   const { uid, email, name } = req.user;
 
   try {
-    const user = await User.findOne({ email });
+    const dbRes = await User.findOne({ email });
 
-    if (user) {
-      res.status(200).send({
-        data: getUserProfile(user),
-        success: true,
-      });
-    } else {
-      const newUser = await User.create({
-        id: uid,
-        email: email,
-        username: name,
-      });
-
-      res.status(201).send({
-        data: getUserProfile(newUser),
-        success: true,
+    if (dbRes !== null) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: `Email ${email} is already in use`,
       });
     }
+
+    await User.create({ _id: uid, email: email, username: name });
+
+    return res.status(201).send({
+      data: "OK",
+      success: true,
+      message: "User created successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function signIn(req, res, next) {
+  try {
+    const { email } = req.user;
+
+    const dbRes = await User.findOne({ email });
+
+    if (dbRes === null) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).send({
+      data: dbRes,
+      success: true,
+      message: "User fetched successfully",
+    });
   } catch (error) {
     next(error);
   }
@@ -240,6 +261,7 @@ async function followUser(req, res, next) {
 
 module.exports = {
   signUp,
+  signIn,
   signOut,
   getUsers,
   getSingleUser,
