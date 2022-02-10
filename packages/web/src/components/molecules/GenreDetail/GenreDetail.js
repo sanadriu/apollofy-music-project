@@ -1,12 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import SmallText from "../../atoms/SmallText";
 
 const GenreTitle = styled(SmallText)`
   margin-top: auto;
   font-size: 1rem;
+`;
+
+const GenreLink = styled(Link)`
+  text-decoration: none;
 `;
 
 const GenreDetail = ({ genre }) => {
@@ -38,9 +43,11 @@ const GenreDetail = ({ genre }) => {
   `;
 
   return (
-    <GenreLayout>
-      <GenreTitle>{genre.name}</GenreTitle>
-    </GenreLayout>
+    <GenreLink to={`/genres/${genre.name}`}>
+      <GenreLayout>
+        <GenreTitle>{genre.name}</GenreTitle>
+      </GenreLayout>
+    </GenreLink>
   );
 };
 

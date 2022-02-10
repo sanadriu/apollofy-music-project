@@ -78,9 +78,9 @@ function App() {
             <Route path="albums" element={<Albums />} />
             <Route path="playlists/:playlistId" element={<Playlists />} />
             <Route path="profile/:profileId" element={<Profile />} />
+            <Route path="genres/:genre" element={<Genres />} />
             <Route path="playlists" element={<Playlists />} />
             <Route path="tracks" element={<Tracks />} />
-            <Route path="genres" element={<Genres />} />
             <Route path="users" element={<Users />} />
             <Route path="stats" element={<Statistics />} />
             <Route path="tracks/:genre" element={<TracksByGenre />} />
