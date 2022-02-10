@@ -88,6 +88,7 @@
     "react-helmet": "^6.1.0",
     "react-inlinesvg": "^2.3.0",
     "react-intl": "^5.24.4",
+    "react-material-music-player": "^1.1.2",
     "react-query": "^3.34.12",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",

@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 import React from "react";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -10,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { addTrack, playTrack } from "../../../redux/tracks";
 import PlaylistAdd from "@mui/icons-material/PlaylistAdd";
 import { Button } from "@mui/material";
+import { PlayerInterface, Track } from "react-material-music-player";
 
 const StyledPlayTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
@@ -38,10 +40,30 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
 
   const handleAdd = () => {
     dispatch(addTrack(track));
+
+    PlayerInterface.playLater([
+      new Track(
+        track.id,
+        track?.thumbnails?.url_default,
+        track?.title,
+        track?.user?.username,
+        track.url,
+      ),
+    ]);
   };
 
   const handlePlay = () => {
     dispatch(playTrack(track));
+
+    PlayerInterface.play([
+      new Track(
+        track.id,
+        track?.thumbnails?.url_default,
+        track?.title,
+        track?.user?.username,
+        track.url,
+      ),
+    ]);
   };
 
   return (
