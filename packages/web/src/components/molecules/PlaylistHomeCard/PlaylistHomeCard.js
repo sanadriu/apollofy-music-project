@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
-import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
-import { SmallText } from "../../atoms/SmallText/SmallText";
-import { FlexColumn } from "../../atoms/FlexColumn/FlexColumn";
+import HomeSmallText from "../../atoms/HomeSmallText";
+import SmallText from "../../atoms/SmallText";
+import FlexColumn from "../../atoms/FlexColumn";
 
 const CardLink = styled(Link)`
   text-decoration: none;

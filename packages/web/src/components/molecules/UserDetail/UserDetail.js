@@ -6,8 +6,8 @@ import GroupIcon from "@mui/icons-material/Group";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useDispatch } from "react-redux";
 
-import { DetailText } from "../../atoms/DetailText/DetailText";
-import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
+import DetailText from "../../atoms/DetailText";
+import HomeSmallText from "../../atoms/HomeSmallText";
 import { followUser } from "../../../redux/user";
 
 const UserLayout = styled.div`

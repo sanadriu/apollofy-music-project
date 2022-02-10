@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import ProfileOneStadistics from "../../atoms/ProfileOneStadistics/ProfileOneStadistics";
+
+import ProfileOneStadistics from "../../atoms/ProfileOneStadistics";
 
 const StadisticsDiv = styled.div`
   margin-bottom: 1rem;
@@ -9,16 +10,15 @@ const StadisticsDiv = styled.div`
   flex-wrap: wrap;
 `;
 
-const ProfileStadistics = ({tracks,followers,albums}) => {
+const ProfileStadistics = ({ tracks, followers, albums }) => {
   return (
     <StadisticsDiv>
-      <ProfileOneStadistics count={tracks} text='Songs'/>
-      <ProfileOneStadistics count={followers} text='Followers'/>
-      <ProfileOneStadistics  count={albums} text='Albums'/>
+      <ProfileOneStadistics count={tracks} text='Songs' />
+      <ProfileOneStadistics count={followers} text='Followers' />
+      <ProfileOneStadistics count={albums} text='Albums' />
     </StadisticsDiv>
   );
 };
-
 
 ProfileStadistics.propTypes = {
   tracks: PropTypes.number,
@@ -31,4 +31,5 @@ ProfileStadistics.defaultProps = {
   followers: 0,
   albums: 0,
 };
+
 export default ProfileStadistics;

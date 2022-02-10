@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import styled from "styled-components";
 
 const StyledCard = styled(Card)`
  position: relative;
@@ -34,8 +34,8 @@ const ProfileCard = ({ title, date, thumbnails }) => {
   return (
     <StyledCard
       sx={{
-        minWidth:160,
-        height:250,
+        minWidth: 160,
+        height: 250,
         overflow: "hidden",
         margin: 1,
         padding: 1,
@@ -53,7 +53,7 @@ const ProfileCard = ({ title, date, thumbnails }) => {
         />
         <StyledIcon />
         <CardContent>
-          <Typography variant="body4" component="div" sx={{maxHeight: 100,overflow: "hidden", textOverflow:"ellipsis",whiteSpace: "nowrap", fontWeight: "bold"}}>
+          <Typography variant="body4" component="div" sx={{ maxHeight: 100, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: "bold" }}>
             {title}
           </Typography>
           <Typography variant="body2" color="text.secondary" >

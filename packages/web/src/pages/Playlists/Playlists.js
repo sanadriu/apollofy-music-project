@@ -3,14 +3,14 @@ import axios from "axios";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
-import ProfileUserDescription from "../../components/atoms/ProfileUserDescription/ProfileUserDescription";
-import ProfileOneStadistics from "../../components/atoms/ProfileOneStadistics/ProfileOneStadistics";
-import ProfileUserTitle from "../../components/atoms/ProfileUserTitle/ProfileUserTitle";
-import PlaylistImage from "../../components/atoms/PlaylistImage/PlaylistImage";
-import TrackDetail from "../../components/molecules/TrackDetail/TrackDetail";
 import withLayout from "../../components/hoc/withLayout";
-import { TracksList } from "../../components/organisms/PopularTracks/PopularTracks";
-import { SmallText } from "../../components/atoms/SmallText/SmallText";
+import TracksList from "../../components/organisms/information/PopularTracks";
+import TrackDetail from "../../components/molecules/TrackDetail";
+import ProfileUserDescription from "../../components/atoms/ProfileUserDescription";
+import ProfileOneStadistics from "../../components/atoms/ProfileOneStadistics";
+import ProfileUserTitle from "../../components/atoms/ProfileUserTitle";
+import PlaylistImage from "../../components/atoms/PlaylistImage";
+import SmallText from "../../components/atoms/SmallText";
 
 const PlaylistContent = styled.div`
   display: flex;

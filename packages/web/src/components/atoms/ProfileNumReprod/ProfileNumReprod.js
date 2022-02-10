@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
 import PropTypes from "prop-types";
+
 import { formatNumReprod } from "../../../utils/utils";
 
 const StyledNumTrack = styled.div`
@@ -19,7 +20,7 @@ const StyledNumber = styled.div`
   font-weight: 500;
 `;
 
-function addFavoriteTrack(id){
+function addFavoriteTrack(id) {
   try {
     console.log('trackID:'.id)
   } catch (error) {
@@ -27,15 +28,15 @@ function addFavoriteTrack(id){
   }
 }
 
-const ProfileNumReprod = ({data}) => {
+const ProfileNumReprod = ({ data }) => {
   let reprods = "";
-  if(data?.num_plays != null){
+  if (data?.num_plays != null) {
     reprods = formatNumReprod(data.num_plays);
   }
 
   return (
     <StyledNumTrack>
-      <HeadphonesIcon sx={{ color: "purple" }} onClick={() => addFavoriteTrack(data.id)}/>
+      <HeadphonesIcon sx={{ color: "purple" }} onClick={() => addFavoriteTrack(data.id)} />
       <StyledNumber>{reprods}</StyledNumber>
     </StyledNumTrack>
   );

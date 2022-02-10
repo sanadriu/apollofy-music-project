@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -7,10 +6,10 @@ import { authSelector, setNameEmailAndPassword } from "../../../../redux/auth";
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 import AccountSchema from "../../../../schemas/AccountSchema";
-import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
-import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
+import FlexColumn from "../../../atoms/FlexColumn";
+import MiddleTitle from "../../../atoms/MiddleTitle";
 import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-import { RegisterInput } from "../../../atoms/RegisterInput/RegisterInput";
+import RegisterInput from "../../../atoms/RegisterInput";
 import Button from "../../../atoms/buttons/Button";
 
 export default function AccountForm() {

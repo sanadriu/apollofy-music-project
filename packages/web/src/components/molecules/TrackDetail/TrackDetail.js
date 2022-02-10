@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
 
-import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
-import { DetailText } from "../../atoms/DetailText/DetailText";
-import ProfilePlayTrack from "../../atoms/ProfilePlayTrack/ProfilePlayTrack";
+import HomeSmallText from "../../atoms/HomeSmallText";
+import DetailText from "../../atoms/DetailText";
+import ProfilePlayTrack from "../../atoms/ProfilePlayTrack";
 
 const TrackLayout = styled.div`
   display: flex;

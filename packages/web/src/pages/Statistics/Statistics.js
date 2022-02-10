@@ -16,13 +16,12 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
-import withLayout from "../../components/hoc/withLayout";
-import { FlexColumn } from "../../components/atoms/FlexColumn/FlexColumn";
-
 import { useAlbums } from "../../hooks/useAlbums";
 import { useUsers } from "../../hooks/useUsers";
 import { usePlaylists } from "../../hooks/usePlaylists";
 import { useTracks } from "../../hooks/useTracks";
+import withLayout from "../../components/hoc/withLayout";
+import FlexColumn from "../../components/atoms/FlexColumn";
 
 const NavBar = styled.nav`
   margin-top: 2rem;

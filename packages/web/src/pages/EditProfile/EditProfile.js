@@ -2,13 +2,12 @@
 import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-
 import styled from "styled-components";
-import withLayout from "../../components/hoc/withLayout";
-import usersApi from "../../api/api-users";
 
+import usersApi from "../../api/api-users";
+import withLayout from "../../components/hoc/withLayout";
 import ConfirmationDialogue from "../../components/organisms/ConfirmationDialogue";
-import UpdateProfileModal from "../../components/organisms/modal/UpdateProfileModal";
+import UpdateProfileModal from "../../components/organisms/modals/UpdateProfileModal";
 import { getCurrentUserToken } from "../../services/auth/auth";
 
 const MainDiv = styled.div`
@@ -48,7 +47,6 @@ const InputField = styled.span`
 
 const InsideDiv = styled.div`
   display: flex;
-
   align-items: center;
 `;
 
@@ -83,6 +81,7 @@ const EditProfile = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
     setOpenProfileModal(false);

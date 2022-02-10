@@ -19,7 +19,7 @@ import Genres from "./pages/Genres";
 import Albums from "./pages/Albums";
 import TracksByGenre from "./pages/TracksByGenre";
 import Users from "./pages/Users";
-import ProfilePage from "./pages/ProfilePage";
+import Profile from "./pages/Profile";
 import Statistics from "./pages/Statistics";
 import Switch from "./components/atoms/Switch";
 
@@ -75,7 +75,7 @@ function App() {
           <Routes>
             <Route path="albums" element={<Albums />} />
             <Route path="playlists/:playlistId" element={<Playlists />} />
-            <Route path="profile/:profileId" element={<ProfilePage />} />
+            <Route path="profile/:profileId" element={<Profile />} />
             <Route path="playlists" element={<Playlists />} />
             <Route path="tracks" element={<Tracks />} />
             <Route path="genres" element={<Genres />} />
@@ -85,7 +85,7 @@ function App() {
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-            <Route path={ROUTES.USER_PROFILE} element={<ProfilePage />} />
+            <Route path={ROUTES.USER_PROFILE} element={<Profile />} />
             <Route path="track/add" element={<TrackCreateForm />} />
             <Route path="track/update/:id" element={<TrackUpdateForm />} />
             {isAuthenticated && (

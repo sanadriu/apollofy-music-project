@@ -1,10 +1,10 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderSharpIcon from "@mui/icons-material/FavoriteBorderSharp";
 import PlayCircleFilledSharpIcon from "@mui/icons-material/PlayCircleFilledSharp";
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
 
 // import { addToTrackList } from "../../../redux/tracks";
 import { addTrack } from "../../../redux/tracks";
