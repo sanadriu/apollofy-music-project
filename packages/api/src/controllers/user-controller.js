@@ -85,6 +85,15 @@ async function getUsers(req, res, next) {
         });
       }
 
+      if (count === 0) {
+        return res.status(200).send({
+          data: [],
+          success: true,
+          message: "No users were found",
+          pages,
+        });
+      }
+
       if (page > pages) {
         return res.status(404).send({
           data: null,
@@ -106,7 +115,7 @@ async function getUsers(req, res, next) {
     } else {
       return res.status(200).send({
         success: true,
-        message: "Users fetched successfully",
+        message: "Request successful",
         count,
         pages,
       });
@@ -141,7 +150,7 @@ async function getSingleUser(req, res, next) {
   }
 }
 
-async function getSelfUser(req, res, next) {
+async function getUserProfile(req, res, next) {
   try {
     const { uid } = req.user;
     const { extend = false } = req.query;
@@ -265,7 +274,7 @@ module.exports = {
   signOut,
   getUsers,
   getSingleUser,
-  getSelfUser,
+  getUserProfile,
   updateUser,
   deleteUser,
   followUser,
