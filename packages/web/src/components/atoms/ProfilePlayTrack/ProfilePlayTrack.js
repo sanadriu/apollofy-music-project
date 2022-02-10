@@ -5,9 +5,10 @@ import FavoriteBorderSharpIcon from "@mui/icons-material/FavoriteBorderSharp";
 import PlayCircleFilledSharpIcon from "@mui/icons-material/PlayCircleFilledSharp";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
+import PlaylistAdd from '@mui/icons-material/PlaylistAdd'
 
 // import { addToTrackList } from "../../../redux/tracks";
-import { addTrack } from "../../../redux/tracks";
+import { addTrack, playTrack } from "../../../redux/tracks";
 
 const StyledPlayTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
@@ -22,14 +23,35 @@ const StyledPlayTrack = styled.div`
 const ProfilePlayTrack = ({ track, handlePlayButton }) => {
   const dispatch = useDispatch();
 
-  const handlePlay = () => {
+  const handleAddTrack = () => {
     dispatch(addTrack(track));
   }
+
+  const handlePlayTrack = () => {
+    dispatch(playTrack(track));
+
+    const elementPlay = document.querySelector('[aria-label="play"]');
+    console.log(elementPlay);
+    elementPlay.click();
+  }
+
+  // function handleClickPlay() {
+  //   const elementPlay = document.querySelector('[aria-label="play"]');
+  //   const elementPause = document.querySelector('[aria-label="play"]');
+  //   console.log(elementPlay);
+  //   console.log(elementPause);
+  //   elementPlay.click();
+  // }
 
   return (
     <StyledPlayTrack>
       <FavoriteIcon sx={{ color: "purple" }} />
-      <button type="button" onClick={() => handlePlay(track)}>
+      <button type="button" onClick={() => handleAddTrack(track)}>
+        <PlaylistAdd
+          sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: 'pointer' } }}
+        />
+      </button>
+      <button type="button" onClick={() => handlePlayTrack(track)}>
         <PlayCircleFilledSharpIcon
           sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: 'pointer' } }}
         />

@@ -16,8 +16,19 @@ const AudioWrapper = styled(AudioPlayer)`
 export function ExampleAudioPlayer() {
   const tracks = useSelector(tracksSelector);
 
-  const audioTrackList = [];
+  function handleClickPlay() {
+    const playElement = document.querySelector('[aria-label="play"]');
+    const audioElement = document.querySelector('audio');
+    const autoplayAttribute = audioElement.getAttribute('autoplay');
+
+    if (autoplayAttribute == null) {
+      if (tracks.isPlaying == false) return
+      playElement.click();
+    }
+  }
+
   let audioTrack;
+  const audioTrackList = [];
 
   tracks?.list.map((track) => {
     audioTrack = {}
@@ -50,7 +61,7 @@ export function ExampleAudioPlayer() {
         className="reproduction-bar"
 
         // callback function - called on did mount, optional, default: noop
-        onDidMount={console.log}
+        onDidMount={() => handleClickPlay()}
 
         // default player state, optional
         defaultState={{

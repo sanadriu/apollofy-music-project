@@ -9,16 +9,31 @@ const slice = createSlice({
   name: "tracks",
   initialState: {
     list: [],
+    isPlaying: false
   },
   reducers: {
     trackAdded: (tracks, action) => {
       tracks.list.push(action.payload);
+      tracks.isPlaying = false;
     },
+
+    trackPlaying: (tracks, action) => {
+      tracks.list = [];
+      tracks.list.push(action.payload);
+      // tracks.list = [action.payload];
+      tracks.isPlaying = true;
+    },
+
+    isPlaying: (tracks, action) => {
+      tracks.isPlaying = true;
+    }
   }
 })
 
 export const {
   trackAdded,
+  trackPlaying,
+  isPlaying,
 } = slice.actions;
 
 export default slice.reducer;
@@ -27,6 +42,14 @@ export default slice.reducer;
 
 export const addTrack = (track) => (dispatch) => {
   return dispatch(trackAdded(track));
+}
+
+export const playTrack = (track) => (dispatch) => {
+  return dispatch(trackPlaying(track));
+}
+
+export const playingIs = (track) => (dispatch) => {
+  return dispatch(isPlaying(track));
 }
 
 // selector
