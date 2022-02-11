@@ -69,6 +69,7 @@ async function getAlbums(req, res, next) {
         success: true,
         message: "Albums fetched successfully",
         count,
+        page: Number(page),
         pages,
       });
     } else {
@@ -321,6 +322,7 @@ async function getUserAlbums(req, res, next) {
         success: true,
         message: "Albums fetched successfully",
         count,
+        page: Number(page),
         pages,
       });
     } else {

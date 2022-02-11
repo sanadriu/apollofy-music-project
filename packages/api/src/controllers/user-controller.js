@@ -110,6 +110,7 @@ async function getUsers(req, res, next) {
         success: true,
         message: "Users fetched successfully",
         count,
+        page: Number(page),
         pages,
       });
     } else {
@@ -145,6 +146,85 @@ async function getSingleUser(req, res, next) {
       success: true,
       message: "User fetched successfully",
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getFollowedUsers(req, res, next) {
+  try {
+    const { uid } = req.user;
+    const {
+      page = 1,
+      sort = "created_at",
+      order = "asc",
+      limit = 10,
+      no_data = false,
+      exclude = false,
+    } = req.query;
+
+    const filter = {
+      followed_by: { [exclude ? "$nin" : "$in"]: [uid] },
+    };
+
+    const pages = await User.getNumPages(limit, filter);
+    const count = await User.countDocuments(filter);
+
+    if (!no_data) {
+      if (isNaN(page) || page <= 0) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for page",
+          pages,
+        });
+      }
+
+      if (!["asc", "desc"].includes(order)) {
+        return res.status(400).send({
+          data: null,
+          message: "Wrong value for order",
+          success: false,
+          pages,
+        });
+      }
+
+      if (count === 0) {
+        return res.status(200).send({
+          data: [],
+          success: true,
+          message: "No users were found",
+          pages,
+        });
+      }
+
+      if (page > pages) {
+        return res.status(404).send({
+          data: null,
+          success: false,
+          message: "Page not found",
+          pages,
+        });
+      }
+
+      const dbRes = await User.getUsers({ page, sort, order, limit, filter }).select("-email");
+
+      return res.status(200).send({
+        data: dbRes,
+        success: true,
+        message: "Users fetched successfully",
+        count,
+        page: Number(page),
+        pages,
+      });
+    } else {
+      return res.status(200).send({
+        success: true,
+        message: "Request successful",
+        count,
+        pages,
+      });
+    }
   } catch (error) {
     next(error);
   }
@@ -275,6 +355,7 @@ module.exports = {
   getUsers,
   getSingleUser,
   getUserProfile,
+  getFollowedUsers,
   updateUser,
   deleteUser,
   followUser,

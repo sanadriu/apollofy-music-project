@@ -18,6 +18,14 @@ async function getSingleGenre(req, res, next) {
   try {
     const { idGenre } = req.params;
 
+    if (!Types.ObjectId.isValid(idGenre)) {
+      return res.status(400).send({
+        data: null,
+        success: false,
+        message: "Wrong genre ID",
+      });
+    }
+
     const dbRes = await Genre.findById(idGenre);
 
     if (dbRes === null) {

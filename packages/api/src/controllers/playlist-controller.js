@@ -63,6 +63,7 @@ async function getPlaylists(req, res, next) {
         success: true,
         message: "Playlists fetched successfully",
         count,
+        page: Number(page),
         pages,
       });
     } else {
@@ -319,6 +320,7 @@ async function getUserPlaylists(req, res, next) {
         success: true,
         message: "Playlists fetched successfully",
         count,
+        page: Number(page),
         pages,
       });
     } else {
