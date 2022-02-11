@@ -1,83 +1,52 @@
 import { createSelector } from "reselect";
+import usersApi from "../api/api-users";
+import * as authService from "../services/auth";
+
 
 // Action Types
 
-export const FETCHING_USER_DATA = "FETCHING_USER_DATA";
-export const FETCHING_ERROR = "FETCHING_ERROR";
-export const FETCH_SUCCESS = "FETCH_SUCCESS";
-export const SAVE_USER_DATA = "SAVE_USER_DATA";
-export const SUBMIT_USER_DATA = "SUBMIT_USER_DATA";
-export const USER_LOGGED_OUT = "USER_LOGGED_OUT";
-export const FOLLOW_USER = "FOLLOW_USER";
+export const FOLLOW_SUCCESS = "FOLLOW_SUCCESS";
+export const FOLLOW_ERROR = "FOLLOW_ERROR";
 
 // User Action
 
-export const saveUserData = (data) => ({
-  type: SAVE_USER_DATA,
-  payload: data,
+export const followSuccess = (followedUsers) => ({
+  type: FOLLOW_SUCCESS,
+  payload: followedUsers,
 });
 
-export const fetchingUserData = () => ({
-  type: FETCHING_USER_DATA,
+export const followError = (err) => ({
+  type: FOLLOW_ERROR,
+  payload: err
 });
 
-export const fetchSuccess = () => ({
-  type: FETCH_SUCCESS,
-});
 
-export const userLoggedOut = () => ({
-  type: USER_LOGGED_OUT,
-});
 
-export const followUser = (userId) => ({
-  type: FOLLOW_USER,
-  payload: userId,
-});
 // User Reducer
 
 export const UserInitialState = {
-  fetchingData: false,
-  fetchingError: false,
-  fetchSuccess: false,
-  userData: {},
+  followError: null,
+  followSuccess: false,
+  followedUsers: null,
 };
 
 const UserReducer = (state = UserInitialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case FETCHING_USER_DATA:
+    case FOLLOW_ERROR: 
       return {
         ...state,
-        fetchingData: true,
-      };
-    case FETCH_SUCCESS:
+        followError: payload,
+        followSuccess: false
+      }
+      case FOLLOW_SUCCESS: 
       return {
         ...state,
-        fetchingData: false,
-        fetchSuccess: true,
-      };
-
-    case SAVE_USER_DATA:
-      return {
-        ...state,
-        userData: payload,
-      };
-
-    case USER_LOGGED_OUT:
-      return {
-        ...state,
-        fetchSuccess: false,
-        userData: null,
-      };
-    case FOLLOW_USER:
-      return {
-        ...state,
-        userData: {
-          ...state.userData,
-          followed_users: [...state.userData.followed_users, payload],
-        },
-      };
+        followError: null,
+        followSuccess: true,
+        followedUsers: payload,
+      }
     default:
       return { ...state };
   }

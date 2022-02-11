@@ -1,3 +1,4 @@
+import { response } from "msw";
 import http from "../services/httpService";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
@@ -35,6 +36,15 @@ function getUsers(page, limit, sort, order) {
   });
 }
 
+function getMyFollowedUsers(followedUsers) {
+  const excludeUsers = followedUsers ? "" : "?exclude=true";
+
+  console.log(followedUsers);
+  console.log(excludeUsers);
+  
+  return http.get(`${baseUrl}/users/me/followed-users${excludeUsers}`);
+}
+
 function deleteUser(authToken) {
   return http.delete(`${baseUrl}/users/me`, {
     headers: {
@@ -59,14 +69,24 @@ function setUser(authToken, user) {
   });
 }
 
+function followUser(authToken, user){
+  return http.patch(`${baseUrl}/users/${user}/follow`, user, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  })
+}
+
 const usersApi = {
   getCurrentUser,
+  getMyFollowedUsers,
   getUser,
   setCurrentUser,
   getUsers,
   updateUser,
   setUser,
   deleteUser,
+  followUser
 };
 
 export default usersApi;

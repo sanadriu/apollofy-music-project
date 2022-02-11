@@ -180,6 +180,8 @@ async function updateUser(req, res, next) {
     const details = req.body;
     const { uid } = req.user;
 
+    console.log('uid: ',uid,'details: ',details)
+
     const dbRes = await User.updateUser(uid, details);
 
     if (dbRes === null) {

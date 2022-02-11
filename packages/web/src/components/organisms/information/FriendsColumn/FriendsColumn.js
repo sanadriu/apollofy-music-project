@@ -34,7 +34,7 @@ export default function FriendsColumn() {
           currentUser.followed_users.map((friend) => {
             <FriendInfo
               key={friend.id}
-              profilePicture={friend.thumbnails.url_default}
+              profilePicture={friend.thumbnails?.url_default}
               name={friend.username}
             />;
           })

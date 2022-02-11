@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useDispatch } from "react-redux";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
 
 import DetailText from "../../atoms/DetailText";
 import HomeSmallText from "../../atoms/HomeSmallText";
-import { followUser } from "../../../redux/user";
+import { useFollowUser } from "../../../hooks/useUsers";
 
 const UserLayout = styled.div`
   display: flex;
@@ -82,12 +83,14 @@ const FollowButton = styled.button`
 `;
 
 const UserDetail = ({ user }) => {
-  const dispatch = useDispatch();
+  const [isFollowed, setIsFollowed] = useState(false);
+  const { mutate } = useFollowUser();
 
   const handleFollow = (userId) => {
-    dispatch(followUser(userId));
+    mutate(userId);
+    setIsFollowed(!isFollowed);
   };
-  console.log(user);
+
   return (
     <UserLayout>
       <UserPicture alt={`${user?.username}`} src={user?.thumbnails?.url_default} />
@@ -99,11 +102,17 @@ const UserDetail = ({ user }) => {
       </UserFlex>
       <StyledNumUser>
         <GroupIcon />
-        <StyledNumber>{user.followed_by?.length}</StyledNumber>
+        <StyledNumber>{user?.followed_by?.length}</StyledNumber>
       </StyledNumUser>
-      <FollowButton onClick={() => handleFollow(user.id)}>
-        <PersonAddIcon />
-      </FollowButton>
+      {isFollowed ? (
+        <FollowButton onClick={() => handleFollow(user?.id)}>
+          <StarOutlineIcon />
+        </FollowButton>
+      ) : (
+        <FollowButton onClick={() => handleFollow(user?.id)}>
+          <PersonAddIcon />
+        </FollowButton>
+      )}
     </UserLayout>
   );
 };

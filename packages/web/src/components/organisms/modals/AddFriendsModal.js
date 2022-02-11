@@ -3,12 +3,14 @@ import styled from "styled-components";
 import { Box } from "@mui/system";
 import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import * as authService from "../../../services/auth";
 
-import { useUsers } from "../../../hooks/useUsers";
+import { useFollowedUsers } from "../../../hooks/useUsers";
 import FlexColumn from "../../atoms/FlexColumn";
 import MiddleTitle from "../../atoms/MiddleTitle";
 import UserDetail from "../../molecules/UserDetail";
+import { authSelector } from "../../../redux/auth";
 
 const StyledModal = styled(ModalUnstyled)`
   position: fixed;
@@ -48,11 +50,19 @@ export const ModalBox = styled(Box)`
   padding: 2rem;
 `;
 
-export default function AddFriendsModal({ isOpen, handleModal }) {
+export default function AddFriendsModal ({ isOpen, handleModal }) {
   const dispatch = useDispatch();
-  const { data: users } = useUsers();
+  const { currentUser } = useSelector(authSelector);
+  
+  const followedUsers = false;
+  
+  const { data: users } = useFollowedUsers(followedUsers);
+
+  console.log(users);
 
   const userList = users?.data?.data;
+  
+  // const result = currentUser.followed_users.filter((id) => )
 
   const handleClose = () => handleModal();
 
