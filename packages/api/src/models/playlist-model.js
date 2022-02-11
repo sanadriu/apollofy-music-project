@@ -145,7 +145,7 @@ PlaylistSchema.statics.getPlaylist = function (id, options = {}) {
 };
 
 PlaylistSchema.statics.getPlaylists = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc", limit = 10, filter } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, filter = {} } = options;
 
   const start = (page - 1) * limit;
 

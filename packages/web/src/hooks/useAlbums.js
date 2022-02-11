@@ -94,8 +94,8 @@ export function useDeleteAlbum() {
 export function useMyAlbums({ page, sort, order, limit, extend }) {
   const query = useQuery(
     ["my-albums", page, sort, order, limit, extend],
-    () => {
-      const authToken = authService.getCurrentUserToken();
+    async () => {
+      const authToken = await authService.getCurrentUserToken();
 
       if (authToken) return albumsApi.getMyAlbums(authToken, { page, sort, order, limit, extend });
 

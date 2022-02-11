@@ -25,6 +25,7 @@ export const ProfilePicture = styled.img`
 
 export default function FriendInfo(props) {
   const { profilePicture, name, lastTrack } = props;
+  
   return (
     <Layout>
       <ProfilePicture alt="Friend's Picture" src={profilePicture} />

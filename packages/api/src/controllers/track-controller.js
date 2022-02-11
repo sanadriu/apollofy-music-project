@@ -65,6 +65,7 @@ async function getTracks(req, res, next) {
         success: true,
         message: "Tracks fetched successfully",
         count,
+        page: Number(page),
         pages,
       });
     } else {
@@ -356,6 +357,7 @@ async function getUserTracks(req, res, next) {
         success: true,
         message: "Tracks fetched successfully",
         count,
+        page: Number(page),
         pages,
       });
     } else {

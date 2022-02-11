@@ -23,11 +23,7 @@ export function useUsers(userId = undefined) {
   return { data, isError, error, isLoading, isSuccess };
 }
 
-export function useFollowedUsers(followedUsers = true) {
-
-  // const authToken = async () => authService.getCurrentUserToken();
-  // if (!authToken) return Promise.reject(new Error("User authentication required"));
-  
+export function useFollowedUsers(followedUsers = true) {  
   const fallback = [];
   const {
     data = fallback,
@@ -35,7 +31,13 @@ export function useFollowedUsers(followedUsers = true) {
     error,
     isLoading,
     isSuccess
-  } = useQuery([queryKeys.users, followedUsers], () => usersApi.getMyFollowedUsers(followedUsers), {
+  } = useQuery([queryKeys.users, followedUsers], async () => {
+    const authToken = await authService.getCurrentUserToken();
+
+      if (authToken) return usersApi.getMyFollowedUsers(authToken, followedUsers)
+
+      return Promise.reject(new Error("User authentication required"));
+  }, {
     staleTime: 600000, // 10 minutes
     cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
     refetchOnMount: false,
@@ -43,7 +45,7 @@ export function useFollowedUsers(followedUsers = true) {
     refetchOnReconnect: false,
   });
 
-  return { data, isError, error, isLoading, isSuccess };
+  return { data, isError, error, isLoading,isSuccess };
 }
 
 export function usePrefetchUsers(userId = undefined) {

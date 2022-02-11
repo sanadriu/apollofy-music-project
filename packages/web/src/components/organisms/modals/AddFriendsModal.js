@@ -57,12 +57,8 @@ export default function AddFriendsModal ({ isOpen, handleModal }) {
   const followedUsers = false;
   
   const { data: users } = useFollowedUsers(followedUsers);
-
-  console.log(users);
-
-  const userList = users?.data?.data;
   
-  // const result = currentUser.followed_users.filter((id) => )
+  const userList = isOpen ? users?.data?.data : null;
 
   const handleClose = () => handleModal();
 

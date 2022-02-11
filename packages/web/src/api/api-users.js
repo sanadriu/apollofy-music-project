@@ -1,4 +1,3 @@
-import { response } from "msw";
 import http from "../services/httpService";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
@@ -36,13 +35,14 @@ function getUsers(page, limit, sort, order) {
   });
 }
 
-function getMyFollowedUsers(followedUsers) {
+function getMyFollowedUsers(authToken, followedUsers) {
   const excludeUsers = followedUsers ? "" : "?exclude=true";
-
-  console.log(followedUsers);
-  console.log(excludeUsers);
   
-  return http.get(`${baseUrl}/users/me/followed-users${excludeUsers}`);
+  return http.get(`${baseUrl}/users/me/followed-users${excludeUsers}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
 }
 
 function deleteUser(authToken) {
