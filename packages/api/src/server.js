@@ -1,4 +1,6 @@
 const express = require("express");
+const swaggerUI = require("swagger-ui-express");
+const swaggerDocs = require("./swagger.json");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const { json } = require("body-parser");
@@ -40,11 +42,8 @@ app.use("/tracks", trackRouter);
 app.use("/genres", genreRouter);
 app.use("/search", searchRouter);
 
-app.get("/", (req, res) => {
-  res.status(200).send({
-    data: "hello-world",
-  });
-});
+app.get("/", (req, res) => res.redirect("/docs"));
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 app.use("*", (req, res) => {
   res.status(404).send({
