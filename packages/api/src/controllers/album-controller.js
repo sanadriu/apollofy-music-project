@@ -26,12 +26,19 @@ async function getAlbums(req, res, next) {
     const count = await Album.countDocuments(filter);
 
     if (!no_data) {
-      if (isNaN(page) || page <= 0) {
+      if (!Number.isInteger(page) || page <= 0) {
         return res.status(400).send({
           data: null,
           success: false,
           message: "Wrong value for page",
-          pages,
+        });
+      }
+
+      if (!Number.isInteger(limit) || limit <= 0) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for limit",
         });
       }
 
@@ -40,7 +47,6 @@ async function getAlbums(req, res, next) {
           data: null,
           success: false,
           message: "Wrong value for order",
-          pages,
         });
       }
 
@@ -49,7 +55,9 @@ async function getAlbums(req, res, next) {
           data: [],
           success: true,
           message: "No albums were found",
+          count,
           pages,
+          page: Number(page),
         });
       }
 
@@ -58,7 +66,6 @@ async function getAlbums(req, res, next) {
           data: null,
           success: false,
           message: "Page not found",
-          pages,
         });
       }
 
@@ -69,15 +76,17 @@ async function getAlbums(req, res, next) {
         success: true,
         message: "Albums fetched successfully",
         count,
-        page: Number(page),
         pages,
+        page: Number(page),
       });
     } else {
       return res.status(200).send({
+        data: null,
         success: true,
         message: "Request successful",
         count,
         pages,
+        page: null,
       });
     }
   } catch (error) {
@@ -140,8 +149,8 @@ async function createAlbum(req, res, next) {
 async function updateAlbum(req, res, next) {
   try {
     const { tracks = [], ...details } = req.body;
-    const { uid } = req.user;
     const { idAlbum } = req.params;
+    const { uid } = req.user;
 
     if (!Types.ObjectId.isValid(idAlbum)) {
       return res.status(400).send({
@@ -187,8 +196,8 @@ async function updateAlbum(req, res, next) {
 
 async function deleteAlbum(req, res, next) {
   try {
-    const { uid } = req.user;
     const { idAlbum } = req.params;
+    const { uid } = req.user;
 
     if (!Types.ObjectId.isValid(idAlbum)) {
       return res.status(400).send({
@@ -274,6 +283,7 @@ async function likeAlbum(req, res, next) {
 
 async function getUserAlbums(req, res, next) {
   try {
+    const { uid } = req.user;
     const {
       page = 1,
       sort = "created_at",
@@ -282,18 +292,24 @@ async function getUserAlbums(req, res, next) {
       extend = false,
       no_data = false,
     } = req.query;
-    const { uid } = req.user;
 
     const pages = await Album.getNumPages(limit, { user: uid });
     const count = await Album.countDocuments({ user: uid });
 
     if (!no_data) {
-      if (isNaN(page) || page <= 0) {
+      if (!Number.isInteger(page) || page <= 0) {
         return res.status(400).send({
           data: null,
           success: false,
-          message: "Wrong page",
-          pages,
+          message: "Wrong value for page",
+        });
+      }
+
+      if (!["asc", "desc"].includes(order)) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for order",
         });
       }
 
@@ -302,7 +318,9 @@ async function getUserAlbums(req, res, next) {
           data: [],
           success: true,
           message: "No albums were found",
+          count,
           pages,
+          page: Number(page),
         });
       }
 
@@ -311,7 +329,6 @@ async function getUserAlbums(req, res, next) {
           data: null,
           success: false,
           message: "Page not found",
-          pages,
         });
       }
 
@@ -322,15 +339,17 @@ async function getUserAlbums(req, res, next) {
         success: true,
         message: "Albums fetched successfully",
         count,
-        page: Number(page),
         pages,
+        page: Number(page),
       });
     } else {
       return res.status(200).send({
+        data: null,
         success: true,
         message: "Request successful",
         count,
         pages,
+        page: null,
       });
     }
   } catch (error) {

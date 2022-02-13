@@ -1,4 +1,5 @@
 const { User } = require("../models");
+
 const { mode } = require("../config");
 const { auth } = mode === "test" ? require("../services/__mocks__") : require("../services");
 
@@ -19,7 +20,7 @@ async function signUp(req, res, next) {
     await User.create({ _id: uid, email: email, username: name });
 
     return res.status(201).send({
-      data: "OK",
+      data: dbRes,
       success: true,
       message: "User created successfully",
     });
@@ -45,7 +46,7 @@ async function signIn(req, res, next) {
     return res.status(200).send({
       data: dbRes,
       success: true,
-      message: "User fetched successfully",
+      message: "User logged in successfully",
     });
   } catch (error) {
     next(error);
@@ -53,10 +54,27 @@ async function signIn(req, res, next) {
 }
 
 async function signOut(req, res) {
-  res.status(200).send({
-    data: "OK",
-    success: true,
-  });
+  try {
+    const { email } = req.user;
+
+    const dbRes = await User.findOne({ email });
+
+    if (dbRes === null) {
+      return res.status(404).send({
+        data: null,
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).send({
+      data: "OK",
+      success: true,
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
 async function getUsers(req, res, next) {
@@ -67,21 +85,27 @@ async function getUsers(req, res, next) {
     const count = await User.countDocuments();
 
     if (!no_data) {
-      if (isNaN(page) || page <= 0) {
+      if (!Number.isInteger(page) || page <= 0) {
         return res.status(400).send({
           data: null,
           success: false,
           message: "Wrong value for page",
-          pages,
+        });
+      }
+
+      if (!Number.isInteger(limit) || limit <= 0) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for limit",
         });
       }
 
       if (!["asc", "desc"].includes(order)) {
         return res.status(400).send({
           data: null,
-          message: "Wrong value for order",
           success: false,
-          pages,
+          message: "Wrong value for order",
         });
       }
 
@@ -90,7 +114,9 @@ async function getUsers(req, res, next) {
           data: [],
           success: true,
           message: "No users were found",
+          count,
           pages,
+          page: Number(page),
         });
       }
 
@@ -99,7 +125,6 @@ async function getUsers(req, res, next) {
           data: null,
           success: false,
           message: "Page not found",
-          pages,
         });
       }
 
@@ -110,15 +135,17 @@ async function getUsers(req, res, next) {
         success: true,
         message: "Users fetched successfully",
         count,
-        page: Number(page),
         pages,
+        page: Number(page),
       });
     } else {
       return res.status(200).send({
+        data: null,
         success: true,
         message: "Request successful",
         count,
         pages,
+        page: null,
       });
     }
   } catch (error) {
@@ -146,85 +173,6 @@ async function getSingleUser(req, res, next) {
       success: true,
       message: "User fetched successfully",
     });
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function getFollowedUsers(req, res, next) {
-  try {
-    const { uid } = req.user;
-    const {
-      page = 1,
-      sort = "created_at",
-      order = "asc",
-      limit = 10,
-      no_data = false,
-      exclude = false,
-    } = req.query;
-
-    const filter = {
-      followed_by: { [exclude ? "$nin" : "$in"]: [uid] },
-    };
-
-    const pages = await User.getNumPages(limit, filter);
-    const count = await User.countDocuments(filter);
-
-    if (!no_data) {
-      if (isNaN(page) || page <= 0) {
-        return res.status(400).send({
-          data: null,
-          success: false,
-          message: "Wrong value for page",
-          pages,
-        });
-      }
-
-      if (!["asc", "desc"].includes(order)) {
-        return res.status(400).send({
-          data: null,
-          message: "Wrong value for order",
-          success: false,
-          pages,
-        });
-      }
-
-      if (count === 0) {
-        return res.status(200).send({
-          data: [],
-          success: true,
-          message: "No users were found",
-          pages,
-        });
-      }
-
-      if (page > pages) {
-        return res.status(404).send({
-          data: null,
-          success: false,
-          message: "Page not found",
-          pages,
-        });
-      }
-
-      const dbRes = await User.getUsers({ page, sort, order, limit, filter }).select("-email");
-
-      return res.status(200).send({
-        data: dbRes,
-        success: true,
-        message: "Users fetched successfully",
-        count,
-        page: Number(page),
-        pages,
-      });
-    } else {
-      return res.status(200).send({
-        success: true,
-        message: "Request successful",
-        count,
-        pages,
-      });
-    }
   } catch (error) {
     next(error);
   }
@@ -271,7 +219,7 @@ async function updateUser(req, res, next) {
     }
 
     return res.status(200).send({
-      data: dbRes,
+      data: null,
       success: true,
       message: "User updated successfully",
     });
@@ -343,6 +291,94 @@ async function followUser(req, res, next) {
       success: true,
       message: "Operation done successfully",
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getFollowedUsers(req, res, next) {
+  try {
+    const { uid } = req.user;
+    const {
+      page = 1,
+      sort = "created_at",
+      order = "asc",
+      limit = 10,
+      no_data = false,
+      exclude = false,
+    } = req.query;
+
+    const filter = {
+      followed_by: { [parseBoolean(exclude) ? "$nin" : "$in"]: [uid] },
+    };
+
+    const pages = await User.getNumPages(limit, filter);
+    const count = await User.countDocuments(filter);
+
+    if (!no_data) {
+      if (!Number.isInteger(page) || page <= 0) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for page",
+        });
+      }
+
+      if (!Number.isInteger(limit) || limit <= 0) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for limit",
+        });
+      }
+
+      if (!["asc", "desc"].includes(order)) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for order",
+        });
+      }
+
+      if (count === 0) {
+        return res.status(200).send({
+          data: [],
+          success: true,
+          message: "No users were found",
+          count,
+          pages,
+          page: Number(page),
+        });
+      }
+
+      if (page > pages) {
+        return res.status(404).send({
+          data: null,
+          success: false,
+          message: "Page not found",
+        });
+      }
+
+      const dbRes = await User.getUsers({ page, sort, order, limit, filter }).select("-email");
+
+      return res.status(200).send({
+        data: dbRes,
+        success: true,
+        message: "Users fetched successfully",
+        count,
+        pages,
+        page: Number(page),
+      });
+    } else {
+      return res.status(200).send({
+        data: null,
+        success: true,
+        message: "Request successful",
+        count,
+        pages,
+        page: null,
+      });
+    }
   } catch (error) {
     next(error);
   }

@@ -22,12 +22,19 @@ async function getTracks(req, res, next) {
     const count = await Track.countDocuments(filter);
 
     if (!no_data) {
-      if (isNaN(page) || page <= 0) {
+      if (!Number.isInteger(page) || page <= 0) {
         return res.status(400).send({
           data: null,
           success: false,
-          message: "Wrong page",
-          pages,
+          message: "Wrong value for page",
+        });
+      }
+
+      if (!Number.isInteger(limit) || limit <= 0) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for limit",
         });
       }
 
@@ -36,7 +43,6 @@ async function getTracks(req, res, next) {
           data: null,
           success: false,
           message: "Wrong value for order",
-          pages,
         });
       }
 
@@ -45,7 +51,9 @@ async function getTracks(req, res, next) {
           data: [],
           success: true,
           message: "No tracks were found",
+          count,
           pages,
+          page: Number(page),
         });
       }
 
@@ -54,7 +62,6 @@ async function getTracks(req, res, next) {
           data: null,
           success: false,
           message: "Page not found",
-          pages,
         });
       }
 
@@ -65,15 +72,17 @@ async function getTracks(req, res, next) {
         success: true,
         message: "Tracks fetched successfully",
         count,
-        page: Number(page),
         pages,
+        page: Number(page),
       });
     } else {
       return res.status(200).send({
+        data: null,
         success: true,
         message: "Request successful",
         count,
         pages,
+        page: null,
       });
     }
   } catch (error) {
@@ -314,12 +323,11 @@ async function getUserTracks(req, res, next) {
     const count = await Track.countDocuments({ user: uid });
 
     if (!no_data) {
-      if (isNaN(page) || page <= 0) {
+      if (!Number.isInteger(page) || page <= 0) {
         return res.status(400).send({
           data: null,
           success: false,
-          message: "Wrong page",
-          pages,
+          message: "Wrong value for page",
         });
       }
 
@@ -328,7 +336,6 @@ async function getUserTracks(req, res, next) {
           data: null,
           success: false,
           message: "Wrong value for order",
-          pages,
         });
       }
 
@@ -337,7 +344,9 @@ async function getUserTracks(req, res, next) {
           data: [],
           success: true,
           message: "No tracks were found",
+          count,
           pages,
+          page: Number(page),
         });
       }
 
@@ -346,7 +355,6 @@ async function getUserTracks(req, res, next) {
           data: null,
           success: false,
           message: "Page not found",
-          pages,
         });
       }
 
@@ -357,15 +365,17 @@ async function getUserTracks(req, res, next) {
         success: true,
         message: "Tracks fetched successfully",
         count,
-        page: Number(page),
         pages,
+        page: Number(page),
       });
     } else {
       return res.status(200).send({
+        data: null,
         success: true,
         message: "Request successful",
         count,
         pages,
+        page: null,
       });
     }
   } catch (error) {

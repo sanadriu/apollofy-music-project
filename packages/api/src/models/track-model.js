@@ -15,6 +15,15 @@ const TrackSchema = new Schema(
       trim: true,
       maxlength: 50,
     },
+    released_date: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (value) =>
+          value ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" }) : true,
+        message: () => `Date is not valid`,
+      },
+    },
     url: {
       type: String,
       trim: true,
@@ -28,15 +37,6 @@ const TrackSchema = new Schema(
       required: true,
       min: 0,
     },
-    released_date: {
-      type: String,
-      trim: true,
-      validate: {
-        validator: (value) =>
-          value ? isDate(value, { strictMode: true, format: "YYYY-MM-DD" }) : true,
-        message: () => `Date is not valid`,
-      },
-    },
     color: {
       type: String,
       trim: true,
@@ -44,11 +44,6 @@ const TrackSchema = new Schema(
     genres: {
       type: [String],
       trim: true,
-    },
-    liked_by: {
-      type: [String],
-      trim: true,
-      ref: "user",
     },
     thumbnails: {
       url_default: {
@@ -75,6 +70,11 @@ const TrackSchema = new Schema(
           message: () => `URL for large thumbnail is invalid`,
         },
       },
+    },
+    liked_by: {
+      type: [String],
+      trim: true,
+      ref: "user",
     },
     num_plays: {
       type: Number,

@@ -54,6 +54,14 @@ function switchValueInList(list, value) {
   return index === -1 ? [...list, value] : list.splice(index, 1);
 }
 
+function parseBoolean(string) {
+  if (string === "true") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 module.exports = {
   getRandomSequence,
   deepClone,
@@ -61,4 +69,5 @@ module.exports = {
   getRandomItems,
   getRandomIndex,
   switchValueInList,
+  parseBoolean,
 };

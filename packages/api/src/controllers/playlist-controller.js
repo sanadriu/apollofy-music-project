@@ -20,12 +20,19 @@ async function getPlaylists(req, res, next) {
     const count = await Playlist.countDocuments(filter);
 
     if (!no_data) {
-      if (isNaN(page) || page <= 0) {
+      if (!Number.isInteger(page) || page <= 0) {
         return res.status(400).send({
           data: null,
           success: false,
           message: "Wrong value for page",
-          pages,
+        });
+      }
+
+      if (!Number.isInteger(limit) || limit <= 0) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for limit",
         });
       }
 
@@ -34,7 +41,6 @@ async function getPlaylists(req, res, next) {
           data: null,
           success: false,
           message: "Wrong value for order",
-          pages,
         });
       }
 
@@ -42,8 +48,10 @@ async function getPlaylists(req, res, next) {
         return res.status(200).send({
           data: [],
           success: true,
-          message: "No playlist were found",
+          message: "No playlists were found",
+          count,
           pages,
+          page: Number(page),
         });
       }
 
@@ -52,7 +60,6 @@ async function getPlaylists(req, res, next) {
           data: null,
           success: false,
           message: "Page not found",
-          pages,
         });
       }
 
@@ -63,15 +70,17 @@ async function getPlaylists(req, res, next) {
         success: true,
         message: "Playlists fetched successfully",
         count,
-        page: Number(page),
         pages,
+        page: Number(page),
       });
     } else {
       return res.status(200).send({
+        data: null,
         success: true,
         message: "Request successful",
         count,
         pages,
+        page: null,
       });
     }
   } catch (error) {
@@ -132,8 +141,8 @@ async function createPlaylist(req, res, next) {
 async function updatePlaylist(req, res, next) {
   try {
     const details = req.body;
-    const { uid } = req.user;
     const { idPlaylist } = req.params;
+    const { uid } = req.user;
 
     if (!Types.ObjectId.isValid(idPlaylist)) {
       return res.status(400).send({
@@ -278,12 +287,11 @@ async function getUserPlaylists(req, res, next) {
     const count = await Playlist.countDocuments({ user: uid });
 
     if (!no_data) {
-      if (isNaN(page) || page <= 0) {
+      if (!Number.isInteger(page) || page <= 0) {
         return res.status(400).send({
           data: null,
           success: false,
-          message: "Wrong page",
-          pages,
+          message: "Wrong value for page",
         });
       }
 
@@ -292,7 +300,6 @@ async function getUserPlaylists(req, res, next) {
           data: null,
           success: false,
           message: "Wrong value for order",
-          pages,
         });
       }
 
@@ -300,8 +307,10 @@ async function getUserPlaylists(req, res, next) {
         return res.status(200).send({
           data: [],
           success: true,
-          message: "No playlist were found",
+          message: "No playlists were found",
+          count,
           pages,
+          page: Number(page),
         });
       }
 
@@ -310,9 +319,9 @@ async function getUserPlaylists(req, res, next) {
           data: null,
           success: false,
           message: "Page not found",
-          pages,
         });
       }
+
       const dbRes = await Playlist.getUserPlaylists(uid, { page, sort, order, limit, extend });
 
       return res.status(200).send({
@@ -320,15 +329,17 @@ async function getUserPlaylists(req, res, next) {
         success: true,
         message: "Playlists fetched successfully",
         count,
-        page: Number(page),
         pages,
+        page: Number(page),
       });
     } else {
       return res.status(200).send({
+        data: null,
         success: true,
         message: "Request successful",
         count,
         pages,
+        page: null,
       });
     }
   } catch (message) {
