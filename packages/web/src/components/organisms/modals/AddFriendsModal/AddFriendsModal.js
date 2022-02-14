@@ -10,7 +10,7 @@ import { useFollowedUsers } from "../../../../hooks/useUsers";
 import FlexColumn from "../../../atoms/layout/FlexColumn";
 import MiddleTitle from "../../../atoms/headings/MiddleTitle";
 import UserDetail from "../../../molecules/UserDetail";
-import { authSelector } from "../../../../redux/auth";
+import { authSelector } from "../../../../store/auth";
 
 const StyledModal = styled(ModalUnstyled)`
   position: fixed;

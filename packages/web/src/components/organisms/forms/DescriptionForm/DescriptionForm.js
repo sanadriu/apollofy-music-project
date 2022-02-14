@@ -9,7 +9,7 @@ import MiddleTitle from "../../../atoms/headings/MiddleTitle";
 import SmallText from "../../../atoms/body/SmallText";
 import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 
-import { authSelector, signUpRequest, signUpWithEmailRequest } from "../../../../redux/auth";
+import { authSelector, signUpRequest, signUpWithEmailRequest } from "../../../../store/auth";
 
 const DescriptionArea = styled.textarea`
   width: 22rem;

@@ -2,8 +2,8 @@ import React from "react";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import { authSelector, updateCurrentUser } from "../../../../redux/auth";
-import { modalSelector, nextModal } from "../../../../redux/modal";
+import { authSelector, updateCurrentUser } from "../../../../store/auth";
+import { modalSelector, nextModal } from "../../../../store/modal";
 
 import AccountSchema from "../../../../schemas/AccountSchema";
 import FlexColumn from "../../../atoms/layout/FlexColumn";

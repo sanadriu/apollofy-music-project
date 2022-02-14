@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Typography } from "@mui/material";
 
-import { authSelector } from "../../../redux/auth";
+import { authSelector } from "../../../store/auth";
 import ButtonFollow from "../buttons/ButtonFollow";
 
 const StyledTitleUser = styled.div`

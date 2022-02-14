@@ -5,15 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
+
 import FlexColumn from "../../../atoms/layout/FlexColumn";
 import MiddleTitle from "../../../atoms/headings/MiddleTitle";
 import SmallText from "../../../atoms/body/SmallText";
 import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 
-import { authSelector, pictureLinkAdded } from "../../../../redux/auth";
-import { modalSelector, nextModal } from "../../../../redux/modal";
+import { authSelector, pictureLinkAdded } from "../../../../store/auth";
+import { modalSelector, nextModal } from "../../../../store/modal";
 
 const Input = styled("input")({
   display: "none",
@@ -84,7 +84,6 @@ export default function ProfilePictureForm() {
             <PhotoCamera />
           </IconButton>
         </label>
-        {/* {value ? <p>{value}</p> : null} */}
       </Stack>
       <ModalButton onClick={() => handlePicture()}>{value ? "Submit" : "Skip for now"}</ModalButton>
     </FlexColumn>

@@ -12,7 +12,7 @@ import styled from "styled-components";
 
 import { auth, getCurrentUserToken } from "../../../../services/auth";
 import usersApi from "../../../../api/api-users";
-import { currentUserAdded } from "../../../../redux/auth";
+import { currentUserAdded } from "../../../../store/auth";
 
 // eslint-disable-next-line react/prop-types
 const TextField = styled.input`

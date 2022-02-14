@@ -4,7 +4,7 @@ import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
-import { authSelector, resetAuthState, sendPasswordResetEmail } from "../../../../redux/auth";
+import { authSelector, resetAuthState, sendPasswordResetEmail } from "../../../../store/auth";
 
 import FlexColumn from "../../../atoms/layout/FlexColumn";
 import MiddleTitle from "../../../atoms/headings/MiddleTitle";

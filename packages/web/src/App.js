@@ -23,7 +23,7 @@ import Profile from "./pages/Profile";
 import Statistics from "./pages/Statistics";
 
 import { onAuthStateChanged } from "./services/auth";
-import { authSelector, syncSignIn, signOut } from "./redux/auth";
+import { authSelector, syncSignIn, signOut } from "./store/auth";
 
 import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";

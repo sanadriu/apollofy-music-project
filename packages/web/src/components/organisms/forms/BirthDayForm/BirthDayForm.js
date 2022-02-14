@@ -17,8 +17,8 @@ import MiddleTitle from "../../../atoms/headings/MiddleTitle";
 
 import DateOfBirthSchema from "../../../../schemas/DateOfBirthSchema";
 
-import { dateOfBirthAdded } from "../../../../redux/auth";
-import { modalSelector, nextModal } from "../../../../redux/modal";
+import { dateOfBirthAdded } from "../../../../store/auth";
+import { modalSelector, nextModal } from "../../../../store/modal";
 
 const dateSchema = {
   date: null, // if date is defiend as '' yup will throw a invalid date error
