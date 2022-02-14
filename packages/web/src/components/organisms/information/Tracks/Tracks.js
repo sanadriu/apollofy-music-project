@@ -10,7 +10,7 @@ import { useTracks, usePrefetchTracks, useInfiniteTracks } from "../../../../hoo
 import TrackDetail from "../../../molecules/TrackDetail";
 import Button from "../../../atoms/buttons/Button";
 import { TracksList } from "../PopularTracks/PopularTracks";
-import HomeSmallText from "../../../atoms/HomeSmallText";
+import HomeSmallText from "../../../atoms/body/HomeSmallText";
 
 const ExtendedTrackList = styled(TracksList)`
   width: 100%;

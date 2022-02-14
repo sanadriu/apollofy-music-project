@@ -6,7 +6,7 @@ import ProfileNameTrack from "../../atoms/ProfileNameTrack";
 import ProfileNumReprod from "../../atoms/ProfileNumReprod";
 import ProfileNumTrack from "../../atoms/ProfileNumTrack";
 import ProfilePlayTrack from "../../atoms/ProfilePlayTrack";
-import ProfileTrackImage from "../../atoms/ProfileTrackImage";
+import ProfileTrackImage from "../../atoms/images/ProfileTrackImage";
 
 const StyledUserTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};

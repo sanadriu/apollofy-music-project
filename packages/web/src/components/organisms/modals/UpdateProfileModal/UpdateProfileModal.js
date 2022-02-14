@@ -10,9 +10,9 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import styled from "styled-components";
 
-import { auth, getCurrentUserToken } from "../../../services/auth";
-import usersApi from "../../../api/api-users";
-import { setCurrentUser } from "../../../redux/auth";
+import { auth, getCurrentUserToken } from "../../../../services/auth";
+import usersApi from "../../../../api/api-users";
+import { currentUserAdded } from "../../../../redux/auth";
 
 // eslint-disable-next-line react/prop-types
 const TextField = styled.input`
@@ -64,13 +64,7 @@ export default function UpdateProfileModal({
     const userToken = await getCurrentUserToken();
 
     if (userToken) {
-      const res = await usersApi.updateUser(
-        userToken,
-        (updatedUsername && updatedUsername) ||
-        (updatedEmail && updatedEmail) ||
-        (updatedBirthday && updatedBirthday) ||
-        (newProfileLink && newProfileLink),
-      );
+      const res = await usersApi.updateUser(userToken, update);
 
       if (res) {
         dispatch(currentUserAdded(res.data.data));

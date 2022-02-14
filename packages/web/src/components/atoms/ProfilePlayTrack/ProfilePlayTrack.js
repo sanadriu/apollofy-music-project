@@ -77,7 +77,7 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
           sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: "pointer" } }}
         />
       </PlayButton>
-    </StyledPlayTrack >
+    </StyledPlayTrack>
   );
 };
 

@@ -4,11 +4,10 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { useDispatch } from "react-redux";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 
-import DetailText from "../../atoms/DetailText";
-import HomeSmallText from "../../atoms/HomeSmallText";
+import DetailText from "../../atoms/body/DetailText";
+import HomeSmallText from "../../atoms/body/HomeSmallText";
 import { useFollowUser } from "../../../hooks/useUsers";
 
 const UserLayout = styled.div`
@@ -130,7 +129,6 @@ UserDetail.propTypes = {
     birth_date: PropTypes.string.isRequired,
     liked_albums: PropTypes.arrayOf(PropTypes.object),
     liked_tracks: PropTypes.arrayOf(PropTypes.object),
-    followed_by: PropTypes.arrayOf(PropTypes.object),
     num_liked_albums: PropTypes.number,
     num_liked_tracks: PropTypes.number,
     followed_playlists: PropTypes.arrayOf(PropTypes.object),

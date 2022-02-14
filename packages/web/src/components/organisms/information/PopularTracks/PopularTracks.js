@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { useTracks } from "../../../../hooks/useTracks";
 import TrackDetail from "../../../molecules/TrackDetail";
-import SmallText from "../../../atoms/SmallText";
+import SmallText from "../../../atoms/body/SmallText";
 
 export const SectionLayout = styled.div`
   margin-top: 2rem;

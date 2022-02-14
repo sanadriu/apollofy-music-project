@@ -11,11 +11,11 @@ import ProfileMain from "../../components/organisms/information/ProfileMain";
 import ProfileUserCards from "../../components/organisms/information/ProfileUserCards";
 import ProfileUserTracks from "../../components/organisms/information/ProfileUserTracks";
 import ProfileGroupButtons from "../../components/molecules/ProfileGroupButtons";
-import ButtonPlaySuffle from "../../components/atoms/ButtonPlayShuffle";
+import ButtonPlaySuffle from "../../components/atoms/buttons/ButtonPlayShuffle";
 
 const StyledProfile = styled.div`
   overflow: hidden;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     padding-right: 2rem;
   }
 `;
@@ -44,15 +44,15 @@ const Profile = () => {
   useEffect(() => {
     (async () => {
       const { data } = await usersApi.getUser(profileId);
-      // const { data } = await axios.get(`http://localhost:4000/users/${profileId}`);
-      setUser(data.data);
+
+      // setUser(data.data);
     })();
   }, [profileId]);
 
   return (
     <StyledProfile>
       <ProfileGroupButtons />
-      <ProfileMain user={user} albums={albumsList.length} tracks={tracksList.length} />
+      <ProfileMain user={user} albums={albumsList?.length} tracks={tracksList?.length} />
       <ButtonPlaySuffle />
       <StyledTitle>Most Listened</StyledTitle>
       <ProfileUserTracks />

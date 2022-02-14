@@ -2,9 +2,6 @@ import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { useSetAlbum } from "../../../../hooks/useAlbums";
-import { useGenres } from "../../../../hooks/useGenres";
-import validationSchema from "../../../../schemas/AlbumSchema";
 import {
   Box,
   Alert,
@@ -21,6 +18,10 @@ import {
   Pagination,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+
+import { useSetAlbum } from "../../../../hooks/useAlbums";
+import { useGenres } from "../../../../hooks/useGenres";
+import validationSchema from "../../../../schemas/AlbumSchema";
 import { uploadResource } from "../../../../api/api-cloudinary";
 import withLayout from "../../../hoc/withLayout";
 import { useMyTracks } from "../../../../hooks/useTracks";

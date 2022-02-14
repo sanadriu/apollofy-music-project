@@ -4,9 +4,9 @@ import { useParams } from "react-router-dom";
 import withLayout from "../../components/hoc/withLayout";
 import Tracks from "../../components/organisms/information/Tracks";
 import Genres from "../../components/organisms/information/Genres";
-import PlaylistImage from "../../components/atoms/PlaylistImage/PlaylistImage";
+import PlaylistImage from "../../components/atoms/images/PlaylistImage/PlaylistImage";
 import ProfileOneStadistics from "../../components/atoms/ProfileOneStadistics/ProfileOneStadistics";
-import ProfileUserDescription from "../../components/atoms/ProfileUserDescription/ProfileUserDescription";
+import ProfileUserDescription from "../../components/atoms/body/ProfileUserDescription/ProfileUserDescription";
 import ProfileUserTitle from "../../components/atoms/ProfileUserTitle/ProfileUserTitle";
 
 import { useSingleGenre } from "../../hooks/useGenres";
