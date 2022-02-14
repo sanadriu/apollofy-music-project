@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-import { usePlaylists } from "../../../../hooks/usePlaylists";
+import { useFetchPlaylists } from "../../../../hooks/usePlaylists";
 
 import PlaylistDetail from "../../../molecules/PlaylistDetail";
 
 export default function Playlists() {
-  const { data: playlists } = usePlaylists();
+  const { data: playlists } = useFetchPlaylists();
 
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
 

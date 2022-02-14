@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-import { useUsers } from "../../../../hooks/useUsers";
+import { useFetchUsers } from "../../../../hooks/useUsers";
 
 import UserDetail from "../../../molecules/UserDetail";
 
 export default function Playlists() {
-  const { data: users } = useUsers();
+  const { data: users } = useFetchUsers();
 
   const [selectedUser, setSelectedUser] = useState(null);
 

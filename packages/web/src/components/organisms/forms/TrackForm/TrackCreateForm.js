@@ -2,8 +2,8 @@ import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { useSetTrack } from "../../../../hooks/useTracks";
-import { useGenres } from "../../../../hooks/useGenres";
+import { useCreateTrack } from "../../../../hooks/useTracks";
+import { useFetchGenres } from "../../../../hooks/useGenres";
 import validationSchema from "../../../../schemas/TrackSchema";
 import {
   Box,
@@ -43,7 +43,7 @@ function TrackCreateForm() {
     error: setTrackError,
     data: setTrackResponse,
     mutate,
-  } = useSetTrack();
+  } = useCreateTrack();
 
   const {
     isLoading: fetchGenresIsLoading,
@@ -51,7 +51,7 @@ function TrackCreateForm() {
     isSuccess: fetchGenresIsSuccess,
     error: fetchGenresError,
     data: fetchGenresResponse,
-  } = useGenres();
+  } = useFetchGenres();
 
   // const navigate = useNavigate();
 

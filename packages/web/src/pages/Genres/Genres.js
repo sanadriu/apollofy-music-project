@@ -9,7 +9,7 @@ import ProfileOneStadistics from "../../components/atoms/ProfileOneStadistics/Pr
 import ProfileUserDescription from "../../components/atoms/ProfileUserDescription/ProfileUserDescription";
 import ProfileUserTitle from "../../components/atoms/ProfileUserTitle/ProfileUserTitle";
 
-import { useSingleGenre } from "../../hooks/useGenres";
+import { useFetchGenre } from "../../hooks/useGenres";
 import {
   DescriptionDiv,
   MainText,
@@ -20,7 +20,7 @@ import {
 
 function GenresPage() {
   const { genreId } = useParams();
-  const { data } = useSingleGenre(genreId);
+  const { data } = useFetchGenre(genreId);
   return (
     <>
       <PageLayout>

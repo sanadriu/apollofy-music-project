@@ -12,7 +12,6 @@ import styled from "styled-components";
 
 import { auth, getCurrentUserToken } from "../../../services/auth";
 import usersApi from "../../../api/api-users";
-import { setCurrentUser } from "../../../redux/auth";
 
 // eslint-disable-next-line react/prop-types
 const TextField = styled.input`
@@ -67,9 +66,9 @@ export default function UpdateProfileModal({
       const res = await usersApi.updateUser(
         userToken,
         (updatedUsername && updatedUsername) ||
-        (updatedEmail && updatedEmail) ||
-        (updatedBirthday && updatedBirthday) ||
-        (newProfileLink && newProfileLink),
+          (updatedEmail && updatedEmail) ||
+          (updatedBirthday && updatedBirthday) ||
+          (newProfileLink && newProfileLink),
       );
 
       if (res) {

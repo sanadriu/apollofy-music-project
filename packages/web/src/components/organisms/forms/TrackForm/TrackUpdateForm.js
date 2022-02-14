@@ -2,6 +2,9 @@ import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
 import { useNavigate, useParams } from "react-router-dom";
+import { useFetchTrack, useUpdateTrack } from "../../../../hooks/useTracks";
+import { useFetchGenres } from "../../../../hooks/useGenres";
+import validationSchema from "../../../../schemas/TrackSchema";
 import {
   Box,
   Alert,
@@ -17,10 +20,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-
-import { useFetchTrack, useUpdateTrack } from "../../../../hooks/useTracks";
-import { useGenres } from "../../../../hooks/useGenres";
-import validationSchema from "../../../../schemas/TrackSchema";
 import { uploadResource } from "../../../../api/api-cloudinary";
 import withLayout from "../../../hoc/withLayout";
 
@@ -65,7 +64,7 @@ function TrackUpdateForm() {
     isSuccess: fetchGenresIsSuccess,
     error: fetchGenresError,
     data: fetchGenresResponse,
-  } = useGenres();
+  } = useFetchGenres();
 
   // const navigate = useNavigate();
 

@@ -1,8 +1,7 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { useUserTracks } from "../../../../hooks/useTracks";
 import ProfileUserTrack from "../../../molecules/ProfileUserTrack";
 
 const StyledUserTracks = styled.div`
@@ -14,17 +13,22 @@ const StyledUserTracks = styled.div`
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 
-const ProfileUserTracks = () => {
-  const { profileId } = useParams();
-  const { data: tracks } = useUserTracks(1, undefined, 5, "num_plays", "desc", profileId);
-
+const ProfileUserTracks = ({ tracks }) => {
   return (
     <StyledUserTracks>
-      {tracks?.data?.data?.map((track, index) => (
+      {tracks.map((track, index) => (
         <ProfileUserTrack key={track.id} data={track} index={index} />
       ))}
     </StyledUserTracks>
   );
+};
+
+ProfileUserTracks.propTypes = {
+  tracks: PropTypes.array,
+};
+
+ProfileUserTracks.defaultProps = {
+  tracks: [],
 };
 
 export default ProfileUserTracks;

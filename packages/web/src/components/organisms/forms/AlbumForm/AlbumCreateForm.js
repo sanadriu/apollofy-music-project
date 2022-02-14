@@ -3,7 +3,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useSetAlbum } from "../../../../hooks/useAlbums";
-import { useGenres } from "../../../../hooks/useGenres";
+import { useFetchGenres } from "../../../../hooks/useGenres";
 import validationSchema from "../../../../schemas/AlbumSchema";
 import {
   Box,
@@ -61,7 +61,7 @@ function AlbumCreateForm() {
     isSuccess: fetchGenresIsSuccess,
     error: fetchGenresError,
     data: fetchGenresResponse,
-  } = useGenres();
+  } = useFetchGenres();
 
   // const navigate = useNavigate();
 

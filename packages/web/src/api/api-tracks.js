@@ -2,76 +2,64 @@ import http from "../services/httpService";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-const getTrack = (trackId) => {
-  return http.get(`${baseUrl}/tracks/${trackId}`);
+const getTrack = (trackId, { extend }) => {
+  return http.get(`${baseUrl}/tracks/${trackId}`, {
+    params: { extend },
+  });
 };
 
-const getTracks = (page, genre, limit, sort, order, userId) => {
+const getTracks = ({ page, limit, sort, order, genre, userId }) => {
   return http.get(`${baseUrl}/tracks`, {
-    params: {
-      limit: limit,
-      page: page,
-      genre: genre,
-      sort: sort,
-      order: order,
-      user: userId,
-    },
+    params: { page, limit, sort, order, genre, user: userId },
   });
 };
 
-const getInfiniteTracks = (url) => {
-  return http.get(url);
-};
-
-const getMyTracks = (authToken, params = {}) => {
-  const { page = 1, sort = "created_at", order = "asc", limit = 10, extend = false } = params;
-
+const getUserTracks = (authToken, { page, limit, sort, order, extend }) => {
   return http.get(`${baseUrl}/me/tracks`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
-    params: {
-      page,
-      sort,
-      order,
-      limit,
-      extend,
-    },
+    headers: { Authorization: `Bearer ${authToken}` },
+    params: { page, limit, sort, order, extend },
   });
 };
 
-const setTrack = (authToken, track) => {
+const createTrack = (authToken, track) => {
   return http.post(`${baseUrl}/tracks`, track, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
+    headers: { Authorization: `Bearer ${authToken}` },
   });
 };
 
 const updateTrack = (authToken, track) => {
   return http.patch(`${baseUrl}/tracks/${track.id}`, track, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
+    headers: { Authorization: `Bearer ${authToken}` },
   });
 };
 
-const deleteTrack = (authToken, id) => {
-  return http.delete(`${baseUrl}/tracks/${id}`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
+const deleteTrack = (authToken, trackId) => {
+  return http.delete(`${baseUrl}/tracks/${trackId}`, {
+    headers: { Authorization: `Bearer ${authToken}` },
+  });
+};
+
+const likeTrack = (authToken, trackId) => {
+  return http.patch(`${baseUrl}/tracks/${trackId}/like`, undefined, {
+    headers: { Authorization: `Bearer ${authToken}` },
+  });
+};
+
+const playTrack = (authToken, trackId) => {
+  return http.patch(`${baseUrl}/tracks/${trackId}/play`, undefined, {
+    headers: { Authorization: `Bearer ${authToken}` },
   });
 };
 
 const tracksApi = {
   getTrack,
   getTracks,
-  getMyTracks,
-  setTrack,
+  getUserTracks,
+  createTrack,
   updateTrack,
-  getInfiniteTracks,
   deleteTrack,
+  likeTrack,
+  playTrack,
 };
 
 export default tracksApi;

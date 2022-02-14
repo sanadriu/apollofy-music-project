@@ -2,12 +2,12 @@ import http from "../services/httpService";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-const getGenres = async (limitNum = 10, pageNum = 1) => {
-  return http.get(`${baseUrl}/genres?limit=${limitNum}&page=${pageNum}`);
+const getGenres = async () => {
+  return http.get(`${baseUrl}/genres`);
 };
 
-const getSingleGenre = async (id) => {
-  return http.get(`${baseUrl}/genres/${id}`);
+const getSingleGenre = async (genreId) => {
+  return http.get(`${baseUrl}/genres/${genreId}`);
 };
 
 const genresApi = {

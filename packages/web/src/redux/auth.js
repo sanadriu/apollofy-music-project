@@ -323,28 +323,6 @@ export function setDateOfBirth(dateOfBirth) {
   };
 }
 
-export function setCurrentUser(user) {
-  return async function setCurrentUserThunk(dispatch) {
-    dispatch(editProfileRequest());
-
-    try {
-      const token = await authService.getCurrentUserToken();
-
-      const response = await usersApi.setCurrentUser(token, user);
-
-      if (response.errorMessage) {
-        return dispatch(signOutError(response.errorMessage));
-      }
-
-      dispatch(editProfileSuccess());
-    } catch (error) {
-      return dispatch(signInError(error.message));
-    }
-
-    return dispatch(currentUserAdded());
-  };
-}
-
 export function updateCurrentUser(updatedUser) {
   return async function updateCurrentUserThunk(dispatch) {
     dispatch(currentUserAdded(updatedUser));
