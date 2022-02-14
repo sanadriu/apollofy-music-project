@@ -14,6 +14,7 @@ import AddFriendsModal from "../../modals/AddFriendsModal";
 const FriendsColumnLayout = styled(RightSideBar)`
   height: auto;
   background-color: ${({ theme }) => theme.colors.background.secondary};
+  align-items: start;
 
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: none;
@@ -25,30 +26,27 @@ export default function FriendsColumn() {
   const [isOpen, setOpen] = useState(false);
   const followedUsers = true;
 
-  const { data: users } = useFollowedUsers(followedUsers);
+  const { data: users, isSuccess } = useFollowedUsers(followedUsers);
   const friendsList = users?.data?.data;
-
-  console.log(friendsList);
 
   const handleModal = () => {
     setOpen(!isOpen);
   };
 
-  // useEffect(() =>{
-
-  // }, [friendsList])
-
   return (
     <FriendsColumnLayout>
       <FlexColumn>
-        {friendsList?.map((friend) => {
-          <FriendInfo
-            key={friend.id}
-            profilePicture={friend.thumbnails?.url_default}
-            name={friend.username}
-          />;
-        })}
-        <HomeSmallText>You do not follow anyone yet</HomeSmallText>
+        {isSuccess &&
+          friendsList?.map((friend) => (
+            <FriendInfo
+              key={friend.id}
+              profilePicture={friend.thumbnails?.url_default}
+              name={friend.username}
+            />
+          ))}
+        {isSuccess && friendsList.length === 0 && (
+          <HomeSmallText>You do not follow anyone yet</HomeSmallText>
+        )}
         <Button onClick={handleModal} btnColor="#B04AFF" type="block">
           Add Friends
         </Button>
