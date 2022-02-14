@@ -11,8 +11,8 @@ const Layout = styled.div`
   margin: 0.5rem;
   display: flex;
   justify-content: flex-start;
-  gap: 0.5rem;
 
+  gap: 0.5rem;
   &:hover {
     background-color: darkgray;
   }

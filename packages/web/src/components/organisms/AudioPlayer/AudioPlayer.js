@@ -4,18 +4,15 @@ import styled from "styled-components";
 
 const ResponsiveDiv = styled.div`
   width: 100vw;
-  position: fixed;
-  bottom: 0;
+  position: absolute;
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
-    width: 100vw;
-    position: absolute;
-    bottom: 10rem;
+    bottom: 3rem;
   } ;
 `;
 
 export const ExampleAudioPlayer = () => {
   return (
-    <ResponsiveDiv>
+    <ResponsiveDiv className="audioplayer">
       <Player />
     </ResponsiveDiv>
   );
