@@ -151,7 +151,7 @@ TrackSchema.statics.getTrack = function (id, options = {}) {
 };
 
 TrackSchema.statics.getTracks = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc", limit = 10, filter } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, filter = {} } = options;
 
   const start = (page - 1) * limit;
 

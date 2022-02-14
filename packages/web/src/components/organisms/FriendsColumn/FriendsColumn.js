@@ -4,11 +4,12 @@ import styled from "styled-components";
 
 import { authSelector } from "../../../redux/auth";
 import Button from "../../atoms/buttons/Button";
-import { FlexColumn } from "../../atoms/FlexColumn/FlexColumn";
-import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
-import { RightSideBar } from "../../atoms/RightSideBar/RightSideBar";
+import FlexColumn from "../../atoms/FlexColumn";
+import HomeSmallText from "../../atoms/HomeSmallText";
+import RightSideBar from "../../atoms/RightSideBar";
+
 import FriendInfo from "../../molecules/FriendInfo/FriendInfo";
-import AddFriendsModal from "../modal/AddFriendsModal";
+import AddFriendsModal from "../modals/AddFriendsModal";
 
 const FriendsColumnLayout = styled(RightSideBar)`
   height: auto;

@@ -1,7 +1,6 @@
 const db = require("../../services/db");
 const faker = require("faker");
 const GenreModel = require("../genre-model");
-const { getRandomSequence } = require("../../utils");
 const { createSampleGenre } = require("../../db/samplers");
 
 describe("genre-schema", () => {
@@ -99,9 +98,7 @@ describe("genre-schema", () => {
       try {
         await GenreModel.create(genre);
       } catch (error) {
-        expect(error.errors["thumbnails.url_default"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_default"].properties.type).toBe("user defined");
       }
     });
   });
@@ -141,9 +138,7 @@ describe("genre-schema", () => {
       try {
         await GenreModel.create(genre);
       } catch (error) {
-        expect(error.errors["thumbnails.url_medium"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_medium"].properties.type).toBe("user defined");
       }
     });
   });
@@ -183,9 +178,7 @@ describe("genre-schema", () => {
       try {
         await GenreModel.create(genre);
       } catch (error) {
-        expect(error.errors["thumbnails.url_large"].properties.type).toBe(
-          "user defined",
-        );
+        expect(error.errors["thumbnails.url_large"].properties.type).toBe("user defined");
       }
     });
   });

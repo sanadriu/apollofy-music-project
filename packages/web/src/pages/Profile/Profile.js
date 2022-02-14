@@ -6,12 +6,13 @@ import usersApi from "../../api/api-users";
 import { useUserAlbums } from "../../hooks/useAlbums";
 import { useUserPlaylists } from "../../hooks/usePlaylists";
 import { useUserTracks } from "../../hooks/useTracks";
+
+import ProfileMain from "../../components/organisms/information/ProfileMain";
+import ProfileUserCards from "../../components/organisms/information/ProfileUserCards";
+import ProfileUserTracks from "../../components/organisms/information/ProfileUserTracks";
+import ProfileGroupButtons from "../../components/molecules/ProfileGroupButtons";
+import ButtonPlaySuffle from "../../components/atoms/ButtonPlayShuffle";
 import withLayout from "../../components/hoc/withLayout";
-import ProfileMain from "../../components/organisms/ProfileMain/ProfileMain";
-import ProfileUserCards from "../../components/organisms/ProfileUserCards/ProfileUserCards";
-import ProfileUserTracks from "../../components/organisms/ProfileUserTracks/ProfileUserTracks";
-import ProfileGroupButtons from "../../components/molecules/ProfileGroupButtons/ProfileGroupButtons";
-import ButtonPlaySuffle from "../../components/atoms/ButtonPlayShuffle/ButtonPlayShuffle";
 
 const StyledProfile = styled.div`
   overflow: hidden;
@@ -44,7 +45,6 @@ const Profile = () => {
   useEffect(() => {
     (async () => {
       const { data } = await usersApi.getUser(profileId);
-
       setUser(data.data);
     })();
   }, [profileId]);

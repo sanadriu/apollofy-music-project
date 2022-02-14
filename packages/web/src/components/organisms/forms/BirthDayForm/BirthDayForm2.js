@@ -12,8 +12,8 @@ import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import Stack from "@mui/material/Stack";
 
-import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
-import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
+import FlexColumn from "../../../atoms/FlexColumn";
+import MiddleTitle from "../../../atoms/MiddleTitle";
 
 import DateOfBirthSchema from "../../../../schemas/DateOfBirthSchema";
 

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
+
 import ButtonFollow from "../ButtonFollow/ButtonFollow";
 import { useSelector } from "react-redux";
 import { authSelector } from "../../../redux/auth";
@@ -42,4 +43,5 @@ ProfileUserTitle.defaultProps = {
   title: "",
   id: "",
 };
+
 export default ProfileUserTitle;

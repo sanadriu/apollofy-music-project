@@ -22,6 +22,10 @@ const ImageProfile = styled.img`
   &:hover {
     opacity: 0.7;
   }
+  @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
+    height: 10rem;
+    width: 10rem;
+  }
 `;
 
 const ProfileImage = ({ image }) => {

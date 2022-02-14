@@ -1,9 +1,5 @@
 const { Track } = require("../../models");
 
-function getUserProfile({ id, email, username, firstname, lastname }) {
-  return { id, email, username, firstname, lastname };
-}
-
 async function filterUserTracks(idUser, idTracks) {
   const tracks =
     idTracks instanceof Array
@@ -14,6 +10,5 @@ async function filterUserTracks(idUser, idTracks) {
 }
 
 module.exports = {
-  getUserProfile,
   filterUserTracks,
 };

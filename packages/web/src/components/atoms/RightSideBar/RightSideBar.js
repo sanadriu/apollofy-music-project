@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const RightSideBar = styled.div`
+const RightSideBar = styled.div`
   padding: 0.5rem;
   display: flex;
   justify-content: space-between;
@@ -9,3 +9,5 @@ export const RightSideBar = styled.div`
   color: ${({ theme }) => theme.colors.text};
   border-radius: 1.3rem;
 `;
+
+export default RightSideBar;

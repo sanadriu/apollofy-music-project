@@ -1,6 +1,6 @@
 import React from "react";
 
-import Tracks from "../../components/organisms/Tracks";
+import Tracks from "../../components/organisms/information/Tracks";
 
 function TracksByGenrePage() {
   return (

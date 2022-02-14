@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { useDispatch } from "react-redux";
 
-import { DetailText } from "../../atoms/DetailText/DetailText";
-import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
-import { followUser } from "../../../redux/user";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
+
+import DetailText from "../../atoms/DetailText";
+import HomeSmallText from "../../atoms/HomeSmallText";
+import { useFollowUser } from "../../../hooks/useUsers";
 
 const UserLayout = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ const UserLayout = styled.div`
   width: 100%;
 
   &:hover {
-    background-color: darkgray;
+    background-color: ${({ theme }) => theme?.colors?.background?.secondary_hover};
   }
 `;
 
@@ -47,7 +48,7 @@ const UserLink = styled(Link)`
 `;
 
 const StyledNumUser = styled.div`
-  font-family: ${({ theme }) => theme.fonts.primary};
+  font-family: ${({ theme }) => theme?.fonts?.primary};
   margin-left: 1rem;
   display: flex;
   justify-content: center;
@@ -63,25 +64,36 @@ const StyledNumber = styled.div`
 
 const FollowButton = styled.button`
   border-radius: 1.3rem;
-  background-color: purple;
+  background-color: ${({ theme }) => theme?.colors?.label};
   border: none;
   color: white;
   cursor: pointer;
+  align-items: center;
+  height: 2.1rem;
+  width: 2.1rem;
+  padding: 0.3rem;
+
+  svg {
+    width: 1.2rem;
+  }
 
   &:hover {
-    background-color: #9e607e;
+    background-color: purple;
   }
 `;
 
 const UserDetail = ({ user }) => {
-  const dispatch = useDispatch();
+  const [isFollowed, setIsFollowed] = useState(false);
+  const { mutate } = useFollowUser();
 
   const handleFollow = (userId) => {
-    dispatch(followUser(userId));
+    mutate(userId);
+    setIsFollowed(!isFollowed);
   };
+
   return (
     <UserLayout>
-      {/* <UserPicture alt={`${user.username}`} src={user?.thumbnails?.url_default} /> */}
+      <UserPicture alt={`${user?.username}`} src={user?.thumbnails?.url_default} />
       <UserFlex>
         <UserLink to={`/user-profile/${user.id}`}>
           <HomeSmallText>{`${user.firstname} ${user.lastname}`}</HomeSmallText>
@@ -90,11 +102,17 @@ const UserDetail = ({ user }) => {
       </UserFlex>
       <StyledNumUser>
         <GroupIcon />
-        <StyledNumber>{user.followed_by?.length}</StyledNumber>
+        <StyledNumber>{user?.followed_by?.length}</StyledNumber>
       </StyledNumUser>
-      <FollowButton onClick={() => handleFollow(user.id)}>
-        <PersonAddIcon />
-      </FollowButton>
+      {isFollowed ? (
+        <FollowButton onClick={() => handleFollow(user?.id)}>
+          <StarOutlineIcon />
+        </FollowButton>
+      ) : (
+        <FollowButton onClick={() => handleFollow(user?.id)}>
+          <PersonAddIcon />
+        </FollowButton>
+      )}
     </UserLayout>
   );
 };
@@ -117,7 +135,6 @@ UserDetail.propTypes = {
     num_liked_tracks: PropTypes.number,
     followed_playlists: PropTypes.arrayOf(PropTypes.object),
     followed_users: PropTypes.arrayOf(PropTypes.object),
-    followed_by: PropTypes.arrayOf(PropTypes.object),
     num_followed_playlists: PropTypes.number,
     num_followed_users: PropTypes.number,
     num_followers: PropTypes.number,
@@ -146,7 +163,7 @@ UserDetail.defaultProps = {
     num_liked_tracks: null,
     followed_playlists: {},
     followed_users: {},
-    followers: {},
+    followed_by: {},
     num_followed_playlists: null,
     num_followed_users: null,
     num_followers: null,

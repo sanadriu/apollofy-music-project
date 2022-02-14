@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import ProfileNameTrack from "../../atoms/ProfileNameTrack/ProfileNameTrack";
-import ProfileNumReprod from "../../atoms/ProfileNumReprod/ProfileNumReprod";
-import ProfileNumTrack from "../../atoms/ProfileNumTrack/ProfileNumTrack";
-import ProfilePlayTrack from "../../atoms/ProfilePlayTrack/ProfilePlayTrack";
-import ProfileTrackImage from "../../atoms/ProfileTrackImage/ProfileTrackImage";
 
+import ProfileNameTrack from "../../atoms/ProfileNameTrack";
+import ProfileNumReprod from "../../atoms/ProfileNumReprod";
+import ProfileNumTrack from "../../atoms/ProfileNumTrack";
+import ProfilePlayTrack from "../../atoms/ProfilePlayTrack";
+import ProfileTrackImage from "../../atoms/ProfileTrackImage";
 
 const StyledUserTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
@@ -21,7 +21,7 @@ const StyledUserTrack = styled.div`
   }
 `;
 
-const ProfileUserTrack = ({ data, index }) => {
+function ProfileUserTrack({ data, index }) {
   return (
     <StyledUserTrack>
       <ProfileNumTrack index={index} />
@@ -31,16 +31,16 @@ const ProfileUserTrack = ({ data, index }) => {
       <ProfilePlayTrack track={data} />
     </StyledUserTrack>
   );
-};
+}
 
 ProfileUserTrack.propTypes = {
   data: PropTypes.object,
-  index: PropTypes.number
+  index: PropTypes.number,
 };
 
 ProfileUserTrack.defaultProps = {
   data: {},
-  index: 1
+  index: 1,
 };
 
 export default ProfileUserTrack;

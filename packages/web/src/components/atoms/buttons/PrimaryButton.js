@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const PrimaryButton = styled.button`
+const PrimaryButton = styled.button`
   border-radius: 0.3rem;
   color: white;
   border: 1px solid black;
@@ -14,3 +14,5 @@ export const PrimaryButton = styled.button`
     color: #b04aff;
   }
 `;
+
+export default PrimaryButton;

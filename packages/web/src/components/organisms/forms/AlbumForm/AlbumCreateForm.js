@@ -18,6 +18,7 @@ import {
   Typography,
   FormHelperText,
   CircularProgress,
+  Pagination,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { uploadResource } from "../../../../api/api-cloudinary";
@@ -35,6 +36,8 @@ const initialValues = {
 const allowedImageExt = ["jpg", "jpeg", "png"];
 
 function AlbumCreateForm() {
+  const [trackListPage, setTrackListPage] = useState(1);
+
   const {
     isLoading: setAlbumIsLoading,
     isError: setAlbumIsError,
@@ -50,7 +53,7 @@ function AlbumCreateForm() {
     isSuccess: fetchMyTracksIsSuccess,
     error: fetchMyTracksError,
     data: fetchMyTracksResponse,
-  } = useMyTracks();
+  } = useMyTracks({ page: trackListPage });
 
   const {
     isLoading: fetchGenresIsLoading,
@@ -250,6 +253,38 @@ function AlbumCreateForm() {
               <Typography sx={{ color: "rgba(0, 0, 0, 0.6)", mb: 1 }}>Cover image URL</Typography>
               <Typography sx={{ fontSize: "0.9rem", mb: 3 }}>{values.url_image}</Typography>
             </Box>
+          )}
+          {fetchMyTracksResponse?.data && (
+            <DataGrid
+              pageSize={fetchMyTracksResponse.data.pages}
+              columns={[
+                { field: "id", headerName: "ID", width: 70 },
+                { field: "firstName", headerName: "First name", width: 130 },
+                { field: "lastName", headerName: "Last name", width: 130 },
+                {
+                  field: "age",
+                  headerName: "Age",
+                  type: "number",
+                  width: 90,
+                },
+                {
+                  field: "fullName",
+                  headerName: "Full name",
+                  description: "This column has a value getter and is not sortable.",
+                  sortable: false,
+                  width: 160,
+                  valueGetter: (params) =>
+                    `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+                },
+              ]}
+              rows={fetchMyTracksResponse.data.data.map((track) => ({
+                id: track.id,
+                title: track.title,
+                genres: track.genres.join(", "),
+                duration: track.duration,
+                released_date: track.released_date,
+              }))}
+            />
           )}
           <LoadingButton
             type="submit"

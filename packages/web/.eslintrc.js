@@ -31,6 +31,7 @@ module.exports = {
     // "jest/globals": true,
   },
   rules: {
+    "spaced-comment": "off",
     "prefer-promise-reject-errors": "off",
     "prefer-arrow-callback": "off",
     "import/order": "off",

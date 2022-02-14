@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 const AccountSchema = yup.object().shape({
-  name: yup
+  username: yup
     .string()
     .required('Name is required'),
   email: yup

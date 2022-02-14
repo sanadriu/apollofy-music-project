@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { authSelector, signInWithEmailRequest } from "../../../../redux/auth";
 import SignInSchema from "../../../../schemas/SignInSchema";
-import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
-import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
-import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-import { RegisterInput } from "../../../atoms/RegisterInput/RegisterInput";
+import FlexColumn from "../../../atoms/FlexColumn";
+import MiddleTitle from "../../../atoms/MiddleTitle";
+import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
+import RegisterInput from "../../../atoms/RegisterInput";
 
 export default function SigninForm() {
   const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import React from "react";
 
-import Albums from "../../components/organisms/Albums";
+import Albums from "../../components/organisms/information/Albums";
 
 function AlbumsPage() {
 

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const RegisterInput = styled.input`
+const RegisterInput = styled.input`
   width: 90%;
   border-radius: 0.3rem;
   color: ${({ theme }) => theme.colors.text};
@@ -12,3 +12,5 @@ export const RegisterInput = styled.input`
     background-color: ${({ theme }) => theme.colors.label};
   }
 `;
+
+export default RegisterInput;

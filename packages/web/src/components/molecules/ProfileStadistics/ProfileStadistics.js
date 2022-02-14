@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import ProfileOneStadistics from "../../atoms/ProfileOneStadistics/ProfileOneStadistics";
+
+import ProfileOneStadistics from "../../atoms/ProfileOneStadistics";
 
 const StadisticsDiv = styled.div`
   margin-bottom: 1rem;
@@ -31,4 +32,5 @@ ProfileStadistics.defaultProps = {
   followers: 0,
   albums: 0,
 };
+
 export default ProfileStadistics;

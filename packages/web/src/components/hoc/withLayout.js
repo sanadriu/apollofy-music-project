@@ -2,13 +2,13 @@ import React from "react";
 import { isBrowser, isMobile } from "react-device-detect";
 import styled from "styled-components";
 
-import { FlexColumn } from "../atoms/FlexColumn/FlexColumn";
-import ControlBar from "../molecules/ControlBar/ControlBar";
+import Footer from "../organisms/information/Footer";
+import FriendsColumn from "../organisms/information/FriendsColumn";
+import { ExampleAudioPlayer } from "../organisms/input-controls/AudioPlayer/AudioPlayer";
+import MenuBar from "../organisms/navigation/MenuBar";
+import ControlBar from "../molecules/ControlBar";
 import SearchBar from "../molecules/SearchBar/SearchBar";
-import { ExampleAudioPlayer } from "../organisms/AudioPlayer/AudioPlayer";
-import Footer from "../organisms/Footer/Footer";
-import FriendsColumn from "../organisms/FriendsColumn/FriendsColumn";
-import MenuBar from "../organisms/MenuBar/MenuBar";
+import FlexColumn from "../atoms/FlexColumn";
 
 const MainLayout = styled.main`
   display: flex;

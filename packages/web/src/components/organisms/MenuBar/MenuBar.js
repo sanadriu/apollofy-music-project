@@ -12,8 +12,8 @@ import MenuList from "@mui/material/MenuList";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import * as ROUTES from "../../../routes";
-import { SmallText } from "../../atoms/SmallText/SmallText";
-import { RightSideBar } from "../../atoms/RightSideBar/RightSideBar";
+import SmallText from "../../atoms/SmallText/SmallText";
+import RightSideBar from "../../atoms/RightSideBar/RightSideBar";
 import { authSelector, signOut } from "../../../redux/auth";
 
 const MenuLayout = styled(RightSideBar)`

@@ -10,21 +10,17 @@ function getCurrentUser(authToken) {
   });
 }
 
-const getUser = async (userId) => {
-  return http.get(`${baseUrl}/users`, {
-    params: {
-      id: userId,
-    },
-  });
-};
+function getUser(userId) {
+  return http.get(`${baseUrl}/users/${userId}`);
+}
 
-const setCurrentUser = async (user) => {
+function setCurrentUser(user) {
   return http.get(`${baseUrl}/users`, {
     data: user,
   });
 }
 
-const getUsers = async (page, limit, sort, order) => {
+function getUsers(page, limit, sort, order) {
   return http.get(`${baseUrl}/users`, {
     params: {
       limit: limit,
@@ -33,7 +29,17 @@ const getUsers = async (page, limit, sort, order) => {
       order: order,
     },
   });
-};
+}
+
+function getMyFollowedUsers(authToken, followedUsers) {
+  const excludeUsers = followedUsers ? "" : "?exclude=true";
+
+  return http.get(`${baseUrl}/users/me/followed-users${excludeUsers}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+}
 
 function deleteUser(authToken) {
   return http.delete(`${baseUrl}/users/me`, {
@@ -43,7 +49,7 @@ function deleteUser(authToken) {
   });
 }
 
-export function updateUser(authToken, update) {
+function updateUser(authToken, update) {
   return http.patch(`${baseUrl}/users/me`, update, {
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -51,8 +57,16 @@ export function updateUser(authToken, update) {
   });
 }
 
-export function updateNewUser(authToken, updatedUser) {
-  return http.patch(`${baseUrl}/users/me`, updatedUser, {
+function setUser(authToken, user) {
+  return http.post(`${baseUrl}/users/me`, user, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+}
+
+function followUser(authToken, user) {
+  return http.patch(`${baseUrl}/users/${user}/follow`, user, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
@@ -61,12 +75,14 @@ export function updateNewUser(authToken, updatedUser) {
 
 const usersApi = {
   getCurrentUser,
+  getMyFollowedUsers,
   getUser,
   setCurrentUser,
   getUsers,
   updateUser,
-  updateNewUser,
+  setUser,
   deleteUser,
+  followUser,
 };
 
 export default usersApi;

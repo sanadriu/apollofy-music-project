@@ -7,10 +7,10 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
-import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
-import { SmallText } from "../../../atoms/SmallText/SmallText";
-import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
+import FlexColumn from "../../../atoms/FlexColumn";
+import MiddleTitle from "../../../atoms/MiddleTitle";
+import SmallText from "../../../atoms/SmallText";
+import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 
 import { authSelector, pictureLinkAdded } from "../../../../redux/auth";
 import { modalSelector, nextModal } from "../../../../redux/modal";

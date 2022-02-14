@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
-import api from "../api";
-import * as authService from "../services/auth";
+import authApi from "../api/api-auth";
 import usersApi from "../api/api-users";
+import * as authService from "../services/auth";
+import { resetModal } from "./modal";
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
@@ -199,7 +200,7 @@ export function signUpWithFacebook() {
   };
 }
 
-export function signUpWithEmailRequest(email, password, details) {
+export function signUpWithEmailRequest(email, password, updatedUser) {
   return async function signUpThunk(dispatch) {
     dispatch(signUpRequest());
 
@@ -208,10 +209,13 @@ export function signUpWithEmailRequest(email, password, details) {
 
       const token = await authService.getCurrentUserToken();
 
-      await api.signUp({ Authorization: `Bearer ${token}` });
-      await usersApi.updateNewUser(token, details);
-      const user = await usersApi.getCurrentUser(token);
-      dispatch(currentUserAdded(user.data.data));
+      await authApi.signUp(token);
+      await usersApi.updateUser(token, updatedUser);
+
+      const response = await authApi.signIn(token);
+
+      dispatch(currentUserAdded(response.data.data));
+      dispatch(resetModal());
 
       return dispatch(signUpSuccess());
     } catch (error) {
@@ -229,9 +233,9 @@ export function signInWithEmailRequest(email, password) {
 
       const token = await authService.getCurrentUserToken();
 
-      await api.signUp({ Authorization: `Bearer ${token}` });
-      const currentUser = await usersApi.getCurrentUser(token);
-      dispatch(currentUserAdded(currentUser.data.data));
+      const response = await authApi.signIn(token);
+
+      dispatch(currentUserAdded(response.data.data));
 
       return dispatch(signInSuccess());
     } catch (error) {
@@ -241,22 +245,24 @@ export function signInWithEmailRequest(email, password) {
 }
 
 export function syncSignIn() {
-  return async function syncSignInThunk(dispatch) {
-    const token = await authService.getCurrentUserToken();
+  return async function syncSignInThunk(dispatch, getState) {
+    dispatch(signInRequest());
 
-    if (!token) {
-      return dispatch(signOutSuccess());
+    try {
+      const token = await authService.getCurrentUserToken();
+
+      if (!token) return dispatch(signOutSuccess());
+
+      const response = await authApi.signIn(token);
+
+      dispatch(currentUserAdded(response.data.data));
+
+      return dispatch(signInSuccess());
+    } catch (error) {
+      await authService.signOut();
+
+      return dispatch(signInError(error.message));
     }
-
-    const response = await api.signUp({
-      Authorization: `Bearer ${token}`,
-    });
-
-    if (response.errorMessage) {
-      return dispatch(signUpError(response.errorMessage));
-    }
-
-    return dispatch(signInSuccess(response.data));
   };
 }
 
@@ -264,23 +270,19 @@ export function signOut() {
   return async function signOutThunk(dispatch) {
     dispatch(signOutRequest());
 
-    const token = await authService.getCurrentUserToken();
+    try {
+      const token = await authService.getCurrentUserToken();
 
-    if (!token) {
+      if (!token) return dispatch(signOutSuccess());
+
+      await authApi.signOut(token);
+
+      await authService.signOut();
+
       return dispatch(signOutSuccess());
+    } catch (error) {
+      return dispatch(signOutError(error.message));
     }
-
-    const response = await api.signOut({
-      Authorization: `Bearer ${token}`,
-    });
-
-    if (response.errorMessage) {
-      return dispatch(signOutError(response.errorMessage));
-    }
-
-    authService.signOut();
-
-    return dispatch(signOutSuccess());
   };
 }
 
@@ -340,6 +342,12 @@ export function setCurrentUser(user) {
     }
 
     return dispatch(currentUserAdded());
+  };
+}
+
+export function updateCurrentUser(updatedUser) {
+  return async function updateCurrentUserThunk(dispatch) {
+    dispatch(currentUserAdded(updatedUser));
   };
 }
 

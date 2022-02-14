@@ -3,7 +3,15 @@ const { Track, User } = require("../models");
 
 async function getTracks(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc", limit = 10, genre, user } = req.query;
+    const {
+      page = 1,
+      sort = "created_at",
+      order = "asc",
+      limit = 10,
+      no_data = false,
+      genre,
+      user,
+    } = req.query;
 
     const filter = {
       ...(genre && { genres: { $in: [genre] } }),
@@ -11,33 +19,63 @@ async function getTracks(req, res, next) {
     };
 
     const pages = await Track.getNumPages(limit, filter);
+    const count = await Track.countDocuments(filter);
 
-    if (isNaN(page) || page <= 0) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: "Wrong page",
+    if (!no_data) {
+      if (isNaN(page) || page <= 0) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong page",
+          pages,
+        });
+      }
+
+      if (!["asc", "desc"].includes(order)) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for order",
+          pages,
+        });
+      }
+
+      if (count === 0) {
+        return res.status(200).send({
+          data: [],
+          success: true,
+          message: "No tracks were found",
+          pages,
+        });
+      }
+
+      if (page > pages) {
+        return res.status(404).send({
+          data: null,
+          success: false,
+          message: "Page not found",
+          pages,
+        });
+      }
+
+      const dbRes = await Track.getTracks({ page, sort, order, limit, filter });
+
+      return res.status(200).send({
+        data: dbRes,
+        success: true,
+        message: "Tracks fetched successfully",
+        count,
+        page: Number(page),
+        pages,
+      });
+    } else {
+      return res.status(200).send({
+        success: true,
+        message: "Request successful",
+        count,
         pages,
       });
     }
-
-    if (page > pages) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "Page not found",
-        pages,
-      });
-    }
-
-    const dbRes = await Track.getTracks({ page, sort, order, limit, filter });
-
-    res.status(200).send({
-      data: dbRes,
-      success: true,
-      message: "Tracks fetched successfully",
-      pages,
-    });
   } catch (error) {
     next(error);
   }
@@ -262,37 +300,74 @@ async function playTrack(req, res, next) {
 
 async function getUserTracks(req, res, next) {
   try {
-    const { page = 1, sort = "created_at", order = "asc", limit = 10, extend = false } = req.query;
+    const {
+      page = 1,
+      sort = "created_at",
+      order = "asc",
+      limit = 10,
+      extend = false,
+      no_data = false,
+    } = req.query;
     const { uid } = req.user;
 
     const pages = await Track.getNumPages(limit, { user: uid });
+    const count = await Track.countDocuments({ user: uid });
 
-    if (isNaN(page) || page <= 0) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: "Wrong page",
+    if (!no_data) {
+      if (isNaN(page) || page <= 0) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong page",
+          pages,
+        });
+      }
+
+      if (!["asc", "desc"].includes(order)) {
+        return res.status(400).send({
+          data: null,
+          success: false,
+          message: "Wrong value for order",
+          pages,
+        });
+      }
+
+      if (count === 0) {
+        return res.status(200).send({
+          data: [],
+          success: true,
+          message: "No tracks were found",
+          pages,
+        });
+      }
+
+      if (page > pages) {
+        return res.status(404).send({
+          data: null,
+          success: false,
+          message: "Page not found",
+          pages,
+        });
+      }
+
+      const dbRes = await Track.getUserTracks(uid, { page, sort, order, limit, extend });
+
+      return res.status(200).send({
+        data: dbRes,
+        success: true,
+        message: "Tracks fetched successfully",
+        count,
+        page: Number(page),
+        pages,
+      });
+    } else {
+      return res.status(200).send({
+        success: true,
+        message: "Request successful",
+        count,
         pages,
       });
     }
-
-    if (page > pages) {
-      return res.status(404).send({
-        data: null,
-        success: false,
-        message: "Page not found",
-        pages,
-      });
-    }
-
-    const dbRes = await Track.getUserTracks(uid, { page, sort, order, limit, extend });
-
-    return res.status(200).send({
-      data: dbRes,
-      success: true,
-      message: "Tracks fetched successfully",
-      pages,
-    });
   } catch (error) {
     next(error);
   }

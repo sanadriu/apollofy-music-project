@@ -1,11 +1,11 @@
 /* eslint-disable no-new */
 import React from "react";
+import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderSharpIcon from "@mui/icons-material/FavoriteBorderSharp";
+// import FavoriteBorderSharpIcon from "@mui/icons-material/FavoriteBorderSharp";
 import PlayCircleFilledSharpIcon from "@mui/icons-material/PlayCircleFilledSharp";
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
 
 // import { addToTrackList } from "../../../redux/tracks";
 import { addTrack, playTrack } from "../../../redux/tracks";
@@ -35,7 +35,7 @@ const PlayButton = styled(Button)`
   background-color: transparent;
 `;
 
-const ProfilePlayTrack = ({ track, handlePlayButton }) => {
+function ProfilePlayTrack({ track, handlePlayButton }) {
   const dispatch = useDispatch();
 
   const handleAdd = () => {
@@ -79,7 +79,7 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
       </PlayButton>
     </StyledPlayTrack>
   );
-};
+}
 
 ProfilePlayTrack.propTypes = {
   handlePlayButton: PropTypes.func,

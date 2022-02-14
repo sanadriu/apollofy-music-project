@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
-import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
-import { SmallText } from "../../../atoms/SmallText/SmallText";
-import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
+import FlexColumn from "../../../atoms/FlexColumn";
+import MiddleTitle from "../../../atoms/MiddleTitle";
+import SmallText from "../../../atoms/SmallText";
+import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 
-import { authSelector, signUpRequest, signUpWithEmailRequest } from "../../../../redux/auth";
+import { authSelector, signUpWithEmailRequest } from "../../../../redux/auth";
 
 const DescriptionArea = styled.textarea`
   width: 22rem;
@@ -25,9 +25,8 @@ export default function DescriptionForm() {
 
   function handleDescription() {
     if (value.length <= 250) {
-      dispatch(signUpRequest());
       const updatedCurrentUser = {
-        username: currentUser.name,
+        username: currentUser.username,
         email: currentUser.email,
         thumbnails: {
           url_default: currentUser.pictureLink,
@@ -36,19 +35,7 @@ export default function DescriptionForm() {
         description: value,
       };
 
-      // dispatch(setCurrentUser(updatedCurrentUser));
-
-      try {
-        dispatch(
-          signUpWithEmailRequest(
-            updatedCurrentUser.email,
-            currentUser.password,
-            updatedCurrentUser,
-          ),
-        );
-      } catch (err) {
-        alert(err.message);
-      }
+      dispatch(signUpWithEmailRequest(currentUser.email, currentUser.password, updatedCurrentUser));
     } else {
       toast.error("Your description is too long", {
         position: toast.POSITION.BOTTOM_CENTER,

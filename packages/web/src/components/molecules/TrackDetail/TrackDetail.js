@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 
-import { HomeSmallText } from "../../atoms/HomeSmallText/HomeSmallText";
-import { DetailText } from "../../atoms/DetailText/DetailText";
-import ProfilePlayTrack from "../../atoms/ProfilePlayTrack/ProfilePlayTrack";
+import HomeSmallText from "../../atoms/HomeSmallText";
+import DetailText from "../../atoms/DetailText";
+import ProfilePlayTrack from "../../atoms/ProfilePlayTrack";
 
 const TrackLayout = styled.div`
   display: flex;
@@ -67,25 +67,23 @@ const StyledNumber = styled.div`
 const TrackDetail = ({ track, handlePlayButton }) => {
   return (
     <TrackLayout>
-      <TrackPicture alt="Track's Thumbnail" src={track.thumbnails.url_default} />
+      <TrackPicture alt="Track's Thumbnail" src={track?.thumbnails?.url_default} />
       <TrackFlex>
-        <TrackLink to={`/albums/${track.genres}`}>
-          <HomeSmallText>{track.title}</HomeSmallText>
+        <TrackLink to={`/albums/${track?.genres}`}>
+          <HomeSmallText>{track?.title}</HomeSmallText>
         </TrackLink>
-        <TrackLink to={`/users/${track.user.id}`}>
-          <DetailText>{track.user.username}</DetailText>
+        <TrackLink to={`/users/${track?.user?.id}`}>
+          <DetailText>{track?.user?.username}</DetailText>
         </TrackLink>
       </TrackFlex>
       <StyledNumTrack>
         <HeadphonesIcon sx={{ color: "purple" }} />
-        <StyledNumber>{track.num_plays}</StyledNumber>
+        <StyledNumber>{track?.num_plays}</StyledNumber>
       </StyledNumTrack>
       <ProfilePlayTrack track={track} handlePlayButton={handlePlayButton} />
     </TrackLayout>
   );
 };
-
-export default TrackDetail;
 
 TrackDetail.propTypes = {
   handlePlayButton: PropTypes.func,
@@ -134,3 +132,5 @@ TrackDetail.defaultProps = {
     updated_at: null,
   },
 };
+
+export default TrackDetail;

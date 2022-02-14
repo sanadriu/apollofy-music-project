@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, Outlet, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ThemeProvider } from "styled-components";
@@ -13,13 +13,14 @@ import Login from "./pages/Login/Login";
 import ResetPassword from "./pages/ResetPassword";
 import EditProfile from "./pages/EditProfile";
 import NotFound from "./pages/NotFound";
-import Playlists from "./pages/Playlists";
 import Tracks from "./pages/Tracks";
+import Playlists from "./pages/Playlists";
 import Genres from "./pages/Genres";
 import Albums from "./pages/Albums";
 import TracksByGenre from "./pages/TracksByGenre";
 import Users from "./pages/Users";
-import ProfilePage from "./pages/ProfilePage";
+import Profile from "./pages/Profile";
+import Statistics from "./pages/Statistics";
 
 import { onAuthStateChanged } from "./services/auth";
 import { authSelector, syncSignIn, signOut } from "./redux/auth";
@@ -29,7 +30,7 @@ import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 import TrackCreateForm from "./components/organisms/forms/TrackForm/TrackCreateForm";
 import TrackUpdateForm from "./components/organisms/forms/TrackForm/TrackUpdateForm";
-import Statistics from "./pages/Statistics/Statistics";
+
 import Toggle from "./components/atoms/Switch";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
@@ -40,6 +41,7 @@ const queryClient = new QueryClient();
 
 function App() {
   const dispatch = useDispatch();
+  const [hasMounted, setHasMounted] = useState(false);
   const [theme, themeToggler, mountedComponent] = useDarkMode();
   const { isAuthenticated } = useSelector(authSelector);
 
@@ -49,19 +51,23 @@ function App() {
     let unsubscribeFromAuth = null;
 
     unsubscribeFromAuth = onAuthStateChanged((user) => {
-      if (user) {
-        dispatch(syncSignIn());
-      } else {
-        dispatch(signOut());
+      if (!hasMounted) {
+        if (user) {
+          dispatch(syncSignIn());
+        } else {
+          dispatch(signOut());
+        }
       }
     });
+
+    setHasMounted(true);
 
     return () => {
       if (unsubscribeFromAuth) {
         unsubscribeFromAuth();
       }
     };
-  }, [dispatch]);
+  }, [dispatch, hasMounted]);
 
   if (!mountedComponent) return <div />;
 
@@ -74,17 +80,17 @@ function App() {
           <Routes>
             <Route path="albums" element={<Albums />} />
             <Route path="playlists/:playlistId" element={<Playlists />} />
-            <Route path="profile/:profileId" element={<ProfilePage />} />
+            <Route path="users/:profileId" element={<Profile />} />
+            <Route path="genres/:genre" element={<Genres />} />
             <Route path="playlists" element={<Playlists />} />
             <Route path="tracks" element={<Tracks />} />
-            <Route path="genres" element={<Genres />} />
             <Route path="users" element={<Users />} />
             <Route path="stats" element={<Statistics />} />
             <Route path="tracks/:genre" element={<TracksByGenre />} />
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-            <Route path={`${ROUTES.USER_PROFILE}/:profileId`} element={<ProfilePage />} />
+            <Route path={`${ROUTES.USER_PROFILE}/:profileId`} element={<Profile />} />
             <Route path="track/add" element={<TrackCreateForm />} />
             <Route path="track/update/:id" element={<TrackUpdateForm />} />
             {isAuthenticated && (

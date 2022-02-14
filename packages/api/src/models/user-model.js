@@ -1,5 +1,4 @@
 const { Schema, Types, model } = require("mongoose");
-const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const { isEmail, isDate, isURL } = require("validator");
 const { getHash } = require("../services/crypto");
 
@@ -196,13 +195,13 @@ UserSchema.statics.getUser = function (id, options = {}) {
 };
 
 UserSchema.statics.getUsers = function (options = {}) {
-  const { page = 1, sort = "created_at", order = "asc", limit = 10 } = options;
+  const { page = 1, sort = "created_at", order = "asc", limit = 10, filter = {} } = options;
 
   const start = (page - 1) * limit;
 
   const populate = getPopulate();
 
-  return this.find()
+  return this.find(filter)
     .notDeleted()
     .populate(populate)
     .sort({ [sort]: order })

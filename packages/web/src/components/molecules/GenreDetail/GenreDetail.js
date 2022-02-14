@@ -1,11 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { SmallText } from "../../atoms/SmallText/SmallText";
+import { Link } from "react-router-dom";
+
+import SmallText from "../../atoms/SmallText";
 
 const GenreTitle = styled(SmallText)`
   margin-top: auto;
   font-size: 1rem;
+`;
+
+const GenreLink = styled(Link)`
+  text-decoration: none;
 `;
 
 const GenreDetail = ({ genre }) => {
@@ -35,14 +41,15 @@ const GenreDetail = ({ genre }) => {
       height: 3.5rem;
     }
   `;
+
   return (
-    <GenreLayout>
-      <GenreTitle>{genre.name}</GenreTitle>
-    </GenreLayout>
+    <GenreLink to={`/genres/${genre.name}`}>
+      <GenreLayout>
+        <GenreTitle>{genre.name}</GenreTitle>
+      </GenreLayout>
+    </GenreLink>
   );
 };
-
-export default GenreDetail;
 
 GenreDetail.propTypes = {
   genre: PropTypes.exact({
@@ -71,3 +78,5 @@ GenreDetail.defaultProps = {
     updated_at: null,
   },
 };
+
+export default GenreDetail;
