@@ -52,7 +52,7 @@ const Profile = () => {
   return (
     <StyledProfile>
       <ProfileGroupButtons />
-      <ProfileMain user={user} albums={albumsList.length} tracks={tracksList.length} />
+      <ProfileMain user={user} albums={albumsList?.length} tracks={tracksList?.length} />
       <ButtonPlaySuffle />
       <StyledTitle>Most Listened</StyledTitle>
       <ProfileUserTracks />

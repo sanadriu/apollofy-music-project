@@ -20,13 +20,6 @@ const StyledNumber = styled.div`
   font-weight: 500;
 `;
 
-function addFavoriteTrack(id) {
-  try {
-    console.log('trackID:'.id)
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 const ProfileNumReprod = ({ data }) => {
   let reprods = "";
@@ -36,7 +29,7 @@ const ProfileNumReprod = ({ data }) => {
 
   return (
     <StyledNumTrack>
-      <HeadphonesIcon sx={{ color: "purple" }} onClick={() => addFavoriteTrack(data.id)} />
+      <HeadphonesIcon sx={{ color: "purple" }} />
       <StyledNumber>{reprods}</StyledNumber>
     </StyledNumTrack>
   );

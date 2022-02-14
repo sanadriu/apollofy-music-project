@@ -1,10 +1,10 @@
 /* eslint-disable no-new */
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderSharpIcon from "@mui/icons-material/FavoriteBorderSharp";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorderSharp";
 import PlayCircleFilledSharpIcon from "@mui/icons-material/PlayCircleFilledSharp";
 
 // import { addToTrackList } from "../../../redux/tracks";
@@ -12,6 +12,8 @@ import { addTrack, playTrack } from "../../../redux/tracks";
 import PlaylistAdd from "@mui/icons-material/PlaylistAdd";
 import { Button } from "@mui/material";
 import { PlayerInterface, Track } from "react-material-music-player";
+import { useLikeTrack } from "../../../hooks/useTracks";
+import { authSelector } from "../../../redux/auth";
 
 const StyledPlayTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
@@ -35,8 +37,19 @@ const PlayButton = styled(Button)`
   background-color: transparent;
 `;
 
+const StyledFavoriteIcon = styled(FavoriteIcon)`
+  cursor: pointer;
+`;
+
+const StyledFavoriteBorderIcon = styled(FavoriteBorderIcon)`
+  cursor: pointer;
+`;
+
 const ProfilePlayTrack = ({ track, handlePlayButton }) => {
   const dispatch = useDispatch();
+  const auth = useSelector(authSelector);
+
+  const { mutate: likeTrack } = useLikeTrack();
 
   const handleAdd = () => {
     dispatch(addTrack(track));
@@ -50,6 +63,14 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
         track.url,
       ),
     ]);
+  };
+
+  const handleFavoriteTrack = async (track) => {
+    try {
+      await likeTrack(track.id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handlePlay = () => {
@@ -66,9 +87,20 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
     ]);
   };
 
+  // console.log(track);
+
   return (
     <StyledPlayTrack>
-      <FavoriteIcon sx={{ color: "purple" }} />
+      {track?.liked_by.findIndex((user) => (
+         user.id === auth.currentUser.id
+      )) === -1 ? (
+        <StyledFavoriteBorderIcon
+          sx={{ color: "purple" }}
+          onClick={() => handleFavoriteTrack(track)}
+        />
+      ) : (
+        <StyledFavoriteIcon sx={{ color: "purple" }} onClick={() => handleFavoriteTrack(track)} />
+      )}
       <PlayListButton type="button" onClick={() => handleAdd(track)}>
         <PlaylistAdd sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: "pointer" } }} />
       </PlayListButton>
@@ -77,7 +109,7 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
           sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: "pointer" } }}
         />
       </PlayButton>
-    </StyledPlayTrack >
+    </StyledPlayTrack>
   );
 };
 

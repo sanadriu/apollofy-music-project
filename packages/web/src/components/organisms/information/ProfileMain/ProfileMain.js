@@ -60,13 +60,13 @@ const ProfileMain = ({ user, albums, tracks }) => {
 };
 
 ProfileMain.propTypes = {
-  user: PropTypes.object,
+  user: PropTypes.array,
   albums: PropTypes.number,
   tracks: PropTypes.number,
 };
 
 ProfileMain.defaultProps = {
-  user: {},
+  user: [],
   albums: 0,
   tracks: 0,
 };

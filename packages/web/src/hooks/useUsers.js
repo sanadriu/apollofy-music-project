@@ -54,10 +54,10 @@ export function usePrefetchUsers(userId = undefined) {
 }
 
 export function useUpdateUser() {
-  const mutation = useMutation(async (userId) => {
+  const mutation = useMutation(async (user) => {
     const authToken = await authService.getCurrentUserToken();
 
-    if (authToken) return usersApi.updateUser(authToken, userId);
+    if (authToken) return usersApi.updateUser(authToken, user);
 
     return Promise.reject(new Error("User authentication required"));
   });
