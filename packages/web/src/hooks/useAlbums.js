@@ -4,9 +4,15 @@ import { queryKeys } from "../queries/constants";
 import albumsApi from "../api/api-albums";
 import * as authService from "../services/auth";
 
-export function useAlbums(currentPage = 1, currentLimit = 10, sort = undefined, order = 'desc') {
+export function useAlbums(currentPage = 1, currentLimit = 10, sort = undefined, order = "desc") {
   const fallback = [];
-  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
+  const {
+    data = fallback,
+    isError,
+    error,
+    isLoading,
+    isSuccess,
+  } = useQuery(
     [queryKeys.albums, currentLimit, currentPage],
     () => albumsApi.getAlbums(currentLimit, currentPage),
     {
@@ -21,9 +27,21 @@ export function useAlbums(currentPage = 1, currentLimit = 10, sort = undefined, 
   return { data, isError, error, isLoading, isSuccess };
 }
 
-export function useUserAlbums(currentPage = 1, currentLimit = 10, sort = undefined, order = 'desc', userId = undefined) {
+export function useUserAlbums(
+  currentPage = 1,
+  currentLimit = 10,
+  sort = undefined,
+  order = "desc",
+  userId = undefined,
+) {
   const fallback = [];
-  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(
+  const {
+    data = fallback,
+    isError,
+    error,
+    isLoading,
+    isSuccess,
+  } = useQuery(
     [queryKeys.albums, currentPage, userId],
     () => albumsApi.getAlbums(currentLimit, currentPage, userId),
     {
@@ -56,8 +74,8 @@ export function useFetchAlbum(id) {
 }
 
 export function useSetAlbum() {
-  const mutation = useMutation((data) => {
-    const authToken = authService.getCurrentUserToken();
+  const mutation = useMutation(async (data) => {
+    const authToken = await authService.getCurrentUserToken();
 
     if (authToken) return albumsApi.setAlbum(authToken, data);
 
@@ -68,8 +86,8 @@ export function useSetAlbum() {
 }
 
 export function useUpdateAlbum() {
-  const mutation = useMutation((id, data) => {
-    const authToken = authService.getCurrentUserToken();
+  const mutation = useMutation(async (id, data) => {
+    const authToken = await authService.getCurrentUserToken();
 
     if (authToken) return albumsApi.updateAlbum(authToken, id, data);
 
@@ -80,8 +98,8 @@ export function useUpdateAlbum() {
 }
 
 export function useDeleteAlbum() {
-  const mutation = useMutation((id) => {
-    const authToken = authService.getCurrentUserToken();
+  const mutation = useMutation(async (id) => {
+    const authToken = await authService.getCurrentUserToken();
 
     if (authToken) return albumsApi.deleteAlbum(authToken, id);
 

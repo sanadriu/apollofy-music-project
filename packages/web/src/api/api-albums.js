@@ -34,11 +34,10 @@ const getMyAlbums = async (authToken, params = {}) => {
 };
 
 const setAlbum = async (authToken, album) => {
-  return http.post(`${baseUrl}/albums`, {
+  return http.post(`${baseUrl}/albums`, album, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
-    data: album,
   });
 };
 

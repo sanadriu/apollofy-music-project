@@ -18,7 +18,7 @@ const ProfileContent = styled.div`
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: flex;
     align-items: center;
-    margin-top: 1.5rem;
+    margin: auto;
   }
 `;
 

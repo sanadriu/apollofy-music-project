@@ -26,7 +26,7 @@ const getInfiniteTracks = (url) => {
 const getMyTracks = (authToken, params = {}) => {
   const { page = 1, sort = "created_at", order = "asc", limit = 10, extend = false } = params;
 
-  return http.get(`${baseUrl}/me/tracks`, {
+  return http.get(`${baseUrl}/users/me/tracks`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },

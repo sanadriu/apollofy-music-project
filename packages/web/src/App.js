@@ -13,7 +13,7 @@ import Login from "./pages/Login/Login";
 import ResetPassword from "./pages/ResetPassword";
 import EditProfile from "./pages/EditProfile";
 import NotFound from "./pages/NotFound";
-import Tracks from "./pages/Tracks";
+
 import Playlists from "./pages/Playlists";
 import Genres from "./pages/Genres";
 import Albums from "./pages/Albums";
@@ -32,6 +32,7 @@ import TrackCreateForm from "./components/organisms/forms/TrackForm/TrackCreateF
 import TrackUpdateForm from "./components/organisms/forms/TrackForm/TrackUpdateForm";
 
 import Toggle from "./components/atoms/Switch";
+import Create from "./pages/Create";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
@@ -83,7 +84,7 @@ function App() {
             <Route path="users/:profileId" element={<Profile />} />
             <Route path="genres/:genre" element={<Genres />} />
             <Route path="playlists" element={<Playlists />} />
-            <Route path="tracks" element={<Tracks />} />
+            <Route path="create" element={<Create />} />
             <Route path="users" element={<Users />} />
             <Route path="stats" element={<Statistics />} />
             <Route path="tracks/:genre" element={<TracksByGenre />} />
