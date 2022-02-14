@@ -32,12 +32,12 @@ export default function AccountForm() {
           email: values.email || "",
           password: values.password || "",
           passwordConfirmation: values.passwordConfirmation || "",
-        }
+        };
 
         setTimeout(async () => {
           setSubmitting(true);
           // dispatch(signUpWithEmailRequest(values.email, values.password, values.name));
-          dispatch(updateCurrentUser(updatedUser))
+          dispatch(updateCurrentUser(updatedUser));
           dispatch(nextModal(currentModal + 1));
           setSubmitting(false);
         }, 400);

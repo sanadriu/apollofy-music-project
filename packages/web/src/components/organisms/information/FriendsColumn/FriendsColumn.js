@@ -19,6 +19,11 @@ const FriendsColumnLayout = styled(RightSideBar)`
   }
 `;
 
+const ColumnFlexStart = styled(FlexColumn)`
+  align-items: start;
+  gap: 0.2rem;
+`;
+
 export default function FriendsColumn() {
   const [isOpen, setOpen] = useState(false);
   const followedUsers = true;
@@ -32,13 +37,15 @@ export default function FriendsColumn() {
 
   return (
     <FriendsColumnLayout>
-      <FlexColumn>
+      <ColumnFlexStart>
         {isSuccess &&
           friendsList?.map((friend) => (
             <FriendInfo
               key={friend.id}
               profilePicture={friend.thumbnails?.url_default}
-              name={friend.username}
+              username={friend.username}
+              firstName={friend.firstname}
+              lastName={friend.lastname}
             />
           ))}
         {isSuccess && friendsList.length === 0 && (
@@ -48,7 +55,7 @@ export default function FriendsColumn() {
           Add Friends
         </Button>
         <AddFriendsModal isOpen={isOpen} handleModal={handleModal} />
-      </FlexColumn>
+      </ColumnFlexStart>
     </FriendsColumnLayout>
   );
 }
