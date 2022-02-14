@@ -8,7 +8,7 @@ import { modalSelector, nextModal } from "../../../../redux/modal";
 import AccountSchema from "../../../../schemas/AccountSchema";
 import FlexColumn from "../../../atoms/FlexColumn";
 import MiddleTitle from "../../../atoms/MiddleTitle";
-import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
+// import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
 import RegisterInput from "../../../atoms/RegisterInput";
 import Button from "../../../atoms/buttons/Button";
 import { Input } from "@mui/material";
@@ -33,12 +33,12 @@ export default function AccountForm() {
           email: values.email || "",
           password: values.password || "",
           passwordConfirmation: values.passwordConfirmation || "",
-        }
+        };
 
         setTimeout(async () => {
           setSubmitting(true);
           // dispatch(signUpWithEmailRequest(values.email, values.password, values.name));
-          dispatch(updateCurrentUser(updatedUser))
+          dispatch(updateCurrentUser(updatedUser));
           dispatch(nextModal(currentModal + 1));
           setSubmitting(false);
         }, 400);
