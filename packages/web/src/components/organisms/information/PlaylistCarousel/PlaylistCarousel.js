@@ -6,8 +6,8 @@ import PlaylistHomeCard from "../../../molecules/PlaylistHomeCard";
 import { usePlaylists } from "../../../../hooks/usePlaylists";
 
 import "./PlaylistCarousel.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 
 const Layout = styled.div`
   max-width: 45rem;
