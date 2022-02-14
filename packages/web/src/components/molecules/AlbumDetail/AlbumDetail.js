@@ -65,7 +65,6 @@ const StyledNumber = styled.div`
 `;
 
 const AlbumDetail = ({ album }) => {
-  console.log(album);
   return (
     <AlbumLayout>
       <AlbumPicture alt="Album's Thumbnail" src={album?.thumbnails?.url_default} />

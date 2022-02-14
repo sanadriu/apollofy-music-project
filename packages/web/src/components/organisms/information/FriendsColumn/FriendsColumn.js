@@ -45,6 +45,7 @@ export default function FriendsColumn() {
           friendsList?.map((friend) => (
             <FriendInfo
               key={friend.id}
+              id={friend.id}
               profilePicture={friend.thumbnails?.url_default}
               username={friend.username}
               firstName={friend.firstname}

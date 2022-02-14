@@ -13,6 +13,7 @@ import {
 import TrackDetail from "../TrackDetail";
 import UserDetail from "../UserDetail";
 import AlbumDetail from "../AlbumDetail/AlbumDetail";
+import PlaylistDetail from "../PlaylistDetail/PlaylistDetail";
 
 const SearchButton = styled(IconButton)`
   height: 2rem;
@@ -66,8 +67,6 @@ export default function SearchBar() {
   const { data, refetch } = useSearch(query, 1);
 
   const SearchRequest = data?.data?.data === undefined ? null : data?.data?.data;
-
-  console.log(SearchRequest);
 
   function handleSubmit() {
     refetch();
@@ -127,8 +126,8 @@ export default function SearchBar() {
               <>
                 <TracksText>Playlists</TracksText>
                 <TracksList>
-                  {SearchRequest?.playlists?.map((track) => (
-                    <TrackDetail key={track.id} track={track} />
+                  {SearchRequest?.playlists?.map((playlist) => (
+                    <PlaylistDetail key={playlist.id} playlist={playlist} />
                   ))}
                 </TracksList>
               </>
