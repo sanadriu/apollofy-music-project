@@ -1,13 +1,90 @@
 import React from "react";
+import styled from "styled-components";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import HeadphonesIcon from "@mui/icons-material/Headphones";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+
+import HomeSmallText from "../../atoms/HomeSmallText";
+import DetailText from "../../atoms/DetailText";
+import ProfilePlayTrack from "../../atoms/ProfilePlayTrack";
+
+const AlbumLayout = styled.div`
+  display: flex;
+  gap: 1rem;
+  padding: 0.3rem;
+  border-radius: 1.3rem;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.background.secondary_hover};
+  }
+`;
+
+const AlbumPicture = styled.img`
+  max-width: 3rem;
+  max-height: 3rem;
+  margin: 0;
+  border-radius: 0.3rem;
+`;
+
+const AlbumFlex = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding-left: 0.5rem;
+  flex-grow: 1;
+`;
+
+const AlbumLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.label};
+  }
+`;
+
+const StyledNumAlbum = styled.div`
+  font-family: ${({ theme }) => theme.fonts.primary};
+  margin-left: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  width: 20%;
+
+  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
+    display: none;
+  }
+`;
+
+const StyledNumber = styled.div`
+  padding-left: 0.5rem;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.text};
+`;
 
 const AlbumDetail = ({ album }) => {
+  console.log(album);
   return (
-    <>
-      <div>{album.title}</div>
-    </>
+    <AlbumLayout>
+      <AlbumPicture alt="Album's Thumbnail" src={album?.thumbnails?.url_default} />
+      <AlbumFlex>
+        <AlbumLink to={`/albums/${album.id}`}>
+          <HomeSmallText>{album?.title}</HomeSmallText>
+        </AlbumLink>
+        <AlbumLink to={`/users/${album?.user?.id}`}>
+          <DetailText>{album?.user?.username}</DetailText>
+        </AlbumLink>
+      </AlbumFlex>
+      <StyledNumAlbum>
+        <HeadphonesIcon sx={{ color: "purple" }} />
+        <StyledNumber>{album?.num_tracks}</StyledNumber>
+      </StyledNumAlbum>
+      {/* <ProfilePlayTrack album={album} handlePlayButton={handlePlayButton} /> */}
+    </AlbumLayout>
   );
-}
+};
 
 export default AlbumDetail;
 
