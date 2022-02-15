@@ -14,7 +14,8 @@ const MainLayout = styled.main`
   display: flex;
   padding: 1.25rem;
   justify-content: space-between;
-  margin-bottom: 6rem;
+  max-width: 1200px;
+  margin: 0 auto 6rem;
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     padding: 1rem 0;
     gap: 0.5rem;

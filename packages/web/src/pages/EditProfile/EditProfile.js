@@ -33,7 +33,7 @@ const InputLabel = styled.span`
   color: ${({ theme }) => theme.colors.text};
   // background-color: ${({ theme }) => theme.colors.background.secondary};
   padding: 0.5rem;
-  border-radius: 1.3rem;
+  border-radius: 1.25rem;
 `;
 
 const InputField = styled.span`

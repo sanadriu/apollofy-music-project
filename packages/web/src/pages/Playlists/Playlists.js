@@ -18,7 +18,7 @@ export const PageLayout = styled.div`
   flex-direction: column;
   gap: 0.3rem;
   margin: 1rem auto 2rem;
-  border-radius: 1.3rem;
+  border-radius: 1.25rem;
   background: ${({ theme }) => theme.colors.background.secondary};
 `;
 

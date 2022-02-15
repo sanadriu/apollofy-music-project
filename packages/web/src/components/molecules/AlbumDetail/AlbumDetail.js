@@ -11,8 +11,7 @@ const AlbumLayout = styled.div`
   display: flex;
   gap: 1rem;
   padding: 0.3rem;
-  border-radius: 1.3rem;
-
+  border-radius: 1.25rem;
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.secondary_hover};
   }

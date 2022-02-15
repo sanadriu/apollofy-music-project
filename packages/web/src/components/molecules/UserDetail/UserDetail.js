@@ -13,7 +13,7 @@ const UserLayout = styled.div`
   display: flex;
   gap: 1rem;
   padding: 0.3rem;
-  border-radius: 1.3rem;
+  border-radius: 0.5rem;
   width: 100%;
   &:hover {
     background-color: ${({ theme }) => theme?.colors?.background?.secondary_hover};
@@ -60,7 +60,7 @@ const StyledNumber = styled.div`
 `;
 
 const FollowButton = styled.button`
-  border-radius: 1.3rem;
+  border-radius: 1.25rem;
   background-color: ${({ theme }) => theme?.colors?.label};
   border: none;
   color: white;

@@ -10,7 +10,7 @@ const TracksLayout = styled.div`
   display: flex;
   gap: 1rem;
   @media only screen and (max-width: ${({ theme }) => theme.media.desktop}) {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 `;
 
@@ -19,8 +19,8 @@ const Home = () => {
     <>
       <PlaylistCarousel />
       <TracksLayout>
-        <PopularGenres />
         <PopularTracks />
+        <PopularGenres />
       </TracksLayout>
     </>
   );

@@ -11,11 +11,9 @@ const Layout = styled.div`
   display: flex;
   justify-content: flex-start;
   gap: 0.5rem;
-  border-radius: 1.3rem;
+  border-radius: 1.25rem;
   width: 100%;
   margin-bottom: 1rem;
-
-  gap: 0.5rem;
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.secondary};
   }

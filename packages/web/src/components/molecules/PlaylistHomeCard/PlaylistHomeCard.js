@@ -37,9 +37,9 @@ const HoverIcon = styled(PlayCircleIcon)`
 const Card = styled.div`
   margin: 0.5rem;
   padding: 1rem;
-  border-radius: 1.3rem;
+  border-radius: 1.25rem;
   height: 15rem;
-  max-width: 12.5rem;
+  max-width: 15rem;
   background-size: cover;
   transition: 1s;
   background: linear-gradient(

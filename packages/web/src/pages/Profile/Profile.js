@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 
 import { useSingleUser } from "../../hooks/useUsers";
 import { useUserAlbums } from "../../hooks/useAlbums";
@@ -12,6 +13,8 @@ import ProfileUserCards from "../../components/organisms/information/ProfileUser
 import ProfileUserTracks from "../../components/organisms/information/ProfileUserTracks";
 import ProfileGroupButtons from "../../components/molecules/ProfileGroupButtons";
 import ButtonPlaySuffle from "../../components/atoms/buttons/ButtonPlayShuffle";
+import AlbumModal from "../../components/organisms/modals/AlbumModal/AlbumModal";
+import PlaylistModal from "../../components/organisms/modals/PlaylistModal";
 
 const StyledProfile = styled.div`
   overflow: hidden;
@@ -21,14 +24,20 @@ const StyledProfile = styled.div`
 `;
 
 const StyledTitle = styled.div`
+  display: flex;
   margin: 1rem 0;
   font-weight: bold;
   letter-spacing: 4px;
   font-style: oblique;
   font-variant: small-caps;
+  font-size: larger;
+  gap: 0.5em;
 `;
 
 const Profile = () => {
+  const [modal, setModal] = useState("");
+  const [isOpen, setOpen] = useState("");
+
   const { profileId } = useParams();
 
   const { data } = useSingleUser(profileId);
@@ -43,6 +52,10 @@ const Profile = () => {
   const { data: tracks } = useUserTracks(1, undefined, 5, "num_plays", "desc", profileId);
   const tracksList = tracks?.data?.data;
 
+  const handleModal = () => {
+    setOpen(!isOpen);
+  };
+
   return (
     <StyledProfile>
       <ProfileGroupButtons />
@@ -53,14 +66,40 @@ const Profile = () => {
 
       {albumsList?.length > 0 && (
         <>
-          <StyledTitle>Albums</StyledTitle> <ProfileUserCards data={albumsList} />
+          <StyledTitle>
+            Albums{" "}
+            <AddBoxIcon
+              color="inherit"
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                setModal("albums");
+                setOpen(true);
+              }}
+            />
+          </StyledTitle>
+          <ProfileUserCards data={albumsList} />
         </>
       )}
       {playlistsList?.length > 0 && (
         <>
-          <StyledTitle>Playlists</StyledTitle>
+          <StyledTitle>
+            Playlists{" "}
+            <AddBoxIcon
+              color="inherit"
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                setModal("playlists");
+                setOpen(true);
+              }}
+            />
+          </StyledTitle>
           <ProfileUserCards data={playlistsList} />
         </>
+      )}
+
+      {isOpen && modal === "albums" && <AlbumModal isOpen={isOpen} handleModal={handleModal} />}
+      {isOpen && modal === "playlists" && (
+        <PlaylistModal isOpen={isOpen} handleModal={handleModal} />
       )}
     </StyledProfile>
   );

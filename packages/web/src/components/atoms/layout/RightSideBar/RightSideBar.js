@@ -7,7 +7,7 @@ const RightSideBar = styled.aside`
   width: 16rem;
   background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
-  border-radius: 1.3rem;
+  border-radius: 1.25rem;
 `;
 
 export default RightSideBar;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
@@ -26,13 +26,11 @@ const SearchButton = styled(IconButton)`
 const SearchInput = styled.input`
   width: 100%;
   height: 2rem;
-  background-color: ${({ theme }) => theme.colors.background.secondary};
+  background-color: transparent;
   border: none;
-  padding-left: 1rem;
   outline: none;
   border-radius: 10rem;
   color: ${({ theme }) => theme.colors.text};
-
   &::placeholder {
     color: ${({ theme }) => theme.colors.secondary};
   }
@@ -45,7 +43,7 @@ const Layout = styled.form`
   padding-left: 1rem;
   display: flex;
   justify-content: space-between;
-  border-radius: 1.3rem;
+  border-radius: 1.25rem;
   background-color: ${({ theme }) => theme.colors.background.secondary};
 `;
 

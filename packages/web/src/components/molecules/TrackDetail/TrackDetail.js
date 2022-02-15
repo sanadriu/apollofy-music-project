@@ -15,7 +15,7 @@ const TrackLayout = styled.div`
   justify-content: space-between;
   gap: 1rem;
   padding: 0.3rem;
-  border-radius: 1.3rem;
+  border-radius: 0.5rem;
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.secondary_hover};
   }

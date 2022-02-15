@@ -10,7 +10,7 @@ import ProfileUserTitle from "../../../atoms/body/ProfileUserTitle";
 const ProfileContent = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 1.3rem;
+  border-radius: 1.25rem;
   background: ${({ theme }) => theme.colors.background.secondary};
   color: ${({ theme }) => theme.colors.text};
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -45,7 +45,6 @@ const DescriptionDiv = styled.div`
 `;
 
 const ProfileMain = ({ user, albums, tracks }) => {
-  console.log(user);
   return (
     <ProfileContent>
       <AvatarDiv>

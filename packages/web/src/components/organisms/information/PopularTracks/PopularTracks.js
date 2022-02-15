@@ -15,11 +15,10 @@ export const TracksList = styled(SectionLayout)`
   margin-top: 0;
   margin-bottom: 1rem;
   background-color: ${({ theme }) => theme.colors.background.secondary};
-  border-radius: 1.3rem;
+  border-radius: 1.25rem;
   padding: 1rem;
   width: 100%;
   gap: 1rem;
-
   @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     margin-top: 1rem;
     width: 100%;

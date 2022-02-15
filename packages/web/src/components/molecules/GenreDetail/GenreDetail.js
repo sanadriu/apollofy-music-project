@@ -18,7 +18,7 @@ const GenreDetail = ({ genre }) => {
   const GenreLayout = styled.div`
     cursor: pointer;
     height: 6rem;
-    border-radius: 1.3rem;
+    border-radius: 1.25rem;
     padding: 0.3rem;
     display: flex;
     justify-content: center;

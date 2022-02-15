@@ -21,7 +21,6 @@ const StyledPlayTrack = styled.div`
   justify-content: flex-end;
   align-items: center;
   font-size: 0.8rem;
-  gap: 0.5rem;
 `;
 
 const CustomButton = styled(Button)`

@@ -3,14 +3,7 @@ import styled from "styled-components";
 import { Box } from "@mui/system";
 import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
-
-import * as authService from "../../../../services/auth";
-import { useFollowedUsers } from "../../../../hooks/useUsers";
-import FlexColumn from "../../../atoms/layout/FlexColumn";
-import MiddleTitle from "../../../atoms/headings/MiddleTitle";
-import UserDetail from "../../../molecules/UserDetail";
-import { authSelector } from "../../../../store/auth";
+import CreatePlaylistForm from "../../forms/CreatePlaylistForm/CreatePlaylistForm";
 
 const StyledModal = styled(ModalUnstyled)`
   position: fixed;
@@ -37,12 +30,6 @@ const Backdrop = styled("div")`
   -webkit-tap-highlight-color: transparent;
 `;
 
-const FriendList = styled(FlexColumn)`
-  width: 100%;
-  padding: 0;
-  gap: 0;
-`;
-
 export const ModalBox = styled(Box)`
   width: 40%;
   background-color: ${({ theme }) => theme.colors.background.primary};
@@ -50,21 +37,8 @@ export const ModalBox = styled(Box)`
   padding: 2rem;
 `;
 
-export default function AddFriendsModal({ isOpen, handleModal }) {
-  const dispatch = useDispatch();
-  const { currentUser } = useSelector(authSelector);
-
-  const followedUsers = false;
-
-  const { data: users } = useFollowedUsers(followedUsers);
-
-  const userList = isOpen ? users?.data?.data : null;
-
+export default function PlaylistModal({ isOpen, handleModal }) {
   const handleClose = () => handleModal();
-
-  function handleSubmit(e) {
-    e.preventDefault();
-  }
 
   return (
     <StyledModal
@@ -75,23 +49,18 @@ export default function AddFriendsModal({ isOpen, handleModal }) {
       BackdropComponent={Backdrop}
     >
       <ModalBox>
-        <FriendList>
-          <MiddleTitle className="text-2xl font-bold mb-6">Some partners in music</MiddleTitle>
-          {userList?.map((user) => {
-            return <UserDetail key={user?.id} user={user} />;
-          })}
-        </FriendList>
+        <CreatePlaylistForm />
       </ModalBox>
     </StyledModal>
   );
 }
 
-AddFriendsModal.propTypes = {
+PlaylistModal.propTypes = {
   isOpen: PropTypes.bool,
   handleModal: PropTypes.func,
 };
 
-AddFriendsModal.defaultProps = {
+PlaylistModal.defaultProps = {
   isOpen: false,
   handleModal: {},
 };
