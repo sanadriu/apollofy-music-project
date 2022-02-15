@@ -37,7 +37,7 @@ const UserFlex = styled.div`
   flex-grow: 1;
 `;
 
-const UserLink = styled(Link)`
+export const UserLink = styled(Link)`
   text-decoration: none;
   color: inherit;
 

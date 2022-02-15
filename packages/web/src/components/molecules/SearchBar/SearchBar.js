@@ -13,6 +13,7 @@ import {
 import TrackDetail from "../TrackDetail";
 import UserDetail from "../UserDetail";
 import AlbumDetail from "../AlbumDetail";
+import PlaylistDetail from "../PlaylistDetail";
 
 const SearchButton = styled(IconButton)`
   height: 2rem;
@@ -125,8 +126,8 @@ export default function SearchBar() {
               <>
                 <TracksText>Playlists</TracksText>
                 <TracksList>
-                  {SearchRequest?.playlists?.map((track) => (
-                    <TrackDetail key={track.id} track={track} />
+                  {SearchRequest?.playlists?.map((playlist) => (
+                    <PlaylistDetail key={playlist.id} playlist={playlist} />
                   ))}
                 </TracksList>
               </>
