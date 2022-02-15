@@ -31,6 +31,7 @@ const SearchInput = styled.input`
   padding-left: 1rem;
   outline: none;
   border-radius: 10rem;
+  color: ${({ theme }) => theme.colors.text};
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.secondary};

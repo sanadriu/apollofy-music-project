@@ -52,6 +52,7 @@ const Button = ({
   };
 
   const outlineHoverStyle = {
+    border: `1px solid ${labelColor || "white"}`,
     color: labelColor || "white",
     // backgroundColor: `darken(0.2, ${btnColor})`,
   };

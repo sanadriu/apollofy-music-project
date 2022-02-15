@@ -4,7 +4,7 @@ import { queryKeys } from "../queries/constants";
 import usersApi from "../api/api-users";
 import * as authService from "../services/auth";
 
-export function useUsers(userId = undefined) {
+export function useUsers() {
   const fallback = [];
   const {
     data = fallback,
@@ -12,7 +12,7 @@ export function useUsers(userId = undefined) {
     error,
     isLoading,
     isSuccess,
-  } = useQuery([queryKeys.users, userId], () => usersApi.getUsers(userId), {
+  } = useQuery([queryKeys.users], () => usersApi.getUsers(), {
     staleTime: 600000, // 10 minutes
     cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
     refetchOnMount: false,
@@ -31,23 +31,13 @@ export function useSingleUser(userId = undefined) {
     error,
     isLoading,
     isSuccess,
-  } = useQuery(
-    ["followed-users", followedUsers],
-    async () => {
-      const authToken = await authService.getCurrentUserToken();
-
-      if (authToken) return usersApi.getMyFollowedUsers(authToken, followedUsers);
-
-      return Promise.reject(new Error("User authentication required"));
-    },
-    {
-      staleTime: 600000, // 10 minutes
-      cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  );
+  } = useQuery([queryKeys.users, userId], () => usersApi.getUser(userId), {
+    staleTime: 600000, // 10 minutes
+    cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
 
   return { data, isError, error, isLoading, isSuccess };
 }

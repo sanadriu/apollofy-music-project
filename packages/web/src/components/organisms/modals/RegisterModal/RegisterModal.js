@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, Box } from "@mui/system";
+import { styled } from "@mui/system";
 import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
 
@@ -15,7 +15,7 @@ const StyledModal = styled(ModalUnstyled)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme?.colors?.background?.primary};
+  background-color: ${({ theme }) => theme?.colors?.background?.secondary};
   color: ${({ theme }) => theme?.colors?.text};
 `;
 

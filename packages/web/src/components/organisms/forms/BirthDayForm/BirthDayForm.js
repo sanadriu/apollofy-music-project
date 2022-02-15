@@ -14,9 +14,7 @@ import Stack from "@mui/material/Stack";
 
 import FlexColumn from "../../../atoms/layout/FlexColumn";
 import MiddleTitle from "../../../atoms/headings/MiddleTitle";
-
 import DateOfBirthSchema from "../../../../schemas/DateOfBirthSchema";
-
 import { dateOfBirthAdded } from "../../../../store/auth";
 import { modalSelector, nextModal } from "../../../../store/modal";
 
@@ -64,7 +62,7 @@ export default function BirthDayForm() {
               <ErrorMessage className="errorMessage" name="date" component="div" />
             </Box>
             <Box width="100%" my={2}>
-              <Button type="submit" variant="contained" color="primary">
+              <Button type="submit" variant="contained" BtnColor="black">
                 Submit
               </Button>
             </Box>

@@ -24,6 +24,7 @@ const GenreDetail = ({ genre }) => {
     justify-content: center;
     border: 1px solid ${({ theme }) => theme.colors.border};
     text-align: center;
+    overflow: hidden;
     background-image: linear-gradient(
         ${({ theme }) => theme.colors.body},
         ${({ theme }) => theme.colors.background}
