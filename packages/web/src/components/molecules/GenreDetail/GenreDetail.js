@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import SmallText from "../../atoms/SmallText";
+import SmallText from "../../atoms/body/SmallText";
 
 const GenreTitle = styled(SmallText)`
   margin-top: auto;

@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import FlexColumn from "../../../atoms/FlexColumn";
-import MiddleTitle from "../../../atoms/MiddleTitle";
-import SmallText from "../../../atoms/SmallText";
+import FlexColumn from "../../../atoms/layout/FlexColumn";
+import MiddleTitle from "../../../atoms/headings/MiddleTitle";
+import SmallText from "../../../atoms/body/SmallText";
 import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 
 import { authSelector, signUpRequest, signUpWithEmailRequest } from "../../../../redux/auth";

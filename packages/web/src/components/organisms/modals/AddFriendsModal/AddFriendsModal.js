@@ -4,13 +4,13 @@ import { Box } from "@mui/system";
 import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import * as authService from "../../../services/auth";
 
-import { useFollowedUsers } from "../../../hooks/useUsers";
-import FlexColumn from "../../atoms/FlexColumn";
-import MiddleTitle from "../../atoms/MiddleTitle";
-import UserDetail from "../../molecules/UserDetail";
-import { authSelector } from "../../../redux/auth";
+import * as authService from "../../../../services/auth";
+import { useFollowedUsers } from "../../../../hooks/useUsers";
+import FlexColumn from "../../../atoms/layout/FlexColumn";
+import MiddleTitle from "../../../atoms/headings/MiddleTitle";
+import UserDetail from "../../../molecules/UserDetail";
+import { authSelector } from "../../../../redux/auth";
 
 const StyledModal = styled(ModalUnstyled)`
   position: fixed;
@@ -50,14 +50,14 @@ export const ModalBox = styled(Box)`
   padding: 2rem;
 `;
 
-export default function AddFriendsModal ({ isOpen, handleModal }) {
+export default function AddFriendsModal({ isOpen, handleModal }) {
   const dispatch = useDispatch();
   const { currentUser } = useSelector(authSelector);
-  
+
   const followedUsers = false;
-  
+
   const { data: users } = useFollowedUsers(followedUsers);
-  
+
   const userList = isOpen ? users?.data?.data : null;
 
   const handleClose = () => handleModal();

@@ -10,7 +10,7 @@ import { useTracks, usePrefetchTracks, useInfiniteTracks } from "../../../../hoo
 import TrackDetail from "../../../molecules/TrackDetail";
 import Button from "../../../atoms/buttons/Button";
 import { TracksList } from "../PopularTracks/PopularTracks";
-import HomeSmallText from "../../../atoms/HomeSmallText";
+import HomeSmallText from "../../../atoms/body/HomeSmallText";
 
 const ExtendedTrackList = styled(TracksList)`
   width: 100%;
@@ -39,10 +39,6 @@ export default function Tracks() {
     error,
     isLoading,
   } = useInfiniteTracks(currentPage, currentGenre);
-
-  // console.log("tracks", tracks);
-  // console.log("fetchNextPage", fetchNextPage);
-  console.log("hasNextPage", hasNextPage);
 
   const tracksList = tracks?.data?.data;
   const maxTrackPage = tracks?.data?.pages;

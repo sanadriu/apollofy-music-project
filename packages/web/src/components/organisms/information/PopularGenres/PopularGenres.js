@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { useGenres } from "../../../../hooks/useGenres";
 import GenreDetail from "../../../molecules/GenreDetail";
-import SmallText from "../../../atoms/SmallText";
+import SmallText from "../../../atoms/body/SmallText";
 import { SectionLayout } from "../PopularTracks/PopularTracks";
 
 const GenresList = styled.div`

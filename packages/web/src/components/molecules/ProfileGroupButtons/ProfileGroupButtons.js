@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import CategoryButton from "../../atoms/ProfileButtonCategory";
+import CategoryButton from "../../atoms/buttons/ProfileButtonCategory";
 
 const GroupButtons = styled.div`
   display: flex;

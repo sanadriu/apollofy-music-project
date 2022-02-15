@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import HomeSmallText from "../../../atoms/HomeSmallText";
-import PurpleLink from "../../../atoms/PurpleLink";
+import HomeSmallText from "../../../atoms/body/HomeSmallText";
+import PurpleLink from "../../../atoms/links/PurpleLink";
 
 const FooterText = styled(HomeSmallText)`
   color: ${({ theme }) => theme.colors.text};

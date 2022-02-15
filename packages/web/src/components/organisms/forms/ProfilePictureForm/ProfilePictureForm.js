@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,9 +7,9 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import FlexColumn from "../../../atoms/FlexColumn";
-import MiddleTitle from "../../../atoms/MiddleTitle";
-import SmallText from "../../../atoms/SmallText";
+import FlexColumn from "../../../atoms/layout/FlexColumn";
+import MiddleTitle from "../../../atoms/headings/MiddleTitle";
+import SmallText from "../../../atoms/body/SmallText";
 import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 
 import { authSelector, pictureLinkAdded } from "../../../../redux/auth";

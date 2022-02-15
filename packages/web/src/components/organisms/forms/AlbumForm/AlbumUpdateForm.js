@@ -2,9 +2,6 @@ import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { useFetchAlbum, useUpdateAlbum, useUpdateAlbum } from "../../../../hooks/useAlbums";
-import { useGenres } from "../../../../hooks/useGenres";
-import validationSchema from "../../../../schemas/AlbumSchema";
 import {
   Box,
   Alert,
@@ -20,6 +17,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+
+import { useFetchAlbum, useUpdateAlbum, useUpdateAlbum } from "../../../../hooks/useAlbums";
+import { useGenres } from "../../../../hooks/useGenres";
+import validationSchema from "../../../../schemas/AlbumSchema";
 import { uploadResource } from "../../../../api/api-cloudinary";
 import withLayout from "../../../hoc/withLayout";
 import { useMyTracks } from "../../../../hooks/useTracks";
@@ -126,7 +127,7 @@ function AlbumCreateForm() {
           {fetchMyTracksIsError && <Box>Tracks request: {fetchMyTracksError?.message}</Box>}
         </Alert>
       )}
-      {(fetchAlbumIsLoading || fetchGenresIsLoading || fetchMyTracksIsLoading ) && (
+      {(fetchAlbumIsLoading || fetchGenresIsLoading || fetchMyTracksIsLoading) && (
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", py: "4rem" }}>
           <CircularProgress size={128} />
         </Box>

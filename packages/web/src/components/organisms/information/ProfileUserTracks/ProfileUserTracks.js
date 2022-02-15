@@ -14,16 +14,29 @@ const StyledUserTracks = styled.div`
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 
+const StyledNotListenedTracks = styled.p`
+  font-weight:600;
+  text-align:center;
+  margin-bottom:0;
+`;
+
 const ProfileUserTracks = () => {
   const { profileId } = useParams();
   const { data: tracks } = useUserTracks(1, undefined, 5, "num_plays", "desc", profileId);
-
+  console.log(tracks?.data?.data?.length);
   return (
     <StyledUserTracks>
-      {tracks?.data?.data?.map((track, index) => (
+      {
+      tracks?.data?.data?.length > 0 
+      ?
+       tracks?.data?.data?.map((track, index) => (
         <ProfileUserTrack key={track.id} data={track} index={index} />
-      ))}
-    </StyledUserTracks>
+      ))
+      : 
+      <StyledNotListenedTracks>You havent heard any song yet :(</StyledNotListenedTracks>
+      }
+    </StyledUserTracks> 
+   
   );
 };
 

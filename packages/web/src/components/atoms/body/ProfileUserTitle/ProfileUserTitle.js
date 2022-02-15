@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { Typography } from "@mui/material";
 
-import ButtonFollow from "../ButtonFollow/ButtonFollow";
-import { useSelector } from "react-redux";
-import { authSelector } from "../../../redux/auth";
-import { useParams } from "react-router-dom";
+import { authSelector } from "../../../../redux/auth";
+import  ButtonFollow  from "../../buttons/ButtonFollow";
 
 const StyledTitleUser = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ const ProfileUserTitle = ({ title, id }) => {
       </div>
       {currentUser.id !== profileId && (
         <div>
-          <ButtonFollow id={id} />
+            <ButtonFollow id={id} />
         </div>
       )}
     </StyledTitleUser>

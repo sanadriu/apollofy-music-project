@@ -18,13 +18,13 @@ import LoginBoard from "../../components/organisms/information/LoginBoard";
 import RegisterModal from "../../components/organisms/modals/RegisterModal";
 import ResetPassModal from "../../components/organisms/modals/ResetPassModal";
 import SignInModal from "../../components/organisms/modals/SigninModal";
-import AccountForm from "../../components/organisms/forms/AccountForm/AccountForm";
-import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureForm/ProfilePictureForm";
-import BirthDayForm from "../../components/organisms/forms/BirthDayForm/BirthDayForm2";
-import DescriptionForm from "../../components/organisms/forms/DescriptionForm/DescriptionForm";
-import SigninForm from "../../components/organisms/forms/SigninForm/SigninForm";
-import FlexColumn from "../../components/atoms/FlexColumn";
+import AccountForm from "../../components/organisms/forms/AccountForm";
+import ProfilePictureForm from "../../components/organisms/forms/ProfilePictureForm";
+import BirthDayForm from "../../components/organisms/forms/BirthDayForm";
+import DescriptionForm from "../../components/organisms/forms/DescriptionForm";
+import SigninForm from "../../components/organisms/forms/SigninForm";
 import Button from "../../components/atoms/buttons/Button";
+import FlexColumn from "../../components/atoms/layout/FlexColumn";
 
 const MainFlex = styled.div`
   height: 100vh;
@@ -64,11 +64,6 @@ const CookieBar = styled(CookieConsent)`
   border: 1px solid ${({ theme }) => theme.colors.border};
   padding: 1rem;
 `;
-
-// const CookieButton = styled.button`
-//   background-color: ${({ theme }) => theme.colors.label};
-//   width: 2rem;
-// `;
 
 export default function Login() {
   const dispatch = useDispatch();

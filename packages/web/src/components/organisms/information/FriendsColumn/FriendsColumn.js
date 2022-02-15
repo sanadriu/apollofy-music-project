@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-import { authSelector } from "../../../../redux/auth";
 import { useFollowedUsers } from "../../../../hooks/useUsers";
 import Button from "../../../atoms/buttons/Button";
-import FlexColumn from "../../../atoms/FlexColumn";
-import HomeSmallText from "../../../atoms/HomeSmallText";
-import RightSideBar from "../../../atoms/RightSideBar";
+import FlexColumn from "../../../atoms/layout/FlexColumn";
+import HomeSmallText from "../../../atoms/body/HomeSmallText";
+import RightSideBar from "../../../atoms/layout/RightSideBar";
 import FriendInfo from "../../../molecules/FriendInfo";
 import AddFriendsModal from "../../modals/AddFriendsModal";
 
@@ -22,7 +20,6 @@ const FriendsColumnLayout = styled(RightSideBar)`
 `;
 
 export default function FriendsColumn() {
-  const { currentUser } = useSelector(authSelector);
   const [isOpen, setOpen] = useState(false);
   const followedUsers = true;
 

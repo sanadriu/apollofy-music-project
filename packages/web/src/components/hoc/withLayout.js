@@ -4,11 +4,11 @@ import styled from "styled-components";
 
 import Footer from "../organisms/information/Footer";
 import FriendsColumn from "../organisms/information/FriendsColumn";
-import { ExampleAudioPlayer } from "../organisms/input-controls/AudioPlayer/AudioPlayer";
+import AudioPlayer from "../organisms/input-controls/AudioPlayer";
 import MenuBar from "../organisms/navigation/MenuBar";
 import ControlBar from "../molecules/ControlBar";
 import SearchBar from "../molecules/SearchBar/SearchBar";
-import FlexColumn from "../atoms/FlexColumn";
+import FlexColumn from "../atoms/layout/FlexColumn";
 
 const MainLayout = styled.main`
   display: flex;
@@ -57,7 +57,7 @@ function withLayout(WrappedComponent) {
                 <Footer />
               </RightFlex>
             </MainLayout>
-            <ExampleAudioPlayer />
+            <AudioPlayer />
           </>
         )}
         {isMobile && (
@@ -67,7 +67,7 @@ function withLayout(WrappedComponent) {
                 <WrappedComponent {...props} />
               </PageContent>
             </MainLayout>
-            <ExampleAudioPlayer />
+            <AudioPlayer />
             <ControlBar />
           </>
         )}

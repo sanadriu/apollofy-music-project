@@ -6,9 +6,9 @@ import { authSelector, updateCurrentUser } from "../../../../redux/auth";
 import { modalSelector, nextModal } from "../../../../redux/modal";
 
 import AccountSchema from "../../../../schemas/AccountSchema";
-import FlexColumn from "../../../atoms/FlexColumn";
-import MiddleTitle from "../../../atoms/MiddleTitle";
-import RegisterInput from "../../../atoms/RegisterInput";
+import FlexColumn from "../../../atoms/layout/FlexColumn";
+import MiddleTitle from "../../../atoms/headings/MiddleTitle";
+import RegisterInput from "../../../atoms/input-controls/RegisterInput";
 import Button from "../../../atoms/buttons/Button";
 import { Input } from "@mui/material";
 

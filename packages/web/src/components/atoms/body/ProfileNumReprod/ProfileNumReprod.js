@@ -3,7 +3,7 @@ import styled from "styled-components";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
 import PropTypes from "prop-types";
 
-import { formatNumReprod } from "../../../utils/utils";
+import { formatNumReprod } from "../../../../utils/utils";
 
 const StyledNumTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};
