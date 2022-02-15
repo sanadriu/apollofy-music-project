@@ -16,11 +16,11 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
+import { useFetchAlbums } from "../../hooks/useAlbums";
+import { useFetchUsers } from "../../hooks/useUsers";
+import { useFetchPlaylists } from "../../hooks/usePlaylists";
+import { useFetchTracks } from "../../hooks/useTracks";
 import withLayout from "../../components/hoc/withLayout";
-import { useAlbums } from "../../hooks/useAlbums";
-import { useUsers } from "../../hooks/useUsers";
-import { usePlaylists } from "../../hooks/usePlaylists";
-import { useTracks } from "../../hooks/useTracks";
 import FlexColumn from "../../components/atoms/layout/FlexColumn";
 
 const NavBar = styled.nav`
@@ -68,16 +68,16 @@ const Statistics = () => {
   const [statsArray, setArray] = useState([]);
   const [likes, setLikes] = useState([]);
 
-  const { data: albums } = useAlbums(1, undefined, undefined, "num_likes");
+  const { data: albums } = useFetchAlbums({ sort: "num_likes" });
   const albumsList = albums?.data?.data;
 
-  const { data: playlists } = usePlaylists(1, undefined, undefined, "num_followers");
+  const { data: playlists } = useFetchPlaylists({ sort: "num_followers" });
   const playlistsList = playlists?.data?.data;
 
-  const { data: users } = useUsers(1, undefined, undefined, "num_followers");
+  const { data: users } = useFetchUsers({ sort: "num_followers" });
   const usersList = users?.data?.data;
 
-  const { data: tracks } = useTracks(1, undefined, undefined, "num_plays");
+  const { data: tracks } = useFetchTracks({ sort: "num_plays" });
   const tracksList = tracks?.data?.data;
 
   function limit(string = "", max = 0) {

@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 
-import { useSingleUser } from "../../hooks/useUsers";
-import { useUserAlbums } from "../../hooks/useAlbums";
-import { useUserPlaylists } from "../../hooks/usePlaylists";
-import { useUserTracks } from "../../hooks/useTracks";
+import { useFetchAlbums } from "../../hooks/useAlbums";
+import { useFetchPlaylists } from "../../hooks/usePlaylists";
+import { useFetchTracks } from "../../hooks/useTracks";
+import { useFetchUser } from "../../hooks/useUsers";
 import withLayout from "../../components/hoc/withLayout";
 import ProfileMain from "../../components/organisms/information/ProfileMain";
 import ProfileUserCards from "../../components/organisms/information/ProfileUserCards";
@@ -40,17 +40,15 @@ const Profile = () => {
 
   const { profileId } = useParams();
 
-  const { data } = useSingleUser(profileId);
-  const user = data?.data?.data;
-
-  const { data: albums } = useUserAlbums(undefined, undefined, undefined, undefined, profileId);
-  const albumsList = albums?.data?.data;
-
-  const { data: playlists } = useUserPlaylists(profileId);
-  const playlistsList = playlists?.data?.data;
-
-  const { data: tracks } = useUserTracks(1, undefined, 5, "num_plays", "desc", profileId);
-  const tracksList = tracks?.data?.data;
+  const { data: user } = useFetchUser(profileId);
+  const { data: albums } = useFetchAlbums({ userId: profileId });
+  const { data: playlists } = useFetchPlaylists({ userId: profileId });
+  const { data: tracks } = useFetchTracks({
+    userId: profileId,
+    limit: 5,
+    sort: "num_plays",
+    order: "desc",
+  });
 
   const handleModal = () => {
     setOpen(!isOpen);
@@ -59,48 +57,44 @@ const Profile = () => {
   return (
     <StyledProfile>
       <ProfileGroupButtons />
-      <ProfileMain user={user} albums={albumsList?.length} tracks={tracksList?.length} />
-      <ButtonPlaySuffle tracks={tracksList} />
+      <ProfileMain
+        user={user?.data?.data}
+        albums={albums?.data?.count}
+        tracks={tracks?.data?.count}
+      />
+      <ButtonPlaySuffle />
       <StyledTitle>Most Listened</StyledTitle>
-      <ProfileUserTracks />
-
-      {albumsList?.length > 0 && (
-        <>
-          <StyledTitle>
-            Albums{" "}
-            <AddBoxIcon
-              color="inherit"
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                setModal("albums");
-                setOpen(true);
-              }}
-            />
-          </StyledTitle>
-          <ProfileUserCards data={albumsList} />
-        </>
-      )}
-      {playlistsList?.length > 0 && (
-        <>
-          <StyledTitle>
-            Playlists{" "}
-            <AddBoxIcon
-              color="inherit"
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                setModal("playlists");
-                setOpen(true);
-              }}
-            />
-          </StyledTitle>
-          <ProfileUserCards data={playlistsList} />
-        </>
-      )}
-
+      <ProfileUserTracks data={tracks?.data?.data} />
+      <StyledTitle>
+        Albums
+        <AddBoxIcon
+          color="inherit"
+          sx={{ cursor: "pointer" }}
+          onClick={() => {
+            setModal("albums");
+            setOpen(true);
+          }}
+        />
+      </StyledTitle>
+      <ProfileUserCards data={albums?.data?.data} />
+      <StyledTitle>
+        Playlists
+        <AddBoxIcon
+          color="inherit"
+          sx={{ cursor: "pointer" }}
+          onClick={() => {
+            setModal("playlists");
+            setOpen(true);
+          }}
+        />
+      </StyledTitle>
+      <ProfileUserCards data={playlists?.data?.data} />
       {isOpen && modal === "albums" && <AlbumModal isOpen={isOpen} handleModal={handleModal} />}
-      {isOpen && modal === "playlists" && (
-        <PlaylistModal isOpen={isOpen} handleModal={handleModal} />
-      )}
+      {
+        isOpen && modal === "playlists" && (
+          <PlaylistModal isOpen={isOpen} handleModal={handleModal} />
+        )
+      }
     </StyledProfile>
   );
 };

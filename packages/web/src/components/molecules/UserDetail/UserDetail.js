@@ -6,6 +6,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 
+import defaultAvatar from "../../../images/defaultAvatar.png";
 import HomeSmallText from "../../atoms/body/HomeSmallText";
 import { useFollowUser } from "../../../hooks/useUsers";
 
@@ -90,7 +91,7 @@ const UserDetail = ({ user }) => {
 
   return (
     <UserLayout>
-      <UserPicture alt={`${user?.username}`} src={user?.thumbnails?.url_default} />
+      <UserPicture alt={`${user?.username}`} src={user?.thumbnails?.url_default || defaultAvatar} />
       <UserFlex>
         <UserLink to={`/users/${user.id}`}>
           <HomeSmallText>{user.username}</HomeSmallText>

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { useGenres } from "../../../../hooks/useGenres";
+import { useFetchGenres } from "../../../../hooks/useGenres";
 import GenreDetail from "../../../molecules/GenreDetail";
 import SmallText from "../../../atoms/body/SmallText";
 import { SectionLayout } from "../PopularTracks/PopularTracks";
@@ -23,7 +23,7 @@ const GenresText = styled(SmallText)`
 `;
 
 export default function PopularGenres() {
-  const { data: genres } = useGenres();
+  const { data: genres } = useFetchGenres();
   return (
     <SectionLayout>
       <GenresText>Genres</GenresText>

@@ -2,55 +2,34 @@ import http from "../services/httpService";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-const getAlbum = async (albumId) => {
-  return http.get(`${baseUrl}/albums/${albumId}`);
+const getAlbum = (albumId, params) => {
+  return http.get(`${baseUrl}/albums/${albumId}`, { params });
 };
 
-const getAlbums = async (limitNum = 10, pageNum = 1, userId) => {
-  return http.get(`${baseUrl}/albums`, {
-    params: {
-      limit: limitNum,
-      page: pageNum,
-      user: userId,
-    },
+const getAlbums = (params) => {
+  return http.get(`${baseUrl}/albums`, { params });
+};
+
+const getUserAlbums = (authToken, params) => {
+  return http.get(`${baseUrl}/users/me/albums`, {
+    headers: { Authorization: `Bearer ${authToken}` },
+    params,
   });
 };
 
-const getMyAlbums = async (authToken, params = {}) => {
-  const { page = 1, sort = "created_at", order = "asc", limit = 10, extend = false } = params;
-
-  return http.get(`${baseUrl}/me/albums`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
-    params: {
-      page,
-      sort,
-      order,
-      limit,
-      extend,
-    },
-  });
-};
-
-const setAlbum = async (authToken, album) => {
+const createAlbum = (authToken, album) => {
   return http.post(`${baseUrl}/albums`, album, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
+    headers: { Authorization: `Bearer ${authToken}` },
   });
 };
 
-const updateAlbum = async (authToken, id, album) => {
-  return http.patch(`${baseUrl}/albums/${id}`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
-    data: album,
+const updateAlbum = (authToken, album) => {
+  return http.patch(`${baseUrl}/albums/${album.id}`, album, {
+    headers: { Authorization: `Bearer ${authToken}` },
   });
 };
 
-const deleteAlbum = async (authToken, albumId) => {
+const deleteAlbum = (authToken, albumId) => {
   return http.delete(`${baseUrl}/albums/${albumId}`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -58,13 +37,20 @@ const deleteAlbum = async (authToken, albumId) => {
   });
 };
 
+const likeAlbum = (authToken, albumId) => {
+  return http.patch(`${baseUrl}/albums/${albumId}/like`, undefined, {
+    headers: { Authorization: `Bearer ${authToken}` },
+  });
+};
+
 const albumsApi = {
   getAlbum,
   getAlbums,
-  getMyAlbums,
-  setAlbum,
+  getUserAlbums,
+  createAlbum,
   updateAlbum,
   deleteAlbum,
+  likeAlbum,
 };
 
 export default albumsApi;

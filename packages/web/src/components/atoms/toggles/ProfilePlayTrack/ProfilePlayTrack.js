@@ -27,7 +27,7 @@ const CustomButton = styled(Button)`
   border: none;
   background-color: transparent;
   min-width: auto;
-  &:hover{
+  &:hover {
     background-color: transparent;
   }
 `;
@@ -60,12 +60,8 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
     ]);
   };
 
-  const handleFavoriteTrack = async (track) => {
-    try {
-      await likeTrack(track.id);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleFavoriteTrack = (track) => {
+    likeTrack(track.id);
   };
 
   const handlePlay = () => {
@@ -84,13 +80,9 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
 
   return (
     <StyledPlayTrack>
-      {track?.liked_by.findIndex((user) => (
-        user.id === auth.currentUser.id
-      )) === -1 ? (
+      {track?.liked_by.findIndex((user) => user.id === auth.currentUser.id) === -1 ? (
         <CustomButton type="button" onClick={() => handleFavoriteTrack(track)}>
-          <StyledFavoriteBorderIcon
-            sx={{ color: "purple" }}
-          />
+          <StyledFavoriteBorderIcon sx={{ color: "purple" }} />
         </CustomButton>
       ) : (
         <CustomButton type="button" onClick={() => handleFavoriteTrack(track)}>

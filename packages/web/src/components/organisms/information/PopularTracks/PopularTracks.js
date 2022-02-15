@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { useTracks } from "../../../../hooks/useTracks";
+import { useFetchTracks } from "../../../../hooks/useTracks";
 import TrackDetail from "../../../molecules/TrackDetail";
 import SmallText from "../../../atoms/body/SmallText";
 
@@ -33,15 +33,9 @@ export const TracksText = styled(SmallText)`
 
 function PopularTracks() {
   const [selectedTrack, setSelectedTrack] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const sort = "num_plays";
+  const [page, setPage] = useState(1);
 
-  const {
-    data: tracks,
-    isError,
-    error,
-    isLoading,
-  } = useTracks(currentPage, undefined, undefined, sort);
+  const { data: tracks, isError, error, isLoading } = useFetchTracks({ page, sort: "num_plays" });
 
   const handlePlayButton = (track) => {
     setSelectedTrack(track);

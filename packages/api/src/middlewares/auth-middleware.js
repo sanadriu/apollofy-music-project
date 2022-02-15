@@ -18,6 +18,7 @@ async function authMiddleware(req, res, next) {
 
     res.status(401).send({
       data: null,
+      success: false,
       message: "Unauthorized",
     });
   }

@@ -10,6 +10,7 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import defaultAvatar from "../../../../images/defaultAvatar.png";
 
 import * as ROUTES from "../../../../routes";
 import SmallText from "../../../atoms/body/SmallText";
@@ -153,7 +154,7 @@ function MenuBar() {
       <MenuLayout>
         <ProfilePicture
           alt="Profile Picture"
-          src={currentUser?.thumbnails?.url_default ? currentUser.thumbnails.url_default : "Error"}
+          src={currentUser?.thumbnails?.url_default || defaultAvatar}
           onClick={() => handleToggle()}
         />
         <ProfileName>{currentUser?.username}</ProfileName>

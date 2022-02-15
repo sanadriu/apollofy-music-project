@@ -1,47 +1,34 @@
 import { useQuery, useQueryClient } from "react-query";
 
-import { queryKeys } from "../queries/constants";
 import genresApi from "../api/api-genres";
 
-export function useGenres() {
-  const fallback = [];
-  const {
-    data = fallback,
-    isError,
-    error,
-    isLoading,
-    isSuccess,
-  } = useQuery(queryKeys.genres, () => genresApi.getGenres(), {
-    staleTime: 600000, // 10 minutes
-    cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+const queryOptions = {
+  staleTime: 600000,
+  cacheTime: 900000,
+  keepPreviousData: true,
+  refetchOnMount: false,
+  refetchOnWindowFocus: false,
+  refetchOnReconnect: false,
+};
 
-  return { data, isError, error, isLoading, isSuccess };
+export function useFetchGenre(genreId) {
+  const { data = {}, ...query } = useQuery(
+    ["genre", genreId],
+    () => genresApi.getGenre(genreId),
+    queryOptions,
+  );
+
+  return { ...query, data };
 }
 
-export function useSingleGenre(id) {
-  const fallback = [];
-  const {
-    data = fallback,
-    isError,
-    error,
-    isLoading,
-    isSuccess,
-  } = useQuery(queryKeys.genres, () => genresApi.getSingleGenre(id), {
-    staleTime: 600000, // 10 minutes
-    cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+export function useFetchGenres() {
+  const { data = [], ...query } = useQuery(["genres"], () => genresApi.getGenres(), queryOptions);
 
-  return { data, isError, error, isLoading, isSuccess };
+  return { ...query, data };
 }
 
-export function usePrefetchGenres() {
+export async function usePrefetchGenres() {
   const queryClient = useQueryClient();
-  queryClient.prefetchQuery(queryKeys.genres, genresApi.getGenres);
+
+  await queryClient.prefetchQuery(["genres"], () => genresApi.getGenres());
 }

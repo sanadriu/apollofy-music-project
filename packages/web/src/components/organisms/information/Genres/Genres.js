@@ -1,17 +1,17 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import { useGenres } from "../../../../hooks/useGenres";
+import { useFetchGenres } from "../../../../hooks/useGenres";
 
 import GenreDetail from "../../../molecules/GenreDetail";
 
 export default function Genres() {
-  const { data: genres } = useGenres();
+  const { data: genres } = useFetchGenres();
   const navigate = useNavigate();
 
   const handleClick = (genre) => {
-    navigate(`/tracks/${genre.name}`);
-  }
+    navigate(`/tracks/${genre.id}`);
+  };
 
   return (
     <ul>

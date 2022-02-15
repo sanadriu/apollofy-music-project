@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import styled from "styled-components";
 
 import PlaylistHomeCard from "../../../molecules/PlaylistHomeCard";
-import { usePlaylists } from "../../../../hooks/usePlaylists";
+import { useFetchPlaylists } from "../../../../hooks/usePlaylists";
 
 import "./PlaylistCarousel.css";
 
@@ -16,7 +16,7 @@ const Layout = styled.div`
 `;
 
 export default function PlaylistCarousel() {
-  const { data: playlists } = usePlaylists();
+  const { data: playlists } = useFetchPlaylists();
   const playlistsList = playlists?.data?.data;
 
   const settings = {

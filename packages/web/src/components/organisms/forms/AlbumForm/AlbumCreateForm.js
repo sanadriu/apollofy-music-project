@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
+import { useCreateAlbum } from "../../../../hooks/useAlbums";
+import { useFetchGenres } from "../../../../hooks/useGenres";
+import validationSchema from "../../../../schemas/AlbumSchema";
 import {
   Box,
   Alert,
@@ -16,26 +19,20 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-
-import { useSetAlbum } from "../../../../hooks/useAlbums";
-import { useGenres } from "../../../../hooks/useGenres";
-import { useMyTracks } from "../../../../hooks/useTracks";
-import validationSchema from "../../../../schemas/AlbumSchema";
 import { uploadResource } from "../../../../api/api-cloudinary";
+import { useFetchUserTracks } from "../../../../hooks/useTracks";
+
+const allowedImageExt = ["jpg", "jpeg", "png"];
+
+const initialValues = {
+  title: "",
+  released_date: "",
+  genres: [],
+  tracks: [],
+  url_image: "",
+};
 
 function AlbumCreateForm() {
-  const [trackListPage, setTrackListPage] = useState(1);
-
-  const initialValues = {
-    title: "",
-    released_date: "",
-    genres: [],
-    tracks: [],
-    url_image: "",
-  };
-
-  const allowedImageExt = ["jpg", "jpeg", "png"];
-
   const {
     isLoading: setAlbumIsLoading,
     isError: setAlbumIsError,
@@ -43,7 +40,7 @@ function AlbumCreateForm() {
     error: setAlbumError,
     data: setAlbumResponse,
     mutate,
-  } = useSetAlbum();
+  } = useCreateAlbum();
 
   const {
     isLoading: fetchMyTracksIsLoading,
@@ -51,7 +48,7 @@ function AlbumCreateForm() {
     isSuccess: fetchMyTracksIsSuccess,
     error: fetchMyTracksError,
     data: fetchMyTracksResponse,
-  } = useMyTracks({ page: trackListPage });
+  } = useFetchUserTracks({ limit: 100 });
 
   const {
     isLoading: fetchGenresIsLoading,
@@ -59,7 +56,7 @@ function AlbumCreateForm() {
     isSuccess: fetchGenresIsSuccess,
     error: fetchGenresError,
     data: fetchGenresResponse,
-  } = useGenres();
+  } = useFetchGenres();
 
   const formik = useFormik({
     initialValues,
@@ -180,7 +177,7 @@ function AlbumCreateForm() {
               input={<Input />}
             >
               {fetchGenresResponse.data.data.map((genre) => (
-                <MenuItem key={genre.name} value={genre.name}>
+                <MenuItem key={genre.id} value={genre.id}>
                   {genre.name}
                 </MenuItem>
               ))}

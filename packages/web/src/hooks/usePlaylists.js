@@ -1,121 +1,168 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useInfiniteQuery, useQueryClient } from "react-query";
 
-import { queryKeys } from "../queries/constants";
 import playlistsApi from "../api/api-playlists";
 import * as authService from "../services/auth";
 
-export function useUserPlaylists(userId = undefined) {
-  const fallback = [];
-  const {
-    data = fallback,
-    isError,
-    error,
-    isLoading,
-    isSuccess,
-  } = useQuery([queryKeys.playlists, userId], () => playlistsApi.getPlaylists(10, 1, userId), {
-    staleTime: 600000, // 10 minutes
-    cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+const queryOptions = {
+  staleTime: 600000,
+  cacheTime: 900000,
+  keepPreviousData: true,
+  refetchOnMount: false,
+  refetchOnWindowFocus: false,
+  refetchOnReconnect: false,
+};
 
-  return { data, isError, error, isLoading, isSuccess };
+export function useFetchPlaylist(playlistId, params = {}) {
+  const { extend } = params;
+  const { data = {}, query } = useQuery(
+    ["playlist", playlistId, extend],
+    () => playlistsApi.getPlaylist(playlistId, { extend }),
+    queryOptions,
+  );
+
+  return { ...query, data };
 }
 
-export function usePlaylists() {
-  const fallback = [];
-  const {
-    data = fallback,
-    isError,
-    error,
-    isLoading,
-    isSuccess,
-  } = useQuery(queryKeys.playlists, () => playlistsApi.getPlaylists(), {
-    staleTime: 600000, // 10 minutes
-    cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+export function useFetchPlaylists(params = {}) {
+  const { page, limit, sort, order, userId } = params;
+  const { data = [], ...query } = useQuery(
+    ["playlists", page, limit, order, sort, userId],
+    () => playlistsApi.getPlaylists({ page, limit, sort, order, user: userId }),
+    queryOptions,
+  );
 
-  return { data, isError, error, isLoading, isSuccess };
+  return { ...query, data };
 }
 
-export function usePrefetchPlaylists(userId = undefined) {
+export function useInfinitePlaylists(params = {}) {
+  const { limit, sort, order, userId } = params;
+  const { data = [], ...query } = useInfiniteQuery(
+    ["playlists", limit, order, sort, userId],
+    ({ pageParam: page = 1 }) =>
+      playlistsApi.getPlaylists({ page, limit, order, sort, user: userId }),
+    {
+      getNextPageParam: (lastPage) =>
+        lastPage.data.page < lastPage.data.pages ? lastPage.data.page + 1 : undefined,
+    },
+  );
+
+  return { ...query, data };
+}
+
+export function useFetchUserPlaylists(params = {}) {
+  const { page, sort, order, limit, extend } = params;
+  const { data = [], ...query } = useQuery(
+    ["user-playlists", page, sort, order, limit, extend],
+    async () => {
+      const authToken = await authService.getCurrentUserToken();
+
+      if (authToken)
+        return playlistsApi.getUserPlaylists(authToken, { page, sort, order, limit, extend });
+
+      return Promise.reject(new Error("User authentication required"));
+    },
+    queryOptions,
+  );
+
+  return { ...query, data };
+}
+
+export async function usePrefetchPlaylists(params = {}) {
+  const { page, limit, sort, order, userId } = params;
   const queryClient = useQueryClient();
-  queryClient.prefetchQuery(queryKeys.playlists, playlistsApi.getPlaylists(userId));
+
+  await queryClient.prefetchQuery(["playlists", page, limit, sort, order, userId], () =>
+    playlistsApi.getPlaylists({ page, limit, order, sort, user: userId }),
+  );
 }
 
-export function useFetchPlaylist(id) {
-  const query = useQuery(["track", id], () => playlistsApi.getPlaylist(id), {
-    staleTime: 600000, // 10 minutes
-    cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
-    keepPreviousData: true,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+export function useCreatePlaylist() {
+  const queryClient = useQueryClient();
+  const createPlaylist = useMutation(
+    async (playlist) => {
+      const authToken = await authService.getCurrentUserToken();
 
-  return query;
-}
+      if (authToken) return playlistsApi.createPlaylist(authToken, playlist);
 
-export function useSetPlaylist() {
-  const mutation = useMutation(async (data) => {
-    const authToken = await authService.getCurrentUserToken();
+      return Promise.reject(new Error("User authentication required"));
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("current-user");
+        queryClient.invalidateQueries("user-playlists");
+        queryClient.refetchQueries("playlists");
+      },
+    },
+  );
 
-    if (authToken) return playlistsApi.setPlaylist(authToken, data);
-
-    return Promise.reject(new Error("User authentication required"));
-  });
-
-  return mutation;
+  return createPlaylist;
 }
 
 export function useUpdatePlaylist() {
-  const mutation = useMutation(async (id, data) => {
-    const authToken = await authService.getCurrentUserToken();
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    async (playlist) => {
+      const authToken = await authService.getCurrentUserToken();
 
-    if (authToken) return playlistsApi.updatePlaylist(authToken, id, data);
+      if (authToken) return playlistsApi.updatePlaylist(authToken, playlist);
 
-    return Promise.reject(new Error("User authentication required"));
-  });
+      return Promise.reject(new Error("User authentication required"));
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("playlist");
+        queryClient.invalidateQueries("current-user");
+        queryClient.invalidateQueries("user-playlists");
+        queryClient.refetchQueries("playlists");
+      },
+    },
+  );
 
   return mutation;
 }
 
 export function useDeletePlaylist() {
-  const mutation = useMutation(async (id) => {
-    const authToken = await authService.getCurrentUserToken();
-
-    if (authToken) return playlistsApi.deletePlaylist(authToken, id);
-
-    return Promise.reject(new Error("User authentication required"));
-  });
-
-  return mutation;
-}
-
-export function useMyPlaylists({ page, sort, order, limit, extend }) {
-  const query = useQuery(
-    ["my-playlists", page, sort, order, limit, extend],
-    async () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    async (playlistId) => {
       const authToken = await authService.getCurrentUserToken();
 
-      if (authToken)
-        return playlistsApi.getMyPlaylists(authToken, { page, sort, order, limit, extend });
+      if (authToken) return playlistsApi.deletePlaylist(authToken, playlistId);
 
       return Promise.reject(new Error("User authentication required"));
     },
     {
-      staleTime: 600000, // 10 minutes
-      cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
-      keepPreviousData: true,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
+      onSuccess: () => {
+        queryClient.invalidateQueries("playlist");
+        queryClient.invalidateQueries("current-user");
+        queryClient.invalidateQueries("user-playlists");
+        queryClient.refetchQueries("playlists");
+      },
     },
   );
 
-  return query;
+  return mutation;
+}
+
+export function useFollowPlaylist() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    async (playlistId) => {
+      const authToken = await authService.getCurrentUserToken();
+
+      if (authToken) return playlistsApi.followPlaylist(authToken, playlistId);
+
+      return Promise.reject(new Error("User authentication required"));
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("playlist");
+        queryClient.invalidateQueries("current-user");
+        queryClient.invalidateQueries("user-playlists");
+        queryClient.refetchQueries("playlists");
+      },
+    },
+  );
+
+  return mutation;
 }

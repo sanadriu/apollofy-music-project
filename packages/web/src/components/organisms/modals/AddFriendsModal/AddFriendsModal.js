@@ -5,7 +5,6 @@ import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
-import * as authService from "../../../../services/auth";
 import { useFollowedUsers } from "../../../../hooks/useUsers";
 import FlexColumn from "../../../atoms/layout/FlexColumn";
 import MiddleTitle from "../../../atoms/headings/MiddleTitle";
@@ -51,12 +50,10 @@ export const ModalBox = styled(Box)`
 `;
 
 export default function AddFriendsModal({ isOpen, handleModal }) {
-  const dispatch = useDispatch();
-  const { currentUser } = useSelector(authSelector);
+  // const dispatch = useDispatch();
+  // const { currentUser } = useSelector(authSelector);
 
-  const followedUsers = false;
-
-  const { data: users } = useFollowedUsers(followedUsers);
+  const { data: users } = useFollowedUsers({ exclude: true });
 
   const userList = isOpen ? users?.data?.data : null;
 

@@ -2,66 +2,37 @@ import http from "../services/httpService";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-function getCurrentUser(authToken) {
+function getCurrentUser(authToken, params) {
   return http.get(`${baseUrl}/users/me`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
+    headers: { Authorization: `Bearer ${authToken}` },
+    params,
   });
 }
 
-function getUser(userId) {
-  return http.get(`${baseUrl}/users/${userId}`);
+function getUser(userId, params) {
+  return http.get(`${baseUrl}/users/${userId}`, { params });
 }
 
-function setCurrentUser(user) {
-  return http.get(`${baseUrl}/users`, {
-    data: user,
-  });
+function getUsers(params) {
+  return http.get(`${baseUrl}/users`, { params });
 }
 
-function getUsers(page, limit, sort, order) {
-  return http.get(`${baseUrl}/users`, {
-    params: {
-      limit: limit,
-      page: page,
-      sort: sort,
-      order: order,
-    },
-  });
-}
-
-function getMyFollowedUsers(authToken, followedUsers) {
-  const excludeUsers = followedUsers ? "" : "?exclude=true";
-
-  return http.get(`${baseUrl}/users/me/followed-users${excludeUsers}`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
+function getFollowedUsers(authToken, params) {
+  return http.get(`${baseUrl}/users/me/followed-users`, {
+    headers: { Authorization: `Bearer ${authToken}` },
+    params,
   });
 }
 
 function deleteUser(authToken) {
   return http.delete(`${baseUrl}/users/me`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
+    headers: { Authorization: `Bearer ${authToken}` },
   });
 }
 
-function updateUser(authToken, update) {
-  return http.patch(`${baseUrl}/users/me`, update, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
-  });
-}
-
-function setUser(authToken, user) {
-  return http.post(`${baseUrl}/users/me`, user, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
+function updateUser(authToken, user) {
+  return http.patch(`${baseUrl}/users/me`, user, {
+    headers: { Authorization: `Bearer ${authToken}` },
   });
 }
 
@@ -75,12 +46,10 @@ function followUser(authToken, user) {
 
 const usersApi = {
   getCurrentUser,
-  getMyFollowedUsers,
+  getFollowedUsers,
   getUser,
-  setCurrentUser,
   getUsers,
   updateUser,
-  setUser,
   deleteUser,
   followUser,
 };

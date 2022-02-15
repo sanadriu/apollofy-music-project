@@ -1,8 +1,7 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { useUserTracks } from "../../../../hooks/useTracks";
 import ProfileUserTrack from "../../../molecules/ProfileUserTrack";
 
 const StyledUserTracks = styled.div`
@@ -21,10 +20,7 @@ const StyledNotListenedTracks = styled.p`
   margin-bottom: 0;
 `;
 
-const ProfileUserTracks = () => {
-  const { profileId } = useParams();
-  const { data: tracks } = useUserTracks(1, undefined, 5, "num_plays", "desc", profileId);
-
+const ProfileUserTracks = ({ tracks }) => {
   return (
     <StyledUserTracks>
       {tracks?.data?.data?.length > 0 ? (
@@ -32,10 +28,18 @@ const ProfileUserTracks = () => {
           <ProfileUserTrack key={track.id} data={track} index={index} />
         ))
       ) : (
-        <StyledNotListenedTracks>You have not played any song yet :(</StyledNotListenedTracks>
+        <StyledNotListenedTracks>You havent heard any song yet :(</StyledNotListenedTracks>
       )}
     </StyledUserTracks>
   );
+};
+
+ProfileUserTracks.propTypes = {
+  tracks: PropTypes.array,
+};
+
+ProfileUserTracks.defaultProps = {
+  tracks: [],
 };
 
 export default ProfileUserTracks;

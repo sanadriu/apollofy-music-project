@@ -15,23 +15,20 @@ function deepClone(obj) {
 function shuffle(list = []) {
   const clonedlist = [...list];
 
-  return clonedlist.sort(() => 0.5 - Math.random);
+  return clonedlist.sort(() => 0.5 - Math.random());
 }
 
 function getRandomSequence(length, chars = "AaBbCcDdEeFf0123456789") {
   return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
 }
 
-function getRandomItems(list = [], max = 1) {
+function getRandomItems(list = [], length = 1) {
   const clonedlist = [...list];
 
-  if (max > clonedlist.length) return clonedlist;
+  if (length > clonedlist.length) return clonedlist;
   if (clonedlist.length === 0) return clonedlist;
 
-  const shuffledList = shuffle(clonedlist);
-  const length = Math.floor(Math.random() * max);
-
-  return Array.from({ length }, (v, k) => shuffledList.pop());
+  return shuffle([...clonedlist]).slice(0, length);
 }
 
 function getRandomIndex(list = []) {
@@ -54,6 +51,14 @@ function switchValueInList(list, value) {
   return index === -1 ? [...list, value] : list.splice(index, 1);
 }
 
+function parseBoolean(string) {
+  if (string === "true") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 module.exports = {
   getRandomSequence,
   deepClone,
@@ -61,4 +66,5 @@ module.exports = {
   getRandomItems,
   getRandomIndex,
   switchValueInList,
+  parseBoolean,
 };

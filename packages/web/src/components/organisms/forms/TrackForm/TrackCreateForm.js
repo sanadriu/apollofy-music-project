@@ -1,9 +1,9 @@
 import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
-
-import { useSetTrack } from "../../../../hooks/useTracks";
-import { useGenres } from "../../../../hooks/useGenres";
+import { useNavigate } from "react-router-dom";
+import { useCreateTrack } from "../../../../hooks/useTracks";
+import { useFetchGenres } from "../../../../hooks/useGenres";
 import validationSchema from "../../../../schemas/TrackSchema";
 import {
   Box,
@@ -42,7 +42,7 @@ function TrackCreateForm() {
     error: setTrackError,
     data: setTrackResponse,
     mutate,
-  } = useSetTrack();
+  } = useCreateTrack();
 
   const {
     isLoading: fetchGenresIsLoading,
@@ -50,7 +50,7 @@ function TrackCreateForm() {
     isSuccess: fetchGenresIsSuccess,
     error: fetchGenresError,
     data: fetchGenresResponse,
-  } = useGenres();
+  } = useFetchGenres();
 
   // const navigate = useNavigate();
 
@@ -171,7 +171,7 @@ function TrackCreateForm() {
               input={<Input />}
             >
               {fetchGenresResponse.data.data.map((genre) => (
-                <MenuItem key={genre.name} value={genre.name}>
+                <MenuItem key={genre.id} value={genre.id}>
                   {genre.name}
                 </MenuItem>
               ))}

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-import { useAlbums } from "../../../../hooks/useAlbums";
+import { useFetchAlbums } from "../../../../hooks/useAlbums";
 
 import AlbumDetail from "../../../molecules/AlbumDetail";
 
 export default function Albums() {
-  const albums = useAlbums();
+  const albums = useFetchAlbums();
 
   const [selectedAlbum, setSelectedAlbum] = useState(null);
 
