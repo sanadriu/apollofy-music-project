@@ -31,6 +31,7 @@ const UserPicture = styled.img`
 
 const UserFlex = styled.div`
   display: flex;
+  padding-top: 0.4rem;
   flex-direction: column;
   justify-content: start;
   padding-left: 0.5rem;
@@ -95,8 +96,7 @@ const UserDetail = ({ user }) => {
       <UserPicture alt={`${user?.username}`} src={user?.thumbnails?.url_default} />
       <UserFlex>
         <UserLink to={`/users/${user.id}`}>
-          <HomeSmallText>{`${user.firstname} ${user.lastname}`}</HomeSmallText>
-          <DetailText>{user.username}</DetailText>
+          <HomeSmallText>{user.username}</HomeSmallText>
         </UserLink>
       </UserFlex>
       <StyledNumUser>

@@ -14,6 +14,7 @@ const Layout = styled.div`
   gap: 0.5rem;
   border-radius: 1.3rem;
   width: 100%;
+  margin-bottom: 1rem;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.secondary};
@@ -23,6 +24,8 @@ const Layout = styled.div`
 const SmallGap = styled(FlexColumn)`
   gap: 0;
   align-items: start;
+  justify-content: center;
+  padding-top: 1.6rem;
 `;
 
 export const ProfilePicture = styled.img`
@@ -40,9 +43,8 @@ export default function FriendInfo(props) {
       <ProfilePicture alt="Friend's Picture" src={profilePicture} />
       <SmallGap>
         <UserLink to={`/users/${id}`}>
-          <HomeSmallText>{`${firstName} ${lastName}`}</HomeSmallText>
+          <HomeSmallText>{username}</HomeSmallText>
         </UserLink>
-        <DetailText>{username}</DetailText>
         {/* <DetailText>{lastTrack}</DetailText> */}
       </SmallGap>
     </Layout>

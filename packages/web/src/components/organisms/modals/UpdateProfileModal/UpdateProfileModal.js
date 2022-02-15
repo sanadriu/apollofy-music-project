@@ -20,11 +20,17 @@ const TextField = styled.input`
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
+  color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.background.secondary};
   background-clip: paddIng-box;
-  border: 1px solid gray;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   transition: border-color 0.15s ease-In-out, box-shadow 0.15s ease-In-out;
+`;
+
+const CustomModalTitle = styled(DialogTitle)`
+  color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.background.secondary};
+  border: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
 export default function UpdateProfileModal({
@@ -106,7 +112,7 @@ export default function UpdateProfileModal({
             (birthDay && "Please Enter Your new Birthday") ||
             (profilePic && "Select your new profile picture")}
         </DialogTitle>
-        <TextField
+        <CustomModalTitle
           type={
             (email && "email") ||
             (password && "password") ||
@@ -134,7 +140,7 @@ export default function UpdateProfileModal({
             autoFocus
             disabled={fileLoading && true}
           >
-            Agree
+            Update
           </Button>
         </DialogActions>
       </Dialog>
