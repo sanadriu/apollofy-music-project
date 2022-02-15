@@ -10,7 +10,7 @@ import PopularGenres from "../../components/organisms/information/PopularGenres"
 const TracksLayout = styled.div`
   display: flex;
   gap: 1rem;
-  @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
+  @media only screen and (max-width: ${({ theme }) => theme.media.desktop}) {
     flex-direction: column-reverse;
   }
 `;
@@ -20,8 +20,8 @@ const Home = () => {
     <>
       <PlaylistCarousel />
       <TracksLayout>
-        <PopularTracks />
         <PopularGenres />
+        <PopularTracks />
       </TracksLayout>
     </>
   );

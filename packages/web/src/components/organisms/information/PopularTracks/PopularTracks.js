@@ -17,7 +17,7 @@ export const TracksList = styled(SectionLayout)`
   background-color: ${({ theme }) => theme.colors.background.secondary};
   border-radius: 1.3rem;
   padding: 1rem;
-  width: 30rem;
+  width: 100%;
   gap: 1rem;
 
   @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
