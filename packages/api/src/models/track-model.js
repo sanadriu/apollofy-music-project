@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, Types, model } = require("mongoose");
 const { isURL, isDate } = require("validator");
 
 const TrackSchema = new Schema(
@@ -42,7 +42,7 @@ const TrackSchema = new Schema(
       trim: true,
     },
     genres: {
-      type: [String],
+      type: [Types.ObjectId],
       trim: true,
     },
     thumbnails: {

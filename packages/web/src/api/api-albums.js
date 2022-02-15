@@ -2,22 +2,18 @@ import http from "../services/httpService";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-const getAlbum = (albumId, { extend }) => {
-  return http.get(`${baseUrl}/albums/${albumId}`, {
-    params: { extend },
-  });
+const getAlbum = (albumId, params) => {
+  return http.get(`${baseUrl}/albums/${albumId}`, { params });
 };
 
-const getAlbums = ({ page, limit, sort, order, genre, track, userId }) => {
-  return http.get(`${baseUrl}/albums`, {
-    params: { page, limit, sort, order, genre, track, user: userId },
-  });
+const getAlbums = (params) => {
+  return http.get(`${baseUrl}/albums`, { params });
 };
 
-const getUserAlbums = (authToken, { page, limit, sort, order, extend }) => {
+const getUserAlbums = (authToken, params) => {
   return http.get(`${baseUrl}/me/albums`, {
     headers: { Authorization: `Bearer ${authToken}` },
-    params: { page, sort, order, limit, extend },
+    params,
   });
 };
 

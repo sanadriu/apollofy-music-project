@@ -21,7 +21,7 @@ import { useFetchUsers } from "../../hooks/useUsers";
 import { useFetchPlaylists } from "../../hooks/usePlaylists";
 import { useFetchTracks } from "../../hooks/useTracks";
 import withLayout from "../../components/hoc/withLayout";
-import FlexColumn from "../../components/atoms/FlexColumn";
+import FlexColumn from "../../components/atoms/layout/FlexColumn";
 
 const NavBar = styled.nav`
   margin-top: 2rem;

@@ -25,7 +25,7 @@ const AlbumSchema = new Schema(
       },
     },
     genres: {
-      type: [String],
+      type: [Types.ObjectId],
       trim: true,
     },
     tracks: {

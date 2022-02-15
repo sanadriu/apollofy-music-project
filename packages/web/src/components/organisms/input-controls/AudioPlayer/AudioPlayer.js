@@ -13,10 +13,12 @@ const ResponsiveDiv = styled.div`
   }
 `;
 
-export const ExampleAudioPlayer = () => {
+const AudioPlayer = () => {
   return (
     <ResponsiveDiv>
       <Player />
     </ResponsiveDiv>
   );
 };
+
+export default AudioPlayer;

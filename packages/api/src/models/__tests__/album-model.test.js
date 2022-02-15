@@ -125,26 +125,35 @@ describe("album-schema", () => {
 
   describe("4. Genres", () => {
     test("4.1. Genres must be an array of String", async () => {
-      expect.assertions(2);
+      expect.assertions(3);
 
-      const genre = faker.music.genre();
+      const idGenre = new Types.ObjectId().toString();
 
       const validAlbum01 = {
         ...sample,
-        genres: [genre],
+        genres: [idGenre],
       };
 
       const validAlbum02 = {
         ...sample,
-        genres: genre,
+        genres: idGenre,
+      };
+
+      const invalidAlbum = {
+        ...sample,
+        genres: ["foo"],
       };
 
       await AlbumModel.create(validAlbum01).then((createdAlbum) => {
-        expect(createdAlbum.genres).toEqual([genre]);
+        expect(createdAlbum.genres[0].toString()).toBe(idGenre);
       });
 
       await AlbumModel.create(validAlbum02).then((createdAlbum) => {
-        expect(createdAlbum.genres).toEqual([genre]);
+        expect(createdAlbum.genres[0].toString()).toBe(idGenre);
+      });
+
+      await AlbumModel.create(invalidAlbum).catch((error) => {
+        expect(error.errors["genres.0"].kind).toBe("[ObjectId]");
       });
     });
   });

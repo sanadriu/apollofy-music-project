@@ -2,7 +2,8 @@ import * as React from "react";
 import { styled, Box } from "@mui/system";
 import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
-import { ModalBox } from "./AddFriendsModal";
+
+import { ModalBox } from "../AddFriendsModal/AddFriendsModal";
 
 const StyledModal = styled(ModalUnstyled)`
   position: fixed;
@@ -14,8 +15,6 @@ const StyledModal = styled(ModalUnstyled)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme?.colors?.background?.primary};
-  color: ${({ theme }) => theme?.colors?.text};
 `;
 
 const Backdrop = styled("div")`
@@ -29,14 +28,14 @@ const Backdrop = styled("div")`
   -webkit-tap-highlight-color: transparent;
 `;
 
-export default function RegisterModal({ isOpen, handleModal, children }) {
+export default function SignInModal({ signinIsOpen, handleModal, children }) {
   const handleClose = () => handleModal();
 
   return (
     <StyledModal
       aria-labelledby="unstyled-modal-title"
       aria-describedby="unstyled-modal-description"
-      open={isOpen}
+      open={signinIsOpen}
       onClose={handleClose}
       BackdropComponent={Backdrop}
     >
@@ -45,14 +44,14 @@ export default function RegisterModal({ isOpen, handleModal, children }) {
   );
 }
 
-RegisterModal.propTypes = {
-  isOpen: PropTypes.bool,
+SignInModal.propTypes = {
+  signinIsOpen: PropTypes.bool,
   handleModal: PropTypes.func,
   children: PropTypes.element,
 };
 
-RegisterModal.defaultProps = {
-  isOpen: false,
+SignInModal.defaultProps = {
+  signinIsOpen: false,
   handleModal: {},
   children: null,
 };

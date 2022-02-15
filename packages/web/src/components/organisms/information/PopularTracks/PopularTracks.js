@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { useFetchTracks } from "../../../../hooks/useTracks";
 import TrackDetail from "../../../molecules/TrackDetail";
-import SmallText from "../../../atoms/SmallText";
+import SmallText from "../../../atoms/body/SmallText";
 
 export const SectionLayout = styled.div`
   margin-top: 2rem;
@@ -13,6 +13,7 @@ export const SectionLayout = styled.div`
 
 export const TracksList = styled(SectionLayout)`
   margin-top: 0;
+  margin-bottom: 1rem;
   background-color: ${({ theme }) => theme.colors.background.secondary};
   border-radius: 1.3rem;
   padding: 1rem;
@@ -25,7 +26,7 @@ export const TracksList = styled(SectionLayout)`
   }
 `;
 
-const TracksText = styled(SmallText)`
+export const TracksText = styled(SmallText)`
   @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     margin: auto;
   }

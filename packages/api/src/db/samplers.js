@@ -35,6 +35,7 @@ function createSampleTrack(users = [], genres = []) {
   }
 
   const user = users[getRandomIndex(users)];
+  const selectedGenres = getRandomItems(genres, 3);
 
   return {
     user,
@@ -42,7 +43,7 @@ function createSampleTrack(users = [], genres = []) {
     duration: faker.datatype.number({ min: 0, max: 600 }),
     released_date: faker.date.past().toISOString().substring(0, 10),
     color: faker.commerce.color(),
-    genres: getRandomItems(genres, 2),
+    genres: selectedGenres,
     url: faker.internet.url(),
     num_plays: faker.datatype.number({ min: 0, max: 1000000 }),
     thumbnails: {
@@ -59,12 +60,13 @@ function createSampleAlbum(users = [], genres = []) {
   }
 
   const user = users[getRandomIndex(users)];
+  const selectedGenres = getRandomItems(genres, 3);
 
   return {
     user: user,
     title: faker.lorem.sentence(4),
     released_date: faker.date.past().toISOString().substring(0, 10),
-    genres: getRandomItems(genres, 2),
+    genres: selectedGenres,
     thumbnails: {
       url_default: faker.image.imageUrl(),
       url_medium: faker.image.imageUrl(),

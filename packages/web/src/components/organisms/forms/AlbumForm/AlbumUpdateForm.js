@@ -126,7 +126,7 @@ function AlbumCreateForm() {
           {fetchMyTracksIsError && <Box>Tracks request: {fetchMyTracksError?.message}</Box>}
         </Alert>
       )}
-      {(fetchAlbumIsLoading || fetchGenresIsLoading || fetchMyTracksIsLoading ) && (
+      {(fetchAlbumIsLoading || fetchGenresIsLoading || fetchMyTracksIsLoading) && (
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", py: "4rem" }}>
           <CircularProgress size={128} />
         </Box>

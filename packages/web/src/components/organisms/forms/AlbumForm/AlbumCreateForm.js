@@ -2,7 +2,7 @@ import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { useSetAlbum } from "../../../../hooks/useAlbums";
+import { useCreateAlbum } from "../../../../hooks/useAlbums";
 import { useFetchGenres } from "../../../../hooks/useGenres";
 import validationSchema from "../../../../schemas/AlbumSchema";
 import {
@@ -23,7 +23,7 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { uploadResource } from "../../../../api/api-cloudinary";
 import withLayout from "../../../hoc/withLayout";
-import { useMyTracks } from "../../../../hooks/useTracks";
+import { useUserTracks } from "../../../../hooks/useTracks";
 
 const initialValues = {
   title: "",
@@ -45,7 +45,7 @@ function AlbumCreateForm() {
     error: setAlbumError,
     data: setAlbumResponse,
     mutate,
-  } = useSetAlbum();
+  } = useCreateAlbum();
 
   const {
     isLoading: fetchMyTracksIsLoading,
@@ -53,7 +53,7 @@ function AlbumCreateForm() {
     isSuccess: fetchMyTracksIsSuccess,
     error: fetchMyTracksError,
     data: fetchMyTracksResponse,
-  } = useMyTracks({ page: trackListPage });
+  } = useUserTracks({ page: trackListPage });
 
   const {
     isLoading: fetchGenresIsLoading,

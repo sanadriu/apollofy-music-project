@@ -2,22 +2,18 @@ import http from "../services/httpService";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-const getPlaylist = (playlistId, { extend }) => {
-  return http.get(`${baseUrl}/playlists/${playlistId}`, {
-    params: { extend },
-  });
+const getPlaylist = (playlistId, params) => {
+  return http.get(`${baseUrl}/playlists/${playlistId}`, { params });
 };
 
-const getPlaylists = ({ page, limit, sort, order, userId }) => {
-  return http.get(`${baseUrl}/playlists`, {
-    params: { page, limit, sort, order, user: userId },
-  });
+const getPlaylists = (params) => {
+  return http.get(`${baseUrl}/playlists`, { params });
 };
 
-const getUserPlaylists = (authToken, { page, limit, sort, order, extend }) => {
+const getUserPlaylists = (authToken, params) => {
   return http.get(`${baseUrl}/me/playlists`, {
     headers: { Authorization: `Bearer ${authToken}` },
-    params: { page, limit, sort, order, extend },
+    params,
   });
 };
 

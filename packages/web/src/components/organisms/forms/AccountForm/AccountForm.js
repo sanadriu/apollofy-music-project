@@ -2,14 +2,13 @@ import React from "react";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import { authSelector, updateCurrentUser } from "../../../../redux/auth";
-import { modalSelector, nextModal } from "../../../../redux/modal";
+import { authSelector, updateCurrentUser } from "../../../../store/auth";
+import { modalSelector, nextModal } from "../../../../store/modal";
 
 import AccountSchema from "../../../../schemas/AccountSchema";
-import FlexColumn from "../../../atoms/FlexColumn";
-import MiddleTitle from "../../../atoms/MiddleTitle";
-import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
-import RegisterInput from "../../../atoms/RegisterInput";
+import FlexColumn from "../../../atoms/layout/FlexColumn";
+import MiddleTitle from "../../../atoms/headings/MiddleTitle";
+import RegisterInput from "../../../atoms/input-controls/RegisterInput";
 import Button from "../../../atoms/buttons/Button";
 import { Input } from "@mui/material";
 
@@ -33,12 +32,12 @@ export default function AccountForm() {
           email: values.email || "",
           password: values.password || "",
           passwordConfirmation: values.passwordConfirmation || "",
-        }
+        };
 
         setTimeout(async () => {
           setSubmitting(true);
           // dispatch(signUpWithEmailRequest(values.email, values.password, values.name));
-          dispatch(updateCurrentUser(updatedUser))
+          dispatch(updateCurrentUser(updatedUser));
           dispatch(nextModal(currentModal + 1));
           setSubmitting(false);
         }, 400);

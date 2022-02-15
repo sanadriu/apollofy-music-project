@@ -5,7 +5,7 @@ import {
   authSelector,
   sendPasswordResetEmail,
   resetAuthState,
-} from "../../redux/auth";
+} from "../../store/auth";
 
 function buttonText(loading, sent) {
   if (loading) {

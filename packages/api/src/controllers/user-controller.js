@@ -309,7 +309,7 @@ async function getFollowedUsers(req, res, next) {
     } = req.query;
 
     const filter = {
-      followed_by: { [parseBoolean(exclude) ? "$nin" : "$in"]: [uid] },
+      followed_by: { [exclude ? "$nin" : "$in"]: [uid] },
     };
 
     const pages = await User.getNumPages(limit, filter);

@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
+import { useFetchPlaylist } from "../../hooks/usePlaylists";
 import withLayout from "../../components/hoc/withLayout";
 import TracksList from "../../components/organisms/information/PopularTracks";
 import TrackDetail from "../../components/molecules/TrackDetail";
-import ProfileUserDescription from "../../components/atoms/ProfileUserDescription";
+import ProfileUserDescription from "../../components/atoms/body/ProfileUserDescription";
 import ProfileOneStadistics from "../../components/atoms/ProfileOneStadistics";
 import ProfileUserTitle from "../../components/atoms/ProfileUserTitle";
-import PlaylistImage from "../../components/atoms/PlaylistImage";
-import SmallText from "../../components/atoms/SmallText";
-import { useFetchPlaylist } from "../../hooks/usePlaylists";
+import PlaylistImage from "../../components/atoms/images/PlaylistImage";
+import SmallText from "../../components/atoms/body/SmallText";
 
 export const PageLayout = styled.div`
   display: flex;

@@ -17,7 +17,7 @@ async function seedUserCollection(length = 1) {
 async function seedGenreCollection(length = 1) {
   const genres = Array.from({ length }, () => createSampleGenre());
 
-  return await models.Genre.insertMany(genres).then((docs) => docs.map(({ name }) => name));
+  return await models.Genre.insertMany(genres).then((docs) => docs.map(({ id }) => id));
 }
 
 async function seedTrackCollection(length = 1, users = [], genres = []) {

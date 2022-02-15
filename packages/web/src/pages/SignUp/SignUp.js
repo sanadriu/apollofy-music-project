@@ -9,7 +9,7 @@ import {
   resetAuthState,
   signUpWithEmailRequest,
   signUpWithGoogleRequest,
-} from "../../redux/auth";
+} from "../../store/auth";
 
 function SignUp() {
   const dispatch = useDispatch();

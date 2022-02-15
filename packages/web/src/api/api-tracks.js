@@ -2,22 +2,18 @@ import http from "../services/httpService";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-const getTrack = (trackId, { extend }) => {
-  return http.get(`${baseUrl}/tracks/${trackId}`, {
-    params: { extend },
-  });
+const getTrack = (trackId, params) => {
+  return http.get(`${baseUrl}/tracks/${trackId}`, { params });
 };
 
-const getTracks = ({ page, limit, sort, order, genre, userId }) => {
-  return http.get(`${baseUrl}/tracks`, {
-    params: { page, limit, sort, order, genre, user: userId },
-  });
+const getTracks = (params) => {
+  return http.get(`${baseUrl}/tracks`, { params });
 };
 
-const getUserTracks = (authToken, { page, limit, sort, order, extend }) => {
+const getUserTracks = (authToken, params) => {
   return http.get(`${baseUrl}/me/tracks`, {
     headers: { Authorization: `Bearer ${authToken}` },
-    params: { page, limit, sort, order, extend },
+    params,
   });
 };
 

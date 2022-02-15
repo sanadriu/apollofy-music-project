@@ -1,17 +1,17 @@
 import * as React from "react";
-import { styled, Box } from "@mui/system";
+import { styled } from "@mui/system";
 import ModalUnstyled from "@mui/base/ModalUnstyled";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
-import { authSelector, resetAuthState, sendPasswordResetEmail } from "../../../redux/auth";
+import { authSelector, resetAuthState, sendPasswordResetEmail } from "../../../../store/auth";
 
-import FlexColumn from "../../atoms/FlexColumn";
-import MiddleTitle from "../../atoms/MiddleTitle";
-import PrimaryButton from "../../atoms/buttons/PrimaryButton";
-import RegisterInput from "../../atoms/RegisterInput";
-import SmallText from "../../atoms/SmallText";
-import { ModalBox } from "./AddFriendsModal";
+import FlexColumn from "../../../atoms/layout/FlexColumn";
+import MiddleTitle from "../../../atoms/headings/MiddleTitle";
+import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
+import RegisterInput from "../../../atoms/input-controls/RegisterInput";
+import SmallText from "../../../atoms/body/SmallText";
+import { ModalBox } from "../AddFriendsModal/AddFriendsModal";
 
 const StyledModal = styled(ModalUnstyled)`
   position: fixed;

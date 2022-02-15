@@ -12,7 +12,8 @@ const queryOptions = {
   refetchOnReconnect: false,
 };
 
-export function useFetchAlbum(albumId, { extend }) {
+export function useFetchAlbum(albumId, params = {}) {
+  const { extend } = params;
   const { data = {}, query } = useQuery(
     ["album", albumId, extend],
     () => albumsApi.getAlbum(albumId, { extend }),
@@ -22,21 +23,40 @@ export function useFetchAlbum(albumId, { extend }) {
   return { ...query, data };
 }
 
-export function useFetchAlbums({ page, limit, sort, order, genre, track, userId }) {
+export function useFetchAlbums(params = {}) {
+  const { page, limit, sort, order, genreId, trackId, userId } = params;
   const { data = [], ...query } = useQuery(
-    ["albums", page, limit, order, sort, genre, userId],
-    () => albumsApi.getAlbums(page, limit, sort, order, genre, track, userId),
+    ["albums", page, limit, order, sort, genreId, userId],
+    () =>
+      albumsApi.getAlbums({
+        page,
+        limit,
+        sort,
+        order,
+        genre: genreId,
+        track: trackId,
+        user: userId,
+      }),
     queryOptions,
   );
 
   return { ...query, data };
 }
 
-export function useInfiniteAlbums({ limit, sort, order, genre, track, userId }) {
+export function useInfiniteAlbums(params = {}) {
+  const { limit, sort, order, genreId, trackId, userId } = params;
   const { data = [], ...query } = useInfiniteQuery(
-    ["infinite-albums", limit, order, sort, genre, userId],
+    ["infinite-albums", limit, order, sort, genreId, userId],
     ({ pageParam: page = 1 }) =>
-      albumsApi.getAlbums({ page, limit, order, sort, genre, track, userId }),
+      albumsApi.getAlbums({
+        page,
+        limit,
+        order,
+        sort,
+        genre: genreId,
+        track: trackId,
+        user: userId,
+      }),
     {
       getNextPageParam: (lastPage) =>
         lastPage.data.page < lastPage.data.pages ? lastPage.data.page + 1 : undefined,
@@ -46,7 +66,8 @@ export function useInfiniteAlbums({ limit, sort, order, genre, track, userId }) 
   return { ...query, data };
 }
 
-export function useFetchUserAlbums({ page, sort, order, limit, extend }) {
+export function useFetchUserAlbums(params = {}) {
+  const { page, sort, order, limit, extend } = params;
   const { data = [], ...query } = useQuery(
     ["user-albums", page, sort, order, limit, extend],
     async () => {
@@ -63,11 +84,12 @@ export function useFetchUserAlbums({ page, sort, order, limit, extend }) {
   return { ...query, data };
 }
 
-export async function usePrefetchAlbums({ page, limit, sort, order, genre, userId }) {
+export async function usePrefetchAlbums(params = {}) {
+  const { page, limit, sort, order, genreId, userId } = params;
   const queryClient = useQueryClient();
 
-  await queryClient.prefetchQuery(["albums", page, limit, sort, order, genre, userId], () =>
-    albumsApi.getAlbums({ page, limit, order, sort, genre, userId }),
+  await queryClient.prefetchQuery(["albums", page, limit, sort, order, genreId, userId], () =>
+    albumsApi.getAlbums({ page, limit, order, sort, genre: genreId, user: userId }),
   );
 }
 

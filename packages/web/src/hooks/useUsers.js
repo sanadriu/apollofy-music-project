@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import usersApi from "../api/api-users";
 import * as authService from "../services/auth";
@@ -11,9 +11,10 @@ const queryOptions = {
   refetchOnReconnect: false,
 };
 
-export function useFetchCurrentUser({ extend }) {
+export function useFetchCurrentUser(params = {}) {
+  const { extend } = params;
   const { data = {}, ...query } = useQuery(
-    ["user", extend],
+    ["current-user", extend],
     async () => {
       const authToken = await authService.getCurrentUserToken();
 
@@ -27,7 +28,8 @@ export function useFetchCurrentUser({ extend }) {
   return { ...query, data };
 }
 
-export function useFetchUser(userId, { extend }) {
+export function useFetchUser(userId, params = {}) {
+  const { extend } = params;
   const { data = {}, ...query } = useQuery(
     ["user", userId, extend],
     () => usersApi.getUser(userId, { extend }),
@@ -37,7 +39,8 @@ export function useFetchUser(userId, { extend }) {
   return { ...query, data };
 }
 
-export function useFetchUsers({ page, limit, sort, order }) {
+export function useFetchUsers(params = {}) {
+  const { page, limit, sort, order } = params;
   const { data = [], ...query } = useQuery(
     ["users", page, limit, order, sort],
     () => usersApi.getUsers(page, limit, sort, order),
@@ -50,4 +53,49 @@ export function useFetchUsers({ page, limit, sort, order }) {
 export function usePrefetchUsers(userId) {
   const queryClient = useQueryClient();
   queryClient.prefetchQuery("users", usersApi.getUsers(userId));
+}
+
+export function useUpdateUser() {
+  const mutation = useMutation(async (userId) => {
+    const authToken = await authService.getCurrentUserToken();
+
+    if (authToken) return usersApi.updateUser(authToken, userId);
+
+    return Promise.reject(new Error("User authentication required"));
+  });
+
+  return mutation;
+}
+
+export function useFollowUser() {
+  const mutation = useMutation(async (userId) => {
+    try {
+      const authToken = await authService.getCurrentUserToken();
+
+      if (authToken) return usersApi.followUser(authToken, userId);
+
+      return Promise.reject(new Error("User authentication required"));
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  });
+
+  return mutation;
+}
+
+export function useFollowedUsers(params = {}) {
+  const { followedUsers = true } = params;
+  const { data = [], ...query } = useQuery(
+    ["followed-users", followedUsers],
+    async () => {
+      const authToken = await authService.getCurrentUserToken();
+
+      if (authToken) return usersApi.getFollowedUsers(authToken, followedUsers);
+
+      return Promise.reject(new Error("User authentication required"));
+    },
+    queryOptions,
+  );
+
+  return { ...query, data };
 }

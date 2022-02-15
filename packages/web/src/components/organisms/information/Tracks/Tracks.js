@@ -9,7 +9,7 @@ import { useInfiniteTracks } from "../../../../hooks/useTracks";
 import TrackDetail from "../../../molecules/TrackDetail";
 import Button from "../../../atoms/buttons/Button";
 import { TracksList } from "../PopularTracks/PopularTracks";
-import HomeSmallText from "../../../atoms/HomeSmallText";
+import HomeSmallText from "../../../atoms/body/HomeSmallText";
 
 const ExtendedTrackList = styled(TracksList)`
   width: 100%;
@@ -21,7 +21,7 @@ const PageButtonsLayout = styled.div`
 `;
 
 export default function Tracks() {
-  const { genre } = useParams();
+  const { genreId } = useParams();
 
   const [selectedTrack, setSelectedTrack] = useState(null);
 
@@ -32,7 +32,7 @@ export default function Tracks() {
     isError,
     error,
     isLoading,
-  } = useInfiniteTracks({ genre });
+  } = useInfiniteTracks({ genreId });
 
   const tracksList = tracks?.data?.data;
   const maxTrackPage = tracks?.data?.pages;
@@ -41,7 +41,7 @@ export default function Tracks() {
   if (isError) return <div>Error! {error.toString()}</div>;
   return (
     <ExtendedTrackList>
-      {tracksList.map((track) => (
+      {tracksList?.map((track) => (
         <TrackDetail key={track?.id} track={track} handlePlayButton={setSelectedTrack} />
       ))}
       <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>

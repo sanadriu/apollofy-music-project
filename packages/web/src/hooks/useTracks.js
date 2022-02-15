@@ -12,7 +12,8 @@ const queryOptions = {
   refetchOnReconnect: false,
 };
 
-export function useFetchTrack(trackId, { extend }) {
+export function useFetchTrack(trackId, params = {}) {
+  const { extend } = params;
   const { data = {}, ...query } = useQuery(
     ["track", trackId, extend],
     () => tracksApi.getTrack(trackId, { extend }),
@@ -22,20 +23,23 @@ export function useFetchTrack(trackId, { extend }) {
   return { ...query, data };
 }
 
-export function useFetchTracks({ page, limit, sort, order, genre, userId }) {
+export function useFetchTracks(params = {}) {
+  const { page, limit, sort, order, genreId, userId } = params;
   const { data = [], ...query } = useQuery(
-    ["tracks", page, limit, order, sort, genre, userId],
-    () => tracksApi.getTracks(page, limit, sort, order, genre, userId),
+    ["tracks", page, limit, order, sort, genreId, userId],
+    () => tracksApi.getTracks({ page, limit, sort, order, genre: genreId, user: userId }),
     queryOptions,
   );
 
   return { ...query, data };
 }
 
-export function useInfiniteTracks({ limit, sort, order, genre, userId }) {
+export function useInfiniteTracks(params = {}) {
+  const { limit, sort, order, genreId, userId } = params;
   const { data = [], ...query } = useInfiniteQuery(
-    ["infinite-tracks", limit, order, sort, genre, userId],
-    ({ pageParam: page = 1 }) => tracksApi.getTracks({ page, limit, order, sort, genre, userId }),
+    ["infinite-tracks", limit, order, sort, genreId, userId],
+    ({ pageParam: page = 1 }) =>
+      tracksApi.getTracks({ page, limit, order, sort, genre: genreId, user: userId }),
     {
       getNextPageParam: (lastPage) =>
         lastPage.data.page < lastPage.data.pages ? lastPage.data.page + 1 : undefined,
@@ -45,7 +49,8 @@ export function useInfiniteTracks({ limit, sort, order, genre, userId }) {
   return { ...query, data };
 }
 
-export function useFetchUserTracks({ page, sort, order, limit, extend }) {
+export function useFetchUserTracks(params = {}) {
+  const { page, sort, order, limit, extend } = params;
   const { data = [], ...query } = useQuery(
     ["user-tracks", page, sort, order, limit, extend],
     async () => {
@@ -62,11 +67,12 @@ export function useFetchUserTracks({ page, sort, order, limit, extend }) {
   return { ...query, data };
 }
 
-export async function usePrefetchTracks({ page, limit, sort, order, genre, userId }) {
+export async function usePrefetchTracks(params = {}) {
+  const { page, limit, sort, order, genreId, userId } = params;
   const queryClient = useQueryClient();
 
-  await queryClient.prefetchQuery(["tracks", page, limit, sort, order, genre, userId], () =>
-    tracksApi.getTracks({ page, limit, order, sort, genre, userId }),
+  await queryClient.prefetchQuery(["tracks", page, limit, sort, order, genreId, userId], () =>
+    tracksApi.getTracks({ page, limit, order, sort, genre: genreId, user: userId }),
   );
 }
 

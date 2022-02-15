@@ -2,22 +2,25 @@ import http from "../services/httpService";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-function getCurrentUser(authToken, { extend }) {
+function getCurrentUser(authToken, params) {
   return http.get(`${baseUrl}/users/me`, {
     headers: { Authorization: `Bearer ${authToken}` },
-    params: { extend },
+    params,
   });
 }
 
-function getUser(userId, { extend }) {
-  return http.get(`${baseUrl}/users/${userId}`, {
-    params: { extend },
-  });
+function getUser(userId, params) {
+  return http.get(`${baseUrl}/users/${userId}`, { params });
 }
 
-function getUsers({ page, limit, sort, order }) {
-  return http.get(`${baseUrl}/users`, {
-    params: { page, limit, sort, order },
+function getUsers(params) {
+  return http.get(`${baseUrl}/users`, { params });
+}
+
+function getFollowedUsers(authToken, params = {}) {
+  return http.get(`${baseUrl}/users/me/followed-users`, {
+    headers: { Authorization: `Bearer ${authToken}` },
+    params,
   });
 }
 
@@ -33,12 +36,22 @@ function updateUser(authToken, user) {
   });
 }
 
+function followUser(authToken, user) {
+  return http.patch(`${baseUrl}/users/${user}/follow`, user, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+}
+
 const usersApi = {
   getCurrentUser,
+  getFollowedUsers,
   getUser,
   getUsers,
   updateUser,
   deleteUser,
+  followUser,
 };
 
 export default usersApi;
