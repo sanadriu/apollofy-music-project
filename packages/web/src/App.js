@@ -23,14 +23,14 @@ import Profile from "./pages/Profile";
 import Statistics from "./pages/Statistics";
 
 import { onAuthStateChanged } from "./services/auth";
-import { authSelector, syncSignIn, signOut } from "./redux/auth";
+import { authSelector, syncSignIn, signOut } from "./store/auth";
 
 import { useDarkMode } from "./hooks/useDarkMode";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/Themes";
 import TrackCreateForm from "./components/organisms/forms/TrackForm/TrackCreateForm";
 import TrackUpdateForm from "./components/organisms/forms/TrackForm/TrackUpdateForm";
-import Toggle from "./components/atoms/Switch";
+import Toggle from "./components/atoms/toggles/Switch";
 
 const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
@@ -89,7 +89,6 @@ function App() {
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-            <Route path={`${ROUTES.USER_PROFILE}/:profileId`} element={<Profile />} />
             <Route path="track/add" element={<TrackCreateForm />} />
             <Route path="track/update/:id" element={<TrackUpdateForm />} />
             {isAuthenticated && (

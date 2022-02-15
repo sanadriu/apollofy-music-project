@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import ProfileNameTrack from "../../atoms/ProfileNameTrack";
-import ProfileNumReprod from "../../atoms/ProfileNumReprod";
-import ProfileNumTrack from "../../atoms/ProfileNumTrack";
-import ProfilePlayTrack from "../../atoms/ProfilePlayTrack";
-import ProfileTrackImage from "../../atoms/ProfileTrackImage";
+import ProfileNameTrack from "../../atoms/body/ProfileNameTrack";
+import ProfileNumReprod from "../../atoms/body/ProfileNumReprod";
+import ProfileNumTrack from "../../atoms/headings/ProfileNumTrack";
+import ProfileTrackImage from "../../atoms/images/ProfileTrackImage";
+import ProfilePlayTrack from "../../atoms/toggles/ProfilePlayTrack";
 
 const StyledUserTrack = styled.div`
   font-family: ${({ theme }) => theme.fonts.primary};

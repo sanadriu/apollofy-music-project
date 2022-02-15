@@ -2,12 +2,12 @@ import React from "react";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import { authSelector, signInWithEmailRequest } from "../../../../redux/auth";
+import { authSelector, signInWithEmailRequest } from "../../../../store/auth";
 import SignInSchema from "../../../../schemas/SignInSchema";
-import FlexColumn from "../../../atoms/FlexColumn";
-import MiddleTitle from "../../../atoms/MiddleTitle";
+import FlexColumn from "../../../atoms/layout/FlexColumn";
+import MiddleTitle from "../../../atoms/headings/MiddleTitle";
 import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
-import RegisterInput from "../../../atoms/RegisterInput";
+import RegisterInput from "../../../atoms/input-controls/RegisterInput";
 
 export default function SigninForm() {
   const dispatch = useDispatch();

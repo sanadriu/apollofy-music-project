@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 import usersApi from "../../api/api-users";
 import withLayout from "../../components/hoc/withLayout";
-import ConfirmationDialogue from "../../components/organisms/ConfirmationDialogue";
+import ConfirmationModal from "../../components/organisms/modals/ConfirmationModal";
 import UpdateProfileModal from "../../components/organisms/modals/UpdateProfileModal";
 import { getCurrentUserToken } from "../../services/auth/auth";
 
@@ -206,7 +206,7 @@ const EditProfile = () => {
         Delete Profile
       </Button>
 
-      <ConfirmationDialogue
+      <ConfirmationModal
         open={open}
         handleClose={handleClose}
         deleteMyProfile={deleteMyProfile}

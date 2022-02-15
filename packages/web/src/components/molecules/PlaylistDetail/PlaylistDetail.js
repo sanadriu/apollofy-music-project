@@ -3,12 +3,10 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
-import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
-
-import HomeSmallText from "../../atoms/HomeSmallText";
-import DetailText from "../../atoms/DetailText";
-import ProfilePlayTrack from "../../atoms/ProfilePlayTrack";
 import LibraryMusic from "@mui/icons-material/LibraryMusic";
+
+import HomeSmallText from "../../atoms/body/HomeSmallText";
+import DetailText from "../../atoms/body/DetailText";
 
 const PlaylistLayout = styled.div`
   display: flex;

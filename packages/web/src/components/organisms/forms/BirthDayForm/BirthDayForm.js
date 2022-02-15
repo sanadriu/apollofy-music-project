@@ -1,53 +1,86 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Formik, Form, ErrorMessage } from "formik";
+import PropTypes from "prop-types";
+import { isMobile } from "react-device-detect";
 
-import { FlexColumn } from "../../../atoms/FlexColumn/FlexColumn";
-import { MiddleTitle } from "../../../atoms/MiddleTitle/MiddleTitle";
-import { PrimaryButton } from "../../../atoms/buttons/PrimaryButton";
+import { Button, Box } from "@material-ui/core";
+import TextField from "@mui/material/TextField";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
+import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import Stack from "@mui/material/Stack";
 
-import { authSelector, setDateOfBirth } from '../../../../redux/auth';
-import { modalSelector, nextModal } from "../../../../redux/modal";
+import FlexColumn from "../../../atoms/layout/FlexColumn";
+import MiddleTitle from "../../../atoms/headings/MiddleTitle";
 
-const ModalButton = styled(PrimaryButton)`
-  width: 35%;
-`;
+import DateOfBirthSchema from "../../../../schemas/DateOfBirthSchema";
+
+import { dateOfBirthAdded } from "../../../../store/auth";
+import { modalSelector, nextModal } from "../../../../store/modal";
+
+const dateSchema = {
+  date: null, // if date is defiend as '' yup will throw a invalid date error
+};
 
 export default function BirthDayForm() {
-  const [value, setValue] = useState(null);
   const dispatch = useDispatch();
   const { currentModal } = useSelector(modalSelector);
-  const { currentUser } = useSelector(authSelector);
-
-  function handleOption() {
-    if (value) {
-      const date = parseInt(value.substr(0, 4), 10);
-      if (date >= 1930 && date <= 2015) {
-        dispatch(setDateOfBirth(value));
-        dispatch(nextModal(currentModal + 1));
-      } else {
-        toast("The date must be between 1930 and 2015");
-      }
-    } else {
-      dispatch(nextModal(currentModal + 1));
-    }
-  }
 
   return (
-    <FlexColumn>
-      <MiddleTitle>Birth Date</MiddleTitle>
-      <input
-        type="date"
-        name="trip-start"
-        min="1915-01-01"
-        max="2015-12-31"
-        defaultValue={currentUser.dateOfBirth || null}
-        onChange={(e) => setValue(e.target.value)}
-      />
-      <ToastContainer />
-      <ModalButton onClick={() => handleOption()}>{value ? "Submit" : "Skip for now"}</ModalButton>
-    </FlexColumn>
+    <Formik
+      initialValues={dateSchema}
+      validationSchema={DateOfBirthSchema}
+      onSubmit={(values) => {
+        if (values.date) dispatch(dateOfBirthAdded(values.date.toISOString().substring(0, 10)));
+        dispatch(nextModal(currentModal + 1));
+      }}
+      render={(props) => (
+        <Form>
+          <FlexColumn>
+            <MiddleTitle>Create your account</MiddleTitle>
+            <Box width="100%" mb={2}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Stack spacing={3}>
+                  {isMobile ? (
+                    <MobileDatePicker
+                      label="Select a date"
+                      value={props.values.date}
+                      onChange={(value) => props.setFieldValue("date", value)}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  ) : (
+                    <DesktopDatePicker
+                      label="Select a date"
+                      value={props.values.date}
+                      minDate={new Date("2017-01-01")}
+                      onChange={(value) => props.setFieldValue("date", value)}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  )}
+                </Stack>
+              </LocalizationProvider>
+              <ErrorMessage className="errorMessage" name="date" component="div" />
+            </Box>
+            <Box width="100%" my={2}>
+              <Button type="submit" variant="contained" color="primary">
+                Submit
+              </Button>
+            </Box>
+          </FlexColumn>
+        </Form>
+      )}
+    />
   );
 }
+
+BirthDayForm.propTypes = {
+  values: PropTypes.element,
+  setFieldValue: PropTypes.object,
+};
+
+BirthDayForm.defaultProps = {
+  values: null,
+  setFieldValue: {},
+};

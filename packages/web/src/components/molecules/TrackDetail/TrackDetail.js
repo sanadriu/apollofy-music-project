@@ -3,11 +3,11 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
-import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 
-import HomeSmallText from "../../atoms/HomeSmallText";
-import DetailText from "../../atoms/DetailText";
-import ProfilePlayTrack from "../../atoms/ProfilePlayTrack";
+import HomeSmallText from "../../atoms/body/HomeSmallText";
+import DetailText from "../../atoms/body/DetailText";
+import ProfilePlayTrack from "../../atoms/toggles/ProfilePlayTrack";
+import { formatNumReprod } from "../../../utils/utils";
 
 const TrackLayout = styled.div`
   display: flex;
@@ -78,7 +78,7 @@ const TrackDetail = ({ track, handlePlayButton }) => {
       </TrackFlex>
       <StyledNumTrack>
         <HeadphonesIcon sx={{ color: "purple" }} />
-        <StyledNumber>{track?.num_plays}</StyledNumber>
+        <StyledNumber>{formatNumReprod(track?.num_plays)}</StyledNumber>
       </StyledNumTrack>
       <ProfilePlayTrack track={track} handlePlayButton={handlePlayButton} />
     </TrackLayout>

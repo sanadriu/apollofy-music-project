@@ -174,3 +174,35 @@ export function useMyTracks({ page, sort, order, limit, extend }) {
 
   return query;
 }
+
+export function useLikeTrack() {
+  const queryClient = useQueryClient()
+  const mutation = useMutation(
+    async (trackId) => {
+      const authToken = await authService.getCurrentUserToken();
+
+      if (authToken) return tracksApi.likeTrack(authToken, trackId);
+
+      return Promise.reject(new Error("User authentication required"));
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([queryKeys.tracks]);
+      },
+    },
+  );
+
+  return mutation;
+}
+
+export function usePlayTrack() {
+  const mutation = useMutation(async (trackId) => {
+    const authToken = await authService.getCurrentUserToken();
+
+    if (authToken) return tracksApi.playTrack(authToken, trackId);
+
+    return Promise.reject(new Error("User authentication required"));
+  });
+
+  return mutation;
+}

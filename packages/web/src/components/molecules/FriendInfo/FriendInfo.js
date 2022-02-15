@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import FlexColumn from "../../atoms/FlexColumn";
-import HomeSmallText from "../../atoms/HomeSmallText";
-import DetailText from "../../atoms/DetailText";
+import FlexColumn from "../../atoms/layout/FlexColumn";
+import HomeSmallText from "../../atoms/body/HomeSmallText";
+import DetailText from "../../atoms/body/DetailText";
 import { UserLink } from "../UserDetail/UserDetail";
 
 const Layout = styled.div`

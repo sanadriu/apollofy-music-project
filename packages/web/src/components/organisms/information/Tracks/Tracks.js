@@ -10,7 +10,7 @@ import { useTracks, usePrefetchTracks, useInfiniteTracks } from "../../../../hoo
 import TrackDetail from "../../../molecules/TrackDetail";
 import Button from "../../../atoms/buttons/Button";
 import { TracksList } from "../PopularTracks/PopularTracks";
-import HomeSmallText from "../../../atoms/HomeSmallText";
+import HomeSmallText from "../../../atoms/body/HomeSmallText";
 
 const ExtendedTrackList = styled(TracksList)`
   width: 100%;
@@ -36,14 +36,8 @@ export default function Tracks() {
     currentGenre,
   );
 
-  // console.log("tracks", tracks);
-  // console.log("fetchNextPage", fetchNextPage);
-  console.log("hasNextPage", hasNextPage);
-
-  const tracksList = data?.data?.data;
-  const maxTrackPage = data?.data?.pages;
-
-  console.log(tracksList);
+  const tracksList = tracks?.data?.data;
+  const maxTrackPage = tracks?.data?.pages;
 
   // const { data, fetchNextPage, hasNextPage, isLoading, isFetching, isError, error } = useInfiniteQuery(
   //   "sw-people",

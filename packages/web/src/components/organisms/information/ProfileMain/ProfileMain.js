@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import ProfileImage from "../../../atoms/ProfileImage";
-import ProfileUserDescription from "../../../atoms/ProfileUserDescription";
-import ProfileUserTitle from "../../../atoms/ProfileUserTitle";
+import ProfileImage from "../../../atoms/images/ProfileImage";
+import ProfileUserDescription from "../../../atoms/body/ProfileUserDescription";
 import ProfileStadistics from "../../../molecules/ProfileStadistics";
+import ProfileUserTitle from "../../../atoms/body/ProfileUserTitle";
 
 const ProfileContent = styled.div`
   display: flex;
@@ -13,10 +13,9 @@ const ProfileContent = styled.div`
   border-radius: 1.3rem;
   background: #eeeee4;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  (max-width: ${({ theme }) => theme.media.tablet})
+  justify-content: center;
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: flex;
-    justify-content: center;
     align-items: center;
     margin-top: 1.5rem;
   }
@@ -24,17 +23,13 @@ const ProfileContent = styled.div`
 
 const AvatarDiv = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
   min-width: 215px;
   width: 100%;
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
-    display: flex;
     align-items: center;
     justify-content: center;
     max-width: 5rem;
     border-radius: 100%;
-
     margin-top: 3rem;
     padding: 1rem;
   }
@@ -42,6 +37,10 @@ const AvatarDiv = styled.div`
 
 const DescriptionDiv = styled.div`
   padding: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ProfileMain = ({ user, albums, tracks }) => {

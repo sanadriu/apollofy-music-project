@@ -64,14 +64,27 @@ const deleteTrack = (authToken, id) => {
   });
 };
 
+const likeTrack = (authToken, idTrack) => {
+  return http.patch(`${baseUrl}/tracks/${idTrack}/like`, undefined, {
+    headers: { Authorization: `Bearer ${authToken}` },
+  });
+};
+
+const playTrack = (authToken, idTrack) => {
+  return http.patch(`${baseUrl}/tracks/${idTrack}/play`, undefined, {
+    headers: { Authorization: `Bearer ${authToken}` },
+  });
+};
+
 const tracksApi = {
   getTrack,
   getTracks,
   getMyTracks,
   setTrack,
   updateTrack,
-  getInfiniteTracks,
   deleteTrack,
+  likeTrack,
+  playTrack,
 };
 
 export default tracksApi;

@@ -3,11 +3,7 @@ import { useParams } from "react-router-dom";
 
 import withLayout from "../../components/hoc/withLayout";
 import Tracks from "../../components/organisms/information/Tracks";
-import Genres from "../../components/organisms/information/Genres";
-import PlaylistImage from "../../components/atoms/PlaylistImage/PlaylistImage";
-import ProfileOneStadistics from "../../components/atoms/ProfileOneStadistics/ProfileOneStadistics";
-import ProfileUserDescription from "../../components/atoms/ProfileUserDescription/ProfileUserDescription";
-import ProfileUserTitle from "../../components/atoms/ProfileUserTitle/ProfileUserTitle";
+import PlaylistImage from "../../components/atoms/images/PlaylistImage/PlaylistImage";
 
 import { useSingleGenre } from "../../hooks/useGenres";
 import {
@@ -15,8 +11,8 @@ import {
   MainText,
   PageLayout,
   PictureDiv,
-  StadisticsDiv,
 } from "../Playlists/Playlists";
+import ProfileUserTitle from "../../components/atoms/body/ProfileUserTitle/ProfileUserTitle";
 
 function GenresPage() {
   const { genreId } = useParams();
