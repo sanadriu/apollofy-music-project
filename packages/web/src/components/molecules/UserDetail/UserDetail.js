@@ -133,6 +133,7 @@ UserDetail.propTypes = {
     num_liked_tracks: PropTypes.number,
     followed_playlists: PropTypes.arrayOf(PropTypes.object),
     followed_users: PropTypes.arrayOf(PropTypes.object),
+    followed_by: PropTypes.arrayOf(PropTypes.object),
     num_followed_playlists: PropTypes.number,
     num_followed_users: PropTypes.number,
     num_followers: PropTypes.number,
