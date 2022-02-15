@@ -54,16 +54,16 @@ export default function PlaylistHomeCard(props) {
   const { playlist } = props;
 
   return (
-    <Card playlist={playlist}>
-      <HomeSmallText>{playlist.num_tracks} Tracks</HomeSmallText>
-      <CardLayout>
-        <CardLink to={`/playlists/${playlist.id}`}>
+    <CardLink to={`/playlists/${playlist.id}`}>
+      <Card playlist={playlist}>
+        <HomeSmallText>{playlist.num_tracks} Tracks</HomeSmallText>
+        <CardLayout>
           <SmallText>{playlist.title}</SmallText>
-        </CardLink>
-        <HoverIcon />
-        <HomeSmallText>{playlist.num_followers} listeners</HomeSmallText>
-      </CardLayout>
-    </Card>
+          <HoverIcon />
+          <HomeSmallText>{playlist.num_followers} listeners</HomeSmallText>
+        </CardLayout>
+      </Card>
+    </CardLink>
   );
 }
 

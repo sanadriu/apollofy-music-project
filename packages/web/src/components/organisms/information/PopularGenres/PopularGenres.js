@@ -26,7 +26,7 @@ export default function PopularGenres() {
   const { data: genres } = useGenres();
   return (
     <SectionLayout>
-      <GenresText>Popular Genres</GenresText>
+      <GenresText>Genres</GenresText>
       <GenresList>
         {genres?.data?.data?.map((genre) => (
           <GenreDetail key={genre.id} genre={genre} />

@@ -12,6 +12,7 @@ const FooterText = styled(HomeSmallText)`
 
 const FooterLayout = styled.footer`
   line-height: initial;
+  text-align: center;
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: none;
   }
