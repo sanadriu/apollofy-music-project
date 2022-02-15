@@ -10,14 +10,10 @@ import SearchSVG from "../../../assets/search.svg";
 import StatsSVG from "../../../assets/bar_chart.svg";
 
 const Bar = styled.nav`
-  //width: 2.5rem;
   display: flex;
   flex-direction: column;
-  padding: 0.5rem;
   gap: 1.5rem;
-  margin-top: 0.5rem;
   color: ${({ theme }) => theme.colors.text};
-
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     flex-direction: row;
     position: fixed;

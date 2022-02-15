@@ -11,7 +11,6 @@ import FlexColumn from "../../atoms/layout/FlexColumn";
 const CardLink = styled(Link)`
   text-decoration: none;
   color: inherit;
-
   &:hover {
     color: white;
   }
@@ -36,14 +35,13 @@ const HoverIcon = styled(PlayCircleIcon)`
 `;
 
 const Card = styled.div`
-  margin: 1rem;
+  margin: 0.5rem;
   padding: 1rem;
   border-radius: 1.3rem;
-  height: 13rem;
-  max-width: 12rem;
+  height: 15rem;
+  max-width: 12.5rem;
   background-size: cover;
   transition: 1s;
-  box-shadow: -10px 7px 6px 4px ${({ theme }) => theme.colors.background.secondary};
   background: linear-gradient(
     ${({ theme }) => theme.colors.background.gradient},
     ${(props) => props.playlist.color}

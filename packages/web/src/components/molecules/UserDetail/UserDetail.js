@@ -6,7 +6,6 @@ import GroupIcon from "@mui/icons-material/Group";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 
-import DetailText from "../../atoms/body/DetailText";
 import HomeSmallText from "../../atoms/body/HomeSmallText";
 import { useFollowUser } from "../../../hooks/useUsers";
 
@@ -16,7 +15,6 @@ const UserLayout = styled.div`
   padding: 0.3rem;
   border-radius: 1.3rem;
   width: 100%;
-
   &:hover {
     background-color: ${({ theme }) => theme?.colors?.background?.secondary_hover};
   }
@@ -41,7 +39,6 @@ const UserFlex = styled.div`
 export const UserLink = styled(Link)`
   text-decoration: none;
   color: inherit;
-
   &:hover {
     color: white;
   }

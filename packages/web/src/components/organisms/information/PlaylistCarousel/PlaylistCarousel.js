@@ -10,8 +10,8 @@ import "./PlaylistCarousel.css";
 const Layout = styled.div`
   max-width: 45rem;
   margin: auto;
-  padding: 2rem;
-  border-radius: 5rem;
+  padding: 1rem;
+  border-radius: 1rem;
   background-color: ${({ theme }) => theme.colors.background.secondary};
 `;
 

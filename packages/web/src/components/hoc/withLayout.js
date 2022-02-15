@@ -12,8 +12,7 @@ import FlexColumn from "../atoms/layout/FlexColumn";
 
 const MainLayout = styled.main`
   display: flex;
-  /* gap: 2rem; */
-  padding: 1rem 1rem 0 1rem;
+  padding: 1.25rem;
   justify-content: space-between;
   margin-bottom: 6rem;
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
@@ -28,7 +27,8 @@ const MainLayout = styled.main`
 `;
 
 const PageContent = styled.div`
-  width: 60%;
+  width: calc(100% - 18rem);
+  padding: 0 1.25rem;
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     width: 100%;
   }

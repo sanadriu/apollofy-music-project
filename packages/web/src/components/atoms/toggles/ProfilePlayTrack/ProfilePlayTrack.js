@@ -1,12 +1,11 @@
-/* eslint-disable no-new */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { PlayerInterface, Track } from "react-material-music-player";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorderSharp";
 import PlayCircleFilledSharpIcon from "@mui/icons-material/PlayCircleFilledSharp";
-import { PlayerInterface, Track } from "react-material-music-player";
 import PlaylistAdd from "@mui/icons-material/PlaylistAdd";
 import { Button } from "@mui/material";
 

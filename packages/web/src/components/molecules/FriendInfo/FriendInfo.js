@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 import FlexColumn from "../../atoms/layout/FlexColumn";
 import HomeSmallText from "../../atoms/body/HomeSmallText";
-import DetailText from "../../atoms/body/DetailText";
 import { UserLink } from "../UserDetail/UserDetail";
 
 const Layout = styled.div`
@@ -46,7 +45,6 @@ export default function FriendInfo(props) {
         <UserLink to={`/users/${id}`}>
           <HomeSmallText>{username}</HomeSmallText>
         </UserLink>
-        {/* <DetailText>{lastTrack}</DetailText> */}
       </SmallGap>
     </Layout>
   );

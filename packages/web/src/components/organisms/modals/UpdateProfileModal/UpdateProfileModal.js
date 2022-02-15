@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -8,24 +7,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { auth, getCurrentUserToken } from "../../../../services/auth";
 import usersApi from "../../../../api/api-users";
 import { currentUserAdded } from "../../../../store/auth";
-
-// eslint-disable-next-line react/prop-types
-const TextField = styled.input`
-  display: block;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: ${({ theme }) => theme.colors.text};
-  background-color: ${({ theme }) => theme.colors.background.secondary};
-  background-clip: paddIng-box;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  transition: border-color 0.15s ease-In-out, box-shadow 0.15s ease-In-out;
-`;
 
 const CustomModalTitle = styled(DialogTitle)`
   color: ${({ theme }) => theme.colors.text};
@@ -147,3 +134,23 @@ export default function UpdateProfileModal({
     </div>
   );
 }
+
+UpdateProfileModal.propTypes = {
+  openProfileModal: PropTypes.bool,
+  handleClose: PropTypes.func,
+  email: PropTypes.string,
+  password: PropTypes.string,
+  username: PropTypes.string,
+  birthDay: PropTypes.string,
+  profilePic: PropTypes.string,
+};
+
+UpdateProfileModal.defaultProps = {
+  openProfileModal: false,
+  handleClose: null,
+  email: null,
+  password: null,
+  username: null,
+  birthDay: null,
+  profilePic: null,
+};

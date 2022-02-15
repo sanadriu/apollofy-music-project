@@ -46,7 +46,6 @@ const Layout = styled.form`
   display: flex;
   justify-content: space-between;
   border-radius: 1.3rem;
-  margin-top: 1rem;
   background-color: ${({ theme }) => theme.colors.background.secondary};
 `;
 
