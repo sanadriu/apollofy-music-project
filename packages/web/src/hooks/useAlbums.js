@@ -94,6 +94,7 @@ export async function usePrefetchAlbums(params = {}) {
 }
 
 export function useCreateAlbum() {
+  const queryClient = useQueryClient();
   const createAlbum = useMutation(
     async (album) => {
       const authToken = await authService.getCurrentUserToken();
@@ -104,6 +105,7 @@ export function useCreateAlbum() {
     },
     {
       onSuccess: () => {
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-albums");
         queryClient.refetchQueries("albums");
       },
@@ -126,6 +128,7 @@ export function useUpdateAlbum() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("album");
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-albums");
         queryClient.refetchQueries("albums");
       },
@@ -148,6 +151,7 @@ export function useDeleteAlbum() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("album");
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-albums");
         queryClient.refetchQueries("albums");
       },
@@ -170,6 +174,7 @@ export function useLikeAlbum() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("album");
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-albums");
         queryClient.refetchQueries("albums");
       },

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
-
+import defaultAvatar from "../../../images/defaultAvatar.png";
 import DetailText from "../../atoms/body/DetailText";
 import HomeSmallText from "../../atoms/body/HomeSmallText";
 import { useFollowUser } from "../../../hooks/useUsers";
@@ -92,7 +92,7 @@ const UserDetail = ({ user }) => {
 
   return (
     <UserLayout>
-      <UserPicture alt={`${user?.username}`} src={user?.thumbnails?.url_default} />
+      <UserPicture alt={`${user?.username}`} src={user?.thumbnails?.url_default || defaultAvatar} />
       <UserFlex>
         <UserLink to={`/users/${user.id}`}>
           <HomeSmallText>{`${user.firstname} ${user.lastname}`}</HomeSmallText>
@@ -133,6 +133,7 @@ UserDetail.propTypes = {
     num_liked_tracks: PropTypes.number,
     followed_playlists: PropTypes.arrayOf(PropTypes.object),
     followed_users: PropTypes.arrayOf(PropTypes.object),
+    followed_by: PropTypes.arrayOf(PropTypes.object),
     num_followed_playlists: PropTypes.number,
     num_followed_users: PropTypes.number,
     num_followers: PropTypes.number,

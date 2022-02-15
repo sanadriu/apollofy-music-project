@@ -41,10 +41,12 @@ const ButtonFollowPlaylist = ({ id }) => {
     mutate(playlistId);
   };
 
+  console.log(user?.data?.data.followed_playlists);
+
   return (
     <Stack spacing={2} direction="row" onClick={() => handleFollow(id)}>
-      {user?.data?.data.playlists &&
-      user.data.data.playlists.findIndex((playlist) => playlist.id === id) === -1 ? (
+      {user?.data?.data.followed_playlists &&
+      user.data.data.followed_playlists.findIndex((playlist) => playlist.id === id) === -1 ? (
         <ColorButton
           variant="contained"
           sx={{ borderRadius: "100px", color: "white" }}

@@ -17,19 +17,14 @@ const StyledTitlePlaylist = styled.div`
 `;
 
 const ProfilePlaylistTitle = ({ title, id }) => {
-  const { currentPlaylist } = useSelector(authSelector);
-  const { profileId } = useParams();
-
   return (
     <StyledTitlePlaylist>
       <div>
         <Typography variant="h5">{title}</Typography>
       </div>
-      {currentPlaylist.id !== profileId && (
-        <div>
-          <ButtonFollowPlaylist id={id} />
-        </div>
-      )}
+      <div>
+        <ButtonFollowPlaylist id={id} />
+      </div>
     </StyledTitlePlaylist>
   );
 };

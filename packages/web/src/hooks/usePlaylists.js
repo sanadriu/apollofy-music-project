@@ -77,6 +77,7 @@ export async function usePrefetchPlaylists(params = {}) {
 }
 
 export function useCreatePlaylist() {
+  const queryClient = useQueryClient();
   const createPlaylist = useMutation(
     async (playlist) => {
       const authToken = await authService.getCurrentUserToken();
@@ -87,6 +88,7 @@ export function useCreatePlaylist() {
     },
     {
       onSuccess: () => {
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-playlists");
         queryClient.refetchQueries("playlists");
       },
@@ -109,6 +111,7 @@ export function useUpdatePlaylist() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("playlist");
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-playlists");
         queryClient.refetchQueries("playlists");
       },
@@ -131,6 +134,7 @@ export function useDeletePlaylist() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("playlist");
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-playlists");
         queryClient.refetchQueries("playlists");
       },
@@ -153,6 +157,7 @@ export function useFollowPlaylist() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("playlist");
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-playlists");
         queryClient.refetchQueries("playlists");
       },

@@ -63,12 +63,6 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
   };
 
   const handleFavoriteTrack = (track) => {
-    try {
-      likeTrack(track.id);
-    } catch (error) {
-      console.log(error);
-    }
-
     likeTrack(track.id);
   };
 
@@ -85,8 +79,6 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
       ),
     ]);
   };
-
-  console.log("pito");
 
   return (
     <StyledPlayTrack>

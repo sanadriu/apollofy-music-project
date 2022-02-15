@@ -61,7 +61,7 @@ function PlaylistsPage() {
           <PlaylistImage picture={playlist?.thumbnails?.url_default} title={playlist?.title} />
         </PictureDiv>
         <DescriptionDiv>
-          <ProfilePlaylistTitle title={playlist?.title} />
+          <ProfilePlaylistTitle title={playlist?.title} id={playlist?.id} />
           <StadisticsDiv>
             <ProfileOneStadistics count={playlist?.num_tracks} text="Songs" />
             <ProfileOneStadistics count={playlist?.num_followers} text="Followers" />

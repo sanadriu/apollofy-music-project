@@ -77,6 +77,7 @@ export async function usePrefetchTracks(params = {}) {
 }
 
 export function useCreateTrack() {
+  const queryClient = useQueryClient();
   const createTrack = useMutation(
     async (track) => {
       const authToken = await authService.getCurrentUserToken();
@@ -87,6 +88,7 @@ export function useCreateTrack() {
     },
     {
       onSuccess: () => {
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-tracks");
         queryClient.refetchQueries("tracks");
       },
@@ -109,6 +111,7 @@ export function useUpdateTrack() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("track");
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-tracks");
         queryClient.refetchQueries("tracks");
       },
@@ -131,6 +134,7 @@ export function useDeleteTrack() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("track");
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-tracks");
         queryClient.refetchQueries("tracks");
       },
@@ -153,6 +157,7 @@ export function useLikeTrack() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("track");
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-tracks");
         queryClient.refetchQueries("tracks");
       },
@@ -175,6 +180,7 @@ export function usePlayTrack() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("track");
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("user-tracks");
         queryClient.refetchQueries("tracks");
       },

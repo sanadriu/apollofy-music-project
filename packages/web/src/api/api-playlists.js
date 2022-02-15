@@ -36,7 +36,7 @@ const deletePlaylist = (authToken, playlistId) => {
 };
 
 const followPlaylist = (authToken, playlistId) => {
-  return http.patch(`${baseUrl}/playlists/${playlistId}/like`, undefined, {
+  return http.patch(`${baseUrl}/playlists/${playlistId}/follow`, undefined, {
     headers: { Authorization: `Bearer ${authToken}` },
   });
 };

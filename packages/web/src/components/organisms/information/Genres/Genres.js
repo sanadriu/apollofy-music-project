@@ -10,7 +10,7 @@ export default function Genres() {
   const navigate = useNavigate();
 
   const handleClick = (genre) => {
-    navigate(`/tracks/${genre.name}`);
+    navigate(`/tracks/${genre.id}`);
   };
 
   return (

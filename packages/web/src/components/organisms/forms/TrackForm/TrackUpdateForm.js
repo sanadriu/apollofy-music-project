@@ -187,7 +187,7 @@ function TrackUpdateForm() {
               input={<Input />}
             >
               {fetchGenresResponse?.data?.data.map((genre) => (
-                <MenuItem key={genre.name} value={genre.name}>
+                <MenuItem key={genre.id} value={genre.id}>
                   {genre.name}
                 </MenuItem>
               ))}

@@ -56,13 +56,21 @@ export function usePrefetchUsers(userId) {
 }
 
 export function useUpdateUser() {
-  const mutation = useMutation(async (user) => {
-    const authToken = await authService.getCurrentUserToken();
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    async (user) => {
+      const authToken = await authService.getCurrentUserToken();
 
-    if (authToken) return usersApi.updateUser(authToken, user);
+      if (authToken) return usersApi.updateUser(authToken, user);
 
-    return Promise.reject(new Error("User authentication required"));
-  });
+      return Promise.reject(new Error("User authentication required"));
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("current-user");
+      },
+    },
+  );
 
   return mutation;
 }
@@ -71,18 +79,15 @@ export function useFollowUser() {
   const queryClient = useQueryClient();
   const mutation = useMutation(
     async (userId) => {
-      try {
-        const authToken = await authService.getCurrentUserToken();
+      const authToken = await authService.getCurrentUserToken();
 
-        if (authToken) return usersApi.followUser(authToken, userId);
+      if (authToken) return usersApi.followUser(authToken, userId);
 
-        return Promise.reject(new Error("User authentication required"));
-      } catch (error) {
-        return Promise.reject(error.message);
-      }
+      return Promise.reject(new Error("User authentication required"));
     },
     {
       onSuccess: () => {
+        queryClient.invalidateQueries("current-user");
         queryClient.invalidateQueries("followed-users");
       },
     },
