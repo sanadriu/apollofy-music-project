@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import FlexColumn from "../../atoms/layout/FlexColumn";
 import HomeSmallText from "../../atoms/body/HomeSmallText";
 import DetailText from "../../atoms/body/DetailText";
+import { UserLink } from "../UserDetail/UserDetail";
 
 const Layout = styled.div`
   padding-left: 0.3rem;
@@ -32,13 +33,15 @@ export const ProfilePicture = styled.img`
 `;
 
 export default function FriendInfo(props) {
-  const { profilePicture, username, lastTrack, firstName, lastName } = props;
+  const { id, profilePicture, username, lastTrack, firstName, lastName } = props;
 
   return (
     <Layout>
       <ProfilePicture alt="Friend's Picture" src={profilePicture} />
       <SmallGap>
-        <HomeSmallText>{`${firstName} ${lastName}`}</HomeSmallText>
+        <UserLink to={`/users/${id}`}>
+          <HomeSmallText>{`${firstName} ${lastName}`}</HomeSmallText>
+        </UserLink>
         <DetailText>{username}</DetailText>
         {/* <DetailText>{lastTrack}</DetailText> */}
       </SmallGap>
@@ -52,6 +55,7 @@ FriendInfo.propTypes = {
   lastTrack: PropTypes.string,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
+  id: PropTypes.string,
 };
 
 FriendInfo.defaultProps = {
@@ -60,4 +64,5 @@ FriendInfo.defaultProps = {
   lastTrack: "",
   firstName: "",
   lastName: "",
+  id: "",
 };

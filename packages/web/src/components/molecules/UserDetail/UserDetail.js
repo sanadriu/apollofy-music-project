@@ -37,7 +37,7 @@ const UserFlex = styled.div`
   flex-grow: 1;
 `;
 
-const UserLink = styled(Link)`
+export const UserLink = styled(Link)`
   text-decoration: none;
   color: inherit;
 
@@ -94,7 +94,7 @@ const UserDetail = ({ user }) => {
     <UserLayout>
       <UserPicture alt={`${user?.username}`} src={user?.thumbnails?.url_default} />
       <UserFlex>
-        <UserLink to={`/user-profile/${user.id}`}>
+        <UserLink to={`/users/${user.id}`}>
           <HomeSmallText>{`${user.firstname} ${user.lastname}`}</HomeSmallText>
           <DetailText>{user.username}</DetailText>
         </UserLink>

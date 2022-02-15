@@ -50,12 +50,10 @@ export const ModalBox = styled(Box)`
 `;
 
 export default function AddFriendsModal({ isOpen, handleModal }) {
-  const dispatch = useDispatch();
-  const { currentUser } = useSelector(authSelector);
+  // const dispatch = useDispatch();
+  // const { currentUser } = useSelector(authSelector);
 
-  const followedUsers = false;
-
-  const { data: users } = useFollowedUsers(followedUsers);
+  const { data: users } = useFollowedUsers({ exclude: true });
 
   const userList = isOpen ? users?.data?.data : null;
 

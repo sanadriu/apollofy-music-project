@@ -17,7 +17,7 @@ function getUsers(params) {
   return http.get(`${baseUrl}/users`, { params });
 }
 
-function getFollowedUsers(authToken, params = {}) {
+function getFollowedUsers(authToken, params) {
   return http.get(`${baseUrl}/users/me/followed-users`, {
     headers: { Authorization: `Bearer ${authToken}` },
     params,

@@ -12,7 +12,8 @@ const queryOptions = {
   refetchOnReconnect: false,
 };
 
-export function useFetchPlaylist(playlistId, { extend }) {
+export function useFetchPlaylist(playlistId, params = {}) {
+  const { extend } = params;
   const { data = {}, query } = useQuery(
     ["playlist", playlistId, extend],
     () => playlistsApi.getPlaylist(playlistId, { extend }),
@@ -24,7 +25,6 @@ export function useFetchPlaylist(playlistId, { extend }) {
 
 export function useFetchPlaylists(params = {}) {
   const { page, limit, sort, order, userId } = params;
-
   const { data = [], ...query } = useQuery(
     ["playlists", page, limit, order, sort, userId],
     () => playlistsApi.getPlaylists({ page, limit, sort, order, user: userId }),
@@ -37,7 +37,7 @@ export function useFetchPlaylists(params = {}) {
 export function useInfinitePlaylists(params = {}) {
   const { limit, sort, order, userId } = params;
   const { data = [], ...query } = useInfiniteQuery(
-    ["infinite-playlists", limit, order, sort, userId],
+    ["playlists", limit, order, sort, userId],
     ({ pageParam: page = 1 }) =>
       playlistsApi.getPlaylists({ page, limit, order, sort, user: userId }),
     {
@@ -77,13 +77,21 @@ export async function usePrefetchPlaylists(params = {}) {
 }
 
 export function useCreatePlaylist() {
-  const createPlaylist = useMutation(async (playlist) => {
-    const authToken = await authService.getCurrentUserToken();
+  const createPlaylist = useMutation(
+    async (playlist) => {
+      const authToken = await authService.getCurrentUserToken();
 
-    if (authToken) return playlistsApi.createPlaylist(authToken, playlist);
+      if (authToken) return playlistsApi.createPlaylist(authToken, playlist);
 
-    return Promise.reject(new Error("User authentication required"));
-  });
+      return Promise.reject(new Error("User authentication required"));
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user-playlists");
+        queryClient.refetchQueries("playlists");
+      },
+    },
+  );
 
   return createPlaylist;
 }
@@ -100,12 +108,9 @@ export function useUpdatePlaylist() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([
-          "playlist",
-          "playlists",
-          "infinite-playlists",
-          "user-playlists",
-        ]);
+        queryClient.invalidateQueries("playlist");
+        queryClient.invalidateQueries("user-playlists");
+        queryClient.refetchQueries("playlists");
       },
     },
   );
@@ -125,12 +130,9 @@ export function useDeletePlaylist() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([
-          "playlist",
-          "playlists",
-          "infinite-playlists",
-          "user-playlists",
-        ]);
+        queryClient.invalidateQueries("playlist");
+        queryClient.invalidateQueries("user-playlists");
+        queryClient.refetchQueries("playlists");
       },
     },
   );
@@ -150,12 +152,9 @@ export function useFollowPlaylist() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([
-          "playlist",
-          "playlists",
-          "infinite-playlists",
-          "user-playlists",
-        ]);
+        queryClient.invalidateQueries("playlist");
+        queryClient.invalidateQueries("user-playlists");
+        queryClient.refetchQueries("playlists");
       },
     },
   );

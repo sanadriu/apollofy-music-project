@@ -46,7 +46,7 @@ export function useFetchAlbums(params = {}) {
 export function useInfiniteAlbums(params = {}) {
   const { limit, sort, order, genreId, trackId, userId } = params;
   const { data = [], ...query } = useInfiniteQuery(
-    ["infinite-albums", limit, order, sort, genreId, userId],
+    ["albums", limit, order, sort, genreId, userId],
     ({ pageParam: page = 1 }) =>
       albumsApi.getAlbums({
         page,
@@ -94,13 +94,21 @@ export async function usePrefetchAlbums(params = {}) {
 }
 
 export function useCreateAlbum() {
-  const createAlbum = useMutation(async (album) => {
-    const authToken = await authService.getCurrentUserToken();
+  const createAlbum = useMutation(
+    async (album) => {
+      const authToken = await authService.getCurrentUserToken();
 
-    if (authToken) return albumsApi.createAlbum(authToken, album);
+      if (authToken) return albumsApi.createAlbum(authToken, album);
 
-    return Promise.reject(new Error("User authentication required"));
-  });
+      return Promise.reject(new Error("User authentication required"));
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user-albums");
+        queryClient.refetchQueries("albums");
+      },
+    },
+  );
 
   return createAlbum;
 }
@@ -117,7 +125,9 @@ export function useUpdateAlbum() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["album", "albums", "infinite-albums", "user-albums"]);
+        queryClient.invalidateQueries("album");
+        queryClient.invalidateQueries("user-albums");
+        queryClient.refetchQueries("albums");
       },
     },
   );
@@ -137,7 +147,9 @@ export function useDeleteAlbum() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["album", "albums", "infinite-albums", "user-albums"]);
+        queryClient.invalidateQueries("album");
+        queryClient.invalidateQueries("user-albums");
+        queryClient.refetchQueries("albums");
       },
     },
   );
@@ -157,7 +169,9 @@ export function useLikeAlbum() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["album", "albums", "infinite-albums", "user-albums"]);
+        queryClient.invalidateQueries("album");
+        queryClient.invalidateQueries("user-albums");
+        queryClient.refetchQueries("albums");
       },
     },
   );

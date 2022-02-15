@@ -37,7 +37,7 @@ export function useFetchTracks(params = {}) {
 export function useInfiniteTracks(params = {}) {
   const { limit, sort, order, genreId, userId } = params;
   const { data = [], ...query } = useInfiniteQuery(
-    ["infinite-tracks", limit, order, sort, genreId, userId],
+    ["tracks", limit, order, sort, genreId, userId],
     ({ pageParam: page = 1 }) =>
       tracksApi.getTracks({ page, limit, order, sort, genre: genreId, user: userId }),
     {
@@ -77,13 +77,21 @@ export async function usePrefetchTracks(params = {}) {
 }
 
 export function useCreateTrack() {
-  const createTrack = useMutation(async (track) => {
-    const authToken = await authService.getCurrentUserToken();
+  const createTrack = useMutation(
+    async (track) => {
+      const authToken = await authService.getCurrentUserToken();
 
-    if (authToken) return tracksApi.createTrack(authToken, track);
+      if (authToken) return tracksApi.createTrack(authToken, track);
 
-    return Promise.reject(new Error("User authentication required"));
-  });
+      return Promise.reject(new Error("User authentication required"));
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user-tracks");
+        queryClient.refetchQueries("tracks");
+      },
+    },
+  );
 
   return createTrack;
 }
@@ -100,7 +108,9 @@ export function useUpdateTrack() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["track", "tracks", "infinite-tracks", "user-tracks"]);
+        queryClient.invalidateQueries("track");
+        queryClient.invalidateQueries("user-tracks");
+        queryClient.refetchQueries("tracks");
       },
     },
   );
@@ -120,7 +130,9 @@ export function useDeleteTrack() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["track", "tracks", "infinite-tracks", "user-tracks"]);
+        queryClient.invalidateQueries("track");
+        queryClient.invalidateQueries("user-tracks");
+        queryClient.refetchQueries("tracks");
       },
     },
   );
@@ -140,7 +152,9 @@ export function useLikeTrack() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["track", "tracks", "infinite-tracks", "user-tracks"]);
+        queryClient.invalidateQueries("track");
+        queryClient.invalidateQueries("user-tracks");
+        queryClient.refetchQueries("tracks");
       },
     },
   );
@@ -160,7 +174,9 @@ export function usePlayTrack() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["track", "tracks", "infinite-tracks", "user-tracks"]);
+        queryClient.invalidateQueries("track");
+        queryClient.invalidateQueries("user-tracks");
+        queryClient.refetchQueries("tracks");
       },
     },
   );

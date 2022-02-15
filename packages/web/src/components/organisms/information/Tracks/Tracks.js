@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useQueryClient, useInfiniteQuery } from "react-query";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
 
 import { useInfiniteTracks } from "../../../../hooks/useTracks";
 
 import TrackDetail from "../../../molecules/TrackDetail";
-import Button from "../../../atoms/buttons/Button";
 import { TracksList } from "../PopularTracks/PopularTracks";
-import HomeSmallText from "../../../atoms/body/HomeSmallText";
 
 const ExtendedTrackList = styled(TracksList)`
   width: 100%;

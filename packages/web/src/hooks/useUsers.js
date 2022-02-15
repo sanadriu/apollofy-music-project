@@ -56,10 +56,10 @@ export function usePrefetchUsers(userId) {
 }
 
 export function useUpdateUser() {
-  const mutation = useMutation(async (userId) => {
+  const mutation = useMutation(async (user) => {
     const authToken = await authService.getCurrentUserToken();
 
-    if (authToken) return usersApi.updateUser(authToken, userId);
+    if (authToken) return usersApi.updateUser(authToken, user);
 
     return Promise.reject(new Error("User authentication required"));
   });
@@ -68,29 +68,37 @@ export function useUpdateUser() {
 }
 
 export function useFollowUser() {
-  const mutation = useMutation(async (userId) => {
-    try {
-      const authToken = await authService.getCurrentUserToken();
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    async (userId) => {
+      try {
+        const authToken = await authService.getCurrentUserToken();
 
-      if (authToken) return usersApi.followUser(authToken, userId);
+        if (authToken) return usersApi.followUser(authToken, userId);
 
-      return Promise.reject(new Error("User authentication required"));
-    } catch (error) {
-      return Promise.reject(error.message);
-    }
-  });
+        return Promise.reject(new Error("User authentication required"));
+      } catch (error) {
+        return Promise.reject(error.message);
+      }
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("followed-users");
+      },
+    },
+  );
 
   return mutation;
 }
 
 export function useFollowedUsers(params = {}) {
-  const { followedUsers = true } = params;
+  const { exclude = false } = params;
   const { data = [], ...query } = useQuery(
-    ["followed-users", followedUsers],
+    ["followed-users", exclude],
     async () => {
       const authToken = await authService.getCurrentUserToken();
 
-      if (authToken) return usersApi.getFollowedUsers(authToken, followedUsers);
+      if (authToken) return usersApi.getFollowedUsers(authToken, { exclude });
 
       return Promise.reject(new Error("User authentication required"));
     },
