@@ -23,7 +23,7 @@ const StyledNotListenedTracks = styled.p`
 const ProfileUserTracks = () => {
   const { profileId } = useParams();
   const { data: tracks } = useUserTracks(1, undefined, 5, "num_plays", "desc", profileId);
-  console.log(tracks?.data?.data?.length);
+  
   return (
     <StyledUserTracks>
       {
