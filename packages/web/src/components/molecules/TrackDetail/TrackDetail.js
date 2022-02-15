@@ -85,8 +85,6 @@ const TrackDetail = ({ track, handlePlayButton }) => {
   );
 };
 
-export default TrackDetail;
-
 TrackDetail.propTypes = {
   handlePlayButton: PropTypes.func,
   track: PropTypes.exact({
@@ -134,3 +132,5 @@ TrackDetail.defaultProps = {
     updated_at: null,
   },
 };
+
+export default TrackDetail;

@@ -43,10 +43,7 @@ export default function PlaylistCarousel() {
     <Layout>
       <Slider {...settings}>
         {playlistsList?.map((playlist) => (
-          <PlaylistHomeCard
-            key={playlist.id}
-            playlist={playlist}
-          />
+          <PlaylistHomeCard key={playlist.id} playlist={playlist} />
         ))}
       </Slider>
     </Layout>

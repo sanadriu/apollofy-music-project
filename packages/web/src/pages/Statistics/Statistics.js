@@ -60,7 +60,10 @@ const FlexCol = styled(FlexColumn)`
 `;
 
 const Statistics = () => {
-  const [chart, setChart] = useState("");
+  const [chartType, setChartType] = useState("");
+  const [chartTitle, setChartTitle] = useState("Most Popular Users");
+  const [chartUnit, setChartUnit] = useState("Followers");
+  const [chartColor, setChartColor] = useState("#0770f7b0");
 
   const [statsArray, setArray] = useState([]);
   const [likes, setLikes] = useState([]);
@@ -86,7 +89,7 @@ const Statistics = () => {
     setLikes([]);
     if (array) {
       array.forEach((title) => {
-        setArray((list) => [...list, limit(title?.title, 10) || limit(title?.name, 10)]);
+        setArray((list) => [...list, limit(title?.title, 10) || limit(title?.username, 10)]);
         setLikes((list) => [...list, title?.num_plays || title.num_followers || title?.num_likes]);
       });
     }
@@ -106,12 +109,7 @@ const Statistics = () => {
       },
       title: {
         display: true,
-        text:
-          (chart === "" && "Most Popular Users") ||
-          (chart === "Users" && "Most Popular Users") ||
-          (chart === "Albums" && "Most Popular Albums") ||
-          (chart === "Songs" && "Most Popular Songs") ||
-          (chart === "Playlists" && "Most followed Playlists"),
+        text: chartTitle,
       },
     },
   };
@@ -121,13 +119,9 @@ const Statistics = () => {
     labels,
     datasets: [
       {
-        label: "Likes",
+        label: chartUnit,
         data: likes, // This is the array of number of followers or views
-        backgroundColor:
-          (chart === "User" && "#0770f7b0") ||
-          (chart === "Playlists" && "#00e106b3") ||
-          (chart === "Albums" && "#fffb00b5") ||
-          (chart === "Songs" && "#6900ffc7"),
+        backgroundColor: chartColor,
       },
     ],
   };
@@ -138,7 +132,10 @@ const Statistics = () => {
           <Button
             type="button"
             onClick={() => {
-              setChart("Users");
+              setChartType("Users");
+              setChartTitle("Most Popular Users");
+              setChartUnit("Followers");
+              setChartColor("#0770f7b0");
               createArray(usersList);
             }}
           >
@@ -150,7 +147,10 @@ const Statistics = () => {
           <Button
             type="button"
             onClick={() => {
-              setChart("Songs");
+              setChartType("Songs");
+              setChartTitle("Most Popular Songs");
+              setChartUnit("Times Played");
+              setChartColor("#6900ffc7");
               createArray(tracksList);
             }}
           >
@@ -162,7 +162,10 @@ const Statistics = () => {
           <Button
             type="button"
             onClick={() => {
-              setChart("Albums");
+              setChartType("Albums");
+              setChartTitle("Most Liked Albums");
+              setChartUnit("Likes");
+              setChartColor("#fffb00b5");
               createArray(albumsList);
             }}
           >
@@ -174,7 +177,10 @@ const Statistics = () => {
           <Button
             type="button"
             onClick={() => {
-              setChart("Playlists");
+              setChartType("Playlists");
+              setChartTitle("Most Popular Playlists");
+              setChartUnit("Followers");
+              setChartColor("#00e106b3");
               createArray(playlistsList);
             }}
           >

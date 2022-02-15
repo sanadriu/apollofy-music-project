@@ -21,7 +21,7 @@ const StyledUserTrack = styled.div`
   }
 `;
 
-const ProfileUserTrack = ({ data, index }) => {
+function ProfileUserTrack({ data, index }) {
   return (
     <StyledUserTrack>
       <ProfileNumTrack index={index} />
@@ -31,16 +31,16 @@ const ProfileUserTrack = ({ data, index }) => {
       <ProfilePlayTrack track={data} />
     </StyledUserTrack>
   );
-};
+}
 
 ProfileUserTrack.propTypes = {
   data: PropTypes.object,
-  index: PropTypes.number
+  index: PropTypes.number,
 };
 
 ProfileUserTrack.defaultProps = {
   data: {},
-  index: 1
+  index: 1,
 };
 
 export default ProfileUserTrack;

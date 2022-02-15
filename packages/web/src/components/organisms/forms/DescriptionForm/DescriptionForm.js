@@ -9,7 +9,7 @@ import MiddleTitle from "../../../atoms/headings/MiddleTitle";
 import SmallText from "../../../atoms/body/SmallText";
 import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 
-import { authSelector, signUpRequest, signUpWithEmailRequest } from "../../../../store/auth";
+import { authSelector, signUpWithEmailRequest } from "../../../../store/auth";
 
 const DescriptionArea = styled.textarea`
   width: 22rem;
@@ -25,7 +25,6 @@ export default function DescriptionForm() {
 
   function handleDescription() {
     if (value.length <= 250) {
-
       const updatedCurrentUser = {
         username: currentUser.username,
         email: currentUser.email,

@@ -16,7 +16,7 @@ import ButtonPlaySuffle from "../../components/atoms/buttons/ButtonPlayShuffle";
 const StyledProfile = styled.div`
   overflow: hidden;
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
-    padding-right: 2rem;
+    padding: 0.5rem;
   }
 `;
 

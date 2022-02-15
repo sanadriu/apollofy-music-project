@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
+
+import validationSchema from "../../../../schemas/PlaylistSchema";
 import {
   Box,
   Alert,
@@ -14,36 +16,34 @@ import {
   Typography,
   FormHelperText,
   CircularProgress,
+  Pagination,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-
-import { useSetAlbum } from "../../../../hooks/useAlbums";
-import { useGenres } from "../../../../hooks/useGenres";
-import { useMyTracks } from "../../../../hooks/useTracks";
-import validationSchema from "../../../../schemas/AlbumSchema";
 import { uploadResource } from "../../../../api/api-cloudinary";
+import { useMyTracks } from "../../../../hooks/useTracks";
+import { useSetPlaylist } from "../../../../hooks/usePlaylists";
 
-function AlbumCreateForm() {
+function CreatePlaylistForm() {
   const [trackListPage, setTrackListPage] = useState(1);
 
   const initialValues = {
     title: "",
-    released_date: "",
-    genres: [],
-    tracks: [],
+    description: "",
+    color: "",
     url_image: "",
+    tracks: [],
   };
 
   const allowedImageExt = ["jpg", "jpeg", "png"];
 
   const {
-    isLoading: setAlbumIsLoading,
-    isError: setAlbumIsError,
-    isSuccess: setAlbumIsSuccess,
-    error: setAlbumError,
-    data: setAlbumResponse,
+    isLoading: setPlaylistIsLoading,
+    isError: setPlaylistIsError,
+    isSuccess: setPlaylistIsSuccess,
+    error: setPlaylistError,
+    data: setPlaylistResponse,
     mutate,
-  } = useSetAlbum();
+  } = useSetPlaylist();
 
   const {
     isLoading: fetchMyTracksIsLoading,
@@ -53,26 +53,17 @@ function AlbumCreateForm() {
     data: fetchMyTracksResponse,
   } = useMyTracks({ page: trackListPage });
 
-  const {
-    isLoading: fetchGenresIsLoading,
-    isError: fetchGenresIsError,
-    isSuccess: fetchGenresIsSuccess,
-    error: fetchGenresError,
-    data: fetchGenresResponse,
-  } = useGenres();
-
   const formik = useFormik({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       const data = {
         title: values.title,
-        released_date: values.released_date,
-        genres: values.genres,
+        description: values.description,
+        url: values.url_playlist,
+        color: values.color,
         tracks: values.tracks,
-        url: values.url_album,
-        duration: values.duration,
         thumbnails: {
           url_default: values.url_image,
         },
@@ -97,30 +88,21 @@ function AlbumCreateForm() {
 
   return (
     <Container as="main">
-      <Typography sx={{ fontSize: "2rem", fontWeight: "light", mb: 2 }}>Add album</Typography>
-      {setAlbumIsSuccess && (
-        <Alert sx={{ mb: 2 }} severity={setAlbumResponse.data.success ? "success" : "error"}>
-          {setAlbumResponse.data.message}
+      <Typography sx={{ fontSize: "2rem", fontWeight: "light", mb: 2 }}>
+        Create New Playlist
+      </Typography>
+      {setPlaylistIsSuccess && (
+        <Alert sx={{ mb: 2 }} severity={setPlaylistResponse.data.success ? "success" : "error"}>
+          {setPlaylistResponse.data.message}
         </Alert>
       )}
-      {setAlbumIsError && (
+      {setPlaylistIsError && (
         <Alert sx={{ mb: 2 }} severity="error">
-          {setAlbumError.message}
+          {setPlaylistError.message}
         </Alert>
       )}
-      {(fetchGenresIsError || fetchMyTracksIsError) && (
-        <Alert sx={{ mb: 2 }} severity="error" variant="filled">
-          <AlertTitle>Something went wrong</AlertTitle>
-          {fetchGenresIsError && <Box>Genres request: {fetchGenresError?.message}</Box>}
-          {fetchMyTracksIsError && <Box>Tracks request: {fetchMyTracksError?.message}</Box>}
-        </Alert>
-      )}
-      {(fetchGenresIsLoading || fetchMyTracksIsLoading) && (
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", py: "4rem" }}>
-          <CircularProgress size={128} />
-        </Box>
-      )}
-      {fetchGenresIsSuccess && fetchMyTracksIsSuccess && (
+
+      {fetchMyTracksIsSuccess && (
         <form onSubmit={handleSubmit}>
           <Box
             sx={{
@@ -131,7 +113,7 @@ function AlbumCreateForm() {
           >
             <Box sx={{ flexGrow: 1, mb: 3 }}>
               <InputLabel sx={{ mb: 1 }} htmlFor="input_title">
-                Album title
+                Playlist title
               </InputLabel>
               <TextField
                 fullWidth
@@ -147,44 +129,40 @@ function AlbumCreateForm() {
               />
             </Box>
             <Box sx={{ flexGrow: 1, mb: 3 }}>
-              <InputLabel sx={{ mb: 1 }} htmlFor="input_released_date">
-                Release date
+              <InputLabel sx={{ mb: 1 }} htmlFor="color">
+                Playlist Color
               </InputLabel>
               <TextField
                 fullWidth
                 size="small"
-                id="input_released_date"
-                name="released_date"
-                type="date"
-                value={values.released_date}
+                id="color"
+                name="color"
+                type="text"
+                value={values.color}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(touched.released_date && errors.released_date)}
-                helperText={errors.released_date}
+                error={Boolean(touched.color && errors.color)}
+                helperText={errors.color}
               />
             </Box>
           </Box>
-          <Box sx={{ flexGrow: 1, mb: 3 }}>
-            <InputLabel sx={{ mb: 1 }} htmlFor="input_genres">
-              Genre(s)
+          <Box sx={{ flexGrow: 3, mb: 1 }}>
+            <InputLabel sx={{ mb: 1 }} htmlFor="input_description">
+              Description
             </InputLabel>
-            <Select
+            <TextField
               fullWidth
-              id="input_genres"
-              name="genres"
-              multiple
-              value={values.genres}
+              multilines
+              size="large"
+              id="input_description"
+              name="description"
+              type="text"
+              value={values.description}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={Boolean(touched.genres && errors.genres)}
-              input={<Input />}
-            >
-              {fetchGenresResponse.data.data.map((genre) => (
-                <MenuItem key={genre.name} value={genre.name}>
-                  {genre.name}
-                </MenuItem>
-              ))}
-            </Select>
+              error={Boolean(touched.description && errors.description)}
+              helperText={errors.description}
+            />
           </Box>
           <Box sx={{ flexGrow: 1, mb: 3 }}>
             <InputLabel sx={{ mb: 1 }} htmlFor="input_tracks">
@@ -192,6 +170,7 @@ function AlbumCreateForm() {
             </InputLabel>
             <Select
               fullWidth
+              size="small"
               id="input_tracks"
               name="tracks"
               multiple
@@ -202,14 +181,14 @@ function AlbumCreateForm() {
               input={<Input />}
             >
               {fetchMyTracksResponse.data.data.map((track) => (
-                <MenuItem key={track.title} value={track.id}>
+                <MenuItem key={track.id} value={track.id}>
                   {track.title}
                 </MenuItem>
               ))}
             </Select>
           </Box>
           <Box sx={{ mb: 3 }}>
-            <InputLabel sx={{ mb: 1 }} htmlFor="input_album_cover">
+            <InputLabel sx={{ mb: 1 }} htmlFor="input_Playlist_cover">
               Cover image file
             </InputLabel>
             <FileUploader
@@ -222,7 +201,7 @@ function AlbumCreateForm() {
                     setFieldError("url_image", err.message);
                   });
               }}
-              name="input_album_cover"
+              name="input_Playlist_cover"
               types={allowedImageExt}
             />
             {touched.url_image && errors.url_image && (
@@ -251,13 +230,45 @@ function AlbumCreateForm() {
               <Typography sx={{ fontSize: "0.9rem", mb: 3 }}>{values.url_image}</Typography>
             </Box>
           )}
+          {/* {fetchMyTracksResponse?.data && (
+          <DataGrid
+            pageSize={fetchMyTracksResponse.data.pages}
+            columns={[
+              { field: "id", headerName: "ID", width: 70 },
+              { field: "firstName", headerName: "First name", width: 130 },
+              { field: "lastName", headerName: "Last name", width: 130 },
+              {
+                field: "age",
+                headerName: "Age",
+                type: "number",
+                width: 90,
+              },
+              {
+                field: "fullName",
+                headerName: "Full name",
+                description: "This column has a value getter and is not sortable.",
+                sortable: false,
+                width: 160,
+                valueGetter: (params) =>
+                  `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+              },
+            ]}
+            rows={fetchMyTracksResponse.data.data.map((track) => ({
+              id: track.id,
+              title: track.title,
+              genres: track.genres.join(", "),
+              duration: track.duration,
+              released_date: track.released_date,
+            }))}
+          />
+        )} */}
           <LoadingButton
             type="submit"
             disabled={!isValid}
-            loading={isValidating || setAlbumIsLoading}
+            loading={isValidating || setPlaylistIsLoading}
             variant="contained"
           >
-            Add album
+            Add Playlist
           </LoadingButton>
         </form>
       )}
@@ -265,4 +276,4 @@ function AlbumCreateForm() {
   );
 }
 
-export default AlbumCreateForm;
+export default CreatePlaylistForm;

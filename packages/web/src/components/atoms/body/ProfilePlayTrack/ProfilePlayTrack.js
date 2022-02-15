@@ -90,7 +90,7 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
   return (
     <StyledPlayTrack>
       {track?.liked_by.findIndex((user) => (
-         user.id === auth.currentUser.id
+        user.id === auth.currentUser.id
       )) === -1 ? (
         <StyledFavoriteBorderIcon
           sx={{ color: "purple" }}
@@ -109,7 +109,7 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
       </PlayButton>
     </StyledPlayTrack>
   );
-};
+}
 
 ProfilePlayTrack.propTypes = {
   handlePlayButton: PropTypes.func,

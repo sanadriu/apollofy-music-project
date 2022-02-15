@@ -15,6 +15,7 @@ const Layout = styled.div`
   border-radius: 1.3rem;
   width: 100%;
 
+  gap: 0.5rem;
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.secondary};
   }

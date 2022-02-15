@@ -1,7 +1,7 @@
 import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+
 import { useSetTrack } from "../../../../hooks/useTracks";
 import { useGenres } from "../../../../hooks/useGenres";
 import validationSchema from "../../../../schemas/TrackSchema";
@@ -21,7 +21,6 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { uploadResource } from "../../../../api/api-cloudinary";
-import withLayout from "../../../hoc/withLayout";
 
 const initialValues = {
   title: "",
@@ -263,4 +262,4 @@ function TrackCreateForm() {
   );
 }
 
-export default withLayout(TrackCreateForm);
+export default TrackCreateForm;

@@ -32,7 +32,7 @@ export const TracksText = styled(SmallText)`
   }
 `;
 
-export default function PopularTracks() {
+function PopularTracks() {
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const sort = "num_plays";
@@ -68,3 +68,5 @@ export default function PopularTracks() {
     </SectionLayout>
   );
 }
+
+export default PopularTracks;

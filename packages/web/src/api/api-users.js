@@ -33,7 +33,7 @@ function getUsers(page, limit, sort, order) {
 
 function getMyFollowedUsers(authToken, followedUsers) {
   const excludeUsers = followedUsers ? "" : "?exclude=true";
-  
+
   return http.get(`${baseUrl}/users/me/followed-users${excludeUsers}`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -65,12 +65,12 @@ function setUser(authToken, user) {
   });
 }
 
-function followUser(authToken, user){
+function followUser(authToken, user) {
   return http.patch(`${baseUrl}/users/${user}/follow`, user, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
-  })
+  });
 }
 
 const usersApi = {
@@ -82,7 +82,7 @@ const usersApi = {
   updateUser,
   setUser,
   deleteUser,
-  followUser
+  followUser,
 };
 
 export default usersApi;

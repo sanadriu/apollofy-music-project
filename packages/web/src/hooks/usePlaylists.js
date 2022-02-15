@@ -6,7 +6,13 @@ import * as authService from "../services/auth";
 
 export function useUserPlaylists(userId = undefined) {
   const fallback = [];
-  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery([queryKeys.playlists, userId], () => playlistsApi.getPlaylists(10, 1, userId), {
+  const {
+    data = fallback,
+    isError,
+    error,
+    isLoading,
+    isSuccess,
+  } = useQuery([queryKeys.playlists, userId], () => playlistsApi.getPlaylists(10, 1, userId), {
     staleTime: 600000, // 10 minutes
     cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
     refetchOnMount: false,
@@ -19,7 +25,13 @@ export function useUserPlaylists(userId = undefined) {
 
 export function usePlaylists() {
   const fallback = [];
-  const { data = fallback, isError, error, isLoading, isSuccess } = useQuery(queryKeys.playlists, () => playlistsApi.getPlaylists(), {
+  const {
+    data = fallback,
+    isError,
+    error,
+    isLoading,
+    isSuccess,
+  } = useQuery(queryKeys.playlists, () => playlistsApi.getPlaylists(), {
     staleTime: 600000, // 10 minutes
     cacheTime: 900000, // 15 minutes (doesn't make sense for staleTime to exceed cacheTime)
     refetchOnMount: false,
@@ -49,8 +61,8 @@ export function useFetchPlaylist(id) {
 }
 
 export function useSetPlaylist() {
-  const mutation = useMutation((data) => {
-    const authToken = authService.getCurrentUserToken();
+  const mutation = useMutation(async (data) => {
+    const authToken = await authService.getCurrentUserToken();
 
     if (authToken) return playlistsApi.setPlaylist(authToken, data);
 
@@ -61,8 +73,8 @@ export function useSetPlaylist() {
 }
 
 export function useUpdatePlaylist() {
-  const mutation = useMutation((id, data) => {
-    const authToken = authService.getCurrentUserToken();
+  const mutation = useMutation(async (id, data) => {
+    const authToken = await authService.getCurrentUserToken();
 
     if (authToken) return playlistsApi.updatePlaylist(authToken, id, data);
 
@@ -73,8 +85,8 @@ export function useUpdatePlaylist() {
 }
 
 export function useDeletePlaylist() {
-  const mutation = useMutation((id) => {
-    const authToken = authService.getCurrentUserToken();
+  const mutation = useMutation(async (id) => {
+    const authToken = await authService.getCurrentUserToken();
 
     if (authToken) return playlistsApi.deletePlaylist(authToken, id);
 
@@ -87,8 +99,8 @@ export function useDeletePlaylist() {
 export function useMyPlaylists({ page, sort, order, limit, extend }) {
   const query = useQuery(
     ["my-playlists", page, sort, order, limit, extend],
-    () => {
-      const authToken = authService.getCurrentUserToken();
+    async () => {
+      const authToken = await authService.getCurrentUserToken();
 
       if (authToken)
         return playlistsApi.getMyPlaylists(authToken, { page, sort, order, limit, extend });
