@@ -45,6 +45,7 @@ const DescriptionDiv = styled.div`
 `;
 
 const ProfileMain = ({ user, albums, tracks }) => {
+  console.log(user);
   return (
     <ProfileContent>
       <AvatarDiv>

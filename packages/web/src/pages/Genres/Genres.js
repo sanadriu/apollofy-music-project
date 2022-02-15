@@ -20,15 +20,18 @@ import {
 
 function GenresPage() {
   const { genreId } = useParams();
+
   const { data } = useSingleGenre(genreId);
+  const genre = data?.data?.data;
+  console.log(genre);
   return (
     <>
       <PageLayout>
         <PictureDiv>
-          <PlaylistImage src={data?.data?.data?.thumbnails?.url_default} />
+          <PlaylistImage src={genre?.thumbnails?.url_default} />
         </PictureDiv>
         <DescriptionDiv>
-          <ProfileUserTitle title={data?.data?.data?.name} id={data?.data?.data?.id} />
+          <ProfileUserTitle title={genre?.name} id={genre?.id} />
         </DescriptionDiv>
       </PageLayout>
       <MainText>Tracks</MainText>

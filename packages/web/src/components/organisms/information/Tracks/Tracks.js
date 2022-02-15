@@ -31,21 +31,19 @@ export default function Tracks() {
 
   const queryClient = useQueryClient();
   // const { data: tracks, isError, error, isLoading } = useTracks(currentPage, currentGenre);
-  const {
-    data: tracks,
-    fetchNextPage,
-    hasNextPage,
-    isError,
-    error,
-    isLoading,
-  } = useInfiniteTracks(currentPage, currentGenre);
+  const { data, fetchNextPage, hasNextPage, isError, error, isLoading } = useInfiniteTracks(
+    currentPage,
+    currentGenre,
+  );
 
   // console.log("tracks", tracks);
   // console.log("fetchNextPage", fetchNextPage);
   console.log("hasNextPage", hasNextPage);
 
-  const tracksList = tracks?.data?.data;
-  const maxTrackPage = tracks?.data?.pages;
+  const tracksList = data?.data?.data;
+  const maxTrackPage = data?.data?.pages;
+
+  console.log(tracksList);
 
   // const { data, fetchNextPage, hasNextPage, isLoading, isFetching, isError, error } = useInfiniteQuery(
   //   "sw-people",
@@ -63,13 +61,13 @@ export default function Tracks() {
         <TrackDetail key={track?.id} track={track} handlePlayButton={setSelectedTrack} />
       ))} */}
       <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
-        {tracks.pages.map((pageData) => {
-          return pageData.data.data.map((track) => {
+        {/* {tracks.pages.map((pageData) => {
+          return pageData?.data?.data?.map((track) => {
             return (
               <TrackDetail key={track?.id} track={track} handlePlayButton={setSelectedTrack} />
             );
           });
-        })}
+        })} */}
       </InfiniteScroll>
     </ExtendedTrackList>
   );

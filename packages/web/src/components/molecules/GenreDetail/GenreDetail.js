@@ -43,7 +43,7 @@ const GenreDetail = ({ genre }) => {
   `;
 
   return (
-    <GenreLink to={`/genres/${genre.name}`}>
+    <GenreLink to={`/genres/${genre.id}`}>
       <GenreLayout>
         <GenreTitle>{genre.name}</GenreTitle>
       </GenreLayout>
