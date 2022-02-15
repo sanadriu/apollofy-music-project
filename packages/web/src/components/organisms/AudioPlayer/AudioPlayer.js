@@ -12,7 +12,7 @@ const ResponsiveDiv = styled.div`
 
 export const ExampleAudioPlayer = () => {
   return (
-    <ResponsiveDiv className="audioplayer">
+    <ResponsiveDiv>
       <Player />
     </ResponsiveDiv>
   );
