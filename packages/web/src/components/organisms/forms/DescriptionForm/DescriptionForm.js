@@ -14,8 +14,12 @@ import { authSelector, signUpWithEmailRequest } from "../../../../store/auth";
 const DescriptionArea = styled.textarea`
   width: 22rem;
   height: 8rem;
-  border: 1px solid #b04aff;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  padding: 0.5rem;
   border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 export default function DescriptionForm() {
@@ -35,14 +39,7 @@ export default function DescriptionForm() {
         description: value,
       };
 
-      dispatch(
-        signUpWithEmailRequest(
-          currentUser.email,
-          currentUser.password,
-          updatedCurrentUser,
-        ),
-      );
-
+      dispatch(signUpWithEmailRequest(currentUser.email, currentUser.password, updatedCurrentUser));
     } else {
       toast.error("Your description is too long", {
         position: toast.POSITION.BOTTOM_CENTER,

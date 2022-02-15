@@ -3,15 +3,17 @@ import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import EditIcon from "@mui/icons-material/Edit";
 
 import usersApi from "../../api/api-users";
 import withLayout from "../../components/hoc/withLayout";
 import ConfirmationModal from "../../components/organisms/modals/ConfirmationModal";
 import UpdateProfileModal from "../../components/organisms/modals/UpdateProfileModal";
 import { getCurrentUserToken } from "../../services/auth/auth";
+import MiddleTitle from "../../components/atoms/headings/MiddleTitle";
 
 const MainDiv = styled.div`
-  width: 50%;
+  width: 75%;
   display: flex;
   flex-direction: column;
   margin: auto;
@@ -28,9 +30,10 @@ const InputDiv = styled.div`
 `;
 
 const InputLabel = styled.span`
-  background-color: #e5e5e5;
+  color: ${({ theme }) => theme.colors.text};
+  // background-color: ${({ theme }) => theme.colors.background.secondary};
   padding: 0.5rem;
-  border-radius: 9999px;
+  border-radius: 1.3rem;
 `;
 
 const InputField = styled.span`
@@ -38,8 +41,8 @@ const InputField = styled.span`
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
+  color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.background.primary};
   background-clip: paddIng-box;
   transition: border-color 0.15s ease-In-out, box-shadow 0.15s ease-In-out;
 `;
@@ -47,6 +50,7 @@ const InputField = styled.span`
 const InsideDiv = styled.div`
   display: flex;
   align-items: center;
+  gap: 2rem;
 `;
 
 const ImageThumb = styled.img`
@@ -88,7 +92,7 @@ const EditProfile = () => {
 
   return (
     <MainDiv>
-      <h2>Update Your Profile</h2>
+      <MiddleTitle>Update Your Profile</MiddleTitle>
       <InputDiv>
         <InsideDiv>
           <ImageThumb src={profilePicture} />{" "}
@@ -107,7 +111,7 @@ const EditProfile = () => {
               setBirthdayModal(false);
             }}
           >
-            Change Profile Picture
+            <EditIcon />
           </Button>
         </InsideDiv>
       </InputDiv>
@@ -131,7 +135,7 @@ const EditProfile = () => {
               setProfilePicModal(false);
             }}
           >
-            Update Your Email
+            <EditIcon />
           </Button>
         </InsideDiv>
       </InputDiv>
@@ -153,7 +157,7 @@ const EditProfile = () => {
               setProfilePicModal(false);
             }}
           >
-            Update Your Username
+            <EditIcon />
           </Button>
         </InsideDiv>
       </InputDiv>
@@ -175,7 +179,7 @@ const EditProfile = () => {
               setProfilePicModal(false);
             }}
           >
-            Change Your Birthday
+            <EditIcon />
           </Button>
         </InsideDiv>
       </InputDiv>
@@ -197,20 +201,16 @@ const EditProfile = () => {
               setProfilePicModal(false);
             }}
           >
-            Update Your Password
+            <EditIcon />
           </Button>
         </InsideDiv>
       </InputDiv>
 
-      <Button variant="outlined" color="error" onClick={handleClickOpen}>
+      <Button variant="outlined" onClick={handleClickOpen}>
         Delete Profile
       </Button>
 
-      <ConfirmationModal
-        open={open}
-        handleClose={handleClose}
-        deleteMyProfile={deleteMyProfile}
-      />
+      <ConfirmationModal open={open} handleClose={handleClose} deleteMyProfile={deleteMyProfile} />
 
       <UpdateProfileModal
         openProfileModal={openProfileModal}

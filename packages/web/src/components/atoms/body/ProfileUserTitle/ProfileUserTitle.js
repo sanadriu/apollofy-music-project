@@ -11,7 +11,6 @@ import ButtonFollow from "../../buttons/ButtonFollow";
 const StyledTitleUser = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding-bottom: 1rem;
   color: ${({ theme }) => theme.colors.text};
 `;

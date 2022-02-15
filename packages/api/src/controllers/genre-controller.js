@@ -1,3 +1,4 @@
+const { Types } = require("mongoose");
 const { Genre } = require("../models");
 
 async function getGenres(req, res, next) {

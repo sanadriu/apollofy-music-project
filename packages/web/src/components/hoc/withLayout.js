@@ -12,7 +12,7 @@ import FlexColumn from "../atoms/layout/FlexColumn";
 
 const MainLayout = styled.main`
   display: flex;
-  gap: 2rem;
+  /* gap: 2rem; */
   padding: 1rem 1rem 0 1rem;
   justify-content: space-between;
   margin-bottom: 6rem;

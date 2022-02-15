@@ -28,7 +28,7 @@ const NavBar = styled.nav`
   width: 100%;
   display: flex;
   justify-content: space-evenly;
-  background-color: lightgrey;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
   border-radius: 9999px;
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     margin-top: 5rem;
@@ -47,9 +47,9 @@ const NameSpan = styled.span`
 const ChartBody = styled.div`
   margin-top: 1rem;
   width: 100%;
-  height: 100%;
   border-radius: 50px;
-  background-color: lightgray;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
+  color: ${({ theme }) => theme.colors.text};
   padding: 1rem;
 `;
 

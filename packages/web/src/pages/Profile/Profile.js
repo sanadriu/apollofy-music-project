@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import usersApi from "../../api/api-users";
+import { useSingleUser } from "../../hooks/useUsers";
 import { useUserAlbums } from "../../hooks/useAlbums";
 import { useUserPlaylists } from "../../hooks/usePlaylists";
 import { useUserTracks } from "../../hooks/useTracks";
@@ -29,8 +29,10 @@ const StyledTitle = styled.div`
 `;
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
   const { profileId } = useParams();
+
+  const { data } = useSingleUser(profileId);
+  const user = data?.data?.data;
 
   const { data: albums } = useUserAlbums(undefined, undefined, undefined, undefined, profileId);
   const albumsList = albums?.data?.data;
@@ -40,13 +42,6 @@ const Profile = () => {
 
   const { data: tracks } = useUserTracks(1, undefined, 5, "num_plays", "desc", profileId);
   const tracksList = tracks?.data?.data;
-
-  useEffect(() => {
-    (async () => {
-      const { data } = await usersApi.getUser(profileId);
-      setUser(data?.data);
-    })();
-  }, []);
 
   return (
     <StyledProfile>

@@ -11,6 +11,7 @@ import MiddleTitle from "../../../atoms/headings/MiddleTitle";
 import RegisterInput from "../../../atoms/input-controls/RegisterInput";
 import Button from "../../../atoms/buttons/Button";
 import { Input } from "@mui/material";
+import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 
 export default function AccountForm() {
   const dispatch = useDispatch();
@@ -60,9 +61,9 @@ export default function AccountForm() {
               placeholder="Confirm password"
             />
             <ErrorMessage className="errorMessage" name="passwordConfirmation" component="div" />
-            <Input btnColor="#B04AFF" type="submit" disabled={isSubmitting}>
+            <PrimaryButton btnColor="#B04AFF" type="submit" disabled={isSubmitting}>
               Submit
-            </Input>
+            </PrimaryButton>
           </FlexColumn>
         </Form>
       )}

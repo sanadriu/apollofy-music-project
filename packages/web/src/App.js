@@ -81,7 +81,7 @@ function App() {
             <Route path="albums" element={<Albums />} />
             <Route path="playlists/:playlistId" element={<Playlists />} />
             <Route path="users/:profileId" element={<Profile />} />
-            <Route path="genres/:genre" element={<Genres />} />
+            <Route path="genres/:genreId" element={<Genres />} />
             <Route path="playlists" element={<Playlists />} />
             <Route path="create" element={<Create />} />
             <Route path="users" element={<Users />} />

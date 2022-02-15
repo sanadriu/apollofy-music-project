@@ -15,9 +15,11 @@ import PrimaryButton from "../../../atoms/buttons/PrimaryButton";
 import { authSelector, pictureLinkAdded } from "../../../../store/auth";
 import { modalSelector, nextModal } from "../../../../store/modal";
 
-const Input = styled("input")({
-  display: "none",
-});
+const Input = styled("input")`
+display: "none",
+color: ${({ theme }) => theme.colors.text};
+background-color: ${({ theme }) => theme.colors.background.secondary};
+`;
 
 const ModalButton = styled(PrimaryButton)`
   width: 35%;
@@ -65,11 +67,15 @@ export default function ProfilePictureForm() {
               setValue(e.target.files);
             }}
           />
-          <Button variant="contained" component="span">
+          <Button
+            variant="contained"
+            component="span"
+            sx={{ backgroundColor: "white", border: "1px solid black" }}
+          >
             Upload
           </Button>
         </label>
-        <label htmlFor="icon-button-file">
+        {/* <label htmlFor="icon-button-file">
           <Input
             accept="image/*"
             id="icon-button-file"
@@ -78,12 +84,12 @@ export default function ProfilePictureForm() {
               uploadImage(e.target.files);
               setValue(e.target.files);
             }}
-          />
-          <IconButton color="primary" aria-label="upload picture" component="span">
-            {" "}
-            <PhotoCamera />
-          </IconButton>
-        </label>
+          /> */}
+        {/* <IconButton color="purple" aria-label="upload picture" component="span">
+            {" "} */}
+        <PhotoCamera />
+        {/* </IconButton> */}
+        {/* </label> */}
       </Stack>
       <ModalButton onClick={() => handlePicture()}>{value ? "Submit" : "Skip for now"}</ModalButton>
     </FlexColumn>

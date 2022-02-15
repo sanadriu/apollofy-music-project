@@ -75,6 +75,18 @@ const BackArrow = styled(ArrowBackIosIcon)`
   }
 `;
 
+const CustomMenu = styled(MenuList)`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding-left: 1rem;
+  gap: 0.3rem;
+  width: 9rem;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
+  color: ${({ theme }) => theme.colors.text};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
 function MenuBar() {
   const { currentUser } = useSelector(authSelector);
   const dispatch = useDispatch();
@@ -172,17 +184,16 @@ function MenuBar() {
             >
               <Paper>
                 <ClickAwayListener onClickAway={(e) => handleClose(e)}>
-                  <MenuList
+                  <CustomMenu
                     autoFocusItem={open}
                     id="composition-menu"
                     aria-labelledby="composition-button"
                     onKeyDown={(e) => handleListKeyDown(e)}
-                    sx={{ width: "18rem", borderRadius: "1.3rem" }}
                   >
                     <MenuItem onClick={() => showProfile()}>Profile</MenuItem>
                     <MenuItem onClick={() => editProfile()}>My account</MenuItem>
                     <MenuItem onClick={() => logout()}>Logout</MenuItem>
-                  </MenuList>
+                  </CustomMenu>
                 </ClickAwayListener>
               </Paper>
             </Grow>

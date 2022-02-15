@@ -6,29 +6,26 @@ import Tracks from "../../components/organisms/information/Tracks";
 import PlaylistImage from "../../components/atoms/images/PlaylistImage/PlaylistImage";
 
 import { useSingleGenre } from "../../hooks/useGenres";
-import {
-  DescriptionDiv,
-  MainText,
-  PageLayout,
-  PictureDiv,
-} from "../Playlists/Playlists";
+import { DescriptionDiv, MainText, PageLayout, PictureDiv } from "../Playlists/Playlists";
 import ProfileUserTitle from "../../components/atoms/body/ProfileUserTitle/ProfileUserTitle";
 
 function GenresPage() {
   const { genreId } = useParams();
+
   const { data } = useSingleGenre(genreId);
+  const genre = data?.data?.data;
   return (
     <>
       <PageLayout>
         <PictureDiv>
-          <PlaylistImage src={data?.data?.data?.thumbnails?.url_default} />
+          <PlaylistImage src={genre?.thumbnails?.url_default} />
         </PictureDiv>
         <DescriptionDiv>
-          <ProfileUserTitle title={data?.data?.data?.name} id={data?.data?.data?.id} />
+          <ProfileUserTitle title={genre?.name} id={genre?.id} />
         </DescriptionDiv>
       </PageLayout>
       <MainText>Tracks</MainText>
-      <Tracks />
+      {/* <Tracks /> */}
     </>
   );
 }

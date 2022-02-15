@@ -10,13 +10,14 @@ const ButtonCategory = styled.div`
   padding: 1rem 1.5rem;
   margin: 0 0.5rem;
   border-radius: 2rem 2rem 2rem 2rem;
-  background: white;
+  background: ${({ theme }) => theme.colors.background.secondary};
+  color: ${({ theme }) => theme.colors.text};
   border: 1px #eeeee4 solid;
   width: 150px;
   margin-top: 2px;
   cursor: pointer;
   &:hover {
-    background-color: purple;
+    background-color: ${({ theme }) => theme.colors.label};
     border: 1px solid #b04aff;
     color: white;
   }
