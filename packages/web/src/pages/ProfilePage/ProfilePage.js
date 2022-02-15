@@ -2,13 +2,15 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import usersApi from "../../api/api-users";
 
 import ButtonPlaySuffle from "../../components/atoms/ButtonPlayShuffle/ButtonPlayShuffle";
 import withLayout from "../../components/hoc/withLayout";
 import ProfileGroupButtons from "../../components/molecules/ProfileGroupButtons/ProfileGroupButtons";
-import ProfileMain from "../../components/organisms/ProfileMain/ProfileMain";
-import ProfileUserCards from "../../components/organisms/ProfileUserCards/ProfileUserCards";
-import ProfileUserTracks from "../../components/organisms/ProfileUserTracks/ProfileUserTracks";
+import ProfileMain from "../../components/organisms/information/ProfileMain";
+import ProfileUserCards from "../../components/organisms/information/ProfileUserCards";
+import ProfileUserTracks from "../../components/organisms/information/ProfileUserTracks";
+
 import { useUserAlbums } from "../../hooks/useAlbums";
 import { useUserPlaylists } from "../../hooks/usePlaylists";
 import { useUserTracks } from "../../hooks/useTracks";
@@ -52,7 +54,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get(`http://localhost:4000/users/${profileId}`);
+      const { data } = usersApi.getUser(profileId);
       setUser(data.data);
     })();
   }, [profileId]);

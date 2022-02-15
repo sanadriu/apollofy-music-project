@@ -6,9 +6,9 @@ import { useParams } from "react-router-dom";
 import { Typography } from "@mui/material";
 
 import { authSelector } from "../../../../store/auth";
-import ButtonFollowUser from "../../buttons/ButtonFollowUser";
+import ButtonFollowPlaylist from "../../buttons/ButtonFollowPlaylist";
 
-const StyledTitleUser = styled.div`
+const StyledTitlePlaylist = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -16,27 +16,27 @@ const StyledTitleUser = styled.div`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-const ProfileUserTitle = ({ title, id }) => {
-  const { currentUser } = useSelector(authSelector);
+const ProfilePlaylistTitle = ({ title, id }) => {
+  const { currentPlaylist } = useSelector(authSelector);
   const { profileId } = useParams();
 
   return (
-    <StyledTitleUser>
+    <StyledTitlePlaylist>
       <div>
         <Typography variant="h5">{title}</Typography>
       </div>
-      {currentUser.id !== profileId && (
+      {currentPlaylist.id !== profileId && (
         <div>
-          <ButtonFollowUser id={id} />
+          <ButtonFollowPlaylist id={id} />
         </div>
       )}
-    </StyledTitleUser>
+    </StyledTitlePlaylist>
   );
 };
 
-ProfileUserTitle.propTypes = {
+ProfilePlaylistTitle.propTypes = {
   title: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
 };
 
-export default ProfileUserTitle;
+export default ProfilePlaylistTitle;

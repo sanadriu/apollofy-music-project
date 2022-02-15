@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
-import { useFollowedUsers, useFollowUser } from "../../../../hooks/useUsers";
+import { useFetchCurrentUser } from "../../../../hooks/useUsers";
+import { useFollowPlaylist } from "../../../../hooks/usePlaylists";
 
 const ColorButton = styled(Button)`
   color: white;
@@ -32,19 +33,18 @@ const StyledIcon = styled(StarOutlineIcon)`
   }
 `;
 
-const ButtonFollow = ({ id }) => {
-  const [isFollowed, setIsFollowed] = useState(false);
-  const { mutate } = useFollowUser();
-  const { data: users } = useFollowedUsers(true);
+const ButtonFollowPlaylist = ({ id }) => {
+  const { mutate } = useFollowPlaylist();
+  const { data: user } = useFetchCurrentUser(true);
 
-  const handleFollow = (userId) => {
-    mutate(userId);
-    setIsFollowed(!isFollowed);
+  const handleFollow = (playlistId) => {
+    mutate(playlistId);
   };
 
   return (
     <Stack spacing={2} direction="row" onClick={() => handleFollow(id)}>
-      {users?.data?.data && users.data.data.findIndex((user) => user.id === id) === -1 ? (
+      {user?.data?.data.playlists &&
+      user.data.data.playlists.findIndex((playlist) => playlist.id === id) === -1 ? (
         <ColorButton
           variant="contained"
           sx={{ borderRadius: "100px", color: "white" }}
@@ -67,12 +67,12 @@ const ButtonFollow = ({ id }) => {
   );
 };
 
-ButtonFollow.propTypes = {
+ButtonFollowPlaylist.propTypes = {
   id: PropTypes.string,
 };
 
-ButtonFollow.defaultProps = {
+ButtonFollowPlaylist.defaultProps = {
   id: "",
 };
 
-export default ButtonFollow;
+export default ButtonFollowPlaylist;

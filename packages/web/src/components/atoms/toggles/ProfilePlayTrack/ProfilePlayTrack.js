@@ -19,21 +19,19 @@ const StyledPlayTrack = styled.div`
   margin-left: 1rem;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   font-size: 0.8rem;
-  width: 25%;
   gap: 0.5rem;
 `;
 
-const PlayListButton = styled(Button)`
+const CustomButton = styled(Button)`
   border: none;
   background-color: transparent;
-`;
-
-const PlayButton = styled(Button)`
-  border: none;
-  background-color: transparent;
+  min-width: auto;
+  &:hover {
+    background-color: transparent;
+  }
 `;
 
 const StyledFavoriteIcon = styled(FavoriteIcon)`
@@ -93,21 +91,22 @@ const ProfilePlayTrack = ({ track, handlePlayButton }) => {
   return (
     <StyledPlayTrack>
       {track?.liked_by.findIndex((user) => user.id === auth.currentUser.id) === -1 ? (
-        <StyledFavoriteBorderIcon
-          sx={{ color: "purple" }}
-          onClick={() => handleFavoriteTrack(track)}
-        />
+        <CustomButton type="button" onClick={() => handleFavoriteTrack(track)}>
+          <StyledFavoriteBorderIcon sx={{ color: "purple" }} />
+        </CustomButton>
       ) : (
-        <StyledFavoriteIcon sx={{ color: "purple" }} onClick={() => handleFavoriteTrack(track)} />
+        <CustomButton type="button" onClick={() => handleFavoriteTrack(track)}>
+          <StyledFavoriteIcon sx={{ color: "purple" }} />
+        </CustomButton>
       )}
-      <PlayListButton type="button" onClick={() => handleAdd(track)}>
+      <CustomButton type="button" onClick={() => handleAdd(track)}>
         <PlaylistAdd sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: "pointer" } }} />
-      </PlayListButton>
-      <PlayButton type="button" onClick={() => handlePlay(track)}>
+      </CustomButton>
+      <CustomButton type="button" onClick={() => handlePlay(track)}>
         <PlayCircleFilledSharpIcon
           sx={{ color: "#b04aff", "&:hover": { color: "purple", cursor: "pointer" } }}
         />
-      </PlayButton>
+      </CustomButton>
     </StyledPlayTrack>
   );
 };

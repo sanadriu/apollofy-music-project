@@ -10,7 +10,7 @@ const StyledButton = styled.button`
   padding: 0.2rem;
   transition: all 200ms linear;
   border-radius: 4px;
-  width: 300px;
+  width: 18.75;
   display: flex;
   align-items: center;
   justify-content: center;

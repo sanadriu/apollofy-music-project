@@ -3,6 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
+import Box from '@mui/material/Box';
 
 import HomeSmallText from "../../atoms/body/HomeSmallText";
 import DetailText from "../../atoms/body/DetailText";
@@ -11,10 +12,10 @@ import { formatNumReprod } from "../../../utils/utils";
 
 const TrackLayout = styled.div`
   display: flex;
+  justify-content: space-between;
   gap: 1rem;
   padding: 0.3rem;
   border-radius: 1.3rem;
-
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.secondary_hover};
   }
@@ -31,14 +32,13 @@ const TrackFlex = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  padding-left: 0.5rem;
+  padding-left: 0.75rem;
   flex-grow: 1;
 `;
 
 const TrackLink = styled(Link)`
   text-decoration: none;
   color: inherit;
-
   &:hover {
     color: ${({ theme }) => theme.colors.label};
   }
@@ -51,8 +51,6 @@ const StyledNumTrack = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 0.8rem;
-  width: 20%;
-
   @media only screen and (max-width: ${({ theme }) => theme.media.mobile}) {
     display: none;
   }
@@ -67,25 +65,27 @@ const StyledNumber = styled.div`
 const TrackDetail = ({ track, handlePlayButton }) => {
   return (
     <TrackLayout>
-      <TrackPicture alt="Track's Thumbnail" src={track?.thumbnails?.url_default} />
-      <TrackFlex>
-        <TrackLink to={`/albums/${track?.genres}`}>
-          <HomeSmallText>{track?.title}</HomeSmallText>
-        </TrackLink>
-        <TrackLink to={`/users/${track?.user?.id}`}>
-          <DetailText>{track?.user?.username}</DetailText>
-        </TrackLink>
-      </TrackFlex>
-      <StyledNumTrack>
-        <HeadphonesIcon sx={{ color: "purple" }} />
-        <StyledNumber>{formatNumReprod(track?.num_plays)}</StyledNumber>
-      </StyledNumTrack>
-      <ProfilePlayTrack track={track} handlePlayButton={handlePlayButton} />
+      <Box sx={{ display: 'flex' }}>
+        <TrackPicture alt="Track's Thumbnail" src={track?.thumbnails?.url_default} />
+        <TrackFlex>
+          <TrackLink to={`/albums/${track?.genres}`}>
+            <HomeSmallText>{track?.title}</HomeSmallText>
+          </TrackLink>
+          <TrackLink to={`/users/${track?.user?.id}`}>
+            <DetailText>{track?.user?.username}</DetailText>
+          </TrackLink>
+        </TrackFlex>
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <StyledNumTrack>
+          <HeadphonesIcon sx={{ color: "purple" }} />
+          <StyledNumber>{formatNumReprod(track?.num_plays)}</StyledNumber>
+        </StyledNumTrack>
+        <ProfilePlayTrack track={track} handlePlayButton={handlePlayButton} />
+      </Box>
     </TrackLayout>
   );
 };
-
-export default TrackDetail;
 
 TrackDetail.propTypes = {
   handlePlayButton: PropTypes.func,
@@ -134,3 +134,5 @@ TrackDetail.defaultProps = {
     updated_at: null,
   },
 };
+
+export default TrackDetail;

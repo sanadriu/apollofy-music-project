@@ -21,7 +21,6 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { uploadResource } from "../../../../api/api-cloudinary";
-import withLayout from "../../../hoc/withLayout";
 
 const initialValues = {
   title: "",
@@ -263,4 +262,4 @@ function TrackCreateForm() {
   );
 }
 
-export default withLayout(TrackCreateForm);
+export default TrackCreateForm;

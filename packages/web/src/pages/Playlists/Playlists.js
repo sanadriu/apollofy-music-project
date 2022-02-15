@@ -10,7 +10,7 @@ import ProfileUserDescription from "../../components/atoms/body/ProfileUserDescr
 import PlaylistImage from "../../components/atoms/images/PlaylistImage";
 import SmallText from "../../components/atoms/body/SmallText";
 import ProfileOneStadistics from "../../components/atoms/body/ProfileOneStadistics/ProfileOneStadistics";
-import ProfileUserTitle from "../../components/atoms/body/ProfileUserTitle/ProfileUserTitle";
+import ProfilePlaylistTitle from "../../components/atoms/body/ProfilePlaylistTitle/ProfilePlaylistTitle";
 
 export const PageLayout = styled.div`
   display: flex;
@@ -61,7 +61,7 @@ function PlaylistsPage() {
           <PlaylistImage picture={playlist?.thumbnails?.url_default} title={playlist?.title} />
         </PictureDiv>
         <DescriptionDiv>
-          <ProfileUserTitle title={playlist?.title} />
+          <ProfilePlaylistTitle title={playlist?.title} />
           <StadisticsDiv>
             <ProfileOneStadistics count={playlist?.num_tracks} text="Songs" />
             <ProfileOneStadistics count={playlist?.num_followers} text="Followers" />

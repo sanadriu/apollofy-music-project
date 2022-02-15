@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+
 import styled from "styled-components";
 import SVG from "react-inlinesvg";
 
@@ -26,7 +27,8 @@ const Bar = styled.nav`
     justify-content: space-between;
     padding: 1rem 3rem;
     margin: 0;
-    background-color: ${({ theme }) => theme.colors.background.primary};
+    background-color: ${({ theme }) => theme.colors.background.primary && "White"};
+    z-index: 1;
   }
 `;
 
@@ -48,14 +50,16 @@ const SelectedNavSVG = styled(SVG)`
 
 export default function ControlBar() {
   const { pathname } = useLocation();
+
   return (
     <Bar>
       <Link to="/">
         {pathname === "/" ? <SelectedNavSVG src={HomeSVG} /> : <NavSVG src={HomeSVG} />}
       </Link>
-      <Link to="/tracks">
-        {pathname === "/tracks" ? <SelectedNavSVG src={ScoreSVG} /> : <NavSVG src={ScoreSVG} />}
+      <Link to="/create">
+        {pathname === "/create" ? <SelectedNavSVG src={ScoreSVG} /> : <NavSVG src={ScoreSVG} />}
       </Link>
+
       <Link to="/search">
         {pathname === "/search" ? <SelectedNavSVG src={SearchSVG} /> : <NavSVG src={SearchSVG} />}
       </Link>

@@ -11,7 +11,7 @@ const getPlaylists = (params) => {
 };
 
 const getUserPlaylists = (authToken, params) => {
-  return http.get(`${baseUrl}/me/playlists`, {
+  return http.get(`${baseUrl}/users/me/playlists`, {
     headers: { Authorization: `Bearer ${authToken}` },
     params,
   });

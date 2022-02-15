@@ -11,7 +11,7 @@ const getTracks = (params) => {
 };
 
 const getUserTracks = (authToken, params) => {
-  return http.get(`${baseUrl}/me/tracks`, {
+  return http.get(`${baseUrl}/users/me/tracks`, {
     headers: { Authorization: `Bearer ${authToken}` },
     params,
   });

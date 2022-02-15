@@ -11,7 +11,7 @@ const getAlbums = (params) => {
 };
 
 const getUserAlbums = (authToken, params) => {
-  return http.get(`${baseUrl}/me/albums`, {
+  return http.get(`${baseUrl}/users/me/albums`, {
     headers: { Authorization: `Bearer ${authToken}` },
     params,
   });

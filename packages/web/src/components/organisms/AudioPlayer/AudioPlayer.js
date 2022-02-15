@@ -2,23 +2,18 @@ import React from "react";
 import Player from "react-material-music-player"; // default export
 import styled from "styled-components";
 
-const CustomPlayer = styled(Player)`
+const ResponsiveDiv = styled.div`
   width: 100vw;
   position: absolute;
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
-    bottom: 4.2rem;
-    boxShadow: none;
+    bottom: 3rem;
   } ;
 `;
 
-const AudioPlayer = () => {
+export const ExampleAudioPlayer = () => {
   return (
-    <Player
-      sx={{
-        "@media screen and (max-width: 992px)": { bottom: "4.2rem", boxShadow: "none" },
-      }}
-    />
+    <ResponsiveDiv>
+      <Player />
+    </ResponsiveDiv>
   );
 };
-
-export default AudioPlayer;

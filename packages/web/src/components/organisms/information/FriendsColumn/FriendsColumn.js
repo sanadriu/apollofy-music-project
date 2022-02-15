@@ -12,8 +12,6 @@ import AddFriendsModal from "../../modals/AddFriendsModal";
 const FriendsColumnLayout = styled(RightSideBar)`
   height: auto;
   background-color: ${({ theme }) => theme.colors.background.secondary};
-  align-items: start;
-
   @media only screen and (max-width: ${({ theme }) => theme.media.tablet}) {
     display: none;
   }

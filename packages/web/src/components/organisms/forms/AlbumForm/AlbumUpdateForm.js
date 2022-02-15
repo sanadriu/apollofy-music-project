@@ -22,7 +22,7 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { uploadResource } from "../../../../api/api-cloudinary";
 import withLayout from "../../../hoc/withLayout";
-import { useMyTracks } from "../../../../hooks/useTracks";
+import { useFetchUserTracks } from "../../../../hooks/useTracks";
 
 function initialValues(responseData = {}) {
   return {
@@ -60,7 +60,7 @@ function AlbumCreateForm() {
     isSuccess: fetchMyTracksIsSuccess,
     error: fetchMyTracksError,
     data: fetchMyTracksResponse,
-  } = useMyTracks();
+  } = useFetchUserTracks();
 
   const {
     isLoading: fetchGenresIsLoading,
@@ -73,7 +73,7 @@ function AlbumCreateForm() {
   // const navigate = useNavigate();
 
   const formik = useFormik({
-    initialValues = initialValues(response),
+    initialValues = initialValues(fetchAlbumResponse),
     validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
