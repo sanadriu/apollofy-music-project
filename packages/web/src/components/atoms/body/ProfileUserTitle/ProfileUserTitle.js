@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Typography } from "@mui/material";
 
-import { authSelector } from "../../../store/auth";
-import ButtonFollow from "../buttons/ButtonFollow";
+import { authSelector } from "../../../../store/auth";
+import ButtonFollow from "../../buttons/ButtonFollow";
 
 const StyledTitleUser = styled.div`
   display: flex;
@@ -35,13 +35,8 @@ const ProfileUserTitle = ({ title, id }) => {
 };
 
 ProfileUserTitle.propTypes = {
-  title: PropTypes.string,
-  id: PropTypes.string,
-};
-
-ProfileUserTitle.defaultProps = {
-  title: "",
-  id: "",
+  title: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default ProfileUserTitle;

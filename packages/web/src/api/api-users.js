@@ -11,11 +11,7 @@ function getCurrentUser(authToken) {
 }
 
 function getUser(userId) {
-  return http.get(`${baseUrl}/users`, {
-    params: {
-      id: userId,
-    },
-  });
+  return http.get(`${baseUrl}/users/${userId}`);
 }
 
 function setCurrentUser(user) {

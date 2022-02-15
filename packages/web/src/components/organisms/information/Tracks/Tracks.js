@@ -40,10 +40,6 @@ export default function Tracks() {
     isLoading,
   } = useInfiniteTracks(currentPage, currentGenre);
 
-  // console.log("tracks", tracks);
-  // console.log("fetchNextPage", fetchNextPage);
-  console.log("hasNextPage", hasNextPage);
-
   const tracksList = tracks?.data?.data;
   const maxTrackPage = tracks?.data?.pages;
 

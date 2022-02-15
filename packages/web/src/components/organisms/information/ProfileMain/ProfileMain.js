@@ -4,8 +4,8 @@ import styled from "styled-components";
 
 import ProfileImage from "../../../atoms/images/ProfileImage";
 import ProfileUserDescription from "../../../atoms/body/ProfileUserDescription";
-import ProfileUserTitle from "../../../atoms/ProfileUserTitle";
 import ProfileStadistics from "../../../molecules/ProfileStadistics";
+import ProfileUserTitle from "../../../atoms/body/ProfileUserTitle";
 
 const ProfileContent = styled.div`
   display: flex;

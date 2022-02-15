@@ -7,10 +7,10 @@ import withLayout from "../../components/hoc/withLayout";
 import TracksList from "../../components/organisms/information/PopularTracks";
 import TrackDetail from "../../components/molecules/TrackDetail";
 import ProfileUserDescription from "../../components/atoms/body/ProfileUserDescription";
-import ProfileOneStadistics from "../../components/atoms/ProfileOneStadistics";
-import ProfileUserTitle from "../../components/atoms/ProfileUserTitle";
 import PlaylistImage from "../../components/atoms/images/PlaylistImage";
 import SmallText from "../../components/atoms/body/SmallText";
+import ProfileOneStadistics from "../../components/atoms/body/ProfileOneStadistics/ProfileOneStadistics";
+import ProfileUserTitle from "../../components/atoms/body/ProfileUserTitle/ProfileUserTitle";
 
 export const PageLayout = styled.div`
   display: flex;
