@@ -1,5 +1,5 @@
 {
-  "name": "Strings",
+  "name": "stringifiers",
   "private": true,
   "workspaces": {
     "packages": [
