@@ -33,7 +33,7 @@ app.use(
   }),
 );
 app.use(json());
-app.use(cors({ origin: config.client.url }));
+app.use(cors());
 app.use(
   queryParser({
     parseNull: true,
