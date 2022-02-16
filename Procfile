@@ -1,0 +1,1 @@
+api: cd packages/api && npm run start
