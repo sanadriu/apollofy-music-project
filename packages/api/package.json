@@ -71,4 +71,5 @@
     "prettier": "^2.2.1",
     "supertest": "^6.1.3"
   }
+  "proxy": "http://localhost:8000"
 }
