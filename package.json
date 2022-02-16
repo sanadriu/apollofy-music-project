@@ -29,19 +29,6 @@
     }
   ],
   "scripts": {
-    "dev": "yarn workspaces run dev",
-    "dev:web": "yarn workspace web run start",
-    "dev:api": "yarn workspace api run dev",
-    "build": "yarn workspaces run build",
-    "test:web:watch": "yarn workspace web run test:watch",
-    "test:api:watch": "yarn workspace api run test:watch",
-    "test:ci:all": "yarn workspaces run test:ci:all",
-    "lint:js": "yarn workspaces run lint:js",
-    "lint:js:fix": "yarn workspaces run lint:js:fix",
-    "lint:format": "yarn workspaces run lint:format",
-    "lint:format:check": "yarn workspaces run lint:format:check",
-    "precommit": "yarn workspaces run precommit",
-    "prepare": "husky install",
     "heroku-postbuild": "cd packages/api && npm install --only=dev && npm install"
   },
   "devDependencies": {
