@@ -22,7 +22,16 @@ const {
 const app = express();
 
 app.use(morgan("dev"));
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        ...(config?.deploy?.url && { "script-src": ["'self'", ""] }),
+      },
+    },
+  }),
+);
 app.use(json());
 app.use(cors({ origin: config.client.url }));
 app.use(

@@ -6,6 +6,7 @@ const {
   MONGO_DB_URL_DEVELOPMENT,
   MONGO_DB_URL_TEST,
   CLIENT_URL,
+  DEPLOY_URL,
   PORT = 4000,
   SECRET,
 } = process.env;
@@ -16,6 +17,9 @@ const baseConfig = {
   },
   client: {
     url: CLIENT_URL || "http://localhost:3000",
+  },
+  deploy: {
+    url: DEPLOY_URL,
   },
   encryption: {
     secret: SECRET,
