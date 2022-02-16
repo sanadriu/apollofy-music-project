@@ -54,4 +54,7 @@
   "dependencies": {
     "react-slick": "^0.28.1"
   }
+  "engines": {
+    "node": "14.x"
+  },
 }
