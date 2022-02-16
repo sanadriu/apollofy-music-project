@@ -13,7 +13,7 @@ const {
 
 const baseConfig = {
   app: {
-    port: PORT || 4000,
+    port: PORT,
   },
   client: {
     url: CLIENT_URL || "http://localhost:3000",

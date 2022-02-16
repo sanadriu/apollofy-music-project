@@ -69,6 +69,5 @@
     "jest-environment-node": "^26.6.2",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1"
-  },
-  "proxy": "http://localhost:4000"
+  }
 }

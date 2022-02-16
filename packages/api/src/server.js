@@ -21,17 +21,17 @@ const {
 
 const app = express();
 
+// {
+//   contentSecurityPolicy: {
+//     directives: {
+//       ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+//       ...(config?.deploy?.url && { "script-src": ["'self'", ""] }),
+//     },
+//   },
+// }
+
 app.use(morgan("dev"));
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        ...(config?.deploy?.url && { "script-src": ["'self'", ""] }),
-      },
-    },
-  }),
-);
+app.use(helmet());
 app.use(json());
 app.use(cors());
 app.use(

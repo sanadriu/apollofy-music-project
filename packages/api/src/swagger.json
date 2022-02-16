@@ -6,7 +6,12 @@
   },
   "servers": [
     {
-      "description": "Main (production) server"
+      "url": "https://stringifiers-api.herokuapp.com",
+      "description": "Main server"
+    },
+    {
+      "url": "http://localhost:4000",
+      "description": "Local server"
     }
   ],
   "paths": {
@@ -3084,7 +3089,7 @@
           "genres": {
             "type": "array",
             "items": {
-              "type": "genreId"
+              "example": "genreId"
             }
           }
         }
