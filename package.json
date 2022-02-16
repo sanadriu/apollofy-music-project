@@ -41,7 +41,7 @@
     "lint:format": "yarn workspaces run lint:format",
     "lint:format:check": "yarn workspaces run lint:format:check",
     "precommit": "yarn workspaces run precommit",
-    "prepare": "husky install"
+    "prepare": "husky install",
     "heroku-postbuild": "cd packages/api && npm install --only=dev && npm install && npm run start"
   },
   "devDependencies": {
@@ -54,8 +54,8 @@
   },
   "dependencies": {
     "react-slick": "^0.28.1"
-  }
+  },
   "engines": {
     "node": "14.x"
-  },
+  }
 }
