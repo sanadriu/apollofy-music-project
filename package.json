@@ -42,6 +42,7 @@
     "lint:format:check": "yarn workspaces run lint:format:check",
     "precommit": "yarn workspaces run precommit",
     "prepare": "husky install"
+    "heroku-postbuild": "cd packages/api && npm install --only=dev && npm install && npm run start"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
