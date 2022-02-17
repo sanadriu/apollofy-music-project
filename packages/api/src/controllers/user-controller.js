@@ -10,20 +10,20 @@ async function signUp(req, res, next) {
     const dbRes = await User.findOne({ email });
 
     if (dbRes !== null) {
-      return res.status(400).send({
-        data: null,
-        success: false,
-        message: `Email ${email} is already in use`,
+      return res.status(200).send({
+        data: dbRes,
+        success: true,
+        message: "User logged in successfully",
+      });
+    } else {
+      await User.create({ _id: uid, email: email, username: name });
+
+      return res.status(201).send({
+        data: dbRes,
+        success: true,
+        message: "User created successfully",
       });
     }
-
-    await User.create({ _id: uid, email: email, username: name });
-
-    return res.status(201).send({
-      data: dbRes,
-      success: true,
-      message: "User created successfully",
-    });
   } catch (error) {
     next(error);
   }
